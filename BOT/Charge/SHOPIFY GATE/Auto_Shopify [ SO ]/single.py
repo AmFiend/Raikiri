@@ -9,27 +9,26 @@ from TOOLS.getbin import *
 from .response import *
 from .gate import *
 
+
 async def get_proxy_format():
-    # Use asyncio.to_thread to run the blocking I/O operation in a separate thread
     return await asyncio.to_thread(_get_proxy_format)
+
 
 def _get_proxy_format():
     import random
     getproxy = random.choice(open("FILES/proxy.txt", "r", encoding="utf-8").read().splitlines())
-    proxy_ip = getproxy.split(":")[0]
-    proxy_port = getproxy.split(":")[1]
-    proxy_user = getproxy.split(":")[2]
-    proxy_password = getproxy.split(":")[3]
+    proxy_ip, proxy_port, proxy_user, proxy_password = getproxy.split(":")
     proxies = {
         "https://": f"http://{proxy_user}:{proxy_password}@{proxy_ip}:{proxy_port}",
         "http://": f"http://{proxy_user}:{proxy_password}@{proxy_ip}:{proxy_port}",
     }
     return proxies
 
+
 async def check_proxy_status(proxies):
-    # Placeholder function to check if the proxy is live or dead
-    # Implement your logic here to check the proxy status
-    return True  # Change this to actual check
+    # Optional: you can implement actual proxy checking here
+    return True
+
 
 @Client.on_message(filters.command("so", [".", "/"]))
 async def so_auth_cmd(Client, message):
@@ -108,7 +107,8 @@ Usage: {cmd} cc|month|year|cvv</b>"""
         currency = getbin[6]
 
         proxy_status = "𝑷𝒓𝒐𝒙𝒚 𝑳𝒊𝒗𝒆✅" if await check_proxy_status(proxies) else "𝑷𝒓𝒐𝒙𝒚 𝑫𝒆𝒂𝒅❌"
-finalresp = f"""
+
+        finalresp = f"""
 {status}
 ━━━━━━━━━━━━━
 [ϟ] 𝗖𝗖 - <code>{fullcc}</code>
@@ -126,6 +126,7 @@ finalresp = f"""
 [ϟ] 𝗢𝘄𝗻𝗲𝗿: <a href="tg://user?id=6622603977">𝑵𝒂𝒊𝒓𝒐𝒃𝒊𝒂𝒏𝒈𝒐𝒐𝒏</a>
 ╚━━━━━━「𝐀𝐏𝐏𝐑𝐎𝐕𝐄𝐃 𝐂𝐇𝐄𝐂𝐊𝐄𝐑」━━━━━━╝
 """
+
         await asyncio.sleep(0.5)
         await Client.edit_message_text(message.chat.id, thirdcheck.id, finalresp)
         await setantispamtime(user_id)
