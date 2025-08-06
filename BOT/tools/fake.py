@@ -3108,7 +3108,7 @@ async def cmd_fake(client, message):
             resp += f"{quality_emoji} <b>Data Quality:</b> <code>{quality_text}</code>\n"
 
             # Add footer with original query if present
-            query_text = f"\n🔍 <b>Query:</b> <code>{country_query}</code>" if country_query else ""
+            query_text = f"\n🔍 <b>country :</b> <code>{country_query}</code>" if country_query else ""
             resp += f"""━━━━━━━━━━━━━━{query_text}
 ━━━━━━━━━━━━━━
 [ﾒ] Checked By ➺ <a href='tg://user?id={message.from_user.id}'> {message.from_user.first_name}</a> [ {role} ]
