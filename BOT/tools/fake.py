@@ -3065,7 +3065,8 @@ async def cmd_fake(client, message):
             
             # Build response message - include region in header if available
             region_text = f" ({region_display})" if region_display else ""
-            
+            # Start timer before building the full response
+            start = time.perf_counter()
             resp = f"""
 <b>Fake Info Created Successfully ✅</b>
 ━━━━━━━━━━━━━━
@@ -3105,7 +3106,7 @@ async def cmd_fake(client, message):
             
             # Add data quality indicator
             resp += f"{quality_emoji} <b>Data Quality:</b> <code>{quality_text}</code>\n"
-            
+
             # Add footer with original query if present
             query_text = f"\n🔍 <b>Query:</b> <code>{country_query}</code>" if country_query else ""
             resp += f"""━━━━━━━━━━━━━━{query_text}
