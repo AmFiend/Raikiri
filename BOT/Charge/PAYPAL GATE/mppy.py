@@ -12,22 +12,17 @@ from .response import *
 from TOOLS.check_all_func import *
 from TOOLS.getcc_for_mass import *
 
-
 async def paypal_mchkfunc(fullcc, user_id):
     retries = 3
     for attempt in range(retries):
         try:
-
-            session = httpx.AsyncClient(
-                timeout=30, follow_redirects=True)
+            session = httpx.AsyncClient(timeout=30, follow_redirects=True)
             result = await create_paypal_charge(fullcc, session)
             getresp = await get_charge_resp(result, user_id, fullcc)
             response = getresp["response"]
             status = getresp["status"]
-
             await session.aclose()
             return f"Card↯ <code>{fullcc}</code>\n<b>Status - {status}</b>\n<b>Result -⤿ {response} ⤾</b>\n\n"
-
         except Exception as e:
             import traceback
             await error_log(traceback.format_exc())
@@ -37,19 +32,16 @@ async def paypal_mchkfunc(fullcc, user_id):
             else:
                 return f"<code>{fullcc}</code>\n<b>Result - DECLINED ❌</b>\n"
 
-
 @Client.on_message(filters.command("mpp", [".", "/"]))
 def paypal_multi(Client, message):
     t1 = threading.Thread(target=paypal_bcall, args=(Client, message))
     t1.start()
-
 
 def paypal_bcall(Client, message):
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
     loop.run_until_complete(paypal_mass_auth_cmd(Client, message))
     loop.close()
-
 
 async def paypal_mass_auth_cmd(Client, message):
     try:
@@ -84,8 +76,7 @@ Number Of CC Check : [{len(ccs)}]
         start = time.perf_counter()
 
         works = [paypal_mchkfunc(i, user_id) for i in ccs]
-        worker_num = int(json.loads(
-            open("FILES/config.json", "r", encoding="utf-8").read())["THREADS"])
+        worker_num = int(json.loads(open("FILES/config.json", "r", encoding="utf-8").read())["THREADS"])
 
         while works:
             batch = works[:worker_num]
@@ -102,8 +93,7 @@ Number Of CC Check : [{len(ccs)}]
             works = works[worker_num:]
 
         taken = str(timedelta(seconds=time.perf_counter() - start))
-        hours, minutes, seconds = map(float, taken.split(":"))
-        proxy_status = "live "  # Fix: define proxy_status
+        proxy_status = "live"  # Define proxy_status
 
         text += f"""
 ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━
@@ -117,4 +107,7 @@ Number Of CC Check : [{len(ccs)}]
         await massdeductcredit(user_id, len(ccs))
         await setantispamtime(user_id)
 
-    except
+    except Exception as e:
+        import traceback
+        await error_log(traceback.format_exc())
+        await message.reply_text("An unexpected error occurred while processing your request.")
