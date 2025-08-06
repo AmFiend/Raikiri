@@ -3069,7 +3069,7 @@ async def cmd_fake(client, message):
             start = time.perf_counter()
             resp = f"""
 <b>Fake Info Created Successfully ✅</b>
-━━━━━━━━━━━━━━
+━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━
 🌍 <b>Country:</b> <code>{fake_country}{region_text}</code> {flag}
 🆔 <b>Full Name:</b> <code>{fake_name}</code>
 👤 <b>Gender:</b> <code>{fake_gender}</code>
@@ -3110,10 +3110,10 @@ async def cmd_fake(client, message):
             # Add footer with original query if present
             query_text = f"\n🔍 <b>Query:</b> <code>{country_query}</code>" if country_query else ""
             resp += f"""━━━━━━━━━━━━━━{query_text}
-━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━
+━━━━━━━━━━━━━━━━━━━━━━━━━
 [ﾒ] Checked By ➺ <a href='tg://user?id={message.from_user.id}'> {message.from_user.first_name}</a> [ {role} ]
 [ﾒ] Dev ➺ ⏤‌‌‌‌ <a href="tg://user?id=7941175119">ᶻⒺ𝓡𝐎</a>
-━━━━━━━━━━━━━━━
+━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━
 [ﾒ] T/t ➺ [{time.perf_counter() - start:0.2f} seconds]
 """
             
