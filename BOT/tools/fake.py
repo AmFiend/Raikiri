@@ -3110,7 +3110,7 @@ async def cmd_fake(client, message):
             # Add footer with original query if present
             query_text = f"\n🔍 <b>Query:</b> <code>{country_query}</code>" if country_query else ""
             resp += f"""━━━━━━━━━━━━━━{query_text}
-━━━━━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━
 [ﾒ] Checked By ➺ <a href='tg://user?id={message.from_user.id}'> {message.from_user.first_name}</a> [ {role} ]
 [ﾒ] Dev ➺ ⏤‌‌‌‌ <a href="tg://user?id=7941175119">ᶻⒺ𝓡𝐎</a>
 ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━
