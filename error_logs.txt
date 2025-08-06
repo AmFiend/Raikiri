@@ -1,0 +1,76 @@
+Traceback (most recent call last):
+  File "/root/Bg/bot/BOT/admin/get_error_logs.py", line 24, in cmd_geterror
+    await message.reply_document(document=document, reply_to_message_id=message.id)
+  File "/usr/local/lib/python3.10/dist-packages/pyrogram/types/messages_and_media/message.py", line 1601, in reply_document
+    return await self._client.send_document(
+  File "/usr/local/lib/python3.10/dist-packages/pyrogram/methods/messages/send_document.py", line 163, in send_document
+    file = await self.save_file(document, progress=progress, progress_args=progress_args)
+  File "/usr/local/lib/python3.10/dist-packages/pyrogram/methods/advanced/save_file.py", line 129, in save_file
+    raise ValueError("File size equals to 0 B")
+ValueError: File size equals to 0 B
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/httpcore/_exceptions.py", line 10, in map_exceptions
+    yield
+  File "/usr/local/lib/python3.10/dist-packages/httpcore/_async/http11.py", line 130, in _send_request_headers
+    event = h11.Request(
+  File "/usr/local/lib/python3.10/dist-packages/h11/_events.py", line 96, in __init__
+    self, "headers", normalize_and_validate(headers, _parsed=_parsed)
+  File "/usr/local/lib/python3.10/dist-packages/h11/_headers.py", line 164, in normalize_and_validate
+    validate(_field_value_re, value, "Illegal header value {!r}", value)
+  File "/usr/local/lib/python3.10/dist-packages/h11/_util.py", line 91, in validate
+    raise LocalProtocolError(msg)
+h11._util.LocalProtocolError: Illegal header value b'Bearer '
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/httpx/_transports/default.py", line 60, in map_httpcore_exceptions
+    yield
+  File "/usr/local/lib/python3.10/dist-packages/httpx/_transports/default.py", line 353, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+  File "/usr/local/lib/python3.10/dist-packages/httpcore/_async/connection_pool.py", line 262, in handle_async_request
+    raise exc
+  File "/usr/local/lib/python3.10/dist-packages/httpcore/_async/connection_pool.py", line 245, in handle_async_request
+    response = await connection.handle_async_request(request)
+  File "/usr/local/lib/python3.10/dist-packages/httpcore/_async/connection.py", line 96, in handle_async_request
+    return await self._connection.handle_async_request(request)
+  File "/usr/local/lib/python3.10/dist-packages/httpcore/_async/http11.py", line 121, in handle_async_request
+    raise exc
+  File "/usr/local/lib/python3.10/dist-packages/httpcore/_async/http11.py", line 88, in handle_async_request
+    await self._send_request_headers(**kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/httpcore/_async/http11.py", line 129, in _send_request_headers
+    with map_exceptions({h11.LocalProtocolError: LocalProtocolError}):
+  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/usr/local/lib/python3.10/dist-packages/httpcore/_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.LocalProtocolError: Illegal header value b'Bearer '
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/Bg/bot/BOT/admin/gpt.py", line 76, in cmd_gpt
+    response = await fetch_response(prompt)
+  File "/root/Bg/bot/BOT/admin/gpt.py", line 27, in fetch_response
+    response = await client.post("https://api.openai.com/v1/chat/completions", json=data, headers=headers)
+  File "/usr/local/lib/python3.10/dist-packages/httpx/_client.py", line 1848, in post
+    return await self.request(
+  File "/usr/local/lib/python3.10/dist-packages/httpx/_client.py", line 1530, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+  File "/usr/local/lib/python3.10/dist-packages/httpx/_client.py", line 1617, in send
+    response = await self._send_handling_auth(
+  File "/usr/local/lib/python3.10/dist-packages/httpx/_client.py", line 1645, in _send_handling_auth
+    response = await self._send_handling_redirects(
+  File "/usr/local/lib/python3.10/dist-packages/httpx/_client.py", line 1682, in _send_handling_redirects
+    response = await self._send_single_request(request)
+  File "/usr/local/lib/python3.10/dist-packages/httpx/_client.py", line 1719, in _send_single_request
+    response = await transport.handle_async_request(request)
+  File "/usr/local/lib/python3.10/dist-packages/httpx/_transports/default.py", line 352, in handle_async_request
+    with map_httpcore_exceptions():
+  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/usr/local/lib/python3.10/dist-packages/httpx/_transports/default.py", line 77, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.LocalProtocolError: Illegal header value b'Bearer '
+
