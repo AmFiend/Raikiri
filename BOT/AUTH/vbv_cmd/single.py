@@ -74,9 +74,9 @@ Unsupported card type.</b>"""
         bank = getbin[3]
         country = getbin[4]
         flag = getbin[5]
-        currency = getbin[6] if len(getbin) > 6 else "N/A"  # Fix: define currency
-        bin_code = bin  # Fix: define bin_code
-        proxy_status = "N/A"  # Fix: define proxy_status or fetch if available
+        currency = getbin[6] if len(getbin) > 6 else "N/A"
+        bin_code = bin
+        proxy_status = "Live"
 
         finalresp = f"""
 {approve}
@@ -101,4 +101,5 @@ Unsupported card type.</b>"""
 
     except Exception as e:
         import traceback
-        await
+        error_text = "".join(traceback.format_exception(None, e, e.__traceback__))
+        await message.reply_text(f"<b>⚠️ Error:</b>\n<code>{error_text}</code>")
