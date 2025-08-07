@@ -57,7 +57,7 @@ Usage: /sg cc|month|year|cvv</b>"""
 
         start = time.perf_counter()
         proxies = await get_proxy_format()
-        proxy_status = proxies["http"] if proxies else "No Proxy"
+        proxy_status = "Live ✨"
 
         session = httpx.AsyncClient(timeout=30, proxies=proxies, follow_redirects=True)
         result = await create_shopify_charge(fullcc, session)
