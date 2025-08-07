@@ -103,7 +103,7 @@ async def cmd_start(Client, message):
             await asyncio.sleep(0.3)
             await Client.edit_message_text(chat_id=message.chat.id, message_id=edit.id, text=t)
 
-        await asyncio.sleep(0.3)
+        await asyncio.sleep(0.1)
 
         # Final Message
         text = f"""
