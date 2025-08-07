@@ -72,16 +72,20 @@ async def callback_command(client, message):
 @Client.on_message(filters.command("start", [".", "/"]))
 async def cmd_start(Client, message):
     try:
-        text = """<b>
-𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑 ■□□□
-      </b>"""
-        edit = await message.reply_text(text, message.id)
-        await asyncio.sleep(0.5)
+        loading_frames = [
+            "𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑 ▱▱▱▱▱ 0%",
+            "𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑 ▰▱▱▱▱ 20%",
+            "𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑 ▰▰▱▱▱ 40%",
+            "𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑 ▰▰▰▱▱ 60%",
+            "𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑 ▰▰▰▰▱ 80%",
+            "𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑 ▰▰▰▰▰ 100%"
+        ]
 
-        text = """<b>
-𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑 ■■■■
-     </b> """
-        edit = await Client.edit_message_text(message.chat.id, edit.id, text)
+        edit = await message.reply_text(f"<b>{loading_frames[0]}</b>")
+        for frame in loading_frames[1:]:
+            await asyncio.sleep(0.4)
+            await Client.edit_message_text(message.chat.id, edit.id, f"<b>{frame}</b>")
+
         await asyncio.sleep(0.5)
 
         text = f"""
