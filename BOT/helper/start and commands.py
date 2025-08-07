@@ -68,89 +68,38 @@ async def callback_command(client, message):
         import traceback
         await error_log(traceback.format_exc())
 
-@Client.on_message(filters.command("claim", [".", "/"]))
-async def claim_credits(Client, message):
-    try:
-        user_id = str(message.from_user.id)
-        user = usersdb.find_one({"id": user_id})
-        now = datetime.utcnow()
-        if user:
-            last_claim = user.get("last_claim")
-            if last_claim:
-                last_claim_dt = datetime.strptime(last_claim, "%Y-%m-%d %H:%M:%S")
-                if now - last_claim_dt < timedelta(hours=24):
-                    remaining = timedelta(hours=24) - (now - last_claim_dt)
-                    hours, remainder = divmod(remaining.seconds, 3600)
-                    minutes = remainder // 60
-                    await message.reply_text(
-                        f"⏳ You can claim again in {remaining.days}d {hours}h {minutes}m."
-                    )
-                    return
-            # Update credits and last_claim
-            usersdb.update_one(
-                {"id": user_id},
-                {"$inc": {"credit": 500}, "$set": {"last_claim": now.strftime("%Y-%m-%d %H:%M:%S")}}
-            )
-            await message.reply_text("🎉 You claimed 500 credits! Come back in 24 hours.")
-        else:
-            await message.reply_text("❌ You are not registered. Use /register first.")
-    except Exception:
-        import traceback
-        await error_log(traceback.format_exc())
-
 
 @Client.on_message(filters.command("start", [".", "/"]))
 async def cmd_start(Client, message):
     try:
-        user = message.from_user
-        mention = f'<a href="tg://user?id={user.id}">{user.first_name}</a>'
+        text = """<b>
+𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑 ■□□□
+      </b>"""
+        edit = await message.reply_text(text, message.id)
+        await asyncio.sleep(0.5)
 
+        text = """<b>
+𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑 ■■■■
+     </b> """
+        edit = await Client.edit_message_text(message.chat.id, edit.id, text)
+        await asyncio.sleep(0.5)
 
-        frames = [
-            "<b>[▱▱▱▱▱▱] Booting System...</b>",
-            "<b>[▰▱▱▱▱▱] Initializing Core</b>",
-            "<b>[▰▰▱▱▱▱] Loading ⚡Modules...</b>",
-            "<b>[▰▰▰▱▱▱] Injecting Scripts...</b>",
-            "<b>[▰▰▰▰▱▱] Connecting to Gateways...</b>",
-            "<b>[▰▰▰▰▰▱] Launching Interface...</b>",
-            "<b>[▰▰▰▰▰▰] ✅ Ready</b>",
-            "<b>𝗖𝗛𝗔𝗥𝗚𝗘 𝗠𝗔𝗦𝗧𝗘𝗥™ ONLINE ⚙️</b>"
-        ]
-
-        edit = await message.reply_text(frames[0])
-        for frame in frames[1:]:
-            await asyncio.sleep(0.5)
-            await Client.edit_message_text(chat_id=message.chat.id, message_id=edit.id, text=frame)
-            
-        # Typing Effect Simulation
-        typing_texts = [
-            "<i>Typing.</i>",
-            "<i>Typing..</i>",
-            "<i>Typing...</i>",
-            
-        ]
-        for t in typing_texts:
-            await asyncio.sleep(0.3)
-            await Client.edit_message_text(chat_id=message.chat.id, message_id=edit.id, text=t)
-
-        await asyncio.sleep(0.1)
-
-        # Final Message
         text = f"""
-<b>😈 Yo {mention},</b>
+<b>🌟 𝗛𝗲𝗹𝗹𝗼 <a href="tg://user?id={message.from_user.id}">{message.from_user.first_name}</a>!</b>
 
-<b>You're now vibin' with the 𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑™.</b>
-<b>This ain’t no basic bot — it’s loaded, coded, and locked to wreck limits.</b>
+<b>𝗪𝗲𝗹𝗰𝗼𝗺𝗲 𝗮𝗯𝗼𝗮𝗿𝗱 𝘁𝗵𝗲 𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑! 🚀</b>
 
-<b>🔗 Hit <i>Register</i> to step in.</b>
-<b>🧠 Tap <i>Commands</i> and unleash chaos.</b>
+<b>𝗜 𝗮𝗺 𝘆𝗼𝘂𝗿 𝗴𝗼-𝘁𝗼 𝗯𝗼𝘁, 𝗽𝗮𝗰𝗸𝗲𝗱 𝘄𝗶𝘁𝗵 𝗮 𝘃𝗮𝗿𝗶𝗲𝘁𝘆 𝗼𝗳 𝗴𝗮𝘁𝗲𝘀, 𝘁𝗼𝗼𝗹𝘀, 𝗮𝗻𝗱 𝗰𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝘁𝗼 𝗲𝗻𝗵𝗮𝗻𝗰𝗲 𝘆𝗼𝘂𝗿 𝗲𝘅𝗽𝗲𝗿𝗶𝗲𝗻𝗰𝗲. 𝗘𝘅𝗰𝗶𝘁𝗲𝗱 𝘁𝗼 𝘀𝗲𝗲 𝘄𝗵𝗮𝘁 𝗜 𝗰𝗮𝗻 𝗱𝗼?</b>
+
+<b>👇 𝗧𝗮𝗽 𝘁𝗵𝗲 <i>𝗥𝗲𝗴𝗶𝘀𝘁𝗲𝗿</i> 𝗯𝘂𝘁𝘁𝗼𝗻 𝘁𝗼 𝗯𝗲𝗴𝗶𝗻 𝘆𝗼𝘂𝗿 𝗷𝗼𝘂𝗿𝗻𝗲𝘆.</b>
+<b>👇 𝗗𝗶𝘀𝗰𝗼𝘃𝗲𝗿 𝗺𝘆 𝗳𝘂𝗹𝗹 𝗰𝗮𝗽𝗮𝗯𝗶𝗹𝗶𝘁𝗶𝗲𝘀 𝗯𝘆   
+𝘁𝗮𝗽𝗽𝗶𝗻𝗴 𝘁𝗵𝗲 <i>𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀</i> 𝗯𝘂𝘁𝘁𝗼𝗻.</b>
 
 """
         WELCOME_BUTTON = [
             [
                 InlineKeyboardButton("Register", callback_data="register"),
-                InlineKeyboardButton("Commands", callback_data="cmds"),
-                InlineKeyboardButton("Claim", callback_data="claim")
+                InlineKeyboardButton("Commands", callback_data="cmds")
             ],
             [
                 InlineKeyboardButton("Close", callback_data="close")
@@ -196,8 +145,7 @@ async def cmd_register(Client, message):
 
         WELCOME_BUTTON = [
             [
-                InlineKeyboardButton("Commands", callback_data="cmds"),
-                InlineKeyboardButton("Claim", callback_data="claim")
+                InlineKeyboardButton("Commands", callback_data="cmds")
             ],
             [
                 InlineKeyboardButton("Close", callback_data="close")
@@ -247,8 +195,7 @@ async def callback_register(Client, message):
 
         WELCOME_BUTTON = [
             [
-                InlineKeyboardButton("Commands", callback_data="cmds"),
-                InlineKeyboardButton("Claim", callback_data="claim")
+                InlineKeyboardButton("Commands", callback_data="cmds")
             ],
             [
                 InlineKeyboardButton("Close", callback_data="close")
