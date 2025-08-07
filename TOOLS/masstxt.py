@@ -67,7 +67,7 @@ async def process_card(card, user_id, session):
     result = await shopify_charge_func(card["fullz"])
     return await get_charge_resp(result, user_id, card["fullz"])
 
-@Client.on_message(filters.command("mtxt", ["/", "."]))
+@Client.on_message(filters.command("trytxt", ["/", "."]))
 async def shopify_mass_txt_cmd(client, message):
     global stop_flag
     stop_flag = False
