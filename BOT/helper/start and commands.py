@@ -99,20 +99,27 @@ async def charge_animation(Client, message):
 𝘁𝗮𝗽𝗽𝗶𝗻𝗴 𝘁𝗵𝗲 <i>𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀</i> 𝗯𝘂𝘁𝘁𝗼𝗻.</b>
 
 """
-        WELCOME_BUTTON = [
-            [
-                InlineKeyboardButton("Register", callback_data="register"),
-                InlineKeyboardButton("Commands", callback_data="cmds")
-            ],
-            [
-                InlineKeyboardButton("Close", callback_data="close")
-            ]
+try:
+    WELCOME_BUTTON = [
+        [
+            InlineKeyboardButton("Register", callback_data="register"),
+            InlineKeyboardButton("Commands", callback_data="cmds")
+        ],
+        [
+            InlineKeyboardButton("Close", callback_data="close")
         ]
-        await Client.edit_message_text(message.chat.id, edit.id, text, reply_markup=InlineKeyboardMarkup(WELCOME_BUTTON))
+    ]
 
-    except:
-        import traceback
-        await error_log(traceback.format_exc())
+    await Client.edit_message_text(
+        message.chat.id,
+        edit.id,
+        text,
+        reply_markup=InlineKeyboardMarkup(WELCOME_BUTTON)
+    )
+
+except:
+    import traceback
+    await error_log(traceback.format_exc())
 
 
 async def register_user(user_id, username, antispam_time, reg_at):
