@@ -72,6 +72,10 @@ async def callback_command(client, message):
 @Client.on_message(filters.command("start", [".", "/"]))
 async def cmd_start(Client, message):
     try:
+        user = message.from_user
+        mention = f'<a href="tg://user?id={user.id}">{user.first_name}</a>
+
+
         frames = [
             "<b>[▱▱▱▱▱▱] Booting System...</b>",
             "<b>[▰▱▱▱▱▱] Initializing Core</b>",
@@ -91,7 +95,7 @@ async def cmd_start(Client, message):
         await asyncio.sleep(0.5)
 
         text = f"""
-<b>🌟 𝗛𝗲𝗹𝗹𝗼 <a href="tg://user?id={message.from_user.id}">{message.from_user.first_name}</a>!</b>
+<b>🌟 𝗛𝗲𝗹𝗹𝗼 {mention}!</b>
 
 <b>𝗪𝗲𝗹𝗰𝗼𝗺𝗲 𝗮𝗯𝗼𝗮𝗿𝗱 𝘁𝗵𝗲 𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑! 🚀</b>
 
