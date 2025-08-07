@@ -68,6 +68,36 @@ async def callback_command(client, message):
         import traceback
         await error_log(traceback.format_exc())
 
+@Client.on_message(filters.command("claim", [".", "/"]))
+async def claim_credits(Client, message):
+    try:
+        user_id = str(message.from_user.id)
+        user = usersdb.find_one({"id": user_id})
+        now = datetime.utcnow()
+        if user:
+            last_claim = user.get("last_claim")
+            if last_claim:
+                last_claim_dt = datetime.strptime(last_claim, "%Y-%m-%d %H:%M:%S")
+                if now - last_claim_dt < timedelta(hours=24):
+                    remaining = timedelta(hours=24) - (now - last_claim_dt)
+                    hours, remainder = divmod(remaining.seconds, 3600)
+                    minutes = remainder // 60
+                    await message.reply_text(
+                        f"⏳ You can claim again in {remaining.days}d {hours}h {minutes}m."
+                    )
+                    return
+            # Update credits and last_claim
+            usersdb.update_one(
+                {"id": user_id},
+                {"$inc": {"credit": 500}, "$set": {"last_claim": now.strftime("%Y-%m-%d %H:%M:%S")}}
+            )
+            await message.reply_text("🎉 You claimed 500 credits! Come back in 24 hours.")
+        else:
+            await message.reply_text("❌ You are not registered. Use /register first.")
+    except Exception:
+        import traceback
+        await error_log(traceback.format_exc())
+
 
 @Client.on_message(filters.command("start", [".", "/"]))
 async def cmd_start(Client, message):
@@ -119,7 +149,8 @@ async def cmd_start(Client, message):
         WELCOME_BUTTON = [
             [
                 InlineKeyboardButton("Register", callback_data="register"),
-                InlineKeyboardButton("Commands", callback_data="cmds")
+                InlineKeyboardButton("Commands", callback_data="cmds"),
+                InlineKeyboardButton("Claim", callback_data="claim")
             ],
             [
                 InlineKeyboardButton("Close", callback_data="close")
@@ -165,7 +196,8 @@ async def cmd_register(Client, message):
 
         WELCOME_BUTTON = [
             [
-                InlineKeyboardButton("Commands", callback_data="cmds")
+                InlineKeyboardButton("Commands", callback_data="cmds"),
+                InlineKeyboardButton("Claim", callback_data="claim")
             ],
             [
                 InlineKeyboardButton("Close", callback_data="close")
@@ -215,7 +247,8 @@ async def callback_register(Client, message):
 
         WELCOME_BUTTON = [
             [
-                InlineKeyboardButton("Commands", callback_data="cmds")
+                InlineKeyboardButton("Commands", callback_data="cmds"),
+                InlineKeyboardButton("Claim", callback_data="claim")
             ],
             [
                 InlineKeyboardButton("Close", callback_data="close")
