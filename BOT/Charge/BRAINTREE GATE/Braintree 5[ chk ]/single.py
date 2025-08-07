@@ -46,81 +46,88 @@ Usage: /br cc|mes|ano|cvv</b>"""
         cc, mes, ano, cvv = getcc[0], getcc[1], getcc[2], getcc[3]
         fullcc = f"{cc}|{mes}|{ano}|{cvv}"
 
-        firstresp = f"""
-↯ Checking.
+firstresp = f"""
+<b>↯ 𝗖𝗵𝗲𝗰𝗸𝗶𝗻𝗴 𝗣𝗿𝗼𝗰𝗲𝘀𝘀 [•───]</b>
 
 - 𝐂𝐚𝐫𝐝 - <code>{fullcc}</code> 
 - 𝐆𝐚𝐭𝐞𝐰𝐚𝐲 -  <i>{gateway}</i>
-- 𝐑𝐞𝐬𝐩𝐨𝐧𝐬𝐞 - ■□□□
-</b>
+- 𝐒𝐭𝐚𝐭𝐮𝐬 - ⏳ Starting...
 """
-        await asyncio.sleep(0.5)
-        firstchk = await message.reply_text(firstresp, message.id)
+await asyncio.sleep(0.5)
+firstchk = await message.reply_text(firstresp, message.id)
 
-        secondresp = f"""
-↯ Checking..
+secondresp = f"""
+<b>↯ 𝗖𝗵𝗲𝗰𝗸𝗶𝗻𝗴 𝗣𝗿𝗼𝗰𝗲𝘀𝘀 [••──]</b>
 
 - 𝐂𝐚𝐫𝐝 - <code>{fullcc}</code> 
 - 𝐆𝐚𝐭𝐞𝐰𝐚𝐲 -  <i>{gateway}</i>
-- 𝐑𝐞𝐬𝐩𝐨𝐧𝐬𝐞 - ■■■□
+- 𝐒𝐭𝐚𝐭𝐮𝐬 - 🔄 Connecting...
 """
-        await asyncio.sleep(0.5)
-        secondchk = await Client.edit_message_text(message.chat.id, firstchk.id, secondresp)
+await asyncio.sleep(0.5)
+secondchk = await Client.edit_message_text(message.chat.id, firstchk.id, secondresp)
 
-        start = time.perf_counter()
-        session = httpx.AsyncClient(timeout=30, follow_redirects=True)
-        sks = await getallsk()
-        result = await create_cvv_charge(fullcc, session)
-        getbin = await get_bin_details(cc)
-        getresp = await get_charge_resp(result, user_id, fullcc)
-        
-        # Use the response directly from get_charge_resp
-        status = getresp["status"]  # This will be "Approved" or "Declined"
-        response = getresp["response"]
+start = time.perf_counter()
+session = httpx.AsyncClient(timeout=30, follow_redirects=True)
+sks = await getallsk()
+result = await create_cvv_charge(fullcc, session)
+getbin = await get_bin_details(cc)
+getresp = await get_charge_resp(result, user_id, fullcc)
 
-        thirdresp = f"""
-↯ Checking...
+status = getresp["status"]  # "Approved" or "Declined"
+response = getresp["response"]
+
+thirdresp = f"""
+<b>↯ 𝗖𝗵𝗲𝗰𝗸𝗶𝗻𝗴 𝗣𝗿𝗼𝗰𝗲𝘀𝘀 [•••─]</b>
 
 - 𝐂𝐚𝐫𝐝 - <code>{fullcc}</code> 
 - 𝐆𝐚𝐭𝐞𝐰𝐚𝐲 -  <i>{gateway}</i>
-- 𝐑𝐞𝐬𝐩𝐨𝐧𝐬𝐞 - ■■■■
+- 𝐒𝐭𝐚𝐭𝐮𝐬 - 💳 Sending Info...
 """
-        await asyncio.sleep(0.5)
-        thirdcheck = await Client.edit_message_text(message.chat.id, secondchk.id, thirdresp)
+await asyncio.sleep(0.5)
+thirdchk = await Client.edit_message_text(message.chat.id, secondchk.id, thirdresp)
 
-        brand = getbin[0]
-        type = getbin[1]
-        level = getbin[2]
-        bank = getbin[3]
-        country = getbin[4]
-        flag = getbin[5]
-        currency = getbin[6]
+fourthresp = f"""
+<b>↯ 𝗖𝗵𝗲𝗰𝗸𝗶𝗻𝗴 𝗣𝗿𝗼𝗰𝗲𝘀𝘀 [••••]</b>
 
-        # Check vbvbin.txt file for VBV status
-        vbv_status = "Not Found"  # Default value if not found
-        with open("FILES/vbvbin.txt", "r", encoding="utf-8") as file:
-            vbv_data = file.readlines()
+- 𝐂𝐚𝐫𝐝 - <code>{fullcc}</code> 
+- 𝐆𝐚𝐭𝐞𝐰𝐚𝐲 -  <i>{gateway}</i>
+- 𝐒𝐭𝐚𝐭𝐮𝐬 - ⚡ Processing...
+"""
+await asyncio.sleep(0.5)
+fourthchk = await Client.edit_message_text(message.chat.id, thirdchk.id, fourthresp)
 
-        bin_found = False
-        for line in vbv_data:
-            if line.startswith(cc[:6]):
-                bin_found = True
-                vbv_response = line.strip().split('|')[1]
-                if "3D TRUE ❌" in vbv_response:
-                    vbv_status = "3D TRUE ❌"
-                elif "3D PASSED ✅" in vbv_response:
-                    vbv_status = "3D PASSED ✅"
-                break
+# BIN INFO
+brand = getbin[0]
+type = getbin[1]
+level = getbin[2]
+bank = getbin[3]
+country = getbin[4]
+flag = getbin[5]
+currency = getbin[6]
 
-        if not bin_found:
-            vbv_response= "𝗥𝗲𝗷𝗲𝗰𝘁𝗲𝗱 ❌"
-            vbvv_status= "Lookup Card Error"
+# VBV CHECK
+vbv_status = "Not Found"
+with open("FILES/vbvbin.txt", "r", encoding="utf-8") as file:
+    vbv_data = file.readlines()
 
-        # Always indicate proxy is live
-        # Always indicate proxy is live
-        proxy_status = "Live ✨"
-        bin_code = cc[:6]  # Define bin_code
- 
+bin_found = False
+for line in vbv_data:
+    if line.startswith(cc[:6]):
+        bin_found = True
+        vbv_response = line.strip().split('|')[1]
+        if "3D TRUE ❌" in vbv_response:
+            vbv_status = "3D TRUE ❌"
+        elif "3D PASSED ✅" in vbv_response:
+            vbv_status = "3D PASSED ✅"
+        break
+
+if not bin_found:
+    vbv_response = "𝗥𝗲𝗷𝗲𝗰𝘁𝗲𝗱 ❌"
+    vbvv_status = "Lookup Card Error"
+
+# PROXY INFO
+proxy_status = "Live ✨"
+bin_code = cc[:6]
 
         finalresp = f"""
 {status}
