@@ -73,7 +73,7 @@ async def callback_command(client, message):
 async def cmd_start(Client, message):
     try:
         user = message.from_user
-        mention = f'<a href="tg://user?id={user.id}">{user.first_name}</a>
+        mention = f'<a href="tg://user?id={user.id}">{user.first_name}</a>'
 
 
         frames = [
