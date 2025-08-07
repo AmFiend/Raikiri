@@ -10,11 +10,15 @@ from FUNC.usersdb_func import *
 async def cmd_scr(client, message):
     try:
         WELCOME_TEXT = f"""
-<b>𝗛𝗲𝗹𝗹𝗼 <a href="tg://user?id={message.from_user.id}"> {message.from_user.first_name}</a> !
+<b>☠️ Yo <a href="tg://user?id={message.from_user.id}">{message.from_user.first_name}</a>!</b>
 
-𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑 𝗛𝗮𝘀 𝗽𝗹𝗲𝗻𝘁𝘆 𝗼𝗳 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀. 𝗪𝗲 𝗛𝗮𝘃𝗲 𝗔𝘂𝘁𝗵 𝗚𝗮𝘁𝗲𝘀, 𝗖𝗵𝗮𝗿𝗴𝗲 𝗚𝗮𝘁𝗲𝘀, 𝗧𝗼𝗼𝗹𝘀, 𝗔𝗻𝗱 𝗢𝘁𝗵𝗲𝗿 𝗧𝗵𝗶𝗻𝗴𝘀.
+<b>⚠️ CHARGE MASTER</b> doesn’t play nice.
 
-𝗖𝗹𝗶𝗰𝗸 𝗘𝗮𝗰𝗵 𝗼𝗳 𝗧𝗵𝗲𝗺 𝗕𝗲𝗹𝗼𝘄 𝘁𝗼 𝗞𝗻𝗼𝘄 𝗧𝗵𝗲𝗺 𝗕𝗲𝘁𝘁𝗲𝗿.</b>
+We got Gates. We got Tools.  
+We break cards — not hearts. 💔
+
+Step up or stay broke. 💸
+</b>
         """
         WELCOME_BUTTONS = [
             [
@@ -68,21 +72,20 @@ async def callback_command(client, message):
         import traceback
         await error_log(traceback.format_exc())
 
+@Client.on_message(filters.command("charge", [".", "/"]))
+async def charge_animation(Client, message):
+    progress_stages = [
+        "<b>𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑 ▓□□□</b>",
+        "<b>𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑 ▓▓□▯</b>",
+        "<b>𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑 ▓▓▓▯</b>",
+        "<b>𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑 ▓▓▓▓</b>",
+        "<b>⚡ 𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑 𝗔𝗖𝗧𝗜𝗩𝗔𝗧𝗘𝗗 ⚡</b>",
+    ]
 
-@Client.on_message(filters.command("start", [".", "/"]))
-async def cmd_start(Client, message):
-    try:
-        text = """<b>
-𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑 ■□□□
-      </b>"""
-        edit = await message.reply_text(text, message.id)
-        await asyncio.sleep(0.5)
-
-        text = """<b>
-𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑 ■■■■
-     </b> """
-        edit = await Client.edit_message_text(message.chat.id, edit.id, text)
-        await asyncio.sleep(0.5)
+    reply = await message.reply_text(progress_stages[0])
+    for stage in progress_stages[1:]:
+        await asyncio.sleep(0.4)
+        await Client.edit_message_text(message.chat.id, reply.id, stage)
 
         text = f"""
 <b>🌟 𝗛𝗲𝗹𝗹𝗼 <a href="tg://user?id={message.from_user.id}">{message.from_user.first_name}</a>!</b>
