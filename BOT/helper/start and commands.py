@@ -439,8 +439,8 @@ async def callback_query(Client, CallbackQuery):
 
 👤 𝗦𝗾𝘂𝗮𝗿𝗲 𝗔𝘂𝘁𝗵 𝗢𝗽𝘁𝗶𝗼𝗻𝘀:
    1. 𝗦𝗾𝘂𝗮𝗿𝗲 𝗔𝘂𝘁𝗵:
-      ➜ 𝗦𝗶𝗻𝗴𝗹𝗲: /sq cc|mm|yy|cvv ✅
-      ➜ 𝗠𝗮𝘀𝘀: /msq cc|mm|yy|cvv ✅
+      ➜ 𝗦𝗶𝗻𝗴𝗹𝗲: /au cc|mm|yy|cvv ✅
+      ➜ 𝗠𝗮𝘀𝘀: /mass cc|mm|yy|cvv ✅
 
 𝗧𝗼𝘁𝗮𝗹 𝗔𝘂𝘁𝗵 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀: 1
 
@@ -525,8 +525,8 @@ async def callback_query(Client, CallbackQuery):
 🚀 𝗤𝘂𝗶𝗰𝗸 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗢𝘃𝗲𝗿𝘃𝗶𝗲𝘄:
 👤 𝗣𝗮𝘆𝗣𝗮𝗹 𝗖𝗵𝗮𝗿𝗴𝗲 𝗢𝗽𝘁𝗶𝗼𝗻𝘀:
    1. 𝗣𝗮𝘆𝗣𝗮𝗹 𝗖𝗵𝗮𝗿𝗴𝗲 1$: ✅
-      ➜ 𝗦𝗶𝗻𝗴𝗹𝗲: /ppcc|mm|yy|cvv [ON] 
-      ➜ 𝗠𝗮𝘀𝘀: /mpy cc|mm|yy|cvv [ON] 
+      ➜ 𝗦𝗶𝗻𝗴𝗹𝗲: /pp|mm|yy|cvv [ON] 
+      ➜ 𝗠𝗮𝘀𝘀: /mpp cc|mm|yy|cvv [ON] 
 
 𝗧𝗼𝘁𝗮𝗹 𝗖𝗵𝗮𝗿𝗴𝗲 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀: 1
 
