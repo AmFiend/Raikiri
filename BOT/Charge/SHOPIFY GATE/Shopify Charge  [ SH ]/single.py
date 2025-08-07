@@ -102,10 +102,10 @@ Usage: {cmd} cc|month|year|cvv</b>"""
 [ϟ] 𝗜𝘀𝘀𝘂𝗲𝗿 : {bank}
 [ϟ] 𝗧𝘆𝗽𝗲 : {type}
 ━━━━━━━━━━━━━
-[ϟ] T/t : {time.perf_counter() - start:0.2f}s | Proxy : {proxy_status}
+[ϟ] T/t : {time.perf_counter() - start:0.2f}s 
 [ϟ] 𝗖𝗵𝗲𝗸𝗲𝗱 𝗯𝘆: <a href='tg://user?id={message.from_user.id}'> {message.from_user.first_name}</a> [ {role} ]
-[ϟ] 𝗢𝘄𝗻𝗲𝗿: <a href="tg://user?id=6622603977">𝑵𝒂𝒊𝒓𝒐𝒃𝒊𝒂𝒏𝒈𝒐𝒐𝒏</a>
-╚━━━━━━「𝐀𝐏𝐏𝐑𝐎𝐕𝐄𝐃 𝐂𝐇𝐄𝐂𝐊𝐄𝐑」━━━━━━╝
+[ϟ] 𝗢𝘄𝗻𝗲𝗿: <a href="tg://user?id=7941175119">Zero</a>
+╚━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╝
 """
         await asyncio.sleep(0.5)
         await Client.edit_message_text(message.chat.id, thirdcheck.id, finalresp)
