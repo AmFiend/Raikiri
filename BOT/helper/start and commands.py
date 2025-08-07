@@ -72,28 +72,26 @@ async def callback_command(client, message):
 @Client.on_message(filters.command("start", [".", "/"]))
 async def cmd_start(Client, message):
     try:
-        # Animation Frames
-        steps = [
-            "𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑 [░░░░░░░░░░] 0%",
-            "𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑 [█░░░░░░░░░] 10%",
-            "𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑 [██░░░░░░░░] 20%",
-            "𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑 [███░░░░░░░] 30%",
-            "𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑 [████░░░░░░] 40%",
-            "𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑 [█████░░░░░] 50%",
-            "𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑 [██████░░░░] 60%",
-            "𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑 [███████░░░] 70%",
-            "𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑 [████████░░] 80%",
-            "𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑 [█████████░] 90%",
-            "𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑 [██████████] 100%",
-        ]
+        progress_template = "𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑 {bar} {percent}%"
+        bar_chars = ["░", "▒", "▓", "█"]
+        full_steps = 10
 
-        edit = await message.reply_text(f"<b>{steps[0]}</b>")
-        for step in steps[1:]:
-            await asyncio.sleep(0.3)
-            await client.edit_message_text(message.chat.id, edit.id, f"<b>{step}</b>")
+        # Initial message
+        msg = await message.reply_text(progress_template.format(bar="░" * 20, percent=0))
+
+        # Animate from 0% to 100%
+        for i in range(1, full_steps + 1):
+            percent = i * 10
+            filled = int((percent / 5))
+            bar = "█" * filled + "░" * (20 - filled)
+            await asyncio.sleep(0.2)
+            await Client.edit_message_text(
+                chat_id=message.chat.id,
+                message_id=msg.id,
+                text=progress_template.format(bar=bar, percent=percent)
+            )
 
         await asyncio.sleep(0.5)
-        
         text = f"""
 <b>🌟 𝗛𝗲𝗹𝗹𝗼 <a href="tg://user?id={message.from_user.id}">{message.from_user.first_name}</a>!</b>
 
