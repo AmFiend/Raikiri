@@ -118,7 +118,7 @@ async def cmd_start(Client, message):
 """
         WELCOME_BUTTON = [
             [
-                InlineKeyboardButton("REGISTER", callback_data="register"),
+                InlineKeyboardButton("Register", callback_data="register"),
                 InlineKeyboardButton("Commands", callback_data="cmds")
             ],
             [
