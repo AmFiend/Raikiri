@@ -72,17 +72,38 @@ async def callback_command(client, message):
 @Client.on_message(filters.command("start", [".", "/"]))
 async def cmd_start(Client, message):
     try:
-        text = """<b>
-𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑 ■□□□
-      </b>"""
-        edit = await message.reply_text(text, message.id)
-        await asyncio.sleep(0.5)
+        user = message.from_user
+        mention = f'<a href="tg://user?id={user.id}">{user.first_name}</a>'
 
-        text = """<b>
-𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑 ■■■■
-     </b> """
-        edit = await Client.edit_message_text(message.chat.id, edit.id, text)
-        await asyncio.sleep(0.5)
+
+        frames = [
+            "<b>[▱▱▱▱▱▱] Booting System...</b>",
+            "<b>[▰▱▱▱▱▱] Initializing Core</b>",
+            "<b>[▰▰▱▱▱▱] Loading ⚡Modules...</b>",
+            "<b>[▰▰▰▱▱▱] Injecting Scripts...</b>",
+            "<b>[▰▰▰▰▱▱] Connecting to Gateways...</b>",
+            "<b>[▰▰▰▰▰▱] Launching Interface...</b>",
+            "<b>[▰▰▰▰▰▰] ✅ Ready</b>",
+            "<b>𝗖𝗛𝗔𝗥𝗚𝗘 𝗠𝗔𝗦𝗧𝗘𝗥™ ONLINE ⚙️</b>"
+        ]
+
+        edit = await message.reply_text(frames[0])
+        for frame in frames[1:]:
+            await asyncio.sleep(0.5)
+            await Client.edit_message_text(chat_id=message.chat.id, message_id=edit.id, text=frame)
+            
+        # Typing Effect Simulation
+        typing_texts = [
+            "<i>Typing.</i>",
+            "<i>Typing..</i>",
+            "<i>Typing...</i>",
+            
+        ]
+        for t in typing_texts:
+            await asyncio.sleep(0.3)
+            await Client.edit_message_text(chat_id=message.chat.id, message_id=edit.id, text=t)
+
+        await asyncio.sleep(0.1)
 
         text = f"""
 <b>🌟 𝗛𝗲𝗹𝗹𝗼 <a href="tg://user?id={message.from_user.id}">{message.from_user.first_name}</a>!</b>
