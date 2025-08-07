@@ -456,106 +456,6 @@ async def callback_register(Client, message):
         await error_log(traceback.format_exc())
 
 
-async def callback_register(Client, message):
-    try:
-        user_id = str(message.from_user.id)
-        username = str(message.from_user.username)
-        antispam_time = int(time.time())
-        yy, mm, dd = str(date.today()).split("-")
-        reg_at = f"{dd}-{mm}-{yy}"
-        find = usersdb.find_one({"id": f"{user_id}"}, {"_id": 0})
-        registration_check = str(find)
-
-        WELCOME_BUTTON = [
-            [
-                InlineKeyboardButton("Commands", callback_data="cmds")
-            ],
-            [
-                InlineKeyboardButton("Close", callback_data="close")
-            ]
-        ]
-        if registration_check == "None":
-            await register_user(user_id, username, antispam_time, reg_at)
-            resp = f"""<b>
-𝗥𝗲𝗴𝗶𝘀𝘁𝗿𝗮𝘁𝗶𝗼𝗻 𝗦𝘂𝗰𝗰𝗲𝘀𝘀𝗳𝘂𝗹 ♻️ 
-━━━━━━━━━━━━━━
-● 𝗡𝗮𝗺𝗲: {message.from_user.first_name}
-● 𝗨𝘀𝗲𝗿 𝗜𝗗: {message.from_user.id}
-● 𝗥𝗼𝗹𝗲: Free
-● 𝗖𝗿𝗲𝗱𝗶𝘁𝘀: 50
-
-𝗠𝗲𝘀𝘀𝗮𝗴𝗲: 𝗬𝗼𝘂 𝗚𝗼𝘁 50 𝗖𝗿𝗲𝗱𝗶𝘁𝘀 𝗮𝘀 𝗮       𝗿𝗲𝗴𝗶𝘀𝘁𝗿𝗮𝘁𝗶𝗼𝗻 𝗯𝗼𝗻𝘂𝘀 . 𝗧𝗼 𝗞𝗻𝗼𝘄 𝗖𝗿𝗲𝗱𝗶𝘁𝘀  𝗦𝘆𝘀𝘁𝗲𝗺 /howcrd
-
-
-𝗘𝘅𝗽𝗹𝗼𝗿𝗲 𝗠𝘆 𝗩𝗮𝗿𝗶𝗼𝘂𝘀 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗔𝗻𝗱 𝗔𝗯𝗶𝗹𝗶𝘁𝗶𝗲𝘀 𝗕𝘆 𝗧𝗮𝗽𝗽𝗶𝗻𝗴 𝗼𝗻 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀         𝗕𝘂𝘁𝘁𝗼𝗻.  
-            </b>"""
-
-        else:
-            resp = f"""<b>
-𝗔𝗹𝗿𝗲𝗮𝗱𝘆 𝗥𝗲𝗴𝗶𝘀𝘁𝗲𝗿𝗲𝗱 ⚠️
-
-𝗠𝗲𝘀𝘀𝗮𝗴𝗲: 𝗬𝗼𝘂 𝗮𝗿𝗲 𝗮𝗹𝗿𝗲𝗮𝗱𝘆 𝗿𝗲𝗴𝗶𝘀𝘁𝗲𝗿𝗲𝗱 𝗶𝗻 𝗼𝘂𝗿 𝗯𝗼𝘁 . 𝗡𝗼 𝗻𝗲𝗲𝗱 𝘁𝗼 𝗿𝗲𝗴𝗶𝘀𝘁𝗲𝗿 𝗻𝗼𝘄 
-
-𝗘𝘅𝗽𝗹𝗼𝗿𝗲 𝗠𝘆 𝗩𝗮𝗿𝗶𝗼𝘂𝘀 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗔𝗻𝗱 𝗔𝗯𝗶𝗹𝗶𝘁𝗶𝗲𝘀 𝗕𝘆 𝗧𝗮𝗽𝗽𝗶𝗻𝗴 𝗼𝗻 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗕𝘂𝘁𝘁𝗼𝗻  
-            </b>"""
-
-        await message.reply_text(resp, reply_markup=InlineKeyboardMarkup(WELCOME_BUTTON))
-
-    except Exception:
-        import traceback
-        await error_log(traceback.format_exc())
-
-
-async def callback_register(Client, message):
-    try:
-        user_id = str(message.from_user.id)
-        username = str(message.from_user.username)
-        antispam_time = int(time.time())
-        yy, mm, dd = str(date.today()).split("-")
-        reg_at = f"{dd}-{mm}-{yy}"
-        find = usersdb.find_one({"id": f"{user_id}"}, {"_id": 0})
-        registration_check = str(find)
-
-        WELCOME_BUTTON = [
-            [
-                InlineKeyboardButton("Commands", callback_data="cmds")
-            ],
-            [
-                InlineKeyboardButton("Close", callback_data="close")
-            ]
-        ]
-        if registration_check == "None":
-            await register_user(user_id, username, antispam_time, reg_at)
-            resp = f"""<b>
-𝗥𝗲𝗴𝗶𝘀𝘁𝗿𝗮𝘁𝗶𝗼𝗻 𝗦𝘂𝗰𝗰𝗲𝘀𝘀𝗳𝘂𝗹 ♻️ 
-━━━━━━━━━━━━━━
-● 𝗡𝗮𝗺𝗲: {message.from_user.first_name}
-● 𝗨𝘀𝗲𝗿 𝗜𝗗: {message.from_user.id}
-● 𝗥𝗼𝗹𝗲: Free
-● 𝗖𝗿𝗲𝗱𝗶𝘁𝘀: 50
-
-𝗠𝗲𝘀𝘀𝗮𝗴𝗲: 𝗬𝗼𝘂 𝗚𝗼𝘁 50 𝗖𝗿𝗲𝗱𝗶𝘁𝘀 𝗮𝘀 𝗮       𝗿𝗲𝗴𝗶𝘀𝘁𝗿𝗮𝘁𝗶𝗼𝗻 𝗯𝗼𝗻𝘂𝘀 . 𝗧𝗼 𝗞𝗻𝗼𝘄 𝗖𝗿𝗲𝗱𝗶𝘁𝘀  𝗦𝘆𝘀𝘁𝗲𝗺 /howcrd
-
-
-𝗘𝘅𝗽𝗹𝗼𝗿𝗲 𝗠𝘆 𝗩𝗮𝗿𝗶𝗼𝘂𝘀 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗔𝗻𝗱 𝗔𝗯𝗶𝗹𝗶𝘁𝗶𝗲𝘀 𝗕𝘆 𝗧𝗮𝗽𝗽𝗶𝗻𝗴 𝗼𝗻 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀         𝗕𝘂𝘁𝘁𝗼𝗻.  
-            </b>"""
-
-        else:
-            resp = f"""<b>
-𝗔𝗹𝗿𝗲𝗮𝗱𝘆 𝗥𝗲𝗴𝗶𝘀𝘁𝗲𝗿𝗲𝗱 ⚠️
-
-𝗠𝗲𝘀𝘀𝗮𝗴𝗲: 𝗬𝗼𝘂 𝗮𝗿𝗲 𝗮𝗹𝗿𝗲𝗮𝗱𝘆 𝗿𝗲𝗴𝗶𝘀𝘁𝗲𝗿𝗲𝗱 𝗶𝗻 𝗼𝘂𝗿 𝗯𝗼𝘁 . 𝗡𝗼 𝗻𝗲𝗲𝗱 𝘁𝗼 𝗿𝗲𝗴𝗶𝘀𝘁𝗲𝗿 𝗻𝗼𝘄 
-
-𝗘𝘅𝗽𝗹𝗼𝗿𝗲 𝗠𝘆 𝗩𝗮𝗿𝗶𝗼𝘂𝘀 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗔𝗻𝗱 𝗔𝗯𝗶𝗹𝗶𝘁𝗶𝗲𝘀 𝗕𝘆 𝗧𝗮𝗽𝗽𝗶𝗻𝗴 𝗼𝗻 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗕𝘂𝘁𝘁𝗼𝗻  
-            </b>"""
-
-        await message.reply_text(resp, reply_markup=InlineKeyboardMarkup(WELCOME_BUTTON))
-
-    except Exception:
-        import traceback
-        await error_log(traceback.format_exc())
-
-
 @Client.on_message(filters.command("register", [".", "/"]))
 async def cmd_register(Client, message):
     try:
@@ -597,7 +497,7 @@ async def cmd_register(Client, message):
 
 𝗠𝗲𝘀𝘀𝗮𝗴𝗲: 𝗬𝗼𝘂 𝗮𝗿𝗲 𝗮𝗹𝗿𝗲𝗮𝗱𝘆 𝗿𝗲𝗴𝗶𝘀𝘁𝗲𝗿𝗲𝗱 𝗶𝗻 𝗼𝘂𝗿 𝗯𝗼𝘁 . 𝗡𝗼 𝗻𝗲𝗲𝗱 𝘁𝗼 𝗿𝗲𝗴𝗶𝘀𝘁𝗲𝗿 𝗻𝗼𝘄 
 
-𝗘𝘅𝗽𝗹𝗼𝗿𝗲 𝗠𝘆 𝗩𝗮𝗿𝗶𝗼𝘂𝘀 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗔𝗻𝗱 𝗔𝗯𝗶𝗹𝗶𝘁𝗶𝗲𝘀 𝗕𝘆 𝗧𝗮𝗽𝗽𝗶𝗻𝗴 𝗼𝗻 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗕𝘂𝘁𝘁𝗼𝗻  
+𝗘𝘅𝗽𝗹𝗼𝗿𝗲 𝗠𝘆 𝗩𝗮𝗿𝗶𝗼𝘂𝘀 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗔𝗻𝗱 𝗔𝗯𝗶𝗹𝗶𝘁𝗶𝗲𝘀 𝗕𝘆 𝗧𝗮𝗽𝗽𝗶𝗻𝗴 𝗼𝗻 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗕𝘂𝘁𝘁𝗼𝗮
             </b>"""
 
         await message.reply_text(resp, reply_markup=InlineKeyboardMarkup(WELCOME_BUTTON))
@@ -906,4 +806,31 @@ async def callback_query(Client, CallbackQuery):
     if CallbackQuery.data == "BRAINTREEB3":
         CHARGE_TEXT = """
 🔹 𝗕𝗿𝗮𝗶𝗻𝘁𝗿𝗲𝗲 𝗔𝘂𝘁𝗵
-🔹 𝗦𝘁
+🔹 𝗦𝘁𝗮𝘁𝘂𝘀: ✅ 𝗔𝗰𝘁𝗶𝘃𝗲
+
+🚀 𝗤𝘂𝗶𝗰𝗸 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗢𝘃𝗲𝗿𝘃𝗶𝗲𝘄:
+
+👤 𝗕𝗿𝗮𝗶𝗻𝘁𝗿𝗲𝗲 𝗢𝗽𝘁𝗶𝗼𝗻𝘀:
+   1. 𝗕𝗿𝗮𝗶𝗻𝘁𝗿𝗲𝗲 𝗔𝘂𝘁𝗵 1 𝗚𝗮𝘁𝗲: ✅
+      ➜ 𝗦𝗶𝗻𝗴𝗹𝗲: /chk cc|mm|yy|cvv 
+      ➜ 𝗠𝗮𝘀𝘀 : /mchk cc|mm|yy|cvv        
+   2. 𝗕𝗿𝗮𝗶𝗻𝘁𝗿𝗲𝗲 𝗔𝘂𝘁𝗵 2 𝗚𝗮𝘁𝗲: ✅
+      ➜ 𝗦𝗶𝗻𝗴𝗹𝗲: /b3 cc|mm|yy|cvv 
+      ➜ 𝗠𝗮𝘀𝘀 (𝗟𝗶𝗺𝗶𝘁=25): /mb3 cc|mm|yy|cvv 
+   3. 𝗕𝗿𝗮𝗶𝗻𝘁𝗿𝗲𝗲 𝗔𝘂𝘁𝗵 3 𝗚𝗮𝘁𝗲: ✅
+      ➜ 𝗦𝗶𝗻𝗴𝗹𝗲: /b4 cc|mm|yy|cvv 
+      ➜ 𝗠𝗮𝘀𝘀: /mb4 cc|mm|yy|cvv
+      
+  𝗧𝗼𝘁𝗮𝗹 𝗔𝘂𝘁𝗵 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀: 3  
+
+"""
+        CHARGE_BUTTON = [
+            [
+                InlineKeyboardButton("Back", callback_data="AUTH"),
+                InlineKeyboardButton("Close", callback_data="close")
+            ]
+        ]
+        await CallbackQuery.edit_message_text(
+            text=CHARGE_TEXT,
+            reply_markup=InlineKeyboardMarkup(CHARGE_BUTTON)
+        )
