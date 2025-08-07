@@ -97,9 +97,7 @@ async def cmd_start(Client, message):
             "<i>Typing.</i>",
             "<i>Typing..</i>",
             "<i>Typing...</i>",
-            "<i>Decrypting Message.</i>",
-            "<i>Decrypting Message..</i>",
-            "<i>Decrypting Message...</i>"
+            
         ]
         for t in typing_texts:
             await asyncio.sleep(0.3)
