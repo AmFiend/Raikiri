@@ -91,24 +91,36 @@ async def cmd_start(Client, message):
         for frame in frames[1:]:
             await asyncio.sleep(0.5)
             await Client.edit_message_text(chat_id=message.chat.id, message_id=edit.id, text=frame)
+            
+        # Typing Effect Simulation
+        typing_texts = [
+            "<i>Typing.</i>",
+            "<i>Typing..</i>",
+            "<i>Typing...</i>",
+            "<i>Decrypting Message.</i>",
+            "<i>Decrypting Message..</i>",
+            "<i>Decrypting Message...</i>"
+        ]
+        for t in typing_texts:
+            await asyncio.sleep(0.3)
+            await Client.edit_message_text(chat_id=message.chat.id, message_id=edit.id, text=t)
 
         await asyncio.sleep(0.5)
 
+        # Final Message
         text = f"""
-<b>🌟 𝗛𝗲𝗹𝗹𝗼 {mention}!</b>
+<b>😈 Yo {mention},</b>
 
-<b>𝗪𝗲𝗹𝗰𝗼𝗺𝗲 𝗮𝗯𝗼𝗮𝗿𝗱 𝘁𝗵𝗲 𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑! 🚀</b>
+<b>You're now vibin' with the 𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑™.</b>
+<b>This ain’t no basic bot — it’s loaded, coded, and locked to wreck limits.</b>
 
-<b>𝗜 𝗮𝗺 𝘆𝗼𝘂𝗿 𝗴𝗼-𝘁𝗼 𝗯𝗼𝘁, 𝗽𝗮𝗰𝗸𝗲𝗱 𝘄𝗶𝘁𝗵 𝗮 𝘃𝗮𝗿𝗶𝗲𝘁𝘆 𝗼𝗳 𝗴𝗮𝘁𝗲𝘀, 𝘁𝗼𝗼𝗹𝘀, 𝗮𝗻𝗱 𝗰𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝘁𝗼 𝗲𝗻𝗵𝗮𝗻𝗰𝗲 𝘆𝗼𝘂𝗿 𝗲𝘅𝗽𝗲𝗿𝗶𝗲𝗻𝗰𝗲. 𝗘𝘅𝗰𝗶𝘁𝗲𝗱 𝘁𝗼 𝘀𝗲𝗲 𝘄𝗵𝗮𝘁 𝗜 𝗰𝗮𝗻 𝗱𝗼?</b>
-
-<b>👇 𝗧𝗮𝗽 𝘁𝗵𝗲 <i>𝗥𝗲𝗴𝗶𝘀𝘁𝗲𝗿</i> 𝗯𝘂𝘁𝘁𝗼𝗻 𝘁𝗼 𝗯𝗲𝗴𝗶𝗻 𝘆𝗼𝘂𝗿 𝗷𝗼𝘂𝗿𝗻𝗲𝘆.</b>
-<b>👇 𝗗𝗶𝘀𝗰𝗼𝘃𝗲𝗿 𝗺𝘆 𝗳𝘂𝗹𝗹 𝗰𝗮𝗽𝗮𝗯𝗶𝗹𝗶𝘁𝗶𝗲𝘀 𝗯𝘆   
-𝘁𝗮𝗽𝗽𝗶𝗻𝗴 𝘁𝗵𝗲 <i>𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀</i> 𝗯𝘂𝘁𝘁𝗼𝗻.</b>
+<b>🔗 Hit <i>Register</i> to step in.</b>
+<b>🧠 Tap <i>Commands</i> and unleash chaos.</b>
 
 """
         WELCOME_BUTTON = [
             [
-                InlineKeyboardButton("Register", callback_data="register"),
+                InlineKeyboardButton("REGISTER", callback_data="register"),
                 InlineKeyboardButton("Commands", callback_data="cmds")
             ],
             [
