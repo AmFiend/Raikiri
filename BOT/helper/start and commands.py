@@ -69,40 +69,24 @@ async def callback_command(client, message):
         await error_log(traceback.format_exc())
 
 
-@Client.on_message(filters.command("start") & filters.private)
-async def start_command(client: Client, message: Message):
-    loading_frames = [
-        "[░░░░░░░░░░░░░░░░░░░░░░] 0%",
-        "[█░░░░░░░░░░░░░░░░░░░░] 5%",
-        "[██░░░░░░░░░░░░░░░░░░] 10%",
-        "[███░░░░░░░░░░░░░░░░░] 15%",
-        "[████░░░░░░░░░░░░░░░░] 20%",
-        "[█████░░░░░░░░░░░░░░░] 25%",
-        "[██████░░░░░░░░░░░░░░] 30%",
-        "[███████░░░░░░░░░░░░░] 35%",
-        "[████████░░░░░░░░░░░░] 40%",
-        "[█████████░░░░░░░░░░░] 45%",
-        "[██████████░░░░░░░░░░] 50%",
-        "[███████████░░░░░░░░░] 55%",
-        "[████████████░░░░░░░░] 60%",
-        "[█████████████░░░░░░░] 65%",
-        "[██████████████░░░░░░] 70%",
-        "[███████████████░░░░░] 75%",
-        "[████████████████░░░░] 80%",
-        "[█████████████████░░░] 85%",
-        "[██████████████████░░] 90%",
-        "[███████████████████░] 95%",
-        "[████████████████████] 100%",
-    ]
+@Client.on_message(filters.command("start", [".", "/"]))
+async def cmd_start(Client, message):
+    try:
+        text = """<b>
+𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑 ■□□□
+      </b>"""
+        edit = await message.reply_text(text, message.id)
+        await asyncio.sleep(0.5)
 
-    progress_msg = await message.reply_text(f"<b>CHARGE MASTER</b>\n{loading_frames[0]}")
-    for frame in loading_frames[1:]:
-        await asyncio.sleep(0.2)
-        await progress_msg.edit_text(f"<b>CHARGE MASTER</b>\n{frame}")
+        text = """<b>
+𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑 ■■■■
+     </b> """
+        edit = await Client.edit_message_text(message.chat.id, edit.id, text)
+        await asyncio.sleep(0.5)
 
-    # ✅ Send final welcome message AFTER animation
-    await message.reply_text(
-        f"""<b>🌟 𝗛𝗲𝗹𝗹𝗼 <a href="tg://user?id={message.from_user.id}">{message.from_user.first_name}</a>!</b>
+        text = f"""
+<b>🌟 𝗛𝗲𝗹𝗹𝗼 <a href="tg://user?id={message.from_user.id}">{message.from_user.first_name}</a>!</b>
+
 <b>𝗪𝗲𝗹𝗰𝗼𝗺𝗲 𝗮𝗯𝗼𝗮𝗿𝗱 𝘁𝗵𝗲 𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑! 🚀</b>
 
 <b>𝗜 𝗮𝗺 𝘆𝗼𝘂𝗿 𝗴𝗼-𝘁𝗼 𝗯𝗼𝘁, 𝗽𝗮𝗰𝗸𝗲𝗱 𝘄𝗶𝘁𝗵 𝗮 𝘃𝗮𝗿𝗶𝗲𝘁𝘆 𝗼𝗳 𝗴𝗮𝘁𝗲𝘀, 𝘁𝗼𝗼𝗹𝘀, 𝗮𝗻𝗱 𝗰𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝘁𝗼 𝗲𝗻𝗵𝗮𝗻𝗰𝗲 𝘆𝗼𝘂𝗿 𝗲𝘅𝗽𝗲𝗿𝗶𝗲𝗻𝗰𝗲. 𝗘𝘅𝗰𝗶𝘁𝗲𝗱 𝘁𝗼 𝘀𝗲𝗲 𝘄𝗵𝗮𝘁 𝗜 𝗰𝗮𝗻 𝗱𝗼?</b>
