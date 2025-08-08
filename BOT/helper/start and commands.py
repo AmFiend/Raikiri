@@ -168,7 +168,7 @@ async def cmd_start(Client, message):
 
     except Exception:
         import traceback
-        await error_log(traceback.format_exc()     
+        await error_log(traceback.format_exc())     
 
 async def register_user(user_id, username, antispam_time, reg_at):
     info = {
