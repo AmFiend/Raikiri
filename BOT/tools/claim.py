@@ -1,8 +1,7 @@
+# claim.py
 from datetime import datetime, timedelta
-from pyrogram import filters
 
-@Client.on_message(filters.command("claim"))
-async def claim_credits(client, message):
+async def claim_credits(client, message, users_collection):
     user_id = message.from_user.id
     now = datetime.utcnow()
 
