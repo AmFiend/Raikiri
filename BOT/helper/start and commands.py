@@ -67,30 +67,7 @@ async def callback_command(client, message):
     except Exception:
         import traceback
         await error_log(traceback.format_exc())
-
-
-@Client.on_message(filters.command("start", [".", "/"]))
-async def cmd_start(Client, message):
-    try:
-        user = message.from_user
-        mention = f'<a href="tg://user?id={user.id}">{user.first_name}</a>'
-
-
-        frames = [
-            "<b>[▱▱▱▱▱▱] Booting System...</b>",
-            "<b>[▰▱▱▱▱▱] Initializing Core</b>",
-            "<b>[▰▰▱▱▱▱] Loading ⚡Modules...</b>",
-            "<b>[▰▰▰▱▱▱] Injecting Scripts...</b>",
-            "<b>[▰▰▰▰▱▱] Connecting to Gateways...</b>",
-            "<b>[▰▰▰▰▰▱] Launching Interface...</b>",
-            "<b>[▰▰▰▰▰▰] ✅ Ready</b>",
-            "<b>𝗖𝗛𝗔𝗥𝗚𝗘 𝗠𝗔𝗦𝗧𝗘𝗥™ ONLINE ⚙️</b>"
-        ]
-
-        edit = await message.reply_text(frames[0])
-        for frame in frames[1:]:
-            await asyncio.sleep(0.5)
-            
+        
 @Client.on_message(filters.command("start", [".", "/"]))
 async def cmd_start(Client, message):
     try:
@@ -98,7 +75,7 @@ async def cmd_start(Client, message):
         user_id = str(user.id)
         mention = f'<a href="tg://user?id={user.id}">{user.first_name}</a>'
 
-        # Referral logic: check if /start has a parameter, treat as referral ID
+        # Referral logic: check if /start has parameter, treat as referrer_id
         args = message.text.split()
         referrer_id = None
         if len(args) > 1:
@@ -110,7 +87,7 @@ async def cmd_start(Client, message):
         user_doc = await usersdb.find_one({"id": user_id})
 
         if not user_doc:
-            # New user, add to DB with zero credits initially
+            # New user, add to DB with zero credits initially and store referrer if any
             await usersdb.insert_one({
                 "id": user_id,
                 "credits": 0,
@@ -120,7 +97,6 @@ async def cmd_start(Client, message):
             if referrer_id:
                 ref_user = await usersdb.find_one({"id": referrer_id})
                 if ref_user:
-                    # Credit referrer (e.g. +500 credits)
                     new_credits = ref_user.get("credits", 0) + 500
                     await usersdb.update_one({"id": referrer_id}, {"$set": {"credits": new_credits}})
                     # Notify referrer
@@ -132,12 +108,11 @@ async def cmd_start(Client, message):
                     except:
                         pass
 
-        # Referral link for user to share
+        # Get bot username for referral link
         bot_username = (await Client.get_me()).username
         referral_link = f"https://t.me/{bot_username}?start={user_id}"
-        referral_link = urllib.parse.quote_plus(referral_link)  # optional if you want to URL encode it
 
-        # Animation frames as you had before
+        # Animation frames
         frames = [
             "<b>[▱▱▱▱▱▱] Booting System...</b>",
             "<b>[▰▱▱▱▱▱] Initializing Core</b>",
@@ -176,7 +151,7 @@ async def cmd_start(Client, message):
 <b>👇 Discover my full capabilities by tapping the <i>Commands</i> button.</b>
 
 <b>🔗 Your referral link (share and earn credits!):</b>
-<code>https://t.me/{bot_username}?start={user_id}</code>
+<code>{referral_link}</code>
 """
 
         WELCOME_BUTTON = [
@@ -193,7 +168,7 @@ async def cmd_start(Client, message):
 
     except Exception:
         import traceback
-        await error_log(traceback.format_exc())
+        await error_log(traceback.format_exc()     
 
 async def register_user(user_id, username, antispam_time, reg_at):
     info = {
