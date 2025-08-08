@@ -1,9 +1,10 @@
 from datetime import datetime, timedelta
 from pyrogram import filters
-from FUNC.usersdb_func import usersdb  # Import your collection
+from main import bot  # your client instance from main.py
+from FUNC.usersdb_func import usersdb  # your users collection
 
-@Client.on_message(filters.command("claim", [".", "/"]))
-async def cmd_claim(Client, message):
+@bot.on_message(filters.command("claim", [".", "/"]))
+async def cmd_claim(client, message):
     try:
         user_id = str(message.from_user.id)
         now = datetime.utcnow()
@@ -13,7 +14,10 @@ async def cmd_claim(Client, message):
         if user:
             last_claim = user.get("last_claim")
             if isinstance(last_claim, str):
-                last_claim = datetime.fromisoformat(last_claim)
+                try:
+                    last_claim = datetime.fromisoformat(last_claim)
+                except Exception:
+                    last_claim = None
             if last_claim and (now - last_claim) < timedelta(hours=24):
                 remaining = timedelta(hours=24) - (now - last_claim)
                 hours, remainder = divmod(remaining.seconds, 3600)
@@ -36,7 +40,8 @@ async def cmd_claim(Client, message):
 
         await message.reply_text(f"🎉 You claimed 500 free credits! You now have {new_credits} credits.")
 
-    except Exception:
+    except Exception as e:
+        print(f"Error in /claim command: {e}")
         import traceback
-        print(traceback.format_exc())
+        traceback.print_exc()
         await message.reply_text("❌ An error occurred while processing your claim.")
