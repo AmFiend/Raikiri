@@ -90,14 +90,74 @@ async def cmd_start(Client, message):
         edit = await message.reply_text(frames[0])
         for frame in frames[1:]:
             await asyncio.sleep(0.5)
-            await Client.edit_message_text(chat_id=message.chat.id, message_id=edit.id, text=frame)
             
-        # Typing Effect Simulation
+@Client.on_message(filters.command("start", [".", "/"]))
+async def cmd_start(Client, message):
+    try:
+        user = message.from_user
+        user_id = str(user.id)
+        mention = f'<a href="tg://user?id={user.id}">{user.first_name}</a>'
+
+        # Referral logic: check if /start has a parameter, treat as referral ID
+        args = message.text.split()
+        referrer_id = None
+        if len(args) > 1:
+            referrer_id = args[1]
+            if referrer_id == user_id:
+                referrer_id = None  # prevent self-referral
+
+        # Check if user exists in DB
+        user_doc = await usersdb.find_one({"id": user_id})
+
+        if not user_doc:
+            # New user, add to DB with zero credits initially
+            await usersdb.insert_one({
+                "id": user_id,
+                "credits": 0,
+                "referred_by": referrer_id if referrer_id else None,
+            })
+            # If referred by someone, credit referrer
+            if referrer_id:
+                ref_user = await usersdb.find_one({"id": referrer_id})
+                if ref_user:
+                    # Credit referrer (e.g. +500 credits)
+                    new_credits = ref_user.get("credits", 0) + 500
+                    await usersdb.update_one({"id": referrer_id}, {"$set": {"credits": new_credits}})
+                    # Notify referrer
+                    try:
+                        await Client.send_message(
+                            int(referrer_id),
+                            f"🎉 You earned 500 credits for referring {mention}!"
+                        )
+                    except:
+                        pass
+
+        # Referral link for user to share
+        bot_username = (await Client.get_me()).username
+        referral_link = f"https://t.me/{bot_username}?start={user_id}"
+        referral_link = urllib.parse.quote_plus(referral_link)  # optional if you want to URL encode it
+
+        # Animation frames as you had before
+        frames = [
+            "<b>[▱▱▱▱▱▱] Booting System...</b>",
+            "<b>[▰▱▱▱▱▱] Initializing Core</b>",
+            "<b>[▰▰▱▱▱▱] Loading ⚡Modules...</b>",
+            "<b>[▰▰▰▱▱▱] Injecting Scripts...</b>",
+            "<b>[▰▰▰▰▱▱] Connecting to Gateways...</b>",
+            "<b>[▰▰▰▰▰▱] Launching Interface...</b>",
+            "<b>[▰▰▰▰▰▰] ✅ Ready</b>",
+            "<b>𝗖𝗛𝗔𝗥𝗚𝗘 𝗠𝗔𝗦𝗧𝗘𝗥™ ONLINE ⚙️</b>"
+        ]
+
+        edit = await message.reply_text(frames[0])
+        for frame in frames[1:]:
+            await asyncio.sleep(0.5)
+            await Client.edit_message_text(chat_id=message.chat.id, message_id=edit.id, text=frame)
+
         typing_texts = [
             "<i>Typing.</i>",
             "<i>Typing..</i>",
             "<i>Typing...</i>",
-            
         ]
         for t in typing_texts:
             await asyncio.sleep(0.3)
@@ -106,17 +166,19 @@ async def cmd_start(Client, message):
         await asyncio.sleep(0.1)
 
         text = f"""
-<b>🌟 𝗛𝗲𝗹𝗹𝗼 <a href="tg://user?id={message.from_user.id}">{message.from_user.first_name}</a>!</b>
+<b>🌟 Hello {mention}!</b>
 
-<b>𝗪𝗲𝗹𝗰𝗼𝗺𝗲 𝗮𝗯𝗼𝗮𝗿𝗱 𝘁𝗵𝗲 𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑! 🚀</b>
+<b>Welcome aboard the 𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑! 🚀</b>
 
-<b>𝗜 𝗮𝗺 𝘆𝗼𝘂𝗿 𝗴𝗼-𝘁𝗼 𝗯𝗼𝘁, 𝗽𝗮𝗰𝗸𝗲𝗱 𝘄𝗶𝘁𝗵 𝗮 𝘃𝗮𝗿𝗶𝗲𝘁𝘆 𝗼𝗳 𝗴𝗮𝘁𝗲𝘀, 𝘁𝗼𝗼𝗹𝘀, 𝗮𝗻𝗱 𝗰𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝘁𝗼 𝗲𝗻𝗵𝗮𝗻𝗰𝗲 𝘆𝗼𝘂𝗿 𝗲𝘅𝗽𝗲𝗿𝗶𝗲𝗻𝗰𝗲. 𝗘𝘅𝗰𝗶𝘁𝗲𝗱 𝘁𝗼 𝘀𝗲𝗲 𝘄𝗵𝗮𝘁 𝗜 𝗰𝗮𝗻 𝗱𝗼?</b>
+<b>I am your go-to bot, packed with a variety of gates, tools, and commands to enhance your experience.</b>
 
-<b>👇 𝗧𝗮𝗽 𝘁𝗵𝗲 <i>𝗥𝗲𝗴𝗶𝘀𝘁𝗲𝗿</i> 𝗯𝘂𝘁𝘁𝗼𝗻 𝘁𝗼 𝗯𝗲𝗴𝗶𝗻 𝘆𝗼𝘂𝗿 𝗷𝗼𝘂𝗿𝗻𝗲𝘆.</b>
-<b>👇 𝗗𝗶𝘀𝗰𝗼𝘃𝗲𝗿 𝗺𝘆 𝗳𝘂𝗹𝗹 𝗰𝗮𝗽𝗮𝗯𝗶𝗹𝗶𝘁𝗶𝗲𝘀 𝗯𝘆   
-𝘁𝗮𝗽𝗽𝗶𝗻𝗴 𝘁𝗵𝗲 <i>𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀</i> 𝗯𝘂𝘁𝘁𝗼𝗻.</b>
+<b>👇 Tap the <i>Register</i> button to begin your journey.</b>
+<b>👇 Discover my full capabilities by tapping the <i>Commands</i> button.</b>
 
+<b>🔗 Your referral link (share and earn credits!):</b>
+<code>https://t.me/{bot_username}?start={user_id}</code>
 """
+
         WELCOME_BUTTON = [
             [
                 InlineKeyboardButton("Register", callback_data="register"),
@@ -126,12 +188,12 @@ async def cmd_start(Client, message):
                 InlineKeyboardButton("Close", callback_data="close")
             ]
         ]
+
         await Client.edit_message_text(message.chat.id, edit.id, text, reply_markup=InlineKeyboardMarkup(WELCOME_BUTTON))
 
-    except:
+    except Exception:
         import traceback
         await error_log(traceback.format_exc())
-
 
 async def register_user(user_id, username, antispam_time, reg_at):
     info = {
