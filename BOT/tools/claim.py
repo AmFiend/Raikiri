@@ -1,7 +1,12 @@
+import json
 from datetime import datetime, timedelta
-from pyrogram import filters
-from main import bot  # your client instance from main.py
-from FUNC.usersdb_func import usersdb  # your users collection
+from pyrogram import Client, filters
+from FUNC.usersdb_func import usersdb, check_negetive_credits  # your DB functions
+from FUNC.defs import error_log  # your error logging function
+
+# Import the main Client instance (make sure in main.py your client is named 'bot')
+from main import bot  
+
 
 @bot.on_message(filters.command("claim", [".", "/"]))
 async def cmd_claim(client, message):
@@ -11,20 +16,23 @@ async def cmd_claim(client, message):
 
         user = usersdb.find_one({"id": user_id})
 
-        if user:
-            last_claim = user.get("last_claim")
+        if user and "last_claim" in user:
+            last_claim = user["last_claim"]
+            # last_claim stored as string? Parse to datetime if needed:
             if isinstance(last_claim, str):
-                try:
-                    last_claim = datetime.fromisoformat(last_claim)
-                except Exception:
-                    last_claim = None
-            if last_claim and (now - last_claim) < timedelta(hours=24):
+                last_claim = datetime.fromisoformat(last_claim)
+            if now - last_claim < timedelta(hours=24):
                 remaining = timedelta(hours=24) - (now - last_claim)
                 hours, remainder = divmod(remaining.seconds, 3600)
                 minutes, _ = divmod(remainder, 60)
-                await message.reply_text(f"⏳ You can claim again in {hours}h {minutes}m.")
+                await message.reply_text(
+                    f"⏳ You already claimed your free credits. "
+                    f"Come back in {hours}h {minutes}m to claim again."
+                )
                 return
 
+        # Give 500 free credits
+        if user:
             new_credits = user.get("credit", 0) + 500
             usersdb.update_one(
                 {"id": user_id},
@@ -35,13 +43,17 @@ async def cmd_claim(client, message):
             usersdb.insert_one({
                 "id": user_id,
                 "credit": new_credits,
-                "last_claim": now.isoformat()
+                "last_claim": now.isoformat(),
+                "status": "FREE",  # or whatever default you want
+                "plan": "N/A",
+                "expiry": "N/A"
             })
 
-        await message.reply_text(f"🎉 You claimed 500 free credits! You now have {new_credits} credits.")
+        await message.reply_text(
+            f"🎉 You have successfully claimed 500 free credits! "
+            f"You now have {new_credits} credits."
+        )
 
     except Exception as e:
-        print(f"Error in /claim command: {e}")
-        import traceback
-        traceback.print_exc()
-        await message.reply_text("❌ An error occurred while processing your claim.")
+        await error_log(f"Error in /claim command:\n{e}")
+        await message.reply_text("❌ An error occurred while processing your claim. Please try again later.")
