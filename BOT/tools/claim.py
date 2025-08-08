@@ -1,36 +1,44 @@
 from datetime import datetime, timedelta
 from pyrogram import filters
-from FUNC.usersdb_func import *  # Assuming users_collection or db funcs here
+from FUNC.usersdb_func import usersdb, error_log  # Import your collection & error logger
 
 @Client.on_message(filters.command("claim", [".", "/"]))
 async def cmd_claim(Client, message):
     try:
         user_id = str(message.from_user.id)
-
-        # Assuming you have a function get_user_claim_data(user_id) returning user dict or None
-        user = await get_user_claim_data(user_id)  
-
         now = datetime.utcnow()
+
+        # Fetch user data
+        user = usersdb.find_one({"id": user_id})
 
         if user:
             last_claim = user.get("last_claim")
-            if last_claim and (now - last_claim).total_seconds() < 24 * 3600:
-                remaining_seconds = 24*3600 - (now - last_claim).total_seconds()
-                hours = int(remaining_seconds // 3600)
-                minutes = int((remaining_seconds % 3600) // 60)
+            # last_claim stored as ISO string or datetime object?
+            if isinstance(last_claim, str):
+                last_claim = datetime.fromisoformat(last_claim)
+            if last_claim and (now - last_claim) < timedelta(hours=24):
+                remaining = timedelta(hours=24) - (now - last_claim)
+                hours, remainder = divmod(remaining.seconds, 3600)
+                minutes, _ = divmod(remainder, 60)
                 await message.reply_text(f"⏳ You can claim again in {hours}h {minutes}m.")
                 return
 
-            new_credits = user.get("credits", 0) + 500
-            await update_user_claim_data(user_id, credits=new_credits, last_claim=now)
+            new_credits = user.get("credit", 0) + 500
+            usersdb.update_one(
+                {"id": user_id},
+                {"$set": {"credit": new_credits, "last_claim": now.isoformat()}}
+            )
         else:
             new_credits = 500
-            await create_user_claim_data(user_id, credits=new_credits, last_claim=now)
+            usersdb.insert_one({
+                "id": user_id,
+                "credit": new_credits,
+                "last_claim": now.isoformat()
+            })
 
         await message.reply_text(f"🎉 You claimed 500 free credits! You now have {new_credits} credits.")
 
-    except Exception as e:
+    except Exception:
         import traceback
         await error_log(traceback.format_exc())
         await message.reply_text("❌ An error occurred while processing your claim.")
-
