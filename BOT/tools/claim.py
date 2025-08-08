@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 from pyrogram import filters
-from FUNC.usersdb_func import usersdb, error_log  # Import your collection & error logger
+from FUNC.usersdb_func import usersdb  # Import your collection
 
 @Client.on_message(filters.command("claim", [".", "/"]))
 async def cmd_claim(Client, message):
@@ -8,12 +8,10 @@ async def cmd_claim(Client, message):
         user_id = str(message.from_user.id)
         now = datetime.utcnow()
 
-        # Fetch user data
         user = usersdb.find_one({"id": user_id})
 
         if user:
             last_claim = user.get("last_claim")
-            # last_claim stored as ISO string or datetime object?
             if isinstance(last_claim, str):
                 last_claim = datetime.fromisoformat(last_claim)
             if last_claim and (now - last_claim) < timedelta(hours=24):
@@ -40,5 +38,5 @@ async def cmd_claim(Client, message):
 
     except Exception:
         import traceback
-        await error_log(traceback.format_exc())
+        print(traceback.format_exc())
         await message.reply_text("❌ An error occurred while processing your claim.")
