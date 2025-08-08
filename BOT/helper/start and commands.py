@@ -75,6 +75,10 @@ async def cmd_start(Client, message):
         user_id = str(user.id)
         mention = f'<a href="tg://user?id={user.id}">{user.first_name}</a>'
 
+        # If DB is sync (dict, pymongo)
+        user_doc = usersdb.find_one({"id": user_id})
+      
+
         # Referral logic: check if /start has parameter, treat as referrer_id
         args = message.text.split()
         referrer_id = None
