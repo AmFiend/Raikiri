@@ -11,11 +11,11 @@ async def get_charge_resp(result, user_id, fullcc):
 
         # Successful charges
         if (
-            '"status": "succeeded"' in result or
-            "Thank You For Donation" in result or
-            "Your payment has already been processed" in result or
-            "ADD_SHIPPING_ERROR" in result or
-            "Success" in result
+            '"status": "succeeded"' in result
+            or "Thank You For Donation" in result
+            or "Your payment has already been processed" in result
+            or "ADD_SHIPPING_ERROR" in result
+            or "Success" in result
         ):
             status = "𝗔𝗽𝗽𝗿𝗼𝘃𝗲𝗱 ✅"
             response = "Payment Approved [CVV] 🔥"
@@ -66,7 +66,9 @@ async def get_charge_resp(result, user_id, fullcc):
         # Fallback error logging
         else:
             status = "𝐃𝐞𝐜𝐥𝐢𝐧𝐞𝐝 ❌"
-            response = await find_between(result.text, "System was not able to complete the payment. ", ".")
+            response = await find_between(
+                result, "System was not able to complete the payment. ", "."
+            )
             if response is None:
                 response = "Card Declined"
                 await result_logs(fullcc, "PayPal Charge", result)
