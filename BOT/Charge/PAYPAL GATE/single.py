@@ -14,7 +14,7 @@ from .gate import create_paypal_charge
 from faker import Faker
 
 
-@Client.on_message(filters.command("pp", [".", "/"]))
+@Client.on_message(filters.command("", [".", "/"]))
 async def paypal_check_cmd(Client, message):
     try:
         user_id = str(message.from_user.id)
