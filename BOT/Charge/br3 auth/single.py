@@ -90,6 +90,7 @@ Usage: /pp cc|mes|ano|cvv</b>"""
         country = getbin[4]
         flag = getbin[5]
         currency = getbin[6]
+        proxy_status = live
 
         finalresp = f"""
 {status}
@@ -122,3 +123,4 @@ Usage: /pp cc|mes|ano|cvv</b>"""
     except Exception as e:
         import traceback
         await error_log(traceback.format_exc())
+
