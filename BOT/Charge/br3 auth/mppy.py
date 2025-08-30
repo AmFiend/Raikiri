@@ -17,9 +17,7 @@ async def paypal_mchkfunc(fullcc, user_id):
     retries = 3
     for attempt in range(retries):
         try:
-
-            session = httpx.AsyncClient(
-                timeout=30, follow_redirects=True)
+            session = httpx.AsyncClient(timeout=30, follow_redirects=True)
             result = await create_paypal_charge(fullcc, session)
             getresp = await get_charge_resp(result, user_id, fullcc)
             response = getresp["response"]
@@ -96,7 +94,7 @@ Number Of CC Check : [{len(ccs)}]
                 if amt % 5 == 0:
                     try:
                         await Client.edit_message_text(message.chat.id, nov.id, text)
-                    except:
+                    except Exception:
                         pass
             await asyncio.sleep(1)
             works = works[worker_num:]
@@ -117,4 +115,10 @@ Number Of CC Check : [{len(ccs)}]
         await massdeductcredit(user_id, len(ccs))
         await setantispamtime(user_id)
 
-    except
+    except Exception as e:
+        import traceback
+        await error_log(traceback.format_exc())
+        try:
+            await message.reply_text("❌ An error occurred while processing.")
+        except:
+            pass
