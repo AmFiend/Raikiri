@@ -14,7 +14,7 @@ from .gate import create_paypal_charge
 from faker import Faker
 
 
-@Client.on_message(filters.command("b3", [".", "/"]))
+@Client.on_message(filters.command("zb", [".", "/"]))
 async def paypal_check_cmd(Client, message):
     try:
         # Initial checks
@@ -120,4 +120,5 @@ Usage: /pp cc|mes|ano|cvv</b>"""
     except Exception as e:
         import traceback
         await error_log(traceback.format_exc())
+
 
