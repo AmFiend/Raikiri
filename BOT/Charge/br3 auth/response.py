@@ -46,7 +46,7 @@ async def get_charge_resp(result, user_id, fullcc):
         # Account restrictions
         elif "EXISTING_ACCOUNT_RESTRICTED" in result:
             status = "𝗔𝗽𝗽𝗿𝗼𝘃𝗲𝗱 ✅"
-            response = "Approved - Account Limited ⚠️"
+            response = "Approved Restricted"
             hits = "YES"
             await forward_resp(fullcc, "kiler", response)
 
@@ -93,3 +93,4 @@ async def get_charge_resp(result, user_id, fullcc):
             "fullz": fullcc,
         }
         return json
+
