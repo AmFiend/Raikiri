@@ -81,13 +81,14 @@ async def callback_handler(client, cq):
         # COMMANDS MENU
         elif data == "cmds":
             caption = """
-<b>📜 Command Menu</b>
+𝙒𝙚𝙡𝙘𝙤𝙢𝙚 𝙩𝙤 𝘼𝙠𝙖𝙩𝙨𝙪𝙠𝙞 -» >_
 
-Choose a category:
-- AUTH
-- CHARGE
-- TOOLS
-- HELPER
+𝙏𝙤𝙩𝙖𝙡 -» <code>18</code>
+𝙊𝙣 -» <code>12 ✅</code>
+𝙊𝙛𝙛 -» <code>4 ❌</code>
+𝙈𝙖𝙣𝙩𝙚𝙣𝙞𝙚𝙣𝙘𝙚 -» <code>2</code>
+
+<code>𝙎𝙚𝙡𝙚𝙘𝙩 𝙩𝙝𝙚 𝙩𝙮𝙥𝙚 𝙤𝙛 𝙜𝙖𝙩𝙚 𝙮𝙤𝙪 𝙬𝙖𝙣𝙩 𝙛𝙤𝙧 𝙮𝙤𝙪𝙧 𝙪𝙨𝙚!</code>
 """
             buttons = InlineKeyboardMarkup(
                 [
@@ -111,9 +112,36 @@ Choose a category:
             caption = """
 <b>🔑 AUTH COMMANDS</b>
 
-- /auth
-- /vbv
-- /b3
+Braintree Auth - 1
+𝗖𝗺𝗱: /chk cc|mm|yy|cvv
+𝗟𝗮𝘀𝘁 𝗨𝗽𝗱𝗮𝘁𝗲𝗱: 07/05/2025
+𝗥𝗮𝗻𝗸: Free + Premium
+
+Stripe Auth - 1
+𝗖𝗺𝗱: /au cc|mm|yy|cvv
+𝗟𝗮𝘀𝘁 𝗨𝗽𝗱𝗮𝘁𝗲𝗱: 07/05/2025
+𝗥𝗮𝗻𝗸: Free + Premium
+
+Vbv 
+𝗖𝗺𝗱: /vbv cc|mm|yy|cvv
+𝗟𝗮𝘀𝘁 𝗨𝗽𝗱𝗮𝘁𝗲𝗱: 22/03/2025
+𝗥𝗮𝗻𝗸: Free + Premium
+
+Square Auth
+𝗖𝗺𝗱: /sq cc|mm|yy|cvv
+𝗟𝗮𝘀𝘁 𝗨𝗽𝗱𝗮𝘁𝗲𝗱: 22/03/2025
+𝗥𝗮𝗻𝗸: Free + Premium
+
+Clover Auth
+𝗖𝗺𝗱: /cl cc|mm|yy|cvv
+𝗟𝗮𝘀𝘁 𝗨𝗽𝗱𝗮𝘁𝗲𝗱: 22/03/2025
+𝗥𝗮𝗻𝗸: Free + Premium
+
+Braintree Auth 3
+𝗖𝗺𝗱: /b3 cc|mm|yy|cvv
+𝗟𝗮𝘀𝘁 𝗨𝗽𝗱𝗮𝘁𝗲𝗱: 22/03/2025
+𝗥𝗮𝗻𝗸: Free + Premium
+
 """
             buttons = InlineKeyboardMarkup(
                 [[InlineKeyboardButton("⬅ Back", callback_data="cmds")]]
@@ -197,3 +225,4 @@ Choose a category:
             parse_mode=ParseMode.HTML
         )
         
+
