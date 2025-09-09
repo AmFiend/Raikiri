@@ -59,14 +59,12 @@ try:
         "<b>𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑</b>",
     ]
 
-    # Loop through the frames
     for frame in frames:
         await edit.edit_text(frame)
         await asyncio.sleep(0.2)
 
 except Exception as e:
-    await message.reply_text(f"⚠️ Animation Error: {e}")
-    
+    await message.reply_text(f"⚠️ Error in animation: {e}")
         text = f"""
 <b>🌟 𝗛𝗲𝗹𝗹𝗼 <a href="tg://user?id={message.from_user.id}">{message.from_user.first_name}</a>!</b>
 
@@ -840,4 +838,5 @@ async def callback_query(Client, CallbackQuery):
             text=CHARGE_TEXT,
             reply_markup=InlineKeyboardMarkup(CHARGE_BUTTON)
         )
+
 
