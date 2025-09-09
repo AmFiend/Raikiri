@@ -68,10 +68,10 @@ async def callback_command(client, message):
         import traceback
         await error_log(traceback.format_exc())
 
-
 @Client.on_message(filters.command("start", [".", "/"]))
 async def cmd_start(Client, message):
     try:
+        # Loading animation
         text = """<b>
 𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑 ■□□□
       </b>"""
@@ -80,11 +80,12 @@ async def cmd_start(Client, message):
 
         text = """<b>
 𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑 ■■■■
-     </b> """
-        edit = await Client.edit_message_text(message.chat.id, edit.id, text)
+     </b>"""
+        await Client.edit_message_text(message.chat.id, edit.id, text)
         await asyncio.sleep(0.5)
 
-        text = f"""
+        # Final welcome message as caption
+        caption = f"""
 <b>🌟 𝗛𝗲𝗹𝗹𝗼 <a href="tg://user?id={message.from_user.id}">{message.from_user.first_name}</a>!</b>
 
 <b>𝗪𝗲𝗹𝗰𝗼𝗺𝗲 𝗮𝗯𝗼𝗮𝗿𝗱 𝘁𝗵𝗲 𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑! 🚀</b>
@@ -94,8 +95,19 @@ async def cmd_start(Client, message):
 <b>👇 𝗧𝗮𝗽 𝘁𝗵𝗲 <i>𝗥𝗲𝗴𝗶𝘀𝘁𝗲𝗿</i> 𝗯𝘂𝘁𝘁𝗼𝗻 𝘁𝗼 𝗯𝗲𝗴𝗶𝗻 𝘆𝗼𝘂𝗿 𝗷𝗼𝘂𝗿𝗻𝗲𝘆.</b>
 <b>👇 𝗗𝗶𝘀𝗰𝗼𝘃𝗲𝗿 𝗺𝘆 𝗳𝘂𝗹𝗹 𝗰𝗮𝗽𝗮𝗯𝗶𝗹𝗶𝘁𝗶𝗲𝘀 𝗯𝘆   
 𝘁𝗮𝗽𝗽𝗶𝗻𝗴 𝘁𝗵𝗲 <i>𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀</i> 𝗯𝘂𝘁𝘁𝗼𝗻.</b>
-
 """
+
+        # Send video with welcome caption
+        with open("menu.mp4", "rb") as video_file:
+            await message.reply_video(
+                video=video_file,
+                caption=caption,
+                parse_mode=ParseMode.HTML
+            )
+
+    except FileNotFoundError:
+        await message.reply_text("⚠️ menu.mp4 file not found! Please upload it to the bot’s folder.")
+
         WELCOME_BUTTON = [
             [
                 InlineKeyboardButton("Register", callback_data="register"),
@@ -857,3 +869,4 @@ async def callback_query(Client, CallbackQuery):
             text=CHARGE_TEXT,
             reply_markup=InlineKeyboardMarkup(CHARGE_BUTTON)
         )
+
