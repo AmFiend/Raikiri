@@ -39,129 +39,34 @@ async def cmd_scr(client, message):
 
 
 async def callback_command(client, message):
-    try:
-        WELCOME_TEXT = f"""
-<b>𝗛𝗲𝗹𝗹𝗼 𝗨𝘀𝗲𝗿!
+try:
+    # First frame
+    text = "<b>𝐂</b>"
+    edit = await message.reply_text(text, message.id)
+    await asyncio.sleep(0.2)
 
-𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑  𝗛𝗮𝘀 𝗽𝗹𝗲𝗻𝘁𝘆 𝗼𝗳 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀. 𝗪𝗲 𝗛𝗮𝘃𝗲 𝗔𝘂𝘁𝗵 𝗚𝗮𝘁𝗲𝘀, 𝗖𝗵𝗮𝗿𝗴𝗲 𝗚𝗮𝘁𝗲𝘀, 𝗧𝗼𝗼𝗹𝘀, 𝗔𝗻𝗱 𝗢𝘁𝗵𝗲𝗿 𝗧𝗵𝗶𝗻𝗴𝘀.
+    frames = [
+        "<b>𝐂𝐇</b>",
+        "<b>𝐂𝐇𝐀</b>",
+        "<b>𝐂𝐇𝐀𝐑</b>",
+        "<b>𝐂𝐇𝐀𝐑𝐆</b>",
+        "<b>𝐂𝐇𝐀𝐑𝐆𝐄</b>",
+        "<b>𝐂𝐇𝐀𝐑𝐆𝐄 𝐌</b>",
+        "<b>𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀</b>",
+        "<b>𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒</b>",
+        "<b>𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓</b>",
+        "<b>𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄</b>",
+        "<b>𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑</b>",
+    ]
 
-𝗖𝗹𝗶𝗰𝗸 𝗘𝗮𝗰𝗵 𝗼𝗳 𝗧𝗵𝗲𝗺 𝗕𝗲𝗹𝗼𝘄 𝘁𝗼 𝗞𝗻𝗼𝘄 𝗧𝗵𝗲𝗺 𝗕𝗲𝘁𝘁𝗲𝗿.</b>
-        """
-        WELCOME_BUTTONS = [
-            [
-                InlineKeyboardButton("AUTH/B3/VBV", callback_data="AUTH"),
-                InlineKeyboardButton("CHARGE", callback_data="CHARGE")
-            ],
-            [
-                InlineKeyboardButton("TOOLS", callback_data="TOOLS"),
-                InlineKeyboardButton("HELPER", callback_data="HELPER")
-            ],
-            [
-                InlineKeyboardButton("Close", callback_data="close")
-            ]
-        ]
-        await message.reply(
-            text=WELCOME_TEXT,
-            reply_markup=InlineKeyboardMarkup(WELCOME_BUTTONS))
-
-    except Exception:
-        import traceback
-        await error_log(traceback.format_exc())
-        
-@Client.on_message(filters.command("start", [".", "/"]))
-async def cmd_start(Client, message):
-    try:
-        # First frame - First letter
-        text = """<b>
-𝐂
-      </b>"""
-        edit = await message.reply_text(text, message.id)
-        await asyncio.sleep(0.2)  # Faster animation pace
-
-        # Second frame - Two letters
-        text = """<b>
-𝐂𝐇
-      </b>"""
-        await Client.edit_message_text(message.chat.id, edit.id, text)
+    # Loop through the frames
+    for frame in frames:
+        await edit.edit_text(frame)
         await asyncio.sleep(0.2)
 
-        # Third frame - Three letters
-        text = """<b>
-𝐂𝐇𝐀
-      </b>"""
-        await Client.edit_message_text(message.chat.id, edit.id, text)
-        await asyncio.sleep(0.2)
-
-        # Fourth frame - Four letters
-        text = """<b>
-
-      </b>"""
-        await Client.edit_message_text(message.chat.id, edit.id, text)
-        await asyncio.sleep(0.2)
-
-        # Fifth frame - Five letters
-        text = """<b>
-𝐂𝐇𝐀𝐑
-      </b>"""
-        await Client.edit_message_text(message.chat.id, edit.id, text)
-        await asyncio.sleep(0.2)
-
-        # Sixth frame - Six letters
-        text = """<b>
-𝐂𝐇𝐀𝐑𝐆
-      </b>"""
-        await Client.edit_message_text(message.chat.id, edit.id, text)
-        await asyncio.sleep(0.2)
-
-        # Seventh frame - Seven letters
-        text = """<b>
-𝐂𝐇𝐀𝐑𝐆𝐄
-      </b>"""
-        await Client.edit_message_text(message.chat.id, edit.id, text)
-        await asyncio.sleep(0.2)
-
-        # Eighth frame - Eight letters
-        text = """<b>
-𝐂𝐇𝐀𝐑𝐆𝐄 𝐌
-      </b>"""
-        await Client.edit_message_text(message.chat.id, edit.id, text)
-        await asyncio.sleep(0.2)
-
-        # Ninth frame - Nine letters
-        text = """<b>
-𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀
-      </b>"""
-        await Client.edit_message_text(message.chat.id, edit.id, text)
-        await asyncio.sleep(0.2)
-
-        # Final animation frame - Complete name
-        text = """<b>
-𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒 
-      </b>"""
-        await Client.edit_message_text(message.chat.id, edit.id, text)
-        await asyncio.sleep(0.2)  # Slightly longer pause for the complete name
-
-        # Ninth frame - Nine letters
-        text = """<b>
-𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓
-      </b>"""
-        await Client.edit_message_text(message.chat.id, edit.id, text)
-        await asyncio.sleep(0.2)
-
-        # Ninth frame - Nine letters
-        text = """<b>
-𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄
-      </b>"""
-        await Client.edit_message_text(message.chat.id, edit.id, text)
-        await asyncio.sleep(0.2)
-
-        # Ninth frame - Nine letters
-        text = """<b>
-𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑
-      </b>"""
-        await Client.edit_message_text(message.chat.id, edit.id, text)
-        await asyncio.sleep(0)
-
+except Exception as e:
+    await message.reply_text(f"⚠️ Animation Error: {e}")
+    
         text = f"""
 <b>🌟 𝗛𝗲𝗹𝗹𝗼 <a href="tg://user?id={message.from_user.id}">{message.from_user.first_name}</a>!</b>
 
@@ -935,3 +840,4 @@ async def callback_query(Client, CallbackQuery):
             text=CHARGE_TEXT,
             reply_markup=InlineKeyboardMarkup(CHARGE_BUTTON)
         )
+
