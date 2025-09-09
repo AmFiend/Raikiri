@@ -107,7 +107,7 @@ async def cmd_start(Client, message):
         ]
 
         # Send video from URL
-        video_url = "https://example.com/start.mp4"  # <-- replace with your video link
+        video_url = "https://files.catbox.moe/tisrpj.mp4"  # <-- replace with your video link
         await client.send_video(
             chat_id=message.chat.id,
             video=video_url,
@@ -864,6 +864,7 @@ async def callback_query(Client, CallbackQuery):
             text=CHARGE_TEXT,
             reply_markup=InlineKeyboardMarkup(CHARGE_BUTTON)
         )
+
 
 
 
