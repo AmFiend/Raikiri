@@ -10,7 +10,7 @@ from FUNC.defs import *
 import json
 
 
-async def create_shopify_charge(fullz, session):
+async def create_cvv_charge(fullz, session):
     try:
         cc, mes, ano, cvv = fullz.split("|")
         cc1 = cc[:4]
