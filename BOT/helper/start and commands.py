@@ -4,57 +4,87 @@ from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from FUNC.defs import *
 from FUNC.usersdb_func import *
-from datetime import date
 
 
 @Client.on_message(filters.command("cmds", [".", "/"]))
 async def cmd_scr(client, message):
-    try:
-        WELCOME_TEXT = f"""
+    try:
+        WELCOME_TEXT = f"""
 <b>𝗛𝗲𝗹𝗹𝗼 <a href="tg://user?id={message.from_user.id}"> {message.from_user.first_name}</a> !
 
 𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑  𝗛𝗮𝘀 𝗽𝗹𝗲𝗻𝘁𝘆 𝗼𝗳 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀. 𝗪𝗲 𝗛𝗮𝘃𝗲 𝗔𝘂𝘁𝗵 𝗚𝗮𝘁𝗲𝘀, 𝗖𝗵𝗮𝗿𝗴𝗲 𝗚𝗮𝘁𝗲𝘀, 𝗧𝗼𝗼𝗹𝘀, 𝗔𝗻𝗱 𝗢𝘁𝗵𝗲𝗿 𝗧𝗵𝗶𝗻𝗴𝘀.
 
 𝗖𝗹𝗶𝗰𝗸 𝗘𝗮𝗰𝗵 𝗼𝗳 𝗧𝗵𝗲𝗺 𝗕𝗲𝗹𝗼𝘄 𝘁𝗼 𝗞𝗻𝗼𝘄 𝗧𝗵𝗲𝗺 𝗕𝗲𝘁𝘁𝗲𝗿.</b>
-        """
-        WELCOME_BUTTONS = [
-            [
-                InlineKeyboardButton("AUTH/B3/VBV", callback_data="AUTH"),
-                InlineKeyboardButton("CHARGE", callback_data="CHARGE")
-            ],
-            [
-                InlineKeyboardButton("TOOLS", callback_data="TOOLS"),
-                InlineKeyboardButton("HELPER", callback_data="HELPER")
-            ],
-            [
-                InlineKeyboardButton("Close", callback_data="close")
-            ]
-        ]
-        await message.reply(
-            text=WELCOME_TEXT,
-            reply_markup=InlineKeyboardMarkup(WELCOME_BUTTONS))
+        """
+        WELCOME_BUTTONS = [
+            [
+                InlineKeyboardButton("AUTH/B3/VBV", callback_data="AUTH"),
+                InlineKeyboardButton("CHARGE", callback_data="CHARGE")
+            ],
+            [
+                InlineKeyboardButton("TOOLS", callback_data="TOOLS"),
+                InlineKeyboardButton("HELPER", callback_data="HELPER")
+            ],
+            [
+                InlineKeyboardButton("Close", callback_data="close")
+            ]
+        ]
+        await message.reply(
+            text=WELCOME_TEXT,
+            reply_markup=InlineKeyboardMarkup(WELCOME_BUTTONS))
 
-    except Exception:
-        import traceback
-        await error_log(traceback.format_exc())
+    except Exception:
+        import traceback
+        await error_log(traceback.format_exc())
+
+
+async def callback_command(client, message):
+    try:
+        WELCOME_TEXT = f"""
+<b>𝗛𝗲𝗹𝗹𝗼 𝗨𝘀𝗲𝗿!
+
+𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑  𝗛𝗮𝘀 𝗽𝗹𝗲𝗻𝘁𝘆 𝗼𝗳 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀. 𝗪𝗲 𝗛𝗮𝘃𝗲 𝗔𝘂𝘁𝗵 𝗚𝗮𝘁𝗲𝘀, 𝗖𝗵𝗮𝗿𝗴𝗲 𝗚𝗮𝘁𝗲𝘀, 𝗧𝗼𝗼𝗹𝘀, 𝗔𝗻𝗱 𝗢𝘁𝗵𝗲𝗿 𝗧𝗵𝗶𝗻𝗴𝘀.
+
+𝗖𝗹𝗶𝗰𝗸 𝗘𝗮𝗰𝗵 𝗼𝗳 𝗧𝗵𝗲𝗺 𝗕𝗲𝗹𝗼𝘄 𝘁𝗼 𝗞𝗻𝗼𝘄 𝗧𝗵𝗲𝗺 𝗕𝗲𝘁𝘁𝗲𝗿.</b>
+        """
+        WELCOME_BUTTONS = [
+            [
+                InlineKeyboardButton("AUTH/B3/VBV", callback_data="AUTH"),
+                InlineKeyboardButton("CHARGE", callback_data="CHARGE")
+            ],
+            [
+                InlineKeyboardButton("TOOLS", callback_data="TOOLS"),
+                InlineKeyboardButton("HELPER", callback_data="HELPER")
+            ],
+            [
+                InlineKeyboardButton("Close", callback_data="close")
+            ]
+        ]
+        await message.reply(
+            text=WELCOME_TEXT,
+            reply_markup=InlineKeyboardMarkup(WELCOME_BUTTONS))
+
+    except Exception:
+        import traceback
+        await error_log(traceback.format_exc())
 
 
 @Client.on_message(filters.command("start", [".", "/"]))
 async def cmd_start(Client, message):
-    try:
-        text = """<b>
-CHARGE MASTER ■□□□
-      </b>"""
-        edit = await message.reply_text(text, message.id)
-        await asyncio.sleep(0.5)
+    try:
+        text = """<b>
+𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑 ■□□□
+      </b>"""
+        edit = await message.reply_text(text, message.id)
+        await asyncio.sleep(0.5)
 
-        text = """<b>
-CHARGE MASTER ■■■■
-     </b> """
-        edit = await Client.edit_message_text(message.chat.id, edit.id, text)
-        await asyncio.sleep(0.5)
+        text = """<b>
+𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑 ■■■■
+     </b> """
+        edit = await Client.edit_message_text(message.chat.id, edit.id, text)
+        await asyncio.sleep(0.5)
 
-        text = f"""
+        text = f"""
 <b>🌟 𝗛𝗲𝗹𝗹𝗼 <a href="tg://user?id={message.from_user.id}">{message.from_user.first_name}</a>!</b>
 
 <b>𝗪𝗲𝗹𝗰𝗼𝗺𝗲 𝗮𝗯𝗼𝗮𝗿𝗱 𝘁𝗵𝗲 𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑! 🚀</b>
@@ -635,7 +665,7 @@ async def callback_query(Client, CallbackQuery):
         TOOLS_TEXT = f"""
 <b>𝗛𝗲𝗹𝗹𝗼 𝗨𝘀𝗲𝗿!
 
-𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑 𝗧𝗼𝗼𝗹𝘀.
+ᴍᴀꜱᴛᴇʀ ᴄʜᴇᴄᴋᴇʀ ᴋᴇ 𝗧𝗼𝗼𝗹𝘀.
 
 𝗖𝗹𝗶𝗰𝗸 𝗼𝗻 𝗲𝗮𝗰𝗵 𝗼𝗳 𝘁𝗵𝗲𝗺 𝗯𝗲𝗹𝗼𝘄 𝘁𝗼 𝗴𝗲𝘁 𝘁𝗼 𝗸𝗻𝗼𝘄 𝘁𝗵𝗲𝗺 𝗯𝗲𝘁𝘁𝗲𝗿.</b>
     """
@@ -771,7 +801,7 @@ async def callback_query(Client, CallbackQuery):
         HELPER_TEXT = f"""
 <b>𝗛𝗲𝗹𝗹𝗼 𝗨𝘀𝗲𝗿!
 
-𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑 𝗛𝗲𝗹𝗽𝗲𝗿.
+ᴍᴀꜱᴛᴇʀ ᴄʜᴇᴄᴋᴇʀ ᴋᴇ 𝗛𝗲𝗹𝗽𝗲𝗿.
 
 𝗖𝗹𝗶𝗰𝗸 𝗼𝗻 𝗲𝗮𝗰𝗵 𝗼𝗳 𝘁𝗵𝗲𝗺 𝗯𝗲𝗹𝗼𝘄 𝘁𝗼 𝗴𝗲𝘁 𝘁𝗼 𝗸𝗻𝗼𝘄 𝘁𝗵𝗲𝗺 𝗯𝗲𝘁𝘁𝗲𝗿.</b>
     """
@@ -827,9 +857,3 @@ async def callback_query(Client, CallbackQuery):
             text=CHARGE_TEXT,
             reply_markup=InlineKeyboardMarkup(CHARGE_BUTTON)
         )
-
-
-
-
-
-
