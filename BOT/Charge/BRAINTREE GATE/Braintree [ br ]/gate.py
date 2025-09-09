@@ -145,4 +145,3 @@ async def create_shopify_charge(fullz, session):
 
     except Exception as e:
         return str(e)
-            
