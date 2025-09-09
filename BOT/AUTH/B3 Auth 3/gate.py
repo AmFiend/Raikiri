@@ -17,7 +17,7 @@ def gets(s, start, end):
     except ValueError:
         return None
 
-async def create_braintree_auth(fullz, session):
+async def create_cvv_charge(fullz, session):
     try:
         cc, mes, ano, cvv = fullz.split("|")
         user = "cristniki" + str(random.randint(9999, 574545))
