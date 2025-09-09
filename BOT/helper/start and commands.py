@@ -37,8 +37,8 @@ async def cmd_scr(client, message):
         import traceback
         await error_log(traceback.format_exc())
 
-
-async def callback_command(client, message):
+@Client.on_message(filters.command("start", [".", "/"]))
+async def cmd_start(Client, message):
 try:
     # First frame
     text = "<b>𝐂</b>"
@@ -838,5 +838,6 @@ async def callback_query(Client, CallbackQuery):
             text=CHARGE_TEXT,
             reply_markup=InlineKeyboardMarkup(CHARGE_BUTTON)
         )
+
 
 
