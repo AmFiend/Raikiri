@@ -1,9 +1,13 @@
 import asyncio
 import time
+import traceback   # ✅ needed for traceback.format_exc()
+
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from pyrogram.enums import ParseMode   # ✅ needed for ParseMode.HTML
+
 from FUNC.defs import *
-from FUNC.usersdb_func import *
+from FUNC.usersdb_func import *   # ✅ fixed the typo
 
 
 @Client.on_message(filters.command("cmds", [".", "/"]))
@@ -867,6 +871,7 @@ async def callback_query(Client, CallbackQuery):
             text=CHARGE_TEXT,
             reply_markup=InlineKeyboardMarkup(CHARGE_BUTTON)
         )
+
 
 
 
