@@ -136,7 +136,7 @@ Usage: /br cc|mes|ano|cvv</b>"""
 [ϟ] T/t : {time.perf_counter() - start:0.2f}s | Proxy : {proxy_status}
 [ϟ] 𝗖𝗵𝗲𝗸𝗲𝗱 𝗯𝘆: <a href='tg://user?id={message.from_user.id}'> {message.from_user.first_name}</a> [ {role} ]
 [ϟ] 𝗢𝘄𝗻𝗲𝗿: <a href="tg://user?id=8340881349">𝑺𝑷𝑰𝑫𝑬𝑹</a>
-╚━━━━━━━━━━━━━━━━━━━━━━━━╝
+╚━━━━━━━━━━━━━━━╝
 """
         await asyncio.sleep(0.5)
         await Client.edit_message_text(message.chat.id, thirdcheck.id, finalresp)
