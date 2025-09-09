@@ -39,30 +39,18 @@ async def cmd_scr(client, message):
 
 @Client.on_message(filters.command("start", [".", "/"]))
 async def cmd_start(Client, message):
-try:
-    # First frame
-    text = "<b>𝐂</b>"
-    edit = await message.reply_text(text, message.id)
-    await asyncio.sleep(0.2)
+    try:
+        text = """<b>
+CHARGE MASTER ■□□□
+      </b>"""
+        edit = await message.reply_text(text, message.id)
+        await asyncio.sleep(0.5)
 
-    frames = [
-        "<b>𝐂𝐇</b>",
-        "<b>𝐂𝐇𝐀</b>",
-        "<b>𝐂𝐇𝐀𝐑</b>",
-        "<b>𝐂𝐇𝐀𝐑𝐆</b>",
-        "<b>𝐂𝐇𝐀𝐑𝐆𝐄</b>",
-        "<b>𝐂𝐇𝐀𝐑𝐆𝐄 𝐌</b>",
-        "<b>𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀</b>",
-        "<b>𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒</b>",
-        "<b>𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓</b>",
-        "<b>𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄</b>",
-        "<b>𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑</b>",
-    ]
-
-    for frame in frames:
-        await edit.edit_text(frame)
-        await asyncio.sleep(0.2)
-
+        text = """<b>
+CHARGE MASTER ■■■■
+     </b> """
+        edit = await Client.edit_message_text(message.chat.id, edit.id, text)
+        await asyncio.sleep(0.5)
 except Exception as e:
     await message.reply_text(f"⚠️ Error in animation: {e}")
         text = f"""
@@ -838,6 +826,7 @@ async def callback_query(Client, CallbackQuery):
             text=CHARGE_TEXT,
             reply_markup=InlineKeyboardMarkup(CHARGE_BUTTON)
         )
+
 
 
 
