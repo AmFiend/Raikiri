@@ -114,12 +114,11 @@ async def cmd_start(Client, message):
             reply_markup=InlineKeyboardMarkup(buttons)
         )
 
-        except Exception as e:
+            except Exception as e:
         import traceback
         await message.reply(f"❌ Error: {e}")
-        # Optional: log the full traceback somewhere
         await error_log(traceback.format_exc())
-    
+
 async def register_user(user_id, username, antispam_time, reg_at):
     info = {
         "id": f"{user_id}",
@@ -865,4 +864,5 @@ async def callback_query(Client, CallbackQuery):
             text=CHARGE_TEXT,
             reply_markup=InlineKeyboardMarkup(CHARGE_BUTTON)
         )
+
 
