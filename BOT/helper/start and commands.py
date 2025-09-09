@@ -87,12 +87,7 @@ async def cmd_start(Client, message):
         # Final welcome message as caption
         caption = f"""
 <b>🌟 Hello <a href="tg://user?id={message.from_user.id}">{message.from_user.first_name}</a>!</b>
-
 <b>Welcome aboard the 𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑 🚀</b>
-
-<b>I’m your bot, packed with gates, tools & commands to boost your experience.</b>
-
-<b>👇 Tap <i>Register</i> to begin or <i>Commands</i> to explore.</b>
 """
 
         # Inline keyboard
@@ -872,6 +867,7 @@ async def callback_query(Client, CallbackQuery):
             text=CHARGE_TEXT,
             reply_markup=InlineKeyboardMarkup(CHARGE_BUTTON)
         )
+
 
 
 
