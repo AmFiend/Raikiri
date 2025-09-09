@@ -94,9 +94,9 @@ async def cmd_start(Client, message):
 <b>👇 𝗧𝗮𝗽 𝘁𝗵𝗲 <i>𝗥𝗲𝗴𝗶𝘀𝘁𝗲𝗿</i> 𝗯𝘂𝘁𝘁𝗼𝗻 𝘁𝗼 𝗯𝗲𝗴𝗶𝗻 𝘆𝗼𝘂𝗿 𝗷𝗼𝘂𝗿𝗻𝗲𝘆.</b>
 <b>👇 𝗗𝗶𝘀𝗰𝗼𝘃𝗲𝗿 𝗺𝘆 𝗳𝘂𝗹𝗹 𝗰𝗮𝗽𝗮𝗯𝗶𝗹𝗶𝘁𝗶𝗲𝘀 𝗯𝘆   
 𝘁𝗮𝗽𝗽𝗶𝗻𝗴 𝘁𝗵𝗲 <i>𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀</i> 𝗯𝘂𝘁𝘁𝗼𝗻.</b>
-        """
 
-        WELCOME_BUTTONS = [
+"""
+        WELCOME_BUTTON = [
             [
                 InlineKeyboardButton("Register", callback_data="register"),
                 InlineKeyboardButton("Commands", callback_data="cmds")
@@ -105,20 +105,13 @@ async def cmd_start(Client, message):
                 InlineKeyboardButton("Close", callback_data="close")
             ]
         ]
+        await Client.edit_message_text(message.chat.id, edit.id, text, reply_markup=InlineKeyboardMarkup(WELCOME_BUTTON))
 
-        # Send video from URL
-        video_url = "https://files.catbox.moe/tisrpj.mp4"  # <-- replace with your video link
-        await client.send_video(
-            chat_id=message.chat.id,
-            video=video_url,
-            caption=text,
-            reply_markup=InlineKeyboardMarkup(WELCOME_BUTTONS)
-        )
-
-    except Exception as e:
+    except:
         import traceback
-        await message.reply(f"❌ Error: {e}")
         await error_log(traceback.format_exc())
+
+
 async def register_user(user_id, username, antispam_time, reg_at):
     info = {
         "id": f"{user_id}",
@@ -864,8 +857,3 @@ async def callback_query(Client, CallbackQuery):
             text=CHARGE_TEXT,
             reply_markup=InlineKeyboardMarkup(CHARGE_BUTTON)
         )
-
-
-
-
-
