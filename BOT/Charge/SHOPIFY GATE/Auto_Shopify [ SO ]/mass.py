@@ -134,7 +134,7 @@ Number Of CC Check : [{len(ccs)} / 25]
 ⚜️ 𝑷𝒓𝒐𝒙𝒚 -» {proxy_status}
 ⚜️ 𝑻𝒊𝒎𝒆 𝑺𝒑𝒆𝒏𝒕 -» {time.perf_counter() - start:0.2f} seconds
 ⚜️ 𝑪𝒉𝒆𝒄𝒌𝒆𝒅 𝒃𝒚: <a href='tg://user?id={message.from_user.id}'> {message.from_user.first_name}</a> [ {role} ]
-⚜️ 𝑶𝒘𝒏𝒆𝒓: <a href="tg://user?id=6622603977">𝑵𝒂𝒊𝒓𝒐𝒃𝒊𝒂𝒏𝒈𝒐𝒐𝒏</a>
+⚜️ 𝑶𝒘𝒏𝒆𝒓: <a href="tg://user?id=8340881349">𝑺𝑷𝑰𝑫𝑬𝑹</a>
 ╚━━━━━━「𝐀𝐏𝐏𝐑𝐎𝐕𝐄𝐃 𝐂𝐇𝐄𝐂𝐊𝐄 𝐑」━━━━━━╝
         """
         await Client.edit_message_text(message.chat.id, nov.id, text)

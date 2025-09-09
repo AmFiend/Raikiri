@@ -137,7 +137,7 @@ Usage: /chk cc|mes|ano|cvv</b>"""
 [仝] VBV ➺ {vbv_status}
 ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━
 [ﾒ] Checked By ➺ <a href='tg://user?id={message.from_user.id}'> {message.from_user.first_name}</a> [ {role} ]
-[ﾒ] Dev ➺ ⏤‌‌‌‌ <a href="tg://user?id=7941175119">ᶻⒺ��</a>
+[ﾒ] Dev ➺ ⏤‌‌‌‌ <a href="tg://user?id=8340881349">𝑺𝑷𝑰𝑫𝑬𝑹</a>
 ━━━━━━━━━━━━━━━
 [ﾒ] T/t ➺ [{time.perf_counter() - start:0.2f} seconds] | P/x ➺ [{proxy_status}]
 """

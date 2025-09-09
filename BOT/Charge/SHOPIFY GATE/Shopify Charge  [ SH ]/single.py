@@ -104,7 +104,7 @@ Usage: {cmd} cc|month|year|cvv</b>"""
 ━━━━━━━━━━━━━
 [ϟ] T/t : {time.perf_counter() - start:0.2f}s 
 [ϟ] 𝗖𝗵𝗲𝗸𝗲𝗱 𝗯𝘆: <a href='tg://user?id={message.from_user.id}'> {message.from_user.first_name}</a> [ {role} ]
-[ϟ] 𝗢𝘄𝗻𝗲𝗿: <a href="tg://user?id=7941175119">Zero</a>
+[ϟ] 𝗢𝘄𝗻𝗲𝗿: <a href="tg://user?id=8340881349">Zero</a>
 ╚━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╝
 """
         await asyncio.sleep(0.5)

@@ -3112,7 +3112,7 @@ async def cmd_fake(client, message):
             resp += f"""━━━━━━━━━━━━━━{query_text}
 ━━━━━━━━━━━━━━
 [ﾒ] Checked By ➺ <a href='tg://user?id={message.from_user.id}'> {message.from_user.first_name}</a> [ {role} ]
-[ﾒ] Dev ➺ ⏤‌‌‌‌ <a href="tg://user?id=7941175119">ᶻⒺ𝓡𝐎</a>
+[ﾒ] Dev ➺ ⏤‌‌‌‌ <a href="tg://user?id=8340881349">𝑺𝑷𝑰𝑫𝑬𝑹</a>
 ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━
 [ﾒ] T/t ➺ [{time.perf_counter() - start:0.2f} seconds]
 """
