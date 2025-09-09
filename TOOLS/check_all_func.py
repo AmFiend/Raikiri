@@ -45,7 +45,7 @@ async def check_all_thing(Client , message):
 𝗣𝗿𝗲𝗺𝗶𝘂𝗺 𝗨𝘀𝗲𝗿𝘀 𝗥𝗲𝗾𝘂𝗶𝗿𝗲𝗱 ⚠️
 𝗠𝗲𝘀𝘀𝗮𝗴𝗲: 𝗢𝗻𝗹𝘆 𝗣𝗿𝗲𝗺𝗶𝘂𝗺 𝗨𝘀𝗲𝗿𝘀 𝗮𝗿𝗲 𝗔𝗹𝗹𝗼𝘄𝗲𝗱 𝘁𝗼 𝘂𝘀𝗲 𝗯𝗼𝘁 𝗶𝗻 𝗣𝗲𝗿𝘀𝗼𝗻𝗮𝗹 . 𝗔𝗹𝘁𝗵𝗼𝘂𝗴𝗵 𝗬𝗼𝘂 𝗖𝗮𝗻 𝗨𝘀𝗲 𝗕𝗼𝘁 𝗙𝗿𝗲𝗲 𝗛𝗲𝗿𝗲
 
- 👉 https://t.me/+RyKTUttHpLRlZjk0
+ 👉 https://t.me/+W1ZVCjwjbvs5MTll
 
 𝗕𝘂𝘆 𝗣𝗿𝗲𝗺𝗶𝘂𝗺 𝗣𝗹𝗮𝗻 𝗨𝘀𝗶𝗻𝗴 /buy 𝘁𝗼 𝗖𝗼𝗻𝘁𝗶𝗻𝘂𝗲
 </b>"""
@@ -144,7 +144,7 @@ async def check_some_thing(Client , message):
 𝗣𝗿𝗲𝗺𝗶𝘂𝗺 𝗨𝘀𝗲𝗿𝘀 𝗥𝗲𝗾𝘂𝗶𝗿𝗲𝗱 ⚠️
 𝗠𝗲𝘀𝘀𝗮𝗴𝗲: 𝗢𝗻𝗹𝘆 𝗣𝗿𝗲𝗺𝗶𝘂𝗺 𝗨𝘀𝗲𝗿𝘀 𝗮𝗿𝗲 𝗔𝗹𝗹𝗼𝘄𝗲𝗱 𝘁𝗼 𝘂𝘀𝗲 𝗯𝗼𝘁 𝗶𝗻 𝗣𝗲𝗿𝘀𝗼𝗻𝗮𝗹 . 𝗔𝗹𝘁𝗵𝗼𝘂𝗴𝗵 𝗬𝗼𝘂 𝗖𝗮𝗻 𝗨𝘀𝗲 𝗕𝗼𝘁 𝗙𝗿𝗲𝗲 𝗛𝗲𝗿𝗲
 
- 👉 https://t.me/+RyKTUttHpLRlZjk0
+ 👉 https://t.me/+W1ZVCjwjbvs5MTll
 
 𝗕𝘂𝘆 𝗣𝗿𝗲𝗺𝗶𝘂𝗺 𝗣𝗹𝗮𝗻 𝗨𝘀𝗶𝗻𝗴 /buy 𝘁𝗼 𝗖𝗼𝗻𝘁𝗶𝗻𝘂𝗲
 </b>"""
