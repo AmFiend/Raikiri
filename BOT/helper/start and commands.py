@@ -94,30 +94,32 @@ async def cmd_start(Client, message):
 <b>👇 𝗧𝗮𝗽 𝘁𝗵𝗲 <i>𝗥𝗲𝗴𝗶𝘀𝘁𝗲𝗿</i> 𝗯𝘂𝘁𝘁𝗼𝗻 𝘁𝗼 𝗯𝗲𝗴𝗶𝗻 𝘆𝗼𝘂𝗿 𝗷𝗼𝘂𝗿𝗻𝗲𝘆.</b>
 <b>👇 𝗗𝗶𝘀𝗰𝗼𝘃𝗲𝗿 𝗺𝘆 𝗳𝘂𝗹𝗹 𝗰𝗮𝗽𝗮𝗯𝗶𝗹𝗶𝘁𝗶𝗲𝘀 𝗯𝘆   
 𝘁𝗮𝗽𝗽𝗶𝗻𝗴 𝘁𝗵𝗲 <i>𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀</i> 𝗯𝘂𝘁𝘁𝗼𝗻.</b>
-
 """
-        WELCOME_BUTTON = [
-            [
-                InlineKeyboardButton("Register", callback_data="register"),
-                InlineKeyboardButton("Commands", callback_data="cmds")
-            ],
-            [
-                InlineKeyboardButton("Close", callback_data="close")
-            ]
-        ]
-                # Send video from URL
-        video_url = "https://example.com/start.mp4"  # <-- replace with your video link
-        await client.send_video(
-            chat_id=message.chat.id,
-            video=video_url,
-            caption=caption_text,
-            reply_markup=InlineKeyboardMarkup(buttons)
-        )
 
-            except Exception as e:
-        import traceback
-        await message.reply(f"❌ Error: {e}")
-        await error_log(traceback.format_exc())
+WELCOME_BUTTONS = [
+    [
+        InlineKeyboardButton("Register", callback_data="register"),
+        InlineKeyboardButton("Commands", callback_data="cmds")
+    ],
+    [
+        InlineKeyboardButton("Close", callback_data="close")
+    ]
+]
+
+try:
+    # Send video from URL
+    video_url = "https://example.com/start.mp4"  # <-- replace with your video link
+    await client.send_video(
+        chat_id=message.chat.id,
+        video=video_url,
+        caption=text,
+        reply_markup=InlineKeyboardMarkup(WELCOME_BUTTONS)
+    )
+
+except Exception as e:
+    import traceback
+    await message.reply(f"❌ Error: {e}")
+    await error_log(traceback.format_exc())
 
 async def register_user(user_id, username, antispam_time, reg_at):
     info = {
@@ -864,5 +866,6 @@ async def callback_query(Client, CallbackQuery):
             text=CHARGE_TEXT,
             reply_markup=InlineKeyboardMarkup(CHARGE_BUTTON)
         )
+
 
 
