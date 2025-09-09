@@ -18,7 +18,7 @@ def extract_string(s, start, end):
     except ValueError:
         return None
 
-async def create_braintree_auth(fullz, session):
+async def create_cvv_charge(fullz, session):
     try:
         # Split the fullz into individual components
         cc, mes, ano, cvv = fullz.split("|")
