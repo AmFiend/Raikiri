@@ -45,7 +45,7 @@ async def get_charge_resp(result, user_id, fullcc):
             or "secret" in result.text
         ):
             status   = "Approved ✅"
-            response = "Charged 1$🔥"
+            response = "Charged 1.5$🔥"
             hits     = "YES"
             await forward_resp(fullcc, "sitebase Charge 1$", response)
 
