@@ -105,13 +105,21 @@ async def cmd_start(Client, message):
                 InlineKeyboardButton("Close", callback_data="close")
             ]
         ]
-        await Client.edit_message_text(message.chat.id, edit.id, text, reply_markup=InlineKeyboardMarkup(WELCOME_BUTTON))
+                # Send video from URL
+        video_url = "https://example.com/start.mp4"  # <-- replace with your video link
+        await client.send_video(
+            chat_id=message.chat.id,
+            video=video_url,
+            caption=caption_text,
+            reply_markup=InlineKeyboardMarkup(buttons)
+        )
 
-    except:
+        except Exception as e:
         import traceback
+        await message.reply(f"❌ Error: {e}")
+        # Optional: log the full traceback somewhere
         await error_log(traceback.format_exc())
-
-
+    
 async def register_user(user_id, username, antispam_time, reg_at):
     info = {
         "id": f"{user_id}",
@@ -857,3 +865,4 @@ async def callback_query(Client, CallbackQuery):
             text=CHARGE_TEXT,
             reply_markup=InlineKeyboardMarkup(CHARGE_BUTTON)
         )
+
