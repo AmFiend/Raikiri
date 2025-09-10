@@ -81,7 +81,7 @@ async def callback_handler(client, cq):
         # COMMANDS MENU
         elif data == "cmds":
             caption = """
-𝙒𝙚𝙡𝙘𝙤𝙢𝙚 𝙩𝙤 𝘼𝙠𝙖𝙩𝙨𝙪𝙠𝙞 -» >_
+𝙒𝙚𝙡𝙘𝙤𝙢𝙚 𝙩𝙤 𝘾𝙝𝙖𝙧𝙜𝙚 𝙈𝙖𝙨𝙩𝙚𝙧 -» >_
 
 𝙏𝙤𝙩𝙖𝙡 -» <code>18</code>
 𝙊𝙣 -» <code>12 ✅</code>
@@ -334,6 +334,7 @@ Report Bugs
             parse_mode=ParseMode.HTML
         )
         
+
 
 
 
