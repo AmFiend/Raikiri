@@ -4,6 +4,7 @@ import asyncio
 from pyrogram import Client, filters
 from FUNC.usersdb_func import *
 from FUNC.defs import *
+from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from TOOLS.check_all_func import *
 from TOOLS.getbin import *
 from .response import *
