@@ -111,36 +111,36 @@ async def callback_handler(client, cq):
         elif data == "AUTH":
             caption = """
 <b> 𝙂𝙖𝙩𝙚𝙬𝙖𝙮𝙨 𝘼𝙪𝙩𝙝 </b>
-Braintree Auth 
-𝗖𝗺𝗱: /chk cc|mm|yy|cvv
-𝗟𝗮𝘀𝘁 𝗨𝗽𝗱𝗮𝘁𝗲𝗱: 07/05/2025
-𝗥𝗮𝗻𝗸: Free + Premium
 
-Stripe Auth - 1
-𝗖𝗺𝗱: /au cc|mm|yy|cvv
-𝗟𝗮𝘀𝘁 𝗨𝗽𝗱𝗮𝘁𝗲𝗱: 07/05/2025
-𝗥𝗮𝗻𝗸: Free + Premium
+<b>Braintree Auth</b>
+<code>Cmd: /chk cc|mm|yy|cvv</code>
+Last Updated: 07/05/2025
+Rank: Free + Premium
 
-Vbv 
-𝗖𝗺𝗱: /vbv cc|mm|yy|cvv
-𝗟𝗮𝘀𝘁 𝗨𝗽𝗱𝗮𝘁𝗲𝗱: 22/03/2025
-𝗥𝗮𝗻𝗸: Free + Premium
+<b>Stripe Auth - 1</b>
+<code>Cmd: /au cc|mm|yy|cvv</code>
+Last Updated: 07/05/2025
+Rank: Free + Premium
 
-Square Auth
-𝗖𝗺𝗱: /sq cc|mm|yy|cvv
-𝗟𝗮𝘀𝘁 𝗨𝗽𝗱𝗮𝘁𝗲𝗱: 22/03/2025
-𝗥𝗮𝗻𝗸: Free + Premium
+<b>VBV</b>
+<code>Cmd: /vbv cc|mm|yy|cvv</code>
+Last Updated: 22/03/2025
+Rank: Free + Premium
 
-Clover Auth
-𝗖𝗺𝗱: /vbv cc|mm|yy|cvv
-𝗟𝗮𝘀𝘁 𝗨𝗽𝗱𝗮𝘁𝗲𝗱: 22/03/2025
-𝗥𝗮𝗻𝗸: Free + Premium
+<b>Square Auth</b>
+<code>Cmd: /sq cc|mm|yy|cvv</code>
+Last Updated: 22/03/2025
+Rank: Free + Premium
 
-Braintree Auth 3
-𝗖𝗺𝗱: /b33 cc|mm|yy|cvv
-𝗟𝗮𝘀𝘁 𝗨𝗽𝗱𝗮𝘁𝗲𝗱: 22/03/2025
-𝗥𝗮𝗻𝗸: Free + Premium
+<b>Clover Auth</b>
+<code>Cmd: /clv cc|mm|yy|cvv</code>
+Last Updated: 22/03/2025
+Rank: Free + Premium
 
+<b>Braintree Auth 3</b>
+<code>Cmd: /b33 cc|mm|yy|cvv</code>
+Last Updated: 22/03/2025
+Rank: Free + Premium
 """
             buttons = InlineKeyboardMarkup(
                 [[InlineKeyboardButton("⬅ Back", callback_data="cmds")]]
@@ -334,6 +334,7 @@ Report Bugs
             parse_mode=ParseMode.HTML
         )
         
+
 
 
 
