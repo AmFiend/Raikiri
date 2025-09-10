@@ -140,22 +140,25 @@ Usage: /au cc|mes|ano|cvv</b>"""
 [ﾒ] Checked By ➺ <a href='tg://user?id={message.from_user.id}'> {message.from_user.first_name}</a> [ {role} ]
 [ﾒ] Dev ➺ ⏤‌‌‌‌ <a href="tg://user?id=8340881349">𝑺𝑷𝑰𝑫𝑬𝑹</a>
 ━━━━━━━━━━━━━━━
-[ﾒ] T/t ➺ [{time.perf_counter() - start:0.2f} seconds] | P/x ➺ [{proxy_status}]
-"""
+[ﾒ] T/t ➺ [{time.perf_counter() - start:0.2f} seconds] | P/x ➺ [{proxy_status}]"
+
         buttons = InlineKeyboardMarkup(
+            [
                 [
-                    [
-                        InlineKeyboardButton("𝘼𝙪𝙩𝙝", callback_data="AUTH"),
-                        InlineKeyboardButton("𝘾𝙝𝙖𝙧𝙜𝙚𝙙", callback_data="CHARGE")
-                    ],
+                    InlineKeyboardButton("𝘼𝙪𝙩𝙝", callback_data="AUTH"),
+                    InlineKeyboardButton("𝘾𝙝𝙖𝙧𝙜𝙚𝙙", callback_data="CHARGE")
                 ]
-                    
+            ]
+        )
+
         await asyncio.sleep(0.5)
         await Client.edit_message_text(message.chat.id, thirdcheck.id, finalresp)
         await setantispamtime(user_id)
         await deductcredit(user_id)
+
         if status == "Approved ✅":
             await sendcc(finalresp, session)
+
         await session.aclose()
 
     except Exception as e:
