@@ -24,6 +24,7 @@ async def cmd_start(client, message):
                 [
                     InlineKeyboardButton("📌 Register", callback_data="register"),
                     InlineKeyboardButton("⚙ Commands", callback_data="cmds")
+                    InlineKeyboardButton("Helper", callback_data="open_helper")
                 ],
                 [InlineKeyboardButton("❌ Close", callback_data="close")]
             ]
@@ -225,4 +226,5 @@ Braintree Auth 3
             parse_mode=ParseMode.HTML
         )
         
+
 
