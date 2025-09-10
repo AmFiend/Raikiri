@@ -93,11 +93,11 @@ async def callback_handler(client, cq):
             buttons = InlineKeyboardMarkup(
                 [
                     [
-                        InlineKeyboardButton("🔑 AUTH", callback_data="AUTH"),
-                        InlineKeyboardButton("⚡ CHARGE", callback_data="CHARGE")
+                        InlineKeyboardButton("𝘼𝙪𝙩𝙝", callback_data="AUTH"),
+                        InlineKeyboardButton("𝘾𝙝𝙖𝙧𝙜𝙚𝙙", callback_data="CHARGE")
                     ],
                     [
-                        InlineKeyboardButton("🛠 TOOLS", callback_data="TOOLS"),
+                        InlineKeyboardButton("𝙏𝙤𝙤𝙡𝙨 🛠", callback_data="TOOLS"),
                         InlineKeyboardButton("🤝 HELPER", callback_data="HELPER")
                     ],
                     [
@@ -334,6 +334,7 @@ Report Bugs
             parse_mode=ParseMode.HTML
         )
         
+
 
 
 
