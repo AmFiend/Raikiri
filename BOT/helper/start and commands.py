@@ -112,33 +112,33 @@ async def callback_handler(client, cq):
             caption = """
 <b> 𝙂𝙖𝙩𝙚𝙬𝙖𝙮𝙨 𝘼𝙪𝙩𝙝 </b>
 
-<b>Braintree Auth</b>
-<code>Cmd: /chk cc|mm|yy|cvv</code>
+ Braintree Auth
+Cmd: /chk cc|mm|yy|cvv
 Last Updated: 07/05/2025
 Rank: Free + Premium
 
-<b>Stripe Auth - 1</b>
-<code>Cmd: /au cc|mm|yy|cvv</code>
+ Stripe Auth - 1
+Cmd: /au cc|mm|yy|cvv
 Last Updated: 07/05/2025
 Rank: Free + Premium
 
-<b>VBV</b>
-<code>Cmd: /vbv cc|mm|yy|cvv</code>
+ VBV
+Cmd: /vbv cc|mm|yy|cvv
 Last Updated: 22/03/2025
 Rank: Free + Premium
 
-<b>Square Auth</b>
-<code>Cmd: /sq cc|mm|yy|cvv</code>
+ Square Auth
+Cmd: /sq cc|mm|yy|cvv
 Last Updated: 22/03/2025
 Rank: Free + Premium
 
-<b>Clover Auth</b>
-<code>Cmd: /clv cc|mm|yy|cvv</code>
+ Clover Auth</b>
+Cmd: /cl cc|mm|yy|cvv
 Last Updated: 22/03/2025
 Rank: Free + Premium
 
-<b>Braintree Auth 3</b>
-<code>Cmd: /b33 cc|mm|yy|cvv</code>
+ Braintree Auth 3
+Cmd: /b3 cc|mm|yy|cvv
 Last Updated: 22/03/2025
 Rank: Free + Premium
 """
@@ -334,6 +334,7 @@ Report Bugs
             parse_mode=ParseMode.HTML
         )
         
+
 
 
 
