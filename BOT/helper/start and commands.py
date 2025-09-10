@@ -266,10 +266,10 @@ Report Bugs
                 ]
             )
             with open("menu.mp4", "rb") as video_file:
-        await callback_query.message.edit_caption(
-        caption=caption,
-        parse_mode="HTML",
-        reply_markup=buttons
+               await callback_query.message.edit_caption(
+               caption=caption,
+               parse_mode="HTML",
+               reply_markup=buttons
     )
 
         # HELPER (Page 2)
@@ -334,5 +334,6 @@ Report Bugs
             parse_mode=ParseMode.HTML
         )
         
+
 
 
