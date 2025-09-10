@@ -18,18 +18,16 @@ async def cmd_start(client, message):
 
 <b>👇 Tap <i>Register</i> or <i>Commands</i> to explore.</b>
 """
-buttons = InlineKeyboardMarkup(
-    [
-        [
-            InlineKeyboardButton("📌 Register", callback_data="register"),
-            InlineKeyboardButton("⚙ Commands", callback_data="cmds"),
-            InlineKeyboardButton("Helper", callback_data="open_helper"),
-        ],
-        [
-            InlineKeyboardButton("❌ Close", callback_data="close")
-        ]
-    ]
-)
+
+        buttons = InlineKeyboardMarkup(
+            [
+                [
+                    InlineKeyboardButton("📌 Register", callback_data="register"),
+                    InlineKeyboardButton("⚙ Commands", callback_data="cmds")
+                ],
+                [InlineKeyboardButton("❌ Close", callback_data="close")]
+            ]
+        )
 
         # Send video with welcome caption + buttons
         await message.reply_video(
@@ -83,14 +81,13 @@ async def callback_handler(client, cq):
         # COMMANDS MENU
         elif data == "cmds":
             caption = """
-𝙒𝙚𝙡𝙘𝙤𝙢𝙚 𝙩𝙤 𝘼𝙠𝙖𝙩𝙨𝙪𝙠𝙞 -» >_
+<b>📜 Command Menu</b>
 
-𝙏𝙤𝙩𝙖𝙡 -» <code>18</code>
-𝙊𝙣 -» <code>12 ✅</code>
-𝙊𝙛𝙛 -» <code>4 ❌</code>
-𝙈𝙖𝙣𝙩𝙚𝙣𝙞𝙚𝙣𝙘𝙚 -» <code>2</code>
-
-<code>𝙎𝙚𝙡𝙚𝙘𝙩 𝙩𝙝𝙚 𝙩𝙮𝙥𝙚 𝙤𝙛 𝙜𝙖𝙩𝙚 𝙮𝙤𝙪 𝙬𝙖𝙣𝙩 𝙛𝙤𝙧 𝙮𝙤𝙪𝙧 𝙪𝙨𝙚!</code>
+Choose a category:
+- AUTH
+- CHARGE
+- TOOLS
+- HELPER
 """
             buttons = InlineKeyboardMarkup(
                 [
@@ -114,36 +111,9 @@ async def callback_handler(client, cq):
             caption = """
 <b>🔑 AUTH COMMANDS</b>
 
-Braintree Auth - 1
-𝗖𝗺𝗱: /chk cc|mm|yy|cvv
-𝗟𝗮𝘀𝘁 𝗨𝗽𝗱𝗮𝘁𝗲𝗱: 07/05/2025
-𝗥𝗮𝗻𝗸: Free + Premium
-
-Stripe Auth - 1
-𝗖𝗺𝗱: /au cc|mm|yy|cvv
-𝗟𝗮𝘀𝘁 𝗨𝗽𝗱𝗮𝘁𝗲𝗱: 07/05/2025
-𝗥𝗮𝗻𝗸: Free + Premium
-
-Vbv 
-𝗖𝗺𝗱: /vbv cc|mm|yy|cvv
-𝗟𝗮𝘀𝘁 𝗨𝗽𝗱𝗮𝘁𝗲𝗱: 22/03/2025
-𝗥𝗮𝗻𝗸: Free + Premium
-
-Square Auth
-𝗖𝗺𝗱: /sq cc|mm|yy|cvv
-𝗟𝗮𝘀𝘁 𝗨𝗽𝗱𝗮𝘁𝗲𝗱: 22/03/2025
-𝗥𝗮𝗻𝗸: Free + Premium
-
-Clover Auth
-𝗖𝗺𝗱: /cl cc|mm|yy|cvv
-𝗟𝗮𝘀𝘁 𝗨𝗽𝗱𝗮𝘁𝗲𝗱: 22/03/2025
-𝗥𝗮𝗻𝗸: Free + Premium
-
-Braintree Auth 3
-𝗖𝗺𝗱: /b3 cc|mm|yy|cvv
-𝗟𝗮𝘀𝘁 𝗨𝗽𝗱𝗮𝘁𝗲𝗱: 22/03/2025
-𝗥𝗮𝗻𝗸: Free + Premium
-
+- /auth
+- /vbv
+- /b3
 """
             buttons = InlineKeyboardMarkup(
                 [[InlineKeyboardButton("⬅ Back", callback_data="cmds")]]
@@ -161,30 +131,80 @@ Braintree Auth 3
                 [[InlineKeyboardButton("⬅ Back", callback_data="cmds")]]
             )
 
-        # TOOLS
+        # TOOLS (Page 1)
         elif data == "TOOLS":
             caption = """
-<b>🛠 TOOLS</b>
+<b>🛠 TOOLS (Page 1/2)</b>
 
 - /bin
 - /ccgen
 - /sk
 """
             buttons = InlineKeyboardMarkup(
-                [[InlineKeyboardButton("⬅ Back", callback_data="cmds")]]
+                [
+                    [InlineKeyboardButton("➡ Next", callback_data="TOOLS_PAGE2")],
+                    [InlineKeyboardButton("⬅ Back", callback_data="cmds")]
+                ]
             )
 
-        # HELPER
+        # TOOLS (Page 2)
+        elif data == "TOOLS_PAGE2":
+            caption = """
+<b>🛠 TOOLS (Page 2/2)</b>
+
+- /key
+- /iban
+- /crypto
+"""
+            buttons = InlineKeyboardMarkup(
+                [
+                    [InlineKeyboardButton("⬅ Previous", callback_data="TOOLS")],
+                    [InlineKeyboardButton("⬅ Back", callback_data="cmds")]
+                ]
+            )
+
+
+        # HELPER (Page 1)
         elif data == "HELPER":
             caption = """
-<b>🤝 HELPER COMMANDS</b>
+<b>🤝 HELPER COMMANDS (Page 1)</b>
 
 - /help
 - /about
 """
             buttons = InlineKeyboardMarkup(
-                [[InlineKeyboardButton("⬅ Back", callback_data="cmds")]]
+                [
+                    [InlineKeyboardButton("➡ Next", callback_data="HELPER_PAGE2")],
+                    [InlineKeyboardButton("⬅ Back", callback_data="cmds")]
+                ]
             )
+            with open("menu.mp4", "rb") as video_file:
+                await query.message.edit_caption(
+                    caption=caption,
+                    parse_mode="HTML",
+                    reply_markup=buttons
+                )
+
+        # HELPER (Page 2)
+        elif data == "HELPER_PAGE2":
+            caption = """
+<b>🤝 HELPER COMMANDS (Page 2)</b>
+
+- /support
+- /contact
+"""
+            buttons = InlineKeyboardMarkup(
+                [
+                    [InlineKeyboardButton("⬅ Previous", callback_data="HELPER")],
+                    [InlineKeyboardButton("⬅ Back", callback_data="cmds")]
+                ]
+            )
+            await query.message.edit_caption(
+                caption=caption,
+                parse_mode="HTML",
+                reply_markup=buttons
+            )
+
 
         # BACK TO HOME
         elif data == "home":
@@ -227,8 +247,3 @@ Braintree Auth 3
             parse_mode=ParseMode.HTML
         )
         
-
-
-
-
-
