@@ -81,13 +81,14 @@ async def callback_handler(client, cq):
         # COMMANDS MENU
         elif data == "cmds":
             caption = """
-<b>📜 Command Menu</b>
+𝙒𝙚𝙡𝙘𝙤𝙢𝙚 𝙩𝙤 𝘼𝙠𝙖𝙩𝙨𝙪𝙠𝙞 -» >_
 
-Choose a category:
-- AUTH
-- CHARGE
-- TOOLS
-- HELPER
+𝙏𝙤𝙩𝙖𝙡 -» <code>18</code>
+𝙊𝙣 -» <code>12 ✅</code>
+𝙊𝙛𝙛 -» <code>4 ❌</code>
+𝙈𝙖𝙣𝙩𝙚𝙣𝙞𝙚𝙣𝙘𝙚 -» <code>2 ⚠️</code>
+
+<code>𝙎𝙚𝙡𝙚𝙘𝙩 𝙩𝙝𝙚 𝙩𝙮𝙥𝙚 𝙤𝙛 𝙜𝙖𝙩𝙚 𝙮𝙤𝙪 𝙬𝙖𝙣𝙩 𝙛𝙤𝙧 𝙮𝙤𝙪𝙧 𝙪𝙨𝙚!</code>
 """
             buttons = InlineKeyboardMarkup(
                 [
@@ -109,11 +110,37 @@ Choose a category:
         # AUTH
         elif data == "AUTH":
             caption = """
-<b>🔑 AUTH COMMANDS</b>
+<b> 𝙂𝙖𝙩𝙚𝙬𝙖𝙮𝙨 𝘼𝙪𝙩𝙝 </b>
+Braintree Auth 
+𝗖𝗺𝗱: /chk cc|mm|yy|cvv
+𝗟𝗮𝘀𝘁 𝗨𝗽𝗱𝗮𝘁𝗲𝗱: 07/05/2025
+𝗥𝗮𝗻𝗸: Free + Premium
 
-- /auth
-- /vbv
-- /b3
+Stripe Auth - 1
+𝗖𝗺𝗱: /au cc|mm|yy|cvv
+𝗟𝗮𝘀𝘁 𝗨𝗽𝗱𝗮𝘁𝗲𝗱: 07/05/2025
+𝗥𝗮𝗻𝗸: Free + Premium
+
+Vbv 
+𝗖𝗺𝗱: /vbv cc|mm|yy|cvv
+𝗟𝗮𝘀𝘁 𝗨𝗽𝗱𝗮𝘁𝗲𝗱: 22/03/2025
+𝗥𝗮𝗻𝗸: Free + Premium
+
+Square Auth
+𝗖𝗺𝗱: /sq cc|mm|yy|cvv
+𝗟𝗮𝘀𝘁 𝗨𝗽𝗱𝗮𝘁𝗲𝗱: 22/03/2025
+𝗥𝗮𝗻𝗸: Free + Premium
+
+Clover Auth
+𝗖𝗺𝗱: /vbv cc|mm|yy|cvv
+𝗟𝗮𝘀𝘁 𝗨𝗽𝗱𝗮𝘁𝗲𝗱: 22/03/2025
+𝗥𝗮𝗻𝗸: Free + Premium
+
+Braintree Auth 3
+𝗖𝗺𝗱: /b33 cc|mm|yy|cvv
+𝗟𝗮𝘀𝘁 𝗨𝗽𝗱𝗮𝘁𝗲𝗱: 22/03/2025
+𝗥𝗮𝗻𝗸: Free + Premium
+
 """
             buttons = InlineKeyboardMarkup(
                 [[InlineKeyboardButton("⬅ Back", callback_data="cmds")]]
@@ -122,10 +149,27 @@ Choose a category:
         # CHARGE
         elif data == "CHARGE":
             caption = """
-<b>⚡ CHARGE COMMANDS</b>
+<b>𝙂𝙖𝙩𝙚𝙬𝙖𝙮𝙨 𝘾𝙝𝙖𝙧𝙜𝙚𝙙</b>
 
-- /charge
-- /fastcharge
+Authnet Charge 3$
+𝗖𝗺𝗱: /nt cc|mm|yy|cvv
+𝗟𝗮𝘀𝘁 𝗨𝗽𝗱𝗮𝘁𝗲𝗱: 10/05/2025
+𝗥𝗮𝗻𝗸: Free + Premium
+
+Braintree Charge 5$
+𝗖𝗺𝗱: /cl cc|mm|yy|cvv
+𝗟𝗮𝘀𝘁 𝗨𝗽𝗱𝗮𝘁𝗲𝗱: 21/08/2025
+𝗥𝗮𝗻𝗸: Free + Premium
+
+PayPal Charge 1$
+𝗖𝗺𝗱: /sq cc|mm|yy|cvv
+𝗟𝗮𝘀𝘁 𝗨𝗽𝗱𝗮𝘁𝗲𝗱: 06/08/2025
+𝗥𝗮𝗻𝗸: Free + Premium
+
+SiteBase charge 1$
+𝗖𝗺𝗱: /pp cc|mm|yy|cvv
+𝗟𝗮𝘀𝘁 𝗨𝗽𝗱𝗮𝘁𝗲𝗱: 28/08/2025
+𝗥𝗮𝗻𝗸: Premium
 """
             buttons = InlineKeyboardMarkup(
                 [[InlineKeyboardButton("⬅ Back", callback_data="cmds")]]
@@ -136,9 +180,23 @@ Choose a category:
             caption = """
 <b>🛠 TOOLS (Page 1/2)</b>
 
-- /bin
-- /ccgen
-- /sk
+Bin Info
+𝗖𝗺𝗱: /bin
+
+CC Generator
+𝗖𝗺𝗱: /gen bin
+
+SK Checker
+𝗖𝗺𝗱: /sk sk_live_xxx
+
+Info
+𝗖𝗺𝗱: /info
+
+Ping
+𝗖𝗺𝗱: /ping
+
+User ID
+𝗖𝗺𝗱: /id
 """
             buttons = InlineKeyboardMarkup(
                 [
@@ -152,9 +210,23 @@ Choose a category:
             caption = """
 <b>🛠 TOOLS (Page 2/2)</b>
 
-- /key
-- /iban
-- /crypto
+Credit Balance
+𝗖𝗺𝗱: /credits
+
+CC Scraper
+𝗖𝗺𝗱: /scr channel 100
+
+CC Cleaner
+𝗖𝗺𝗱: /clean (reply to .txt)
+
+Sort CCs
+𝗖𝗺𝗱: /sort (reply to message)
+
+Split CCs
+𝗖𝗺𝗱: /spl (reply to .txt)
+
+Shopify Sites Fetcher
+𝗖𝗺𝗱: /ssc
 """
             buttons = InlineKeyboardMarkup(
                 [
@@ -169,8 +241,23 @@ Choose a category:
             caption = """
 <b>🤝 HELPER COMMANDS (Page 1)</b>
 
-- /help
-- /about
+Register
+𝗖𝗺𝗱: /register
+
+Credit Info
+𝗖𝗺𝗱: /howcrd
+
+Premium Info
+𝗖𝗺𝗱: /howpm
+
+Add Bot to Group
+𝗖𝗺𝗱: /howgp
+
+Buy Premium
+𝗖𝗺𝗱: /buy
+
+Report Bugs
+𝗖𝗺𝗱: /report
 """
             buttons = InlineKeyboardMarkup(
                 [
@@ -190,8 +277,8 @@ Choose a category:
             caption = """
 <b>🤝 HELPER COMMANDS (Page 2)</b>
 
-- /support
-- /contact
+- /claim
+- 🤠 too Tired to code
 """
             buttons = InlineKeyboardMarkup(
                 [
@@ -247,3 +334,4 @@ Choose a category:
             parse_mode=ParseMode.HTML
         )
         
+
