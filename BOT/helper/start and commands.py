@@ -18,16 +18,18 @@ async def cmd_start(client, message):
 
 <b>👇 Tap <i>Register</i> or <i>Commands</i> to explore.</b>
 """
-
-        buttons = InlineKeyboardMarkup(
-            [
-                [
-                    InlineKeyboardButton("📌 Register", callback_data="register"),
-                    InlineKeyboardButton("⚙ Commands", callback_data="cmds")
-                    [InlineKeyboardButton("Helper", callback_data="open_helper")],
-                [InlineKeyboardButton("❌ Close", callback_data="close")]
-            ]
-        )
+buttons = InlineKeyboardMarkup(
+    [
+        [
+            InlineKeyboardButton("📌 Register", callback_data="register"),
+            InlineKeyboardButton("⚙ Commands", callback_data="cmds"),
+            InlineKeyboardButton("Helper", callback_data="open_helper"),
+        ],
+        [
+            InlineKeyboardButton("❌ Close", callback_data="close")
+        ]
+    ]
+)
 
         # Send video with welcome caption + buttons
         await message.reply_video(
@@ -225,6 +227,7 @@ Braintree Auth 3
             parse_mode=ParseMode.HTML
         )
         
+
 
 
 
