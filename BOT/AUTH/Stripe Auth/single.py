@@ -141,6 +141,13 @@ Usage: /au cc|mes|ano|cvv</b>"""
 ━━━━━━━━━━━━━━━
 [ﾒ] T/t ➺ [{time.perf_counter() - start:0.2f} seconds] | P/x ➺ [{proxy_status}]
 """
+        buttons = InlineKeyboardMarkup(
+                [
+                    [
+                        InlineKeyboardButton("𝘼𝙪𝙩𝙝", callback_data="AUTH"),
+                        InlineKeyboardButton("𝘾𝙝𝙖𝙧𝙜𝙚𝙙", callback_data="CHARGE")
+                    ],
+                    )
         await asyncio.sleep(0.5)
         await Client.edit_message_text(message.chat.id, thirdcheck.id, finalresp)
         await setantispamtime(user_id)
