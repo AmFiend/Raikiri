@@ -139,8 +139,8 @@ Usage: /au cc|mes|ano|cvv</b>"""
         buttons = InlineKeyboardMarkup(
             [
                 [
-                    InlineKeyboardButton("𝘼𝙪𝙩𝙝", callback_data="AUTH"),
-                    InlineKeyboardButton("𝘾𝙝𝙖𝙧𝙜𝙚𝙙", callback_data="CHARGE")
+                    InlineKeyboardButton("Group", callback_data="https://t.me/+W1ZVCjwjbvs5MTll"),
+                    InlineKeyboardButton("Owner", callback_data="t.me/spid_3r")
                 ]
             ]
         )
