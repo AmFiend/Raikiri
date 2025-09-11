@@ -85,7 +85,7 @@ async def stripe_mass_auth_cmd(client, message):
                     else:
                         user_results[user_id]["declined"].append(f"<code>{card}</code> → {result['response']}")
 
-                    # Update buttons live
+                    # Live update buttons
                     await msg.edit_reply_markup(
                         InlineKeyboardMarkup([
                             [InlineKeyboardButton(f"✅ Approved [{len(user_results[user_id]['approved'])}]", callback_data=f"show_approved_{user_id}")],
@@ -124,7 +124,7 @@ async def stripe_mass_auth_cmd(client, message):
         import traceback
         await error_log(traceback.format_exc())
 
-# Callback handler to show approved or declined cards
+# Callback handler to show approved or declined cards in block design
 @Client.on_callback_query()
 async def callback_handler(client, cq: CallbackQuery):
     data = cq.data
@@ -134,12 +134,25 @@ async def callback_handler(client, cq: CallbackQuery):
         await cq.answer("No results for you!", show_alert=True)
         return
 
+    # Helper function to format cards in block
+    def format_cards(cards):
+        if not cards:
+            return "No cards found."
+        formatted = "⋆——————✰◦✰◦✰——————⋆\n"
+        formatted += "\n".join(cards) + "\n"
+        formatted += "⋆——————✰◦✰◦✰——————⋆\n"
+        formatted += "- Info: MASTERCARD - DEBIT - GIFT\n"
+        formatted += "- Bank: BANCORP BANK, THE 🏛\n"
+        formatted += "- Country: United States - 🇺🇸\n"
+        formatted += "⋆——————✰◦✰◦✰——————⋆"
+        return formatted
+
     if data.startswith("show_approved"):
         cards = user_results[user_id]["approved"]
-        text = "✅ Approved Cards:\n\n" + "\n".join(cards) if cards else "No approved cards."
-        await cq.message.reply_text(text)
+        text = format_cards([c.split(" → ")[0] for c in cards])  # Only show CC|MM|YY|CVV part
+        await cq.message.reply_text(text, parse_mode="HTML")
     elif data.startswith("show_declined"):
         cards = user_results[user_id]["declined"]
-        text = "❌ Declined Cards:\n\n" + "\n".join(cards) if cards else "No declined cards."
-        await cq.message.reply_text(text)
-                             
+        text = format_cards([c.split(" → ")[0] for c in cards])
+        await cq.message.reply_text(text, parse_mode="HTML")
+                                                                 
