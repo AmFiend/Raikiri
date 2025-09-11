@@ -15,25 +15,22 @@ from TOOLS.getcc_for_mass import *
 user_results = {}
 
 # Process a single card
-async def mchkfunc(fullcc, user_id):
+async def mchkfunc(card, user_id, session):
     retries = 3
     for attempt in range(retries):
         try:
-            proxies = await get_proxy_format()
-            async with httpx.AsyncClient(timeout=30, proxies=proxies, follow_redirects=True) as session:
-                result = await create_cvv_charge(fullcc, session)
-                getresp = await get_charge_resp(result, user_id, fullcc)
-                response = getresp["response"]
-                status = getresp["status"]
-                return {"cc": fullcc, "status": status, "response": response}
+            result = await create_cvv_charge(card, session)
+            resp = await get_charge_resp(result, user_id, card)
+            status = resp["status"]
+            response = resp["response"]
+            return {"cc": card, "status": status, "response": response}
         except Exception:
             import traceback
             await error_log(traceback.format_exc())
             if attempt < retries - 1:
                 await asyncio.sleep(0.5)
-                continue
             else:
-                return {"cc": fullcc, "status": "Declined ❌", "response": "Error/Timeout"}
+                return {"cc": card, "status": "Declined ❌", "response": "Error/Timeout"}
 
 # Mass check command
 @Client.on_message(filters.command("mchk", [".", "/"]))
@@ -75,24 +72,29 @@ async def stripe_mass_auth_cmd(client, message):
         )
 
         start = time.perf_counter()
-        tasks = [mchkfunc(cc, user_id) for cc in ccs]
+        semaphore = asyncio.Semaphore(len(ccs))  # All cards concurrently
 
-        # Process cards asynchronously and update buttons live
-        for coro in asyncio.as_completed(tasks):
-            result = await coro
+        proxies = await get_proxy_format()
+        async with httpx.AsyncClient(timeout=12, proxies=proxies, follow_redirects=True) as session:
 
-            if "Approved" in result["status"]:
-                user_results[user_id]["approved"].append(f"<code>{result['cc']}</code> → {result['response']}")
-            else:
-                user_results[user_id]["declined"].append(f"<code>{result['cc']}</code> → {result['response']}")
+            async def worker(card):
+                async with semaphore:
+                    result = await mchkfunc(card, user_id, session)
+                    if "Approved" in result["status"]:
+                        user_results[user_id]["approved"].append(f"<code>{card}</code> → {result['response']}")
+                    else:
+                        user_results[user_id]["declined"].append(f"<code>{card}</code> → {result['response']}")
 
-            # Update buttons live
-            await msg.edit_reply_markup(
-                InlineKeyboardMarkup([
-                    [InlineKeyboardButton(f"✅ Approved [{len(user_results[user_id]['approved'])}]", callback_data=f"show_approved_{user_id}")],
-                    [InlineKeyboardButton(f"❌ Declined [{len(user_results[user_id]['declined'])}]", callback_data=f"show_declined_{user_id}")]
-                ])
-            )
+                    # Update buttons live
+                    await msg.edit_reply_markup(
+                        InlineKeyboardMarkup([
+                            [InlineKeyboardButton(f"✅ Approved [{len(user_results[user_id]['approved'])}]", callback_data=f"show_approved_{user_id}")],
+                            [InlineKeyboardButton(f"❌ Declined [{len(user_results[user_id]['declined'])}]", callback_data=f"show_declined_{user_id}")]
+                        ])
+                    )
+
+            # Run all workers concurrently
+            await asyncio.gather(*[worker(cc) for cc in ccs])
 
         # Final summary
         proxy_status = "Live ✨"
