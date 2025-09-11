@@ -64,7 +64,7 @@ async def gen_cmd(client, message, edit_msg=None, from_regen=False):
         # Save regen info
         regen_store[user_id] = {"cc": cc, "mes": mes, "ano": ano, "cvv": cvv, "amount": amount}
 
-        delete = await message.reply_text("<b>Generating...</b>", message.id, parse_mode="html")
+        delete = await message.reply_text("<b>Generating...</b>")
         start = time.perf_counter()
 
         getbin = await get_bin_details(cc[:6])
@@ -91,10 +91,10 @@ async def gen_cmd(client, message, edit_msg=None, from_regen=False):
                 f"- 𝐂𝐡𝐞𝐜𝐤𝐞𝐝 - <a href='tg://user?id={message.from_user.id}'> {message.from_user.first_name}</a> [ {role} ]"
             )
             if edit_msg:
-                await edit_msg.edit_text(resp, reply_markup=buttons, parse_mode="html")
+                await edit_msg.edit_text(resp, reply_markup=buttons)
             else:
                 await client.delete_messages(message.chat.id, delete.id)
-                await message.reply_text(resp, message.id, reply_markup=buttons, parse_mode="html")
+                await message.reply_text(resp, reply_markup=buttons)
         else:
             filename = f"downloads/{amount}x_CC_Generated_By_{user_id}.txt"
             with open(filename, "w", encoding="utf-8") as f:
@@ -129,4 +129,4 @@ async def regen_handler(client, cq):
     if user_id not in regen_store:
         return
     await gen_cmd(client, cq.message, edit_msg=cq.message, from_regen=True)
-                
+            
