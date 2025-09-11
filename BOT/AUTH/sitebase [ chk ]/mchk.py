@@ -14,7 +14,7 @@ from TOOLS.getcc_for_mass import *
 # Temporary storage of results per user
 user_results = {}
 
-# Function to process a single card
+# Process a single card
 async def mchkfunc(fullcc, user_id):
     retries = 3
     for attempt in range(retries):
@@ -59,7 +59,7 @@ async def stripe_mass_auth_cmd(client, message):
             return
         ccs = getcc[1]
 
-        # Initialize user results
+        # Initialize results
         user_results[user_id] = {"approved": [], "declined": []}
 
         # Initial message with buttons
@@ -77,9 +77,9 @@ async def stripe_mass_auth_cmd(client, message):
         start = time.perf_counter()
         tasks = [mchkfunc(cc, user_id) for cc in ccs]
 
-        # Process cards asynchronously
-        async for res in asyncio.as_completed(tasks):
-            result = await res
+        # Process cards asynchronously and update buttons live
+        for coro in asyncio.as_completed(tasks):
+            result = await coro
 
             if "Approved" in result["status"]:
                 user_results[user_id]["approved"].append(f"<code>{result['cc']}</code> → {result['response']}")
@@ -94,7 +94,7 @@ async def stripe_mass_auth_cmd(client, message):
                 ])
             )
 
-        # Final summary
+        # Final summary text
         proxy_status = "Live ✨"
         text = (
             f"✅ Finished Mass Check\n"
@@ -115,7 +115,6 @@ async def stripe_mass_auth_cmd(client, message):
             ])
         )
 
-        # Deduct credits and set anti-spam
         await massdeductcredit(user_id, len(ccs))
         await setantispamtime(user_id)
 
@@ -123,7 +122,7 @@ async def stripe_mass_auth_cmd(client, message):
         import traceback
         await error_log(traceback.format_exc())
 
-# Handle button clicks to show approved/declined cards
+# Callback handler to show approved or declined cards
 @Client.on_callback_query()
 async def callback_handler(client, cq: CallbackQuery):
     data = cq.data
@@ -141,4 +140,4 @@ async def callback_handler(client, cq: CallbackQuery):
         cards = user_results[user_id]["declined"]
         text = "❌ Declined Cards:\n\n" + "\n".join(cards) if cards else "No declined cards."
         await cq.message.reply_text(text)
-            
+                                         
