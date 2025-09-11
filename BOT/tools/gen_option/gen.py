@@ -4,10 +4,13 @@ import threading
 import asyncio
 import time
 from pyrogram import Client, filters
+from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from FUNC.usersdb_func import *
 from FUNC.cc_gen import *
 from TOOLS.check_all_func import *
 
+# Store regen info per user
+regen_store = {}
 
 def generate_code_blocks(all_cards):
     code_blocks = ""
@@ -16,12 +19,14 @@ def generate_code_blocks(all_cards):
         code_blocks += f"<code>{card}</code>\n"
     return code_blocks
 
+buttons = InlineKeyboardMarkup(
+    [[InlineKeyboardButton("🔄 Regen", callback_data="regen")]]
+)
 
 @Client.on_message(filters.command("gen", [".", "/"]))
 def multi(client, message):
     t1 = threading.Thread(target=bcall, args=(client, message))
     t1.start()
-
 
 def bcall(client, message):
     loop = asyncio.new_event_loop()
@@ -29,24 +34,25 @@ def bcall(client, message):
     loop.run_until_complete(gen_cmd(client, message))
     loop.close()
 
-async def gen_cmd(client, message):
+async def gen_cmd(client, message, edit_msg=None, from_regen=False):
     try:
         user_id = str(message.from_user.id)
         checkall = await check_all_thing(client, message)
         if not checkall[0]:
             return
-
         role = checkall[1]
 
-        try:
-            ccsdata = message.text.split()[1]
-            cc_parts = ccsdata.split("|")
-            cc = cc_parts[0]
-            mes = cc_parts[1] if len(cc_parts) > 1 else None
-            ano = cc_parts[2] if len(cc_parts) > 2 else None
-            cvv = cc_parts[3] if len(cc_parts) > 3 else None
-        except IndexError:
-            resp = f"""
+        # Parse input
+        if not from_regen:
+            try:
+                ccsdata = message.text.split()[1]
+                cc_parts = ccsdata.split("|")
+                cc = cc_parts[0]
+                mes = cc_parts[1] if len(cc_parts) > 1 else None
+                ano = cc_parts[2] if len(cc_parts) > 2 else None
+                cvv = cc_parts[3] if len(cc_parts) > 3 else None
+            except IndexError:
+                resp = f"""
 Wrong Format ❌
 
 Usage:
@@ -63,14 +69,20 @@ With CVV
 With Custom Amount
 <code>/gen 546775 100</code>
 """
-            await message.reply_text(resp, message.id)
-            return
+                await message.reply_text(resp, message.id)
+                return
 
-        amount = 10  # Default amount
-        try:
-            amount = int(message.text.split()[2])
-        except (IndexError, ValueError):
-            pass
+            try:
+                amount = int(message.text.split()[2])
+            except (IndexError, ValueError):
+                amount = 10
+        else:
+            # Regen uses stored data
+            data = regen_store[user_id]
+            cc, mes, ano, cvv, amount = data["cc"], data["mes"], data["ano"], data["cvv"], data["amount"]
+
+        # Save for regen
+        regen_store[user_id] = {"cc": cc, "mes": mes, "ano": ano, "cvv": cvv, "amount": amount}
 
         delete = await message.reply_text("<b>Generating...</b>", message.id)
         start = time.perf_counter()
@@ -80,15 +92,9 @@ With Custom Amount
 
         brand, type_, level, bank, country, flag, currency = getbin
 
-        if amount > 10000:
-            resp = """<b>Limit Reached ⚠️
-
-Message: Maximum Generated Amount is 10K.</b>"""
-            await message.reply_text(resp, message.id)
-            return
-
         all_cards = await luhn_card_genarator(cc, mes, ano, cvv, amount)
-        if amount == 10:
+
+        if amount <= 10:
             resp = (
                 f"- 𝐂𝐂 𝐆𝐞𝐧𝐚𝐫𝐚𝐭𝐞𝐝 𝐒𝐮𝐜𝐜𝐞𝐬𝐬𝐟𝐮𝐥𝐥𝐲\n"
                 f"- 𝐁𝐢𝐧 - <code>{cc}</code>\n"
@@ -100,12 +106,15 @@ Message: Maximum Generated Amount is 10K.</b>"""
                 f"- 𝐓𝐢𝐦𝐞: - {time.perf_counter() - start:0.2f} 𝐬𝐞𝐜𝐨𝐧𝐝𝐬\n"
                 f"- 𝐂𝐡𝐞𝐜𝐤𝐞𝐝 - <a href='tg://user?id={message.from_user.id}'> {message.from_user.first_name}</a> [ {role} ]"
             )
-            await client.delete_messages(message.chat.id, delete.id)
-            await message.reply_text(resp, message.id)
+            if edit_msg:
+                await edit_msg.edit_text(resp, reply_markup=buttons, parse_mode="HTML")
+            else:
+                await client.delete_messages(message.chat.id, delete.id)
+                await message.reply_text(resp, message.id, reply_markup=buttons, parse_mode="HTML")
         else:
             filename = f"downloads/{amount}x_CC_Generated_By_{user_id}.txt"
-            with open(filename, "a") as f:
-                f.write(f"{all_cards}\n")
+            with open(filename, "w", encoding="utf-8") as f:
+                f.write(all_cards)
 
             caption = f"""
 - 𝐁𝐢𝐧: <code>{cc}</code> 
@@ -118,10 +127,25 @@ Message: Maximum Generated Amount is 10K.</b>"""
 - 𝐓𝐢𝐦𝐞 - {time.perf_counter() - start:0.2f} 𝐬𝐞𝐜𝐨𝐧𝐝𝐬
 - 𝐂𝐡𝐞𝐜𝐤𝐞𝐝 - <a href="tg://user?id={message.from_user.id}"> {message.from_user.first_name}</a> ⤿ {role} ⤾
 """
-            await client.delete_messages(message.chat.id, delete.id)
-            await message.reply_document(document=filename, caption=caption, reply_to_message_id=message.id)
+            if edit_msg:
+                await edit_msg.delete()
+                await message.reply_document(document=filename, caption=caption, reply_markup=buttons)
+            else:
+                await client.delete_messages(message.chat.id, delete.id)
+                await message.reply_document(document=filename, caption=caption, reply_to_message_id=message.id, reply_markup=buttons)
             os.remove(filename)
 
-    except Exception as e:
+    except Exception:
         import traceback
         await error_log(traceback.format_exc())
+
+
+@Client.on_callback_query(filters.regex("regen"))
+async def regen_handler(client, cq):
+    user_id = str(cq.from_user.id)
+    if user_id not in regen_store:
+        await cq.answer("⚠️ No previous generation found.", show_alert=True)
+        return
+    await cq.answer("🔄 Regenerating...", show_alert=False)
+    await gen_cmd(client, cq.message, edit_msg=cq.message, from_regen=True)
+        
