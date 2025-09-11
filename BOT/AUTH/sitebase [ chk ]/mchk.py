@@ -1,7 +1,45 @@
+import json
+import time
+import threading
+import asyncio
+import httpx
+from datetime import timedelta
+from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from FUNC.usersdb_func import *
+from FUNC.defs import *
+from .gate import *
+from .response import *
+from TOOLS.check_all_func import *
+from TOOLS.getcc_for_mass import *
 
-# Store results for each user
+# Store results for each user session
 mass_results = {}
+
+
+async def mchkfunc(fullcc, user_id):
+    retries = 3
+    for attempt in range(retries):
+        try:
+            proxies = await get_proxy_format()
+            session = httpx.AsyncClient(timeout=30, proxies=proxies, follow_redirects=True)
+            result = await create_cvv_charge(fullcc, session)
+            getresp = await get_charge_resp(result, user_id, fullcc)
+            response = getresp["response"]
+            status = getresp["status"]
+
+            await session.aclose()
+            return f"<code>{fullcc}</code>\n<b>Status - {status}</b>\n<b>Result -⤿ {response} ⤾</b>\n"
+
+        except Exception:
+            import traceback
+            await error_log(traceback.format_exc())
+            if attempt < retries - 1:
+                await asyncio.sleep(0.5)
+                continue
+            else:
+                return f"<code>{fullcc}</code>\n<b>Status - Declined ❌</b>\n"
+
 
 @Client.on_message(filters.command("mchk", [".", "/"]))
 def multi(Client, message):
@@ -33,14 +71,14 @@ async def stripe_mass_auth_cmd(Client, message):
 
         ccs = getcc[1]
 
-        # Init result store
+        # Init result store for this user
         mass_results[user_id] = {"approved": [], "declined": []}
 
         nov = await message.reply_text(
-            f"🔎 Mass Braintree Auth Started\nTotal Cards: {len(ccs)}\n\nProcessing...",
+            f"🔎 Mass Braintree Auth Started\n\nTotal Cards: {len(ccs)}\nChecking for {first_name}...",
             reply_markup=InlineKeyboardMarkup([
-                [InlineKeyboardButton(f"✅ Approved (0)", callback_data=f"mass_show|{user_id}|approved")],
-                [InlineKeyboardButton(f"❌ Declined (0)", callback_data=f"mass_show|{user_id}|declined")]
+                [InlineKeyboardButton("✅ Approved (0)", callback_data=f"mass_show|{user_id}|approved")],
+                [InlineKeyboardButton("❌ Declined (0)", callback_data=f"mass_show|{user_id}|declined")]
             ])
         )
 
@@ -59,15 +97,18 @@ async def stripe_mass_auth_cmd(Client, message):
                 else:
                     mass_results[user_id]["declined"].append(res)
 
-                # Update buttons dynamically
-                await nov.edit_reply_markup(
-                    InlineKeyboardMarkup([
-                        [InlineKeyboardButton(f"✅ Approved ({len(mass_results[user_id]['approved'])})",
-                                              callback_data=f"mass_show|{user_id}|approved")],
-                        [InlineKeyboardButton(f"❌ Declined ({len(mass_results[user_id]['declined'])})",
-                                              callback_data=f"mass_show|{user_id}|declined")]
-                    ])
-                )
+                # Update buttons dynamically with new counters
+                try:
+                    await nov.edit_reply_markup(
+                        InlineKeyboardMarkup([
+                            [InlineKeyboardButton(f"✅ Approved ({len(mass_results[user_id]['approved'])})",
+                                                  callback_data=f"mass_show|{user_id}|approved")],
+                            [InlineKeyboardButton(f"❌ Declined ({len(mass_results[user_id]['declined'])})",
+                                                  callback_data=f"mass_show|{user_id}|declined")]
+                        ])
+                    )
+                except:
+                    pass
             works = works[worker_num:]
 
         proxy_status = "Live ✨"
@@ -109,12 +150,12 @@ async def mass_show_handler(client, cq):
         await cq.answer(f"No {result_type} cards found.", show_alert=True)
         return
 
-    # Split results into chunks (Telegram limit ~4000 chars)
+    # Send results in chunks to avoid Telegram’s message size limit
     chunk_size = 30
     for i in range(0, len(results), chunk_size):
         part = results[i:i + chunk_size]
-        text = f"**{result_type.capitalize()} Cards ({len(part)}/{len(results)})**\n\n" + "\n".join(part)
+        text = f"<b>{result_type.capitalize()} Cards ({len(part)}/{len(results)})</b>\n\n" + "\n".join(part)
         await cq.message.reply_text(text)
 
     await cq.answer()
-        
+            
