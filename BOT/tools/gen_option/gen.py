@@ -1,10 +1,9 @@
-import httpx
 import threading
 import asyncio
 import time
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, Message, CallbackQuery
-from FUNC.cc_gen import luhn_card_genarator, get_bin_details
+from FUNC.cc_gen import luhn_card_genarator, get_bin_info  # adjust with your actual function names
 from TOOLS.check_all_func import check_all_thing
 
 # Buttons for regen
@@ -58,11 +57,11 @@ async def gen_cmd(client: Client, message: Message):
         delete_msg = await message.reply_text("<b>Generating...</b>", parse_mode="html")
         start = time.perf_counter()
 
-        # Get BIN info
-        session = httpx.AsyncClient(timeout=30)
-        bin_info = await get_bin_details(cc[:6])
-        await session.aclose()
-
+        # Get BIN info from your existing function
+        bin_info = await get_bin_info(cc[:6])
+        if bin_info is None:
+            await delete_msg.edit_text("❌ No BIN info found!", parse_mode="html")
+            return
         brand, type_, level, bank, country, flag, currency = bin_info
 
         # Generate cards
@@ -92,8 +91,8 @@ async def gen_cmd(client: Client, message: Message):
 @Client.on_callback_query(filters.regex("regen"))
 async def regen_call(client: Client, cq: CallbackQuery):
     # Read BIN from the existing message
-    text = cq.message.text
     import re
+    text = cq.message.text
     match = re.search(r"BIN: <code>(\d+)", text)
     if not match:
         await cq.answer("❌ Cannot find BIN!", show_alert=True)
@@ -107,9 +106,7 @@ async def regen_call(client: Client, cq: CallbackQuery):
     cards_text = generate_code_blocks(all_cards)
 
     # Get BIN info again
-    session = httpx.AsyncClient(timeout=30)
-    bin_info = await get_bin_details(cc[:6])
-    await session.aclose()
+    bin_info = await get_bin_info(cc[:6])
     brand, type_, level, bank, country, flag, currency = bin_info
 
     # Build response
@@ -127,4 +124,4 @@ async def regen_call(client: Client, cq: CallbackQuery):
     )
 
     await cq.message.edit_text(response_text, parse_mode="html", reply_markup=buttons)
-                         
+        
