@@ -16,7 +16,7 @@ user_results = {}
 
 # Process a single card
 async def mchkfunc(card, user_id, session):
-    retries = 3
+    retries = 1  # Reduced for speed
     for attempt in range(retries):
         try:
             result = await create_cvv_charge(card, session)
@@ -43,7 +43,7 @@ async def stripe_mass_auth_cmd(client, message):
         user_id = str(message.from_user.id)
         first_name = str(message.from_user.first_name)
 
-        # Check permissions
+        # Permission check
         checkall = await check_all_thing(client, message)
         if not checkall[0]:
             return
@@ -75,7 +75,7 @@ async def stripe_mass_auth_cmd(client, message):
         semaphore = asyncio.Semaphore(len(ccs))  # All cards concurrently
 
         proxies = await get_proxy_format()
-        async with httpx.AsyncClient(timeout=12, proxies=proxies, follow_redirects=True) as session:
+        async with httpx.AsyncClient(timeout=10, proxies=proxies, follow_redirects=True) as session:
 
             async def worker(card):
                 async with semaphore:
@@ -142,4 +142,4 @@ async def callback_handler(client, cq: CallbackQuery):
         cards = user_results[user_id]["declined"]
         text = "❌ Declined Cards:\n\n" + "\n".join(cards) if cards else "No declined cards."
         await cq.message.reply_text(text)
-            
+                             
