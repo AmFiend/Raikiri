@@ -1,42 +1,7 @@
-import json
-import time
-import threading
-import asyncio
-import httpx
-from pyrogram import Client, filters
-from datetime import timedelta
-from FUNC.usersdb_func import *
-from FUNC.defs import *
-from .gate import *
-from .response import *
-from TOOLS.check_all_func import *
-from TOOLS.getcc_for_mass import *
+from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-
-async def mchkfunc(fullcc, user_id):
-    retries = 3
-    for attempt in range(retries):
-        try:
-            proxies = await get_proxy_format()
-            session = httpx.AsyncClient(
-                timeout=30, proxies=proxies, follow_redirects=True)
-            result = await create_cvv_charge(fullcc, session)
-            getresp = await get_charge_resp(result, user_id, fullcc)
-            response = getresp["response"]
-            status = getresp["status"]
-
-            await session.aclose()
-            return f"Card↯ <code>{fullcc}</code>\n<b>Status - {status}</b>\n<b>Result -⤿ {response} ⤾</b>\n\n"
-
-        except Exception as e:
-            import traceback
-            await error_log(traceback.format_exc())
-            if attempt < retries - 1:
-                await asyncio.sleep(0.5)
-                continue
-            else:
-                return f"<code>{fullcc}</code>\n<b>Result - DECLINED ❌</b>\n"
-
+# Store results for each user
+mass_results = {}
 
 @Client.on_message(filters.command("mchk", [".", "/"]))
 def multi(Client, message):
@@ -57,7 +22,7 @@ async def stripe_mass_auth_cmd(Client, message):
         first_name = str(message.from_user.first_name)
         checkall = await check_all_thing(Client, message)
 
-        if checkall[0] == False:
+        if not checkall[0]:
             return
 
         role = checkall[1]
@@ -67,68 +32,89 @@ async def stripe_mass_auth_cmd(Client, message):
             return
 
         ccs = getcc[1]
-        resp = f"""
-- 𝐆𝐚𝐭𝐞𝐰𝐚𝐲 -  Braintree Auth
 
-- 𝐂𝐂 𝐀𝐦𝐨𝐮𝐧𝐭 -{len(ccs)}
-- 𝐂𝐡𝐞𝐜𝐤𝐞𝐝 - Checking CC For {first_name}
+        # Init result store
+        mass_results[user_id] = {"approved": [], "declined": []}
 
-- 𝐒𝐭𝐚𝐭𝐮𝐬 - Processing...⌛️
-        """
-        nov = await message.reply_text(resp, message.id)
+        nov = await message.reply_text(
+            f"🔎 Mass Braintree Auth Started\nTotal Cards: {len(ccs)}\n\nProcessing...",
+            reply_markup=InlineKeyboardMarkup([
+                [InlineKeyboardButton(f"✅ Approved (0)", callback_data=f"mass_show|{user_id}|approved")],
+                [InlineKeyboardButton(f"❌ Declined (0)", callback_data=f"mass_show|{user_id}|declined")]
+            ])
+        )
 
-        text = f"""
-<b>↯ MASS BRAINTREE[/mchk]
-
-Number Of CC Check : [{len(ccs)}]
-</b> \n
-"""
-        amt = 0
         start = time.perf_counter()
-        # proxies    = await get_proxy_format()
-        # session    = httpx.AsyncClient(timeout= 60 , proxies = proxies , follow_redirects=True )
         works = [mchkfunc(i, user_id) for i in ccs]
-        worker_num = int(json.loads(
-            open("FILES/config.json", "r", encoding="utf-8").read())["THREADS"])
+        worker_num = int(json.loads(open("FILES/config.json", "r", encoding="utf-8").read())["THREADS"])
+        amt = 0
 
         while works:
-            a = works[:worker_num]
-            a = await asyncio.gather(*a)
-            for i in a:
+            batch = works[:worker_num]
+            batch = await asyncio.gather(*batch)
+            for res in batch:
                 amt += 1
-                text += i
-                if amt % 5 == 0:
-                    try:
-                        await Client.edit_message_text(message.chat.id, nov.id, text)
-                    except:
-                        pass
-            await asyncio.sleep(1)
+                if "Approved ✅" in res:
+                    mass_results[user_id]["approved"].append(res)
+                else:
+                    mass_results[user_id]["declined"].append(res)
+
+                # Update buttons dynamically
+                await nov.edit_reply_markup(
+                    InlineKeyboardMarkup([
+                        [InlineKeyboardButton(f"✅ Approved ({len(mass_results[user_id]['approved'])})",
+                                              callback_data=f"mass_show|{user_id}|approved")],
+                        [InlineKeyboardButton(f"❌ Declined ({len(mass_results[user_id]['declined'])})",
+                                              callback_data=f"mass_show|{user_id}|declined")]
+                    ])
+                )
             works = works[worker_num:]
 
-        # await session.aclose()
-        taken = str(timedelta(seconds=time.perf_counter() - start))
-        hours, minutes, seconds = map(float, taken.split(":"))
-        hour = int(hours)
-        min = int(minutes)
+        proxy_status = "Live ✨"
+        taken = time.perf_counter() - start
 
-        proxy_status = "Live ✨"  # Always indicate proxy is live
-        results = await getuserinfo(user_id)
-        credit = results["credit"]
+        await nov.edit_text(
+            f"✅ Mass Check Finished!\n\n"
+            f"Approved: {len(mass_results[user_id]['approved'])}\n"
+            f"Declined: {len(mass_results[user_id]['declined'])}\n\n"
+            f"Checked by: <a href='tg://user?id={message.from_user.id}'>{first_name}</a> [{role}]\n"
+            f"T/t: {taken:0.2f}s | Proxy: {proxy_status}",
+            reply_markup=InlineKeyboardMarkup([
+                [InlineKeyboardButton(f"✅ Approved ({len(mass_results[user_id]['approved'])})",
+                                      callback_data=f"mass_show|{user_id}|approved")],
+                [InlineKeyboardButton(f"❌ Declined ({len(mass_results[user_id]['declined'])})",
+                                      callback_data=f"mass_show|{user_id}|declined")]
+            ])
+        )
 
-
-
-
-        text += f"""
-━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━
-[ﾒ] Checked By ➺ <a href='tg://user?id={message.from_user.id}'> {message.from_user.first_name}</a> [ {role} ]
-[ﾒ] Dev ➺ ⏤‌‌‌‌ <a href="tg://user?id=8340881349">𝑺𝑷𝑰𝑫𝑬𝑹</a>
-━━━━━━━━━━━━━━━
-[ﾒ] T/t ➺ [{time.perf_counter() - start:0.2f} seconds] | P/x ➺ [{proxy_status}]
-"""
-        await Client.edit_message_text(message.chat.id, nov.id, text)
         await massdeductcredit(user_id, len(ccs))
         await setantispamtime(user_id)
 
-    except:
+    except Exception:
         import traceback
         await error_log(traceback.format_exc())
+
+
+@Client.on_callback_query(filters.regex(r"^mass_show\|"))
+async def mass_show_handler(client, cq):
+    _, uid, result_type = cq.data.split("|")
+    uid = str(uid)
+
+    if uid not in mass_results:
+        await cq.answer("⚠️ Session expired!", show_alert=True)
+        return
+
+    results = mass_results[uid][result_type]
+    if not results:
+        await cq.answer(f"No {result_type} cards found.", show_alert=True)
+        return
+
+    # Split results into chunks (Telegram limit ~4000 chars)
+    chunk_size = 30
+    for i in range(0, len(results), chunk_size):
+        part = results[i:i + chunk_size]
+        text = f"**{result_type.capitalize()} Cards ({len(part)}/{len(results)})**\n\n" + "\n".join(part)
+        await cq.message.reply_text(text)
+
+    await cq.answer()
+        
