@@ -89,23 +89,24 @@ async def stripe_mass_auth_cmd(client, message):
 
         amt = 0
         while works:
-            batch = works[:worker_num]
-            results = await asyncio.gather(*batch)
-            for res in results:
-                amt += 1
-                if "Approved" in res["status"]:
-                    user_results[user_id]["approved"].append(f"<code>{res['cc']}</code> → {res['response']}")
-                else:
-                    user_results[user_id]["declined"].append(f"<code>{res['cc']}</code> → {res['response']}")
+tasks = [mchkfunc(i, user_id) for i in ccs]
+for coro in asyncio.as_completed(tasks):
+    res = await coro
+    amt += 1
+    if "Approved" in res["status"]:
+        user_results[user_id]["approved"].append(f"<code>{res['cc']}</code> → {res['response']}")
+    else:
+        user_results[user_id]["declined"].append(f"<code>{res['cc']}</code> → {res['response']}")
 
-                # Update button counts live
-                await msg.edit_text(
-                    f"Mass Checking...\nProcessed: {amt}/{len(ccs)}",
-                    reply_markup=InlineKeyboardMarkup([
-                        [InlineKeyboardButton(f"✅ Approved [{len(user_results[user_id]['approved'])}]", callback_data=f"show_approved_{user_id}")],
-                        [InlineKeyboardButton(f"❌ Declined [{len(user_results[user_id]['declined'])}]", callback_data=f"show_declined_{user_id}")]
-                    ])
-                )
+    # Update buttons instantly per card
+    await msg.edit_text(
+        f"Mass Checking...\nProcessed: {amt}/{len(ccs)}",
+        reply_markup=InlineKeyboardMarkup([
+            [InlineKeyboardButton(f"✅ Approved [{len(user_results[user_id]['approved'])}]", callback_data=f"show_approved_{user_id}")],
+            [InlineKeyboardButton(f"❌ Declined [{len(user_results[user_id]['declined'])}]", callback_data=f"show_declined_{user_id}")]
+        ])
+    )
+
 
             works = works[worker_num:]
             await asyncio.sleep(1)
