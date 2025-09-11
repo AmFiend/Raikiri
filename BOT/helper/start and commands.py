@@ -50,10 +50,13 @@ async def cmd_start(client, message):
 # Callback query handler
 @Client.on_callback_query()
 async def callback_handler(client, cq):
-    user = cq.from_user
-    data = cq.data
-
     try:
+        # ⚡ Respond instantly so buttons don't lag
+        await cq.answer()
+
+        user = cq.from_user
+        data = cq.data
+
         # Default caption + buttons
         caption = ""
         buttons = InlineKeyboardMarkup([])
@@ -321,3 +324,4 @@ Report Bugs
             f"⚠️ Error:\n<code>{traceback.format_exc()}</code>",
             parse_mode=ParseMode.HTML
         )
+        
