@@ -3,10 +3,9 @@ import asyncio
 import time
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, Message, CallbackQuery
-from FUNC.cc_gen import luhn_card_genarator, get_bin_info  # adjust with your actual function names
+from FUNC.cc_gen import luhn_card_genarator, get_bin_info  # get_bin_info should return (brand, type, level, bank, country, flag, currency)
 from TOOLS.check_all_func import check_all_thing
 
-# Buttons for regen
 buttons = InlineKeyboardMarkup(
     [
         [InlineKeyboardButton("🔄 Regen", callback_data="regen")],
@@ -57,7 +56,7 @@ async def gen_cmd(client: Client, message: Message):
         delete_msg = await message.reply_text("<b>Generating...</b>", parse_mode="html")
         start = time.perf_counter()
 
-        # Get BIN info from your existing function
+        # Get BIN info
         bin_info = await get_bin_info(cc[:6])
         if bin_info is None:
             await delete_msg.edit_text("❌ No BIN info found!", parse_mode="html")
@@ -90,7 +89,6 @@ async def gen_cmd(client: Client, message: Message):
 
 @Client.on_callback_query(filters.regex("regen"))
 async def regen_call(client: Client, cq: CallbackQuery):
-    # Read BIN from the existing message
     import re
     text = cq.message.text
     match = re.search(r"BIN: <code>(\d+)", text)
@@ -99,9 +97,10 @@ async def regen_call(client: Client, cq: CallbackQuery):
         return
     cc = match.group(1)
 
-    # Generate new random cards with the same BIN
     delete_msg = await cq.message.edit_text("<b>Regenerating...</b>", parse_mode="html")
     start = time.perf_counter()
+
+    # Generate new random cards
     all_cards = await luhn_card_genarator(cc, None, None, None, 10)
     cards_text = generate_code_blocks(all_cards)
 
@@ -111,7 +110,7 @@ async def regen_call(client: Client, cq: CallbackQuery):
 
     # Build response
     user_id = cq.from_user.id
-    rol = "User"  # replace with role fetching if needed
+    rol = "User"  # replace with actual role if needed
     response_text = (
         f"- 𝐂𝐂 Regenerated Successfully\n"
         f"- BIN: <code>{cc}</code>\n\n"
@@ -124,4 +123,4 @@ async def regen_call(client: Client, cq: CallbackQuery):
     )
 
     await cq.message.edit_text(response_text, parse_mode="html", reply_markup=buttons)
-        
+    
