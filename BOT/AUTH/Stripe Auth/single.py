@@ -21,12 +21,12 @@ async def stripe_auth_cmd(client: Client, message):
         checkall = await check_all_thing(client, message)
         gateway = "Stripe Auth"
 
-        if checkall[0] == False:
+        if checkall[0] is False:
             return
 
         role = checkall[1]
         getcc = await getmessage(message)
-        if getcc == False:
+        if getcc is False:
             resp = f"""<b>
 Gate Name: {gateway} ♻️
 CMD: /au
@@ -43,7 +43,7 @@ Usage: /au cc|mes|ano|cvv</b>"""
         firstresp = f"""
 ↯ Checking.
 
-- 𝐂𝐚𝐫𝐝 - <code>{fullcc}</code> 
+- 𝐂𝐚𝐫𝐝 - <code>{fullcc}</code>
 - 𝐆𝐚𝐭𝐞𝐰𝐚𝐲 -  <i>{gateway}</i>
 - 𝐑𝐞𝐬𝐩𝐨𝐧𝐬𝐞 - ■□□□
 </b>
@@ -54,12 +54,12 @@ Usage: /au cc|mes|ano|cvv</b>"""
         secondresp = f"""
 ↯ Checking..
 
-- 𝐂𝐚𝐫𝐝 - <code>{fullcc}</code> 
+- 𝐂𝐚𝐫𝐝 - <code>{fullcc}</code>
 - 𝐆𝐚𝐭𝐞𝐰𝐚𝐲 -  <i>{gateway}</i>
 - 𝐑𝐞𝐬𝐩𝐨𝐧𝐬𝐞 - ■■■□
 """
         await asyncio.sleep(0.5)
-        secondchk = await client.edit_message_text(message.chat.id, firstchk.id, secondresp)
+        await firstchk.edit_text(secondresp)
 
         start = time.perf_counter()
         session = httpx.AsyncClient(timeout=30, follow_redirects=True)
@@ -75,12 +75,12 @@ Usage: /au cc|mes|ano|cvv</b>"""
         thirdresp = f"""
 ↯ Checking...
 
-- 𝐂𝐚𝐫𝐝 - <code>{fullcc}</code> 
+- 𝐂𝐚𝐫𝐝 - <code>{fullcc}</code>
 - 𝐆𝐚𝐭𝐞𝐰𝐚𝐲 -  <i>{gateway}</i>
 - 𝐑𝐞𝐬𝐩𝐨𝐧𝐬𝐞 - ■■■■
 """
         await asyncio.sleep(0.5)
-        thirdcheck = await client.edit_message_text(message.chat.id, secondchk.id, thirdresp)
+        await firstchk.edit_text(thirdresp)
 
         brand = getbin[0]
         type = getbin[1]
@@ -95,22 +95,17 @@ Usage: /au cc|mes|ano|cvv</b>"""
         vbv_status = "Not Found"
         try:
             with open("FILES/vbvbin.txt", "r", encoding="utf-8") as file:
-                vbv_data = file.readlines()
-
-            bin_found = False
-            for line in vbv_data:
-                parts = line.strip().split('|')
-                if line.startswith(cc[:6]) and len(parts) > 1:
-                    vbv_response = parts[1]
-                    if "3D TRUE ❌" in vbv_response:
-                        vbv_status = "3D TRUE ❌"
-                    elif "3D PASSED ✅" in vbv_response:
-                        vbv_status = "3D PASSED ✅"
-                    bin_found = True
-                    break
-
-            if not bin_found:
-                vbv_status = "𝗥𝗲𝗷𝗲𝗰𝘁𝗲𝗱 ❌"
+                for line in file:
+                    parts = line.strip().split('|')
+                    if line.startswith(cc[:6]) and len(parts) > 1:
+                        vbv_response = parts[1]
+                        if "3D TRUE ❌" in vbv_response:
+                            vbv_status = "3D TRUE ❌"
+                        elif "3D PASSED ✅" in vbv_response:
+                            vbv_status = "3D PASSED ✅"
+                        break
+                else:
+                    vbv_status = "𝗥𝗲𝗷𝗲𝗰𝘁𝗲𝗱 ❌"
         except Exception:
             vbv_status = "VBV File Error"
 
@@ -139,14 +134,14 @@ Usage: /au cc|mes|ano|cvv</b>"""
         buttons = InlineKeyboardMarkup(
             [
                 [
-                    InlineKeyboardButton("Group", callback_data="https://t.me/+W1ZVCjwjbvs5MTll"),
-                    InlineKeyboardButton("Owner", callback_data="t.me/spid_3r")
+                    InlineKeyboardButton("Group", url="https://t.me/+W1ZVCjwjbvs5MTll"),
+                    InlineKeyboardButton("Owner", url="https://t.me/spid_3r")
                 ]
             ]
         )
 
         await asyncio.sleep(0.5)
-        await client.edit_message_text(message.chat.id, thirdcheck.id, finalresp, reply_markup=buttons)
+        await firstchk.edit_text(finalresp, reply_markup=buttons)
 
         await setantispamtime(user_id)
         await deductcredit(user_id)
@@ -157,6 +152,7 @@ Usage: /au cc|mes|ano|cvv</b>"""
 
         await session.aclose()
 
-    except Exception as e:
+    except Exception:
         import traceback
         await error_log(traceback.format_exc())
+                        
