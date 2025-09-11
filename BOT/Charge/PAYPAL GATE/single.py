@@ -12,14 +12,15 @@ from TOOLS.getbin import *
 from .response import *
 from .gate import create_paypal_charge
 from faker import Faker
+from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 
-@Client.on_message(filters.command("", [".", "/"]))
-async def paypal_check_cmd(Client, message):
+@Client.on_message(filters.command("pp", [".", "/"]))
+async def paypal_check_cmd(client: Client, message):
     try:
         user_id = str(message.from_user.id)
 
-        checkall = await check_all_thing(Client, message)
+        checkall = await check_all_thing(client, message)
         if not checkall[0]:
             return
 
@@ -73,26 +74,36 @@ async def paypal_check_cmd(Client, message):
         await asyncio.sleep(0.5)
 
         brand, type_, level, bank, country, flag, currency = bin_data
-        proxy_status = result.get("proxy", "N/A") if isinstance(result, dict) else "N/A"
+        proxy_status = "Live ✨"
 
         finalresp = f"""
 {status}
 ━━━━━━━━━━━━━
-[ϟ] 𝗖𝗖 - <code>{fullcc}</code>
-[ϟ] 𝗦𝘁𝗮𝘁𝘂𝘀 : {response}
-[ϟ] 𝗚𝗮𝘁𝗲 - {gateway}
+[ϟ] 𝗖𝗖 ➺ <code>{fullcc}</code>
+[ϟ] 𝗦𝘁𝗮𝘁𝘂𝘀 ➺ {response}
+[ϟ] 𝗚𝗮𝘁𝗲 ➺ {gateway}
 ━━━━━━━━━━━━━
-[ϟ] 𝗕𝗶𝗻 : {brand}
-[ϟ] 𝗖𝗼𝘂𝗻𝘁𝗿𝘆 : {country} {flag}
-[ϟ] 𝗜𝘀𝘀𝘂𝗲𝗿 : {bank}
-[ϟ] 𝗧𝘆𝗽𝗲 : {type_}
+[ϟ] 𝗕𝗶𝗻 ➺ {brand}
+[ϟ] 𝗖𝗼𝘂𝗻𝘁𝗿𝘆 ➺ {country} {flag}
+[ϟ] 𝗜𝘀𝘀𝘂𝗲𝗿 ➺ {bank}
+[ϟ] 𝗧𝘆𝗽𝗲 ➺ {type_}
 ━━━━━━━━━━━━━
-[ϟ] T/t : {time.perf_counter() - start:0.2f}s | Proxy : {proxy_status}
-[ϟ] 𝗖𝗵𝗲𝗸𝗲𝗱 𝗯𝘆: <a href='tg://user?id={message.from_user.id}'> {message.from_user.first_name}</a> [ {role} ]
-[ϟ] 𝗢𝘄𝗻𝗲𝗿: <a href="tg://user?id=8340881349">𝑺𝑷𝑰𝑫𝑬𝑹</a>
+[ϟ] T/t ➺ {time.perf_counter() - start:0.2f}s | Proxy ➺ {proxy_status}
+[ϟ] 𝗖𝗵𝗲𝗰𝗸𝗲𝗱 𝗯𝘆 ➺ <a href='tg://user?id={message.from_user.id}'> {message.from_user.first_name}</a> [ {role} ]
+[ϟ] 𝗢𝘄𝗻𝗲𝗿 ➺ <a href="tg://user?id=8340881349">𝑺𝑷𝑰𝑫𝑬𝑹</a>
 ╚━━━━━━「𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑 」━━━━━━╝
 """
-        await progress_msg.edit_text(finalresp)
+
+        buttons = InlineKeyboardMarkup(
+            [
+                [
+                    InlineKeyboardButton("Group", url="https://t.me/+W1ZVCjwjbvs5MTll"),
+                    InlineKeyboardButton("Owner", url="https://t.me/spid_3r")
+                ]
+            ]
+        )
+
+        await progress_msg.edit_text(finalresp, reply_markup=buttons)
 
         if status.strip().lower() in ["approved ✅", "𝗮𝗽𝗽𝗿𝗼𝘃𝗲𝗱 ✅"]:
             await sendcc(finalresp, session)
@@ -100,7 +111,7 @@ async def paypal_check_cmd(Client, message):
         await setantispamtime(user_id)
         await deductcredit(user_id)
 
-    except Exception as e:
+    except Exception:
         import traceback
         tb = traceback.format_exc()
         await message.reply_text("❌ An unexpected error occurred.\nCheck logs.")
@@ -110,3 +121,4 @@ async def paypal_check_cmd(Client, message):
             await session.aclose()
         except:
             pass
+        
