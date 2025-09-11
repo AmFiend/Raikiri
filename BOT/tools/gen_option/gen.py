@@ -4,7 +4,7 @@ import threading
 import asyncio
 import time
 from pyrogram import Client, filters
-from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, InputMediaDocument
+from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from FUNC.usersdb_func import *
 from FUNC.cc_gen import *
 from TOOLS.check_all_func import *
@@ -38,17 +38,11 @@ async def gen_cmd(client, message, cc=None, mes=None, ano=None, cvv=None, amount
             return
         role = checkall[1]
 
-        # Parse BIN input unless Regen
+        # Parse BIN input safely unless Regen
         if not from_regen:
-            try:
-                ccsdata = message.text.split()[1]
-                cc_parts = ccsdata.split("|")
-                cc = cc_parts[0]
-                mes = cc_parts[1] if len(cc_parts) > 1 else None
-                ano = cc_parts[2] if len(cc_parts) > 2 else None
-                cvv = cc_parts[3] if len(cc_parts) > 3 else None
-            except IndexError:
-                resp = f"""
+            args = message.text.split(maxsplit=2)  # split only first two parts
+            if len(args) < 2:
+                resp = """
 Wrong Format ❌
 
 Usage:
@@ -68,10 +62,17 @@ With Custom Amount
                 await message.reply_text(resp, message.id)
                 return
 
+            ccsdata = args[1]
+            cc_parts = ccsdata.split("|")
+            cc = cc_parts[0]
+            mes = cc_parts[1] if len(cc_parts) > 1 else None
+            ano = cc_parts[2] if len(cc_parts) > 2 else None
+            cvv = cc_parts[3] if len(cc_parts) > 3 else None
+
             try:
-                amount = int(message.text.split()[2])
+                amount = int(args[2])
             except (IndexError, ValueError):
-                amount = 10  # Default
+                amount = 10  # default
 
         start = time.perf_counter()
         session = httpx.AsyncClient(timeout=30)
@@ -79,7 +80,6 @@ With Custom Amount
         await session.aclose()
 
         brand, type_, level, bank, country, flag, currency = getbin
-
         all_cards = await luhn_card_genarator(cc, mes, ano, cvv, amount)
 
         # Save regen info
@@ -90,7 +90,7 @@ With Custom Amount
         )
 
         if amount <= 10:
-            # Small text output
+            # Text output
             resp = (
                 f"- 𝐂𝐂 𝐆𝐞𝐧𝐞𝐫𝐚𝐭𝐞𝐝 𝐒𝐮𝐜𝐜𝐞𝐬𝐬𝐟𝐮𝐥𝐥𝐲\n"
                 f"- 𝐁𝐢𝐧 - <code>{cc}</code>\n"
@@ -125,7 +125,7 @@ With Custom Amount
             )
 
             if edit_msg:
-                # Edit document by deleting old and sending new
+                # Edit file by deleting old and sending new
                 await edit_msg.delete()
                 new_msg = await message.reply_document(
                     document=filename,
@@ -160,3 +160,4 @@ async def regen_handler(client, cq):
 
     await cq.answer("🔄 Regenerating...", show_alert=False)
     await gen_cmd(client, cq.message, edit_msg=cq.message, from_regen=True, **regen_store[uid])
+    
