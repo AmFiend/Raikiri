@@ -52,7 +52,7 @@ async def stripe_mass_auth_cmd(client, message):
             return
         role = checkall[1]
 
-        # Get cards to check
+        # Get cards
         getcc = await getcc_for_mass(message, role)
         if not getcc[0]:
             await message.reply_text(getcc[1], message.id)
@@ -94,7 +94,7 @@ async def stripe_mass_auth_cmd(client, message):
                 ])
             )
 
-        # Final summary text
+        # Final summary
         proxy_status = "Live ✨"
         text = (
             f"✅ Finished Mass Check\n"
@@ -140,4 +140,4 @@ async def callback_handler(client, cq: CallbackQuery):
         cards = user_results[user_id]["declined"]
         text = "❌ Declined Cards:\n\n" + "\n".join(cards) if cards else "No declined cards."
         await cq.message.reply_text(text)
-                                         
+            
