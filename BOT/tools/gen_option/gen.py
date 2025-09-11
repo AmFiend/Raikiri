@@ -42,57 +42,41 @@ async def gen_cmd(client, message, edit_msg=None, from_regen=False):
             return
         role = checkall[1]
 
-        # Parse input
+        # Parse input or use regen data
         if not from_regen:
             try:
                 ccsdata = message.text.split()[1]
                 cc_parts = ccsdata.split("|")
                 cc = cc_parts[0]
-                mes = cc_parts[1] if len(cc_parts) > 1 else None
-                ano = cc_parts[2] if len(cc_parts) > 2 else None
-                cvv = cc_parts[3] if len(cc_parts) > 3 else None
+                mes = cc_parts[1] if len(cc_parts) > 1 else "rnd"
+                ano = cc_parts[2] if len(cc_parts) > 2 else "rnd"
+                cvv = cc_parts[3] if len(cc_parts) > 3 else "rnd"
             except IndexError:
-                resp = f"""
-Wrong Format ❌
-
-Usage:
-Only Bin
-<code>/gen 447697</code>
-
-With Expiration
-<code>/gen 447697|12</code>
-<code>/gen 447697|12|23</code>
-
-With CVV
-<code>/gen 447697|12|23|000</code>
-
-With Custom Amount
-<code>/gen 546775 100</code>
-"""
-                await message.reply_text(resp, message.id)
                 return
-
             try:
                 amount = int(message.text.split()[2])
             except (IndexError, ValueError):
                 amount = 10
         else:
-            # Regen uses stored data
             data = regen_store[user_id]
             cc, mes, ano, cvv, amount = data["cc"], data["mes"], data["ano"], data["cvv"], data["amount"]
 
-        # Save for regen
+        # Save regen info
         regen_store[user_id] = {"cc": cc, "mes": mes, "ano": ano, "cvv": cvv, "amount": amount}
 
-        delete = await message.reply_text("<b>Generating...</b>", message.id)
+        delete = await message.reply_text("<b>Generating...</b>", message.id, parse_mode="html")
         start = time.perf_counter()
-        session = httpx.AsyncClient(timeout=30)
-        getbin = await get_bin_details(cc[:6])
-        await session.aclose()
 
+        getbin = await get_bin_details(cc[:6])
+        if not getbin:
+            await delete.delete()
+            return
         brand, type_, level, bank, country, flag, currency = getbin
 
         all_cards = await luhn_card_genarator(cc, mes, ano, cvv, amount)
+        if not all_cards:
+            await delete.delete()
+            return
 
         if amount <= 10:
             resp = (
@@ -107,10 +91,10 @@ With Custom Amount
                 f"- 𝐂𝐡𝐞𝐜𝐤𝐞𝐝 - <a href='tg://user?id={message.from_user.id}'> {message.from_user.first_name}</a> [ {role} ]"
             )
             if edit_msg:
-                await edit_msg.edit_text(resp, reply_markup=buttons, parse_mode="HTML")
+                await edit_msg.edit_text(resp, reply_markup=buttons, parse_mode="html")
             else:
                 await client.delete_messages(message.chat.id, delete.id)
-                await message.reply_text(resp, message.id, reply_markup=buttons, parse_mode="HTML")
+                await message.reply_text(resp, message.id, reply_markup=buttons, parse_mode="html")
         else:
             filename = f"downloads/{amount}x_CC_Generated_By_{user_id}.txt"
             with open(filename, "w", encoding="utf-8") as f:
@@ -139,13 +123,10 @@ With Custom Amount
         import traceback
         await error_log(traceback.format_exc())
 
-
 @Client.on_callback_query(filters.regex("regen"))
 async def regen_handler(client, cq):
     user_id = str(cq.from_user.id)
     if user_id not in regen_store:
-        await cq.answer("⚠️ No previous generation found.", show_alert=True)
         return
-    await cq.answer("🔄 Regenerating...", show_alert=False)
     await gen_cmd(client, cq.message, edit_msg=cq.message, from_regen=True)
-        
+                
