@@ -321,12 +321,14 @@ Report Bugs
             await cq.answer("❌ Unknown action", show_alert=True)
             return
 
-        # ✅ Update the video caption only
-        await cq.message.edit_caption(
-            caption=caption,
-            parse_mode=ParseMode.HTML,
-            reply_markup=buttons
-        )
+# ✅ Update the video caption only if it has changed
+if cq.message.caption != caption:
+    await cq.message.edit_caption(
+        caption=caption,
+        parse_mode=ParseMode.HTML,
+        reply_markup=buttons
+    )
+
 
     except Exception:
         await cq.message.reply_text(
@@ -334,6 +336,7 @@ Report Bugs
             parse_mode=ParseMode.HTML
         )
         
+
 
 
 
