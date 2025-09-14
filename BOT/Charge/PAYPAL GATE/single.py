@@ -28,13 +28,13 @@ async def paypal_check_cmd(client: Client, message):
         getcc = await getmessage(message)
         if not getcc:
             await message.reply_text(
-                "<b>Gate Name: PayPal Auth ✅\nCMD: /pp\n\nMessage: No CC Found in your input ❌\nUsage: /pp cc|mes|ano|cvv</b>"
+                "<b>Gate Name: PayPal 1$ charged\nCMD: /pp\n\nMessage: No CC Found in your input ❌\nUsage: /pp cc|mes|ano|cvv</b>"
             )
             return
 
         cc, mes, ano, cvv = getcc
         fullcc = f"{cc}|{mes}|{ano}|{cvv}"
-        gateway = "PayPal [1$]✅"
+        gateway = "PayPal 1$ charge"
 
         # Progress messages
         progress_msg = await message.reply_text(
