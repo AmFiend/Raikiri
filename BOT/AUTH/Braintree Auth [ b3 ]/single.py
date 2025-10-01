@@ -125,21 +125,21 @@ Usage: /b3 cc|mes|ano|cvv</b>"""
         finalresp = f"""
 {status}
 ━━━━━━━━━━━━━━━
-[ﾒ] Card ➺ <code>{fullcc}</code>
-[ﾒ] Gateway ➺ <i>{gateway}</i>
-[ﾒ] Response ➺ ⤿ {response} ⤾
+[㊕](t.me/spid_3r) Card ➺ <code>{fullcc}</code>
+[㊕](t.me/spid_3r) Gateway ➺ <i>{gateway}</i>
+[㊕](t.me/spid_3r) Response ➺ ⤿ {response} ⤾
 ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━
-[ﾒ] Bin ➺ {bin_code}
-[ﾒ] Info ➺ {brand} - {type} - {level}
-[ﾒ] Bank ➺ {bank}
-[ﾒ] Country ➺ {country} - {flag} - {currency}
+[㊕](t.me/spid_3r) Bin ➺ {bin_code}
+[㊕](t.me/spid_3r) Info ➺ {brand} - {type} - {level}
+[㊕](t.me/spid_3r) Bank ➺ {bank}
+[㊕](t.me/spid_3r) Country ➺ {country} - {flag} - {currency}
 ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━
 [仝] VBV ➺ {vbv_status}
 ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━
-[ﾒ] Checked By ➺ <a href='tg://user?id={message.from_user.id}'> {message.from_user.first_name}</a> [ {role} ]
-[ﾒ] Dev ➺ ⏤‌‌‌‌ <a href="tg://user?id=8340881349">𝑺𝑷𝑰𝑫𝑬𝑹</a>
+[㊕](t.me/spid_3r) Checked By ➺ <a href='tg://user?id={message.from_user.id}'> {message.from_user.first_name}</a> [ {role} ]
+[㊕](t.me/spid_3r) Dev ➺ ⏤‌‌‌‌ <a href="tg://user?id=8340881349">𝑺𝑷𝑰𝑫𝑬𝑹</a>
 ━━━━━━━━━━━━━━━
-[ﾒ] T/t ➺ [{time.perf_counter() - start:0.2f} seconds] | P/x ➺ [{proxy_status}]
+[㊕](t.me/spid_3r) T/t ➺ [{time.perf_counter() - start:0.2f} seconds] | P/x ➺ [{proxy_status}]
 """
         await asyncio.sleep(0.5)
         await Client.edit_message_text(message.chat.id, thirdcheck.id, finalresp)
