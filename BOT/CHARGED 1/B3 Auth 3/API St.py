@@ -160,7 +160,7 @@ Number Of CC Check : [{len(ccs)}]
 [⟐] T/t : {time.perf_counter() - start:0.2f}s | Proxy : {proxy_status}
 [⟐] 𝗖𝗵𝗲𝗰𝗸𝗲𝗱 𝗯𝘆: <a href='tg://user?id={message.from_user.id}'> {first_name}</a> [ {role} ]
 [⟐] 𝗢𝘄𝗻𝗲𝗿: <a href="tg://user?id=8340881349">𝑺𝑷𝑰𝑫𝑬𝑹</a>
-╚═════⟐「 𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑  」⟐═════╝
+╚═════⟐「 𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊  」⟐═════╝
 """
         await Client.edit_message_text(message.chat.id, nov.id, text)
         await massdeductcredit(user_id, len(ccs))

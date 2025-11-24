@@ -6,7 +6,7 @@ from pyrogram import Client, filters
 async def cmd_crdsystem(client, message):
     try:
         resp = f"""<b>
-💳 𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑⚡ Credit System
+💳 𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊⚡ Credit System
 ━━━━━━━━━━━━━━
 ● AUTH GATES
    ➔ 1 credit per CC check

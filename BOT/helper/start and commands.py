@@ -12,7 +12,7 @@ async def cmd_start(client, message):
         caption = f"""
 <b>🌟 Hello <a href="tg://user?id={message.from_user.id}">{message.from_user.first_name}</a>!</b>
 
-<b>Welcome aboard the 𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑 🚀</b>
+<b>Welcome aboard the 𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊 🚀</b>
 
 <b>I’m your go-to bot packed with tools, gates, and commands.</b>
 
@@ -84,7 +84,7 @@ async def callback_handler(client, cq):
         # COMMANDS MENU
         elif data == "cmds":
             caption = """
-𝙒𝙚𝙡𝙘𝙤𝙢𝙚 𝙩𝙤 𝘾𝙝𝙖𝙧𝙜𝙚 𝙈𝙖𝙨𝙩𝙚𝙧 -» >_
+𝙒𝙚𝙡𝙘𝙤𝙢𝙚 𝙩𝙤 𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊 -» >_
 
 𝙏𝙤𝙩𝙖𝙡 -» <code>18</code>
 𝙊𝙣 -» <code>12 ✅</code>
@@ -116,7 +116,7 @@ async def callback_handler(client, cq):
 <b> 𝙂𝙖𝙩𝙚𝙬𝙖𝙮𝙨 𝘼𝙪𝙩𝙝 </b>
 
  Braintree Auth
-Cmd: /chk cc|mm|yy|cvv
+Cmd: /B3 cc|mm|yy|cvv
 Last Updated: 07/05/2025
 Rank: Free + Premium
 
@@ -130,8 +130,8 @@ Cmd: /vbv cc|mm|yy|cvv
 Last Updated: 22/03/2025
 Rank: Free + Premium
 
- Square Auth
-Cmd: /sq cc|mm|yy|cvv
+ Auto Stripe Auth
+Cmd: as cc|mm|yy|cvv
 Last Updated: 22/03/2025
 Rank: Free + Premium
 
@@ -288,7 +288,7 @@ Report Bugs
             caption = f"""
 <b>🌟 Hello <a href="tg://user?id={user.id}">{user.first_name}</a>!</b>
 
-<b>Welcome back to 𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑 🚀</b>
+<b>Welcome back to 𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊 🚀</b>
 
 <b>👇 Tap <i>Register</i> or <i>Commands</i> to explore.</b>
 """

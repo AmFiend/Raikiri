@@ -83,7 +83,7 @@ async def get_server_stats():
     global_network_usage  = await get_global_network_usage()
 
     done = f"""<b>
-𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑⚡ Hosting Info Retrieved Successfully ✅
+𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊⚡ Hosting Info Retrieved Successfully ✅
 ━━━━━━━━━━━━━━ 
 Server Details:
 Server OS : {server_os}
@@ -97,7 +97,7 @@ Server CPU Usage : {cpu_usage}
 Server Internet Speed : {server_internet_speed}
 
 Application Details:
-Application Name : 𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑⚡️
+Application Name : 𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊⚡️
 Application CPU Usage : {script_cpu_usage}
 Application Ram Usage : {script_ram_usage}
 Application Network Usage : {global_network_usage}

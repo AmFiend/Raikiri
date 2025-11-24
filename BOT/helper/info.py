@@ -37,7 +37,7 @@ Type /register to continue.
         reg_at = results["reg_at"]
 
         send_info = f"""<b>
-🔍 Your Info on 𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑⚡
+🔍 Your Info on 𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊⚡
 ━━━━━━━━━━━━━━
 👤 First Name: {first_name}
 🆔 ID: <code>{user_id}</code>

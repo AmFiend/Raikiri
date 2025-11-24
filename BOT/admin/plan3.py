@@ -58,7 +58,7 @@ Expiry : {validity}
 Validity: 30 Days
 Status : Paid ☑️
 Payment Method : {paymnt_method}.
-Receipt ID : 𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑-{receipt_id}
+Receipt ID : 𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊-{receipt_id}
 
 This is a receipt for your plan.saved it in a Secure Place.This will help you if anything goes wrong with your plan purchases .
 

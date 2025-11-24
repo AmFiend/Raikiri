@@ -7,7 +7,7 @@ from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 async def cmd_buy(client, message):
     try:
         price_list = """
-📝 <b>𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑Plans :</b>
+📝 <b>𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊Plans :</b>
 ━━━━━━━━━━━━━━
 ● <b>Starter</b> - Unlimited Credits + Premium Access For 1 Week at <b>$2.50</b>
 
@@ -50,7 +50,7 @@ async def cmd_buy(client, message):
 async def show_payment_methods(client, callback_query):
     try:
         payment_info = """
-📝 <b>𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑⚡️ Methods:</b>
+📝 <b>𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊⚡️ Methods:</b>
 ━━━━━━━━━━━━━━
 
 💰 <b>BINANCE ID/PAY</b> - <code>550157299</code>
@@ -90,7 +90,7 @@ async def show_payment_methods(client, callback_query):
 async def show_price_list(client, callback_query):
     try:
         price_list = """
-📝 <b>𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑 ⚡️ Plans :</b>
+📝 <b>𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊 ⚡️ Plans :</b>
 ━━━━━━━━━━━━━━
 ● <b>Starter</b> - Unlimited Credits + Premium Access For 1 Week at <b>$2.50</b>
 

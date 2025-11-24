@@ -263,7 +263,7 @@ def build_card_message(
         f"[⟐] T/t : {elapsed:0.2f}s | Proxy : Live ✨\n"
         f"[⟐] 𝗖𝗵𝗲𝗰𝗸𝗲𝗱 𝗯𝘆: <a href='tg://user?id={user_id}'>{user_name}</a> [ {role} ]\n"
         f"[⟐] 𝗢𝘄𝗻𝗲𝗿: <a href=\"tg://user?id=8340881349\">𝑺𝑷𝑰𝑫𝑬𝑹</a>\n"
-        "╚═════⟐「 𝐂𝐇𝐀𝐑𝐆𝐄 𝐌𝐀𝐒𝐓𝐄𝐑  」⟐═════╝"
+        "╚═════⟐「 𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊  」⟐═════╝"
     )
 
 @Client.on_message(filters.command("brrrrrr", [".", "/"]))

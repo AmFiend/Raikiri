@@ -120,22 +120,22 @@ Usage: /au cc|mes|ano|cvv</b>"""
 
         finalresp = f"""
 {status}
-━━━━━━━━━━━━━━━
-[㊕](t.me/spid_3r) Card ➺ <code>{fullcc}</code>
-[㊕](t.me/spid_3r) Gateway ➺ <i>{gateway}</i>
-[㊕](t.me/spid_3r) Response ➺ ⤿ {response} ⤾
-━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━
-[㊕](t.me/spid_3r) Bin ➺ {bin_code}
-[㊕](t.me/spid_3r) Info ➺ {brand} - {type} - {level}
-[㊕](t.me/spid_3r) Bank ➺ {bank}
-[㊕](t.me/spid_3r) Country ➺ {country} - {flag} - {currency}
-━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━
-[仝] VBV ➺ {vbv_status}
-━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━
-[㊕](t.me/spid_3r) Checked By ➺ <a href='tg://user?id={message.from_user.id}'> {message.from_user.first_name}</a> [ {role} ]
-[㊕](t.me/spid_3r) Dev ➺ ⏤‌‌‌‌ <a href="tg://user?id=8340881349">𝑺𝑷𝑰𝑫𝑬𝑹</a>
-━━━━━━━━━━━━━━━
-[㊕](t.me/spid_3r) T/t ➺ [{time.perf_counter() - start:0.2f} seconds] | P/x ➺ [{proxy_status}]
+━━━━━━━━━━━━━
+[⟐] 𝗖𝗖 - <code>{fullcc}</code>
+[⟐] 𝗦𝘁𝗮𝘁𝘂𝘀 : {response}
+[⟐] 𝗚𝗮𝘁𝗲 - {gateway}
+━━━━━━━━━━━━━
+[⟐] 𝗩𝗕𝗩 - {vbv_status}
+━━━━━━━━━━━━━
+[⟐] B𝗶𝗻 : {bin6}
+[⟐] 𝗖𝗼𝘂𝗻𝘁𝗿𝘆 : {country} {flag}
+[⟐] 𝗜𝘀𝘀𝘂𝗲𝗿 : {bank}
+[⟐] 𝗧𝘆𝗽𝗲 : {brand} | {type_} - {level}
+━━━━━━━━━━━━━
+[⟐] T/t : {elapsed_time:0.2f}s | Proxy : {proxy_status}
+[⟐] 𝗖𝗵𝗲𝗰𝗸𝗲𝗱 𝗯𝘆: <a href='tg://user?id={message.from_user.id}'> {message.from_user.first_name}</a> [ {role} ]
+[⟐] 𝗢𝘄𝗻𝗲𝗿: <a href="tg://user?id=8340881349">𝑺𝑷𝑰𝑫𝑬𝑹</a>
+╚═══⟐「 𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊  」⟐═════╝
 """
         await asyncio.sleep(0.5)
         await Client.edit_message_text(message.chat.id, thirdcheck.id, finalresp)
