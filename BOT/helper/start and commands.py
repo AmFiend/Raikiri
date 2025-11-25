@@ -8,7 +8,7 @@ from FUNC.usersdb_func import *
 
 # ----------------- VIDEO (demo) -----------------
 # Replace with your raw GitHub MP4 when ready:
-VIDEO_URL = "https://raw.githubusercontent.com/USERNAME/REPO/main/demo.mp4"
+VIDEO_URL = "https://raw.githubusercontent.com/spxbuoy/cmchk/main/menu.mp4"
 
 # In-memory store to remember the menu message (text under the video) per chat
 # Key: chat_id (int) -> message_id (int)
