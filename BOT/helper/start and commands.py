@@ -80,14 +80,14 @@ async def callback_command_edit(client, chat_id, text, reply_markup):
 
 @Client.on_message(filters.command("start", [".", "/"]))
 async def cmd_start(Client, message):
-try:
-text = """<b>
+    try:
+       text = """<b>
 𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊  ■□□
 </b>"""
 edit = await message.reply_text(text, message.id)
 await asyncio.sleep(0.5)
 
-text = """<b>
+       text = """<b>
 
 𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊  ■■■
 </b> """
