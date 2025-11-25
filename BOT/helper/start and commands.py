@@ -78,7 +78,6 @@ async def callback_command_edit(client, chat_id, text, reply_markup):
     except Exception as e:
         await error_log(str(e))
 
-Any other animation to put here
 @Client.on_message(filters.command("start", [".", "/"]))
 async def cmd_start(Client, message):
 try:
