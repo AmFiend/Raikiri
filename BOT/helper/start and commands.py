@@ -14,7 +14,7 @@ text_home = """[朱] 𝙒𝙚𝙡𝙘𝙤𝙢𝙚 𝙩𝙤 𝙎𝙥𝙮𝙙𝙚 
 # ----------------------------------------------------
 # BUTTONS
 # ----------------------------------------------------
-              InlineKeyboardButton("朱", callback_data="start_again")
+            
 exit_button = InlineKeyboardButton("𝙀𝙭𝙞𝙩 ⚠️", "exit")
 
 buttons_home = InlineKeyboardMarkup(
