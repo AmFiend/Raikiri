@@ -93,7 +93,23 @@ text_gates_charged = f"""
 {symbol("ᥫ᭡ 𝙎𝙩𝙖𝙩𝙪𝙨")} -» <code>On ✅</code>
 
 {symbol("朱 𝙏𝙚𝙨𝙩 𝙋𝙖𝙮")} -» <code>Shopify single check</code>
-{symbol("零 𝘾𝙢𝙙")} -» <code>.sp</code> -» <code>Free</code>
+{symbol("零 𝘾𝙢𝙙")} -» <code>.sp</code> -» <code>premium</code>
+{symbol("ᥫ᭡ 𝙎𝙩𝙖𝙩𝙪𝙨")} -» <code>On ✅</code>
+
+{symbol("朱 𝙏𝙚𝙨𝙩 𝙋𝙖𝙮")} -» <code>Auto Shopify</code>
+{symbol("零 𝘾𝙢𝙙")} -» <code>.sh</code> -» <code>premium</code>
+{symbol("ᥫ᭡ 𝙎𝙩𝙖𝙩𝙪𝙨")} -» <code>On ✅</code>
+
+{symbol("朱 𝙏𝙚𝙨𝙩 𝙋𝙖𝙮")} -» <code>Braintree Charge</code>
+{symbol("零 𝘾𝙢𝙙")} -» <code>.br</code> -» <code>premium</code>
+{symbol("ᥫ᭡ 𝙎𝙩𝙖𝙩𝙪𝙨")} -» <code>On ✅</code>
+
+{symbol("朱 𝙏𝙚𝙨𝙩 𝙋𝙖𝙮")} -» <code>Razopay 1$</code>
+{symbol("零 𝘾𝙢𝙙")} -» <code>.rz</code> -» <code>premium</code>
+{symbol("ᥫ᭡ 𝙎𝙩𝙖𝙩𝙪𝙨")} -» <code>On ✅</code>
+
+{symbol("朱 𝙏𝙚𝙨𝙩 𝙋𝙖𝙮")} -» <code>Authnet</code>
+{symbol("零 𝘾𝙢𝙙")} -» <code>.authnet1</code> -» <code>premium</code>
 {symbol("ᥫ᭡ 𝙎𝙩𝙖𝙩𝙪𝙨")} -» <code>On ✅</code>
 """
 
@@ -111,12 +127,20 @@ buttons_charged_page_1 = InlineKeyboardMarkup(
 text_gates_specials = f"""
 𝙂𝙖𝙩𝙚𝙬𝙖𝙮𝙨 𝙎𝙥𝙚𝙘𝙞𝙖𝙡
 
-{symbol("朱 𝙋𝙧𝙤 𝙏𝙤𝙤𝙡")} -» <code>Advanced Checker</code>
-{symbol("零 𝘾𝙢𝙙")} -» <code>.procheck</code> -» <code>Premium</code>
+{symbol("朱 𝙋𝙧𝙤 𝙏𝙤𝙤𝙡")} -» <code>payflow nass</code>
+{symbol("零 𝘾𝙢𝙙")} -» <code>.mpy</code> -» <code>Premium</code>
 {symbol("ᥫ᭡ 𝙎𝙩𝙖𝙩𝙪𝙨")} -» <code>On ✅</code>
 
-{symbol("朱 𝙎𝙘𝙖𝙣𝙣𝙚𝙧")} -» <code>System Scanner</code>
-{symbol("零 𝘾𝙢𝙙")} -» <code>.scan</code> -» <code>Premium</code>
+{symbol("朱 𝙎𝙘𝙖𝙣𝙣𝙚𝙧")} -» <code>mass stripe</code>
+{symbol("零 𝘾𝙢𝙙")} -» <code>.mstxt</code> -» <code>Premium</code>
+{symbol("ᥫ᭡ 𝙎𝙩𝙖𝙩𝙪𝙨")} -» <code>On ✅</code>
+
+{symbol("朱 𝙎𝙘𝙖𝙣𝙣𝙚𝙧")} -» <code>mass Auto stripe</code>
+{symbol("零 𝘾𝙢𝙙")} -» <code>.asm</code> -» <code>Premium</code>
+{symbol("ᥫ᭡ 𝙎𝙩𝙖𝙩𝙪𝙨")} -» <code>On ✅</code>
+
+{symbol("朱 𝙎𝙘𝙖𝙣𝙣𝙚𝙧")} -» <code>mass stipe</code>
+{symbol("零 𝘾𝙢𝙙")} -» <code>.mchk</code> -» <code>Premium</code>
 {symbol("ᥫ᭡ 𝙎𝙩𝙖𝙩𝙪𝙨")} -» <code>On ✅</code>
 """
 
@@ -134,16 +158,16 @@ buttons_specials_page_1 = InlineKeyboardMarkup(
 text_tools = f"""
 𝙏𝙤𝙤𝙡𝙨 🛠
 
-{symbol("朱 𝙄𝙣𝙛𝙤")} -» <code>user info lookup</code>
-{symbol("零 𝘾𝙢𝙙")} -» <code>.info</code> -» <code>Free</code>
+{symbol("朱 𝙄𝙣𝙛𝙤")} -» <code>Generate cc</code>
+{symbol("零 𝘾𝙢𝙙")} -» <code>.gen</code> -» <code>Free</code>
 {symbol("ᥫ᭡ 𝙎𝙩𝙖𝙩𝙪𝙨")} -» <code>On ✅</code>
 
-{symbol("朱 𝙍𝙖𝙣𝙙𝙤𝙢")} -» <code>random generator</code>
-{symbol("零 𝘾𝙢𝙙")} -» <code>.rnd</code> -» <code>Free</code>
+{symbol("朱 𝙍𝙖𝙣𝙙𝙤𝙢")} -» <code>cc bin</code>
+{symbol("零 𝘾𝙢𝙙")} -» <code>.bin</code> -» <code>Free</code>
 {symbol("ᥫ᭡ 𝙎𝙩𝙖𝙩𝙪𝙨")} -» <code>On ✅</code>
 
-{symbol("朱 𝙀𝙘𝙝𝙤")} -» <code>echo text</code>
-{symbol("零 𝘾𝙢𝙙")} -» <code>.echo text</code> -» <code>Free</code>
+{symbol("朱 𝙀𝙘𝙝𝙤")} -» <code>scrape cc</code>
+{symbol("零 𝘾𝙢𝙙")} -» <code>.scr</code> -» <code>Free</code>
 {symbol("ᥫ᭡ 𝙎𝙩𝙖𝙩𝙪𝙨")} -» <code>On ✅</code>
 """
 
