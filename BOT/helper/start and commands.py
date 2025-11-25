@@ -29,7 +29,7 @@ async def cmd_scr(client, message):
         WELCOME_TEXT = f"""
 <b>Hello <a href="tg://user?id={message.from_user.id}"> {message.from_user.first_name}</a> !
 
-Master Checker Bot  Has plenty of Commands . We Have Auth Gates , Charge Gates , Tools And Other Things .
+𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊 Bot  Has plenty of Commands . We Have Auth Gates , Charge Gates , Tools And Other Things .
 
 Click Each of Them Below to Know Them Better .</b>
         """
@@ -82,23 +82,28 @@ async def callback_command_edit(client, chat_id, text, reply_markup):
 @Client.on_message(filters.command("start", [".", "/"]))
 async def cmd_start(Client, message):
     try:
-        text = """<b>
-MASTER Checker  ■□□
-      </b>"""
-        edit = await message.reply_text(text, message.id)
-        await asyncio.sleep(0.5)
+        frames = [
+            "<b>𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊 🌊</b>",
+            "<b>𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊 🌊🌊</b>",
+            "<b>𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊 🌊🌊🌊</b>",
+            "<b>𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊 🌊🌊🌊🌊</b>",
+            "<b>𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊 🌊🌊🌊🌊🌊</b>",
+            "<b>𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊 🌊🌊🌊🌊</b>",
+            "<b>𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊 🌊🌊🌊</b>",
+            "<b>𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊 🌊🌊</b>",
+        ]
 
-        text = """<b>
-MASTER Checker  ■■■
-     </b> """
-        # use edit on the message object
-        await edit.edit_text(text)
-        await asyncio.sleep(0.5)
+        edit = await message.reply_text(frames[0])
+        for frame in frames:
+            await asyncio.sleep(0.25)
+            await edit.edit_text(frame)
+
+        await edit.edit_text("<b>🌊 𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊 𝐑𝐄𝐀𝐃𝐘 ✔️</b>")
 
         text = f"""
 <b>🌟 Hello <a href="tg://user?id={message.from_user.id}">{message.from_user.first_name}</a>!</b>
 
-<b>Welcome aboard the Master Checker! 🚀</b>
+<b>Welcome aboard the 𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊! 🚀</b>
 
 <b>I am your go-to bot, packed with a variety of gates, tools, and commands to enhance your experience. Excited to see what I can do?</b>
 
@@ -215,7 +220,7 @@ async def callback_query(Client, CallbackQuery):
             WELCOME_TEXT = f"""
 <b>Hello <a href="tg://user?id={CallbackQuery.from_user.id}"> {CallbackQuery.from_user.first_name}</a> !
 
-Master Checker Bot  Has plenty of Commands . We Have Auth Gates , Charge Gates , Tools And Other Things .
+𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊 Bot  Has plenty of Commands . We Have Auth Gates , Charge Gates , Tools And Other Things .
 
 Click Each of Them Below to Know Them Better .</b>
             """
@@ -287,7 +292,7 @@ Explore My Various Commands And Abilities By Tapping on Commands Button .
             WELCOME_TEXT = f"""
 <b>Hello User!
 
-MASTER Checker Has plenty of Commands. We Have Auth Gates, Charge Gates, Tools, And Other Things.
+𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊 Has plenty of Commands. We Have Auth Gates, Charge Gates, Tools, And Other Things.
 
 Click Each of Them Below to Know Them Better.</b>
             """
@@ -329,21 +334,21 @@ Click Each of Them Below to Know Them Better.</b>
             AUTH_TEXT = f"""
 <b>Hello User!
 
-Master Checker  Auth Gates.
+𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊  Auth Gates.
 
 Click on each one below to get to know them better. .</b>
             """
             AUTH_BUTTONS = [
                 [
                     InlineKeyboardButton("Stripe Auth", callback_data="Auth2"),
-                    InlineKeyboardButton("Adyen Auth", callback_data="Adyen2"),
+                    InlineKeyboardButton("Adyen Auth", callback_data="Adyen"),
                 ],
                 [
                     InlineKeyboardButton(
                         "Braintree B3", callback_data="BRAINTREEB3"),
 
                     InlineKeyboardButton(
-                        "Braintree VBV", callback_data="BRAINTREEVBV"),
+                        "Braintree VBV", callback_data="BRAINTREEPREMIUM"),
                 ],
                 [
                     InlineKeyboardButton("Back", callback_data="HOME"),
@@ -356,7 +361,7 @@ Click on each one below to get to know them better. .</b>
 
         if data == "Auth2":
             CHARGE_TEXT = """
-🔹 Stripe Auth Gates of Master Checker
+🔹 Stripe Auth Gates of 𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊
 🔹 Status: ✅ Active
 
 🚀 Quick Commands Overview:
@@ -366,7 +371,17 @@ Click on each one below to get to know them better. .</b>
       ➜ Single: /au cc|mm|yy|cvv ✅
       ➜ Mass: /mass cc|mm|yy|cvv ✅
 
-Total Auth Commands: 1
+👤 Stripe Auth Options:
+   1. Site-Based Auth:
+      ➜ Single: /chk cc|mm|yy|cvv ✅
+      ➜ Mass: /mchk cc|mm|yy|cvv ✅
+      
+👤 Auto Stripe  Options:
+   1. Site-Based Auth:
+      ➜ Single: /as cc|mm|yy|cvv ✅
+      ➜ Mass: /asm cc|mm|yy|cvv ✅
+     
+Total Auth Commands: 2
 
 """
             CHARGE_BUTTON = [
@@ -379,10 +394,10 @@ Total Auth Commands: 1
             await CallbackQuery.answer()
             return
 
-        if data == "Adyen2":
+        if data == "Adyen":
             CHARGE_TEXT = """
-🔹 Adyen Auth Gates of Master Checker
-🔹 Status: Inactive ❌
+🔹 Adyen Auth Gates of 𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊
+🔹 Status: inactive ❌
 
 🚀 Quick Commands Overview:
 
@@ -404,18 +419,17 @@ Total Auth Commands: 1
             await CallbackQuery.answer()
             return
 
-        if data == "BRAINTREEVBV":
+        if data == "BRAINTREEPREMIUM":
             CHARGE_TEXT = """
-🔹 Braintree Gates of Master Checker
+🔹 Braintree Gates of 𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊
 🔹 Status: ✅ Active
 
 🚀 Quick Commands Overview:
 
-👤 Braintree VBV Options:
+👤 Braintree Premium Options:
    1. VBV Lookup Gate:
-      ➜ Single: /vbv cc|mm|yy|cvv ✅
-      ➜ Mass (Limit=25): /mvbv cc|mm|yy|cvv ✅
-
+      ➜ Single: /bp cc|mm|yy|cvv ✅
+     
 Total Auth Commands: 1
 
 """
@@ -431,7 +445,7 @@ Total Auth Commands: 1
 
         if data == "BRAINTREEB3":
             CHARGE_TEXT = """
-🔹 Braintree B3 of MASTER Checker
+🔹 Braintree B3 of 𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊
 🔹 Status: ✅ Active
 
 🚀 Quick Commands Overview:
@@ -459,7 +473,7 @@ Total Commands: 1
             CHARGE_TEXT = f"""
 <b>Hello User!
 
-MASTER Checker Charge Gates.
+𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊 Charge Gates.
 
 Click on each one below to get to know them better. .</b>
             """
@@ -486,7 +500,7 @@ Click on each one below to get to know them better. .</b>
 
         if data == "PAYPAL":
             CHARGE_TEXT = """
-🔹 PayPal Charge Gates of MASTER Checker
+🔹 PayPal Charge Gates of 𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊
 🔹 Status: ❌ Inactive
 
 🚀 Quick Commands Overview:
@@ -515,7 +529,7 @@ Total Auth Commands: 2
 
         if data == "SKBASED":
             CHARGE_TEXT = """
-🔹 Stripe Charge Gates of MASTER Checker
+🔹 Stripe Charge Gates of 𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊
 🔹 Status: ✅ Active
 
 🚀 Quick Commands Overview:
@@ -554,15 +568,15 @@ Total Charge Commands: 3
 
         if data == "SITE":
             CHARGE_TEXT = """
-🔹 Site Charge Gates of MASTER Checker
+🔹 Site Charge Gates of 𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊
 🔹 Status: ✅ Active
 
 🚀 Quick Commands Overview:
 
 👤 Site Charge Options:
    1. SITEBASE 1$ CVV CHARGE:
-      ➜ Single: /chk cc|mm|yy|cvv ✅
-      ➜ Mass: /mchk cc|mm|yy|cvv ✅
+      ➜ Single: /stb cc|mm|yy|cvv ✅
+      ➜ Mass: /mstb cc|mm|yy|cvv ✅
 
 Total Charge Commands: 1
 
@@ -579,7 +593,7 @@ Total Charge Commands: 1
 
         if data == "BRAINTREE":
             CHARGE_TEXT = """
-🔹 Braintree Charge Gates of MASTER Checker
+🔹 Braintree Charge Gates of 𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊
 🔹 Status: ✅ Active
 
 🚀 Quick Commands Overview:
@@ -605,7 +619,7 @@ Total Auth Commands: 1
         if data == "SHOPIFY":
             CHARGE_TEXT = """
 
-🔹 Shopify Charge Gates of MASTER Checker
+🔹 Shopify Charge Gates of 𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊
 🔹 Status: ✅ Active
 
 🚀 Quick Commands Overview:
@@ -645,7 +659,7 @@ Total Auth Commands: 4
             TOOLS_TEXT = f"""
 <b>Hello User!
 
-MASTER Checker Tools.
+𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊 Tools.
 
 Click on each one below to get to know them better..</b>
             """
@@ -671,7 +685,7 @@ Click on each one below to get to know them better..</b>
 
         if data == "SKSTOOL":
             CHARGE_TEXT = """
-🔹 SK Tools of MASTER Checker
+🔹 SK Tools of 𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊
 🔹 Status: ✅ Active
 
 🚀 Quick Commands Overview:
@@ -697,7 +711,7 @@ Total Auth Commands: 4
 
         if data == "SCRAPPER":
             CHARGE_TEXT = """
-🔹 Scrapper Tools Gates of MASTER Checker
+🔹 Scrapper Tools Gates of 𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊
 🔹 Status: ✅ Active
 
 🚀 Quick Commands Overview:
@@ -722,7 +736,7 @@ Total Auth Commands: 3
 
         if data == "GENARATORTOOLS":
             CHARGE_TEXT = """
-🔹 Generator Tools of MASTER Checker
+🔹 Generator Tools of 𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊
 🔹 Status: ✅ Active
 
 🚀 Quick Commands Overview:
@@ -746,7 +760,7 @@ Total Auth Commands: 2
 
         if data == "BINANDOTHERS":
             CHARGE_TEXT = """
-🔹 Bin and Other Tools Of MASTER Checker
+🔹 Bin and Other Tools Of 𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊
 🔹 Status: ✅ Active
 
 🚀 Quick Commands Overview:
@@ -780,7 +794,7 @@ Total Auth Commands: 6
             HELPER_TEXT = f"""
 <b>Hello User!
 
-Master Checker  Helper.
+𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊  Helper.
 
 Click on each one below to get to know them better.</b>
             """
@@ -800,7 +814,7 @@ Click on each one below to get to know them better.</b>
 
         if data == "INFO":
             CHARGE_TEXT = """
-🔹 Helper Gates of MASTER Checker
+🔹 Helper Gates of 𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊
 🔹 Status: ✅ Active
 
 🚀 Quick Commands Overview:
