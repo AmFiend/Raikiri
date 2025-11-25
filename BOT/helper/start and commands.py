@@ -12,7 +12,7 @@ async def cmd_scr(client, message):
         WELCOME_TEXT = f"""
 <b>Hello <a href="tg://user?id={message.from_user.id}"> {message.from_user.first_name}</a> !
 
-Blitz  Has plenty of Commands . We Have Auth Gates , Charge Gates , Tools And Other Things .
+Master Checker Bot  Has plenty of Commands . We Have Auth Gates , Charge Gates , Tools And Other Things .
 
 Click Each of Them Below to Know Them Better .</b>
         """
@@ -43,7 +43,7 @@ async def callback_command(client, message):
         WELCOME_TEXT = f"""
 <b>Hello User !
 
-RetroChk⚡ Has plenty of Commands . We Have Auth Gates , Charge Gates , Tools And Other Things .
+MASTER Checker  Has plenty of Commands . We Have Auth Gates , Charge Gates , Tools And Other Things .
 
 Click Each of Them Below to Know Them Better .</b>
         """
@@ -73,13 +73,13 @@ Click Each of Them Below to Know Them Better .</b>
 async def cmd_start(Client, message):
     try:
         text = """<b>
-RTX  ■□□
+MASTER Checker  ■□□
       </b>"""
         edit = await message.reply_text(text, message.id)
         await asyncio.sleep(0.5)
 
         text = """<b>
-RTX  ■■■
+MASTER Checker  ■■■
      </b> """
         edit = await Client.edit_message_text(message.chat.id, edit.id, text)
         await asyncio.sleep(0.5)
@@ -87,7 +87,7 @@ RTX  ■■■
         text = f"""
 <b>🌟 Hello <a href="tg://user?id={message.from_user.id}">{message.from_user.first_name}</a>!</b>
 
-<b>Welcome aboard the RetroChk! 🚀</b>
+<b>Welcome aboard the Master Checker! 🚀</b>
 
 <b>I am your go-to bot, packed with a variety of gates, tools, and commands to enhance your experience. Excited to see what I can do?</b>
 
@@ -243,7 +243,7 @@ async def callback_query(Client, CallbackQuery):
         WELCOME_TEXT = f"""
 <b>Hello User!
 
-RetroChk⚡ Has plenty of Commands. We Have Auth Gates, Charge Gates, Tools, And Other Things.
+MASTER Checker Has plenty of Commands. We Have Auth Gates, Charge Gates, Tools, And Other Things.
 
 Click Each of Them Below to Know Them Better.</b>
     """
@@ -266,14 +266,14 @@ Click Each of Them Below to Know Them Better.</b>
 
     if CallbackQuery.data == "close":
         await CallbackQuery.message.delete()
-       # await CallbackQuery.message.reply_text("Enjoy Dadu, @XBRDM_BOT")
+        await CallbackQuery.message.reply_text("Enjoy Bro, ")
 
 
     if CallbackQuery.data == "AUTH":
         AUTH_TEXT = f"""
 <b>Hello User!
 
-Blitz  Auth Gates.
+Master Checker  Auth Gates.
 
 Click on each one below to get to know them better. .</b>
     """
@@ -299,7 +299,7 @@ Click on each one below to get to know them better. .</b>
             reply_markup=InlineKeyboardMarkup(AUTH_BUTTONS))
     if CallbackQuery.data == "Auth2":
         CHARGE_TEXT = """
-🔹 Stripe Auth Gates of RetroChk⚡
+🔹 Stripe Auth Gates of Master Checker
 🔹 Status: ✅ Active
 
 🚀 Quick Commands Overview:
@@ -324,7 +324,7 @@ Total Auth Commands: 1
         )
     if CallbackQuery.data == "Adyen2":
         CHARGE_TEXT = """
-🔹 Adyen Auth Gates of Blitz
+🔹 Adyen Auth Gates of Master Checker
 🔹 Status: Inactive ❌
 
 🚀 Quick Commands Overview:
@@ -349,7 +349,7 @@ Total Auth Commands: 1
         )
     if CallbackQuery.data == "BRAINTREEVBV":
         CHARGE_TEXT = """
-🔹 Braintree Gates of Blitz
+🔹 Braintree Gates of Master Checker
 🔹 Status: ✅ Active
 
 🚀 Quick Commands Overview:
@@ -375,7 +375,7 @@ Total Auth Commands: 1
 
     if CallbackQuery.data == "BRAINTREEB3":
         CHARGE_TEXT = """
-🔹 Braintree B3 of Blitz
+🔹 Braintree B3 of MASTER Checker
 🔹 Status: ✅ Active
 
 🚀 Quick Commands Overview:
@@ -407,7 +407,7 @@ Total Commands: 1
         CHARGE_TEXT = f"""
 <b>Hello User!
 
-Blitz Charge Gates.
+MASTER Checker Charge Gates.
 
 Click on each one below to get to know them better. .</b>
     """
@@ -434,7 +434,7 @@ Click on each one below to get to know them better. .</b>
             reply_markup=InlineKeyboardMarkup(CHARGE_BUTTONS))
     if CallbackQuery.data == "PAYPAL":
         CHARGE_TEXT = """
-🔹 PayPal Charge Gates of Blitz
+🔹 PayPal Charge Gates of MASTER Checker
 🔹 Status: ❌ Inactive
 
 🚀 Quick Commands Overview:
@@ -465,7 +465,7 @@ Total Auth Commands: 2
 
     if CallbackQuery.data == "SKBASED":
         CHARGE_TEXT = """
-🔹 Stripe Charge Gates of RetroChk⚡
+🔹 Stripe Charge Gates of MASTER Checker
 🔹 Status: ✅ Active
 
 🚀 Quick Commands Overview:
@@ -504,7 +504,7 @@ Total Charge Commands: 3
         )
     if CallbackQuery.data == "SITE":
         CHARGE_TEXT = """
-🔹 Site Charge Gates of Blitz
+🔹 Site Charge Gates of MASTER Checker
 🔹 Status: ✅ Active
 
 🚀 Quick Commands Overview:
@@ -529,7 +529,7 @@ Total Charge Commands: 1
         )
     if CallbackQuery.data == "BRAINTREE":
         CHARGE_TEXT = """
-🔹 Braintree Charge Gates of RetroChk⚡
+🔹 Braintree Charge Gates of MASTER Checker
 🔹 Status: ✅ Active
 
 🚀 Quick Commands Overview:
@@ -555,7 +555,7 @@ Total Auth Commands: 1
     if CallbackQuery.data == "SHOPIFY":
         CHARGE_TEXT = """
 
-🔹 Shopify Charge Gates of RetroChk⚡
+🔹 Shopify Charge Gates of MASTER Checker
 🔹 Status: ✅ Active
 
 🚀 Quick Commands Overview:
@@ -594,7 +594,7 @@ Total Auth Commands: 4
         TOOLS_TEXT = f"""
 <b>Hello User!
 
-Blitz Tools.
+MASTER Checker Tools.
 
 Click on each one below to get to know them better..</b>
     """
@@ -620,7 +620,7 @@ Click on each one below to get to know them better..</b>
 
     if CallbackQuery.data == "SKSTOOL":
         CHARGE_TEXT = """
-🔹 SK Tools of RetroChk⚡
+🔹 SK Tools of MASTER Checker
 🔹 Status: ✅ Active
 
 🚀 Quick Commands Overview:
@@ -646,7 +646,7 @@ Total Auth Commands: 4
         )
     if CallbackQuery.data == "SCRAPPER":
         CHARGE_TEXT = """
-🔹 Scrapper Tools Gates of RetroChk⚡
+🔹 Scrapper Tools Gates of MASTER Checker
 🔹 Status: ✅ Active
 
 🚀 Quick Commands Overview:
@@ -671,7 +671,7 @@ Total Auth Commands: 3
         )
     if CallbackQuery.data == "GENARATORTOOLS":
         CHARGE_TEXT = """
-🔹 Generator Tools of RetroChk⚡
+🔹 Generator Tools of MASTER Checker
 🔹 Status: ✅ Active
 
 🚀 Quick Commands Overview:
@@ -695,7 +695,7 @@ Total Auth Commands: 2
         )
     if CallbackQuery.data == "BINANDOTHERS":
         CHARGE_TEXT = """
-🔹 Bin and Other Tools Of RetroChk⚡
+🔹 Bin and Other Tools Of MASTER Checker
 🔹 Status: ✅ Active
 
 🚀 Quick Commands Overview:
@@ -730,7 +730,7 @@ Total Auth Commands: 6
         HELPER_TEXT = f"""
 <b>Hello User!
 
-Retro Helper.
+Master Checker  Helper.
 
 Click on each one below to get to know them better.</b>
     """
@@ -749,13 +749,13 @@ Click on each one below to get to know them better.</b>
             reply_markup=InlineKeyboardMarkup(CHARGE_BUTTONS))
     if CallbackQuery.data == "INFO":
         CHARGE_TEXT = """
-🔹 Helper Gates of RetroChk
+🔹 Helper Gates of MASTER Checker
 🔹 Status: ✅ Active
 
 🚀 Quick Commands Overview:
 
 👤 Account Management:
-   1. Start Bot: /start@retrochkbot
+   1. Start Bot: /start
    2. Register: /register
    3. User ID: /id
    4. User Info: /info
