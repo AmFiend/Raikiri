@@ -17,9 +17,9 @@ async def cmd_scr(client, message):
         WELCOME_TEXT = f"""
 <b>𝗛𝗲𝗹𝗹𝗼 <a href="tg://user?id={message.from_user.id}">{message.from_user.first_name}</a> !
 
-𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊 𝗵𝗮𝘀 𝗽𝗹𝗲𝗻𝘁𝘆 𝗼𝗳 𝗰𝗼𝗺𝗺𝗮𝗻𝗱𝘀 — 𝗔𝘂𝘁𝗵, 𝗖𝗵𝗮𝗿𝗴𝗲, 𝗧𝗼𝗼𝗹𝘀, 𝗮𝗻𝗱 𝗺𝗼𝗿𝗲.
+𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊 provides AUTH, CHARGE, TOOLS and more.
 
-𝗧𝗮𝗽 𝗼𝗻 𝗮𝗻𝘆 𝗼𝗳 𝘁𝗵𝗲 𝗯𝘂𝘁𝘁𝗼𝗻𝘀 𝗯𝗲𝗹𝗼𝘄 𝘁𝗼 𝘃𝗶𝗲𝘄 𝗺𝗼𝗿𝗲.</b>
+Tap a button below:</b>
 """
 
         WELCOME_BUTTONS = [
@@ -73,12 +73,12 @@ async def cmd_start(client, message):
             await asyncio.sleep(0.2)
 
         final_text = f"""
-<b>🌟 𝗛𝗲𝗹𝗹𝗼 <a href="tg://user?id={message.from_user.id}">{message.from_user.first_name}</a>!</b>
+<b>🌟 Hello <a href="tg://user?id={message.from_user.id}">{message.from_user.first_name}</a>!</b>
 
-<b>𝗪𝗲𝗹𝗰𝗼𝗺𝗲 𝘁𝗼 𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊 🚀</b>
+<b>Welcome to SPYDE CHK 🚀</b>
 
-<b>𝗜 𝗮𝗺 𝘆𝗼𝘂𝗿 𝗴𝗼-𝘁𝗼 𝗯𝗼𝘁 𝗳𝗼𝗿 𝗴𝗮𝘁𝗲𝘀, 𝘁𝗼𝗼𝗹𝘀, 𝗰𝗵𝗲𝗰𝗸𝗲𝗿𝘀 𝗮𝗻𝗱 𝗺𝗼𝗿𝗲.</b>
-<b>𝗧𝗮𝗽 𝗥𝗲𝗴𝗶𝘀𝘁𝗲𝗿 𝘁𝗼 𝘀𝘁𝗮𝗿𝘁 𝘆𝗼𝘂𝗿 𝗷𝗼𝘂𝗿𝗻𝗲𝘆 🚀</b>
+<b>Your bot for gates, tools, checkers & more.</b>
+<b>Tap Register to begin.</b>
 """
 
         buttons = [
@@ -129,8 +129,9 @@ async def register_user(user_id, username, antispam_time, reg_at):
 @Client.on_message(filters.command("register", [".", "/"]))
 async def cmd_register(client, message):
     try:
-        user_id = message.from_user.id
-        username = message.from_user.username
+        user = message.from_user
+        user_id = user.id
+        username = user.username
         antispam_time = int(time.time())
 
         yy, mm, dd = str(date.today()).split("-")
@@ -149,19 +150,17 @@ async def cmd_register(client, message):
             resp = f"""
 <b>✔ Registration Successful!</b>
 
-● Name: {message.from_user.first_name}  
+● Name: {user.first_name}  
 ● User ID: {user_id}  
 ● Role: Free  
 ● Credits: 50  
 
-<b>You received 50 credits as a registration bonus!</b>
+<b>You received 50 bonus credits!</b>
 """
 
         else:
             resp = f"""
 <b>⚠ You Are Already Registered</b>
-
-<b>No need to register again.</b>
 """
 
         await message.reply_text(resp, reply_markup=InlineKeyboardMarkup(buttons))
@@ -170,55 +169,53 @@ async def cmd_register(client, message):
         import traceback
         await error_log(traceback.format_exc())
 
-async def callback_register(Client, message):
+
+# ============================
+# REGISTER BUTTON CALLBACK FIXED
+# ============================
+
+@Client.on_callback_query(filters.regex("register"))
+async def callback_register(client, query):
     try:
-        user_id = str(message.reply_to_message.from_user.id)
-        username = str(message.reply_to_message.from_user.username)
+        user = query.from_user
+        user_id = user.id
+        username = user.username
         antispam_time = int(time.time())
+
         yy, mm, dd = str(date.today()).split("-")
         reg_at = f"{dd}-{mm}-{yy}"
-        find = usersdb.find_one({"id": f"{user_id}"}, {"_id": 0})
-        registration_check = str(find)
 
-        WELCOME_BUTTON = [
-            [
-                InlineKeyboardButton("Commands", callback_data="cmds")
-            ],
-            [
-                InlineKeyboardButton("Close", callback_data="close")
-            ]
+        check = usersdb.find_one({"id": str(user_id)}, {"_id": 0})
+
+        buttons = [
+            [InlineKeyboardButton("Commands", callback_data="cmds")],
+            [InlineKeyboardButton("Close", callback_data="close")]
         ]
-        if registration_check == "None":
+
+        if check is None:
             await register_user(user_id, username, antispam_time, reg_at)
-            resp = f"""<b>
-𝗥𝗲𝗴𝗶𝘀𝘁𝗿𝗮𝘁𝗶𝗼𝗻 𝗦𝘂𝗰𝗰𝗲𝘀𝘀𝗳𝘂𝗹 ♻️ 
-━━━━━━━━━━━━━━
-● 𝗡𝗮𝗺𝗲: {message.from_user.first_name}
-● 𝗨𝘀𝗲𝗿 𝗜𝗗: {message.from_user.id}
-● 𝗥𝗼𝗹𝗲: Free
-● 𝗖𝗿𝗲𝗱𝗶𝘁𝘀: 50
 
-𝗠𝗲𝘀𝘀𝗮𝗴𝗲: 𝗬𝗼𝘂 𝗚𝗼𝘁 50 𝗖𝗿𝗲𝗱𝗶𝘁𝘀 𝗮𝘀 𝗿𝗲𝗴𝗶𝘀𝘁𝗿𝗮𝘁𝗶𝗼𝗻 𝗯𝗼𝗻𝘂𝘀 . 𝗧𝗼 𝗞𝗻𝗼𝘄 𝗖𝗿𝗲𝗱𝗶𝘁𝘀  𝗦𝘆𝘀𝘁𝗲𝗺 /howcrd .
+            resp = f"""
+<b>✔ Registration Successful!</b>
 
+● Name: {user.first_name}
+● User ID: {user_id}
+● Role: Free
+● Credits: 50
 
-𝗘𝘅𝗽𝗹𝗼𝗿𝗲 𝗠𝘆 𝗩𝗮𝗿𝗶𝗼𝘂𝘀 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗔𝗻𝗱 𝗔𝗯𝗶𝗹𝗶𝘁𝗶𝗲𝘀 𝗕𝘆 𝗧𝗮𝗽𝗽𝗶𝗻𝗴 𝗼𝗻 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀         𝗕𝘂𝘁𝘁𝗼𝗻.  
-            </b>"""
+<b>You got 50 registration credits!</b>
+"""
 
         else:
-            resp = f"""<b>
-𝗔𝗹𝗿𝗲𝗮𝗱𝘆 𝗥𝗲𝗴𝗶𝘀𝘁𝗲𝗿𝗲𝗱 ⚠️
+            resp = f"""
+<b>⚠ Already Registered</b>
+"""
 
-𝗠𝗲𝘀𝘀𝗮𝗴𝗲: 𝗬𝗼𝘂 𝗮𝗿𝗲 𝗮𝗹𝗿𝗲𝗮𝗱𝘆 𝗿𝗲𝗴𝗶𝘀𝘁𝗲𝗿𝗲𝗱 𝗶𝗻 𝗼𝘂𝗿 𝗯𝗼𝘁 . 𝗡𝗼 𝗻𝗲𝗲𝗱 𝘁𝗼 𝗿𝗲𝗴𝗶𝘀𝘁𝗲𝗿 𝗻𝗼𝘄 
-
-𝗘𝘅𝗽𝗹𝗼𝗿𝗲 𝗠𝘆 𝗩𝗮𝗿𝗶𝗼𝘂𝘀 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗔𝗻𝗱 𝗔𝗯𝗶𝗹𝗶𝘁𝗶𝗲𝘀 𝗕𝘆 𝗧𝗮𝗽𝗽𝗶𝗻𝗴 𝗼𝗻 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗕𝘂𝘁𝘁𝗼𝗻  
-            </b>"""
-
-        await message.reply_text(resp, message.id, reply_markup=InlineKeyboardMarkup(WELCOME_BUTTON))
+        await query.message.edit_text(resp, reply_markup=InlineKeyboardMarkup(buttons))
 
     except Exception:
         import traceback
         await error_log(traceback.format_exc())
-
 
 @Client.on_callback_query()
 @Client.on_callback_query()
@@ -865,4 +862,5 @@ async def callback_query(Client, CallbackQuery):
             text=CHARGE_TEXT,
             reply_markup=InlineKeyboardMarkup(CHARGE_BUTTON)
         )
+
 
