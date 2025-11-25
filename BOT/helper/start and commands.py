@@ -6,15 +6,15 @@ from utilsdf.functions import symbol   # your symbol function
 # TEXTS
 # ----------------------------------------------------
 
-text_home = """𝙒𝙚𝙡𝙘𝙤𝙢𝙚 »
-<code>This bot provides organized menus, tools and navigation for safe features!</code>
+text_home = """[朱] 𝙒𝙚𝙡𝙘𝙤𝙢𝙚 𝙩𝙤 𝙎𝙥𝙮𝙙𝙚 𝘾𝙝𝙚𝙘𝙠𝙚𝙧 »
+<code>[㊄] Akatsuki is renewed, we present our new improved version, with fast and secure checks with different payment gateways and perfect tools for your use.</code>
 
-<a href='tg://user?id={}'>朱 𝙑𝙚𝙧𝙨𝙞𝙤𝙣 </a> -» <code>1.0</code>"""
+<a href='tg://user?id={}'>╰┈➤ 𝙑𝙚𝙧𝙨𝙞𝙤𝙣 </a> -» <code>1.4</code>"""
 
 # ----------------------------------------------------
 # BUTTONS
 # ----------------------------------------------------
-
+              InlineKeyboardButton("朱", callback_data="start_again")
 exit_button = InlineKeyboardButton("𝙀𝙭𝙞𝙩 ⚠️", "exit")
 
 buttons_home = InlineKeyboardMarkup(
@@ -146,6 +146,8 @@ text_tools = f"""
 # ----------------------------------------------------
 # CALLBACK HANDLERS
 # ----------------------------------------------------
+
+
 
 @Client.on_message(filters.command("start"))
 async def start_menu(client: Client, message: Message):
