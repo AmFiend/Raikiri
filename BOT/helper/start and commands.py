@@ -78,7 +78,6 @@ async def callback_command_edit(client, chat_id, text, reply_markup):
     except Exception as e:
         await error_log(str(e))
 
-
 @Client.on_message(filters.command("start", [".", "/"]))
 async def cmd_start(Client, message):
     try:
@@ -94,23 +93,32 @@ async def cmd_start(Client, message):
         ]
 
         edit = await message.reply_text(frames[0])
+        last_frame = None
+
         for frame in frames:
             await asyncio.sleep(0.25)
-            await edit.edit_text(frame)
 
+            if frame != last_frame:   # prevent MESSAGE_NOT_MODIFIED
+                await edit.edit_text(frame)
+
+            last_frame = frame
+
+        await asyncio.sleep(0.3)
         await edit.edit_text("<b>🌊 𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊 𝐑𝐄𝐀𝐃𝐘 ✔️</b>")
+
+        await asyncio.sleep(0.3)  # give Telegram time before final edit
 
         text = f"""
 <b>🌟 Hello <a href="tg://user?id={message.from_user.id}">{message.from_user.first_name}</a>!</b>
 
 <b>Welcome aboard the 𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊! 🚀</b>
 
-<b>I am your go-to bot, packed with a variety of gates, tools, and commands to enhance your experience. Excited to see what I can do?</b>
+<b>I am your go-to bot, packed with a variety of gates, tools, and commands to enhance your experience.</b>
 
-<b>👇 Tap the <i>Register</i> button to begin your journey.</b>
-<b>👇 Discover my full capabilities by tapping the <i>Commands</i> button.</b>
-
+<b>👇 Tap the <i>Register</i> button to begin.</b>
+<b>👇 Tap <i>Commands</i> to explore everything I can do.</b>
 """
+
         WELCOME_BUTTON = [
             [
                 InlineKeyboardButton("Register", callback_data="register"),
@@ -120,12 +128,15 @@ async def cmd_start(Client, message):
                 InlineKeyboardButton("Close", callback_data="close")
             ]
         ]
-        await edit.edit_text(text, reply_markup=InlineKeyboardMarkup(WELCOME_BUTTON))
 
-    except:
+        await edit.edit_text(
+            text,
+            reply_markup=InlineKeyboardMarkup(WELCOME_BUTTON)
+        )
+
+    except Exception as e:
         import traceback
         await error_log(traceback.format_exc())
-
 
 async def register_user(user_id, username, antispam_time, reg_at):
     info = {
