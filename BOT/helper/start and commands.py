@@ -166,14 +166,19 @@ async def cb_home(client: Client, query: CallbackQuery):
     )
     await query.answer()
 
-@Client.on_callback_query(filters.regex("^gates$"))
+@Client.on_callback_query(filters.Regex("^gates$"))
 async def cb_gates(client: Client, query: CallbackQuery):
     await query.message.edit_text(
-        "𝙂𝙖𝙩𝙚𝙬𝙖𝙮𝙨 ♻️",
+        "〈〄〉𝙒𝙚𝙡𝙘𝙤𝙢𝙚 𝙩𝙤 𝙎𝙥𝙮𝙙𝙚\n\n"
+        "║㊕║ 𝙏𝙤𝙩𝙖𝙡 -» 68\n"
+        "║㊡║ 𝙊𝙣 -» 66 ✅\n"
+        "║㊤║ 𝙊𝙛𝙛 -» 0 ❌\n"
+        "║㊬║ 𝙈𝙖𝙣𝙩𝙚𝙣𝙞𝙚𝙣𝙘𝙚 -» 2 ⚠️\n\n"
+        "〈ゼ〉𝙎𝙚𝙡𝙚𝙘𝙩 𝙩𝙝𝙚 𝙩𝙮𝙥𝙚 𝙤𝙛 𝙜𝙖𝙩𝙚 𝙮𝙤𝙪 𝙬𝙖𝙣𝙩 𝙛𝙤𝙧 𝙮𝙤𝙪𝙧 𝙪𝙨𝙚!",
         reply_markup=buttons_gates
     )
-    await query.answer()
 
+    await query.answer()
 @Client.on_callback_query(filters.regex("^auths$"))
 async def cb_auth(client: Client, query: CallbackQuery):
     await query.message.edit_text(
