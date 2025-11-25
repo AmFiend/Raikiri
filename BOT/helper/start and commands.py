@@ -1,5 +1,6 @@
 import asyncio
 import traceback
+from datetime import date
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from pyrogram.enums import ParseMode
@@ -29,7 +30,6 @@ async def cmd_start(client, message):
             ]
         )
 
-        # Send video with welcome caption + buttons
         await message.reply_video(
             "menu.mp4",
             caption=caption,
@@ -38,7 +38,7 @@ async def cmd_start(client, message):
         )
 
     except FileNotFoundError:
-        await message.reply_text("⚠️ menu.mp4 file not found! Please upload it to the bot’s folder.")
+        await message.reply_text("⚠️ menu.mp4 file not found! Please upload it.")
 
     except Exception:
         await message.reply_text(
@@ -47,30 +47,53 @@ async def cmd_start(client, message):
         )
 
 
-# Callback query handler
+# ============================
+# 📌 CALLBACK HANDLER
+# ============================
 @Client.on_callback_query()
 async def callback_handler(client, cq):
     try:
-        # ⚡ Respond instantly so buttons don't lag
         await cq.answer()
 
         user = cq.from_user
         data = cq.data
 
-        # Default caption + buttons
-        caption = ""
-        buttons = InlineKeyboardMarkup([])
-
-        # REGISTER
+        # -------------------------
+        # 📌 REGISTER BUTTON
+        # -------------------------
         if data == "register":
-            caption = f"""
-<b>✅ Registration Successful!</b>
+            user_id = str(user.id)
+            username = str(user.username)
+            reg_date = date.today().strftime("%d-%m-%Y")
 
-👤 Name: {user.first_name}  
-🆔 ID: {user.id}  
+            # Check if user is already registered
+            check = usersdb.find_one({"id": user_id})
+
+            if check is None:
+                # Register new user
+                usersdb.insert_one({
+                    "id": user_id,
+                    "username": username,
+                    "credits": 50,
+                    "role": "Free",
+                    "reg_at": reg_date,
+                })
+
+                caption = f"""
+<b>🎉 Registration Successful!</b>
+
+👤 Name: {user.first_name}
+🆔 ID: {user.id}
 🎟 Role: Free  
 💳 Credits: 50  
 """
+            else:
+                caption = f"""
+<b>⚠️ Already Registered!</b>
+
+You are already in the database.
+"""
+
             buttons = InlineKeyboardMarkup(
                 [
                     [InlineKeyboardButton("⚙ Commands", callback_data="cmds")],
@@ -81,7 +104,12 @@ async def callback_handler(client, cq):
                 ]
             )
 
-        # COMMANDS MENU
+            await cq.message.edit_text(caption, reply_markup=buttons)
+            return
+
+        # -------------------------
+        # ⚙ COMMANDS MENU
+        # -------------------------
         elif data == "cmds":
             caption = """
 𝙒𝙚𝙡𝙘𝙤𝙢𝙚 𝙩𝙤 𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊 -» >_
@@ -91,7 +119,7 @@ async def callback_handler(client, cq):
 𝙊𝙛𝙛 -» <code>4 ❌</code>
 𝙈𝙖𝙣𝙩𝙚𝙣𝙞𝙚𝙣𝙘𝙚 -» <code>2 ⚠️</code>
 
-<code>𝙎𝙚𝙡𝙚𝙘𝙩 𝙩𝙝𝙚 𝙩𝙮𝙥𝙚 𝙤𝙛 𝙜𝙖𝙩𝙚 𝙮𝙤𝙪 𝙬𝙖𝙣𝙩 𝙛𝙤𝙧 𝙮𝙤𝙪𝙧 𝙪𝙨𝙚!</code>
+<code>𝙎𝙚𝙡𝙚𝙘𝙩 𝙩𝙝𝙚 𝙜𝙖𝙩𝙚 𝙮𝙤𝙤 𝙬𝙖𝙣𝙩!</code>
 """
             buttons = InlineKeyboardMarkup(
                 [
@@ -325,3 +353,4 @@ Report Bugs
             parse_mode=ParseMode.HTML
         )
         
+
