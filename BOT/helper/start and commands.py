@@ -1,14 +1,31 @@
 import asyncio
 import time
+from datetime import date
 from pyrogram import Client, filters
-from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, InputMediaVideo
 from FUNC.defs import *
 from FUNC.usersdb_func import *
+
+# ----------------- VIDEO (demo) -----------------
+# Replace with your raw GitHub MP4 when ready:
+VIDEO_URL = "https://raw.githubusercontent.com/USERNAME/REPO/main/demo.mp4"
+
+# In-memory store to remember the menu message (text under the video) per chat
+# Key: chat_id (int) -> message_id (int)
+MENU_MESSAGES = {}
 
 
 @Client.on_message(filters.command("cmds", [".", "/"]))
 async def cmd_scr(client, message):
     try:
+        # Send the video once (as requested: Option B)
+        try:
+            await message.reply_video(video=VIDEO_URL, caption="🎞 Intro Demo (video shown once).")
+        except Exception:
+            # If sending video fails, continue — we'll still send the menu text
+            pass
+
+        # Prepare cyber-style menu caption (kept your content)
         WELCOME_TEXT = f"""
 <b>Hello <a href="tg://user?id={message.from_user.id}"> {message.from_user.first_name}</a> !
 
@@ -29,44 +46,37 @@ Click Each of Them Below to Know Them Better .</b>
                 InlineKeyboardButton("Close", callback_data="close")
             ]
         ]
-        await message.reply(
+        # Send the menu text under the video and store it so future edits change this message
+        sent = await message.reply(
             text=WELCOME_TEXT,
-            reply_markup=InlineKeyboardMarkup(WELCOME_BUTTONS))
+            reply_markup=InlineKeyboardMarkup(WELCOME_BUTTONS)
+        )
+        MENU_MESSAGES[message.chat.id] = sent.id
 
     except Exception:
         import traceback
         await error_log(traceback.format_exc())
 
 
-async def callback_command(client, message):
+async def callback_command_edit(client, chat_id, text, reply_markup):
+    """
+    Edit the stored menu message (the text below the single video).
+    If stored message is missing, fallback to sending a new message and storing it.
+    """
     try:
-        WELCOME_TEXT = f"""
-<b>Hello User !
+        if chat_id in MENU_MESSAGES:
+            try:
+                await client.edit_message_text(chat_id, MENU_MESSAGES[chat_id], text, reply_markup=reply_markup)
+                return
+            except Exception:
+                # fallthrough to re-create
+                pass
 
-MASTER Checker  Has plenty of Commands . We Have Auth Gates , Charge Gates , Tools And Other Things .
-
-Click Each of Them Below to Know Them Better .</b>
-        """
-        WELCOME_BUTTONS = [
-            [
-                InlineKeyboardButton("AUTH/B3/VBV", callback_data="AUTH"),
-                InlineKeyboardButton("CHARGE", callback_data="CHARGE")
-            ],
-            [
-                InlineKeyboardButton("TOOLS", callback_data="TOOLS"),
-                InlineKeyboardButton("HELPER", callback_data="HELPER")
-            ],
-            [
-                InlineKeyboardButton("Close", callback_data="close")
-            ]
-        ]
-        await message.reply(
-            text=WELCOME_TEXT,
-            reply_markup=InlineKeyboardMarkup(WELCOME_BUTTONS))
-
-    except Exception:
-        import traceback
-        await error_log(traceback.format_exc())
+        # If we reach here, stored message missing or edit failed; send new and store
+        sent = await client.send_message(chat_id, text, reply_markup=reply_markup)
+        MENU_MESSAGES[chat_id] = sent.id
+    except Exception as e:
+        await error_log(str(e))
 
 
 @Client.on_message(filters.command("start", [".", "/"]))
@@ -81,7 +91,8 @@ MASTER Checker  ■□□
         text = """<b>
 MASTER Checker  ■■■
      </b> """
-        edit = await Client.edit_message_text(message.chat.id, edit.id, text)
+        # use edit on the message object
+        await edit.edit_text(text)
         await asyncio.sleep(0.5)
 
         text = f"""
@@ -104,7 +115,7 @@ MASTER Checker  ■■■
                 InlineKeyboardButton("Close", callback_data="close")
             ]
         ]
-        await Client.edit_message_text(message.chat.id, edit.id, text, reply_markup=InlineKeyboardMarkup(WELCOME_BUTTON))
+        await edit.edit_text(text, reply_markup=InlineKeyboardMarkup(WELCOME_BUTTON))
 
     except:
         import traceback
@@ -115,7 +126,7 @@ async def register_user(user_id, username, antispam_time, reg_at):
     info = {
         "id": f"{user_id}",
         "username": f"{username}",
-        "user_proxy":f"N/A",
+        "user_proxy": f"N/A",
         "dcr": "N/A",
         "dpk": "N/A",
         "dsk": "N/A",
@@ -135,7 +146,7 @@ async def register_user(user_id, username, antispam_time, reg_at):
 async def cmd_register(Client, message):
     try:
         user_id = str(message.from_user.id)
-        username = str(message.from_user.username)
+        username = str(message.from_user.username or message.from_user.first_name)
         antispam_time = int(time.time())
         yy, mm, dd = str(date.today()).split("-")
         reg_at = f"{dd}-{mm}-{yy}"
@@ -174,131 +185,177 @@ Message: You are already registered in our bot . No need to register now .
 Explore My Various Commands And Abilities By Tapping on Commands Button .  
             </b>"""
 
-        await message.reply_text(resp, reply_markup=InlineKeyboardMarkup(WELCOME_BUTTON))
+        # When user runs /register as a command, we will send the response as a menu message
+        sent = await message.reply_text(resp, reply_markup=InlineKeyboardMarkup(WELCOME_BUTTON))
+        MENU_MESSAGES[message.chat.id] = sent.id
 
     except Exception:
         import traceback
         await error_log(traceback.format_exc())
 
 
-async def callback_register(Client, message):
-    try:
-        user_id = str(message.reply_to_message.from_user.id)
-        username = str(message.reply_to_message.from_user.username)
-        antispam_time = int(time.time())
-        yy, mm, dd = str(date.today()).split("-")
-        reg_at = f"{dd}-{mm}-{yy}"
-        find = usersdb.find_one({"id": f"{user_id}"}, {"_id": 0})
-        registration_check = str(find)
+# The old callback_register used reply_to_message — that's unreliable for callback flows.
+# We'll handle registration inside the callback handler directly.
 
-        WELCOME_BUTTON = [
-            [
-                InlineKeyboardButton("Commands", callback_data="cmds")
-            ],
-            [
-                InlineKeyboardButton("Close", callback_data="close")
+
+@Client.on_callback_query()
+async def callback_query(Client, CallbackQuery):
+    try:
+        data = CallbackQuery.data
+        chat_id = CallbackQuery.message.chat.id
+
+        # Helper to create reply_markup object quickly
+        def kb(buttons):
+            return InlineKeyboardMarkup(buttons)
+
+        # If the stored menu exists, all edits will go to that message so the video stays on top.
+        # Use callback_command_edit to centralize editing.
+
+        if data == "cmds":
+            WELCOME_TEXT = f"""
+<b>Hello <a href="tg://user?id={CallbackQuery.from_user.id}"> {CallbackQuery.from_user.first_name}</a> !
+
+Master Checker Bot  Has plenty of Commands . We Have Auth Gates , Charge Gates , Tools And Other Things .
+
+Click Each of Them Below to Know Them Better .</b>
+            """
+            WELCOME_BUTTONS = [
+                [
+                    InlineKeyboardButton("AUTH/B3/VBV", callback_data="AUTH"),
+                    InlineKeyboardButton("CHARGE", callback_data="CHARGE")
+                ],
+                [
+                    InlineKeyboardButton("TOOLS", callback_data="TOOLS"),
+                    InlineKeyboardButton("HELPER", callback_data="HELPER")
+                ],
+                [
+                    InlineKeyboardButton("Close", callback_data="close")
+                ]
             ]
-        ]
-        if registration_check == "None":
-            await register_user(user_id, username, antispam_time, reg_at)
-            resp = f"""<b>
+            await callback_command_edit(Client, chat_id, WELCOME_TEXT, kb(WELCOME_BUTTONS))
+            await CallbackQuery.answer()
+            return
+
+        if data == "register":
+            # Register the user who pressed the button
+            user = CallbackQuery.from_user
+            user_id = str(user.id)
+            username = str(user.username or user.first_name)
+            antispam_time = int(time.time())
+            yy, mm, dd = str(date.today()).split("-")
+            reg_at = f"{dd}-{mm}-{yy}"
+            find = usersdb.find_one({"id": f"{user_id}"}, {"_id": 0})
+            registration_check = str(find)
+
+            WELCOME_BUTTON = [
+                [
+                    InlineKeyboardButton("Commands", callback_data="cmds")
+                ],
+                [
+                    InlineKeyboardButton("Close", callback_data="close")
+                ]
+            ]
+            if registration_check == "None":
+                await register_user(user_id, username, antispam_time, reg_at)
+                resp = f"""<b>
 Registration Successfull ♻️
 ━━━━━━━━━━━━━━
-● Name: {message.reply_to_message.from_user.first_name}
-● User ID: {user_id}
+● Name: {user.first_name}
+● User ID: {user.id}
 ● Role: Free
 ● Credits: 50
 
 Message: You Got 50 Credits as a registration bonus . To Know Credits System /howcrd .
 
 Explore My Various Commands And Abilities By Tapping on Commands Button .  
-            </b>"""
-
-        else:
-            resp = f"""<b>
+                </b>"""
+            else:
+                resp = f"""<b>
 Already Registered ⚠️
 
 Message: You are already registered in our bot . No need to register now .
 
 Explore My Various Commands And Abilities By Tapping on Commands Button .  
-            </b>"""
+                </b>"""
 
-        await message.reply_text(resp, message.id, reply_markup=InlineKeyboardMarkup(WELCOME_BUTTON))
+            # Edit the stored menu message (or create it if missing)
+            await callback_command_edit(Client, chat_id, resp, kb(WELCOME_BUTTON))
+            await CallbackQuery.answer()
+            return
 
-    except Exception:
-        import traceback
-        await error_log(traceback.format_exc())
-
-
-@Client.on_callback_query()
-@Client.on_callback_query()
-async def callback_query(Client, CallbackQuery):
-    if CallbackQuery.data == "cmds":
-        await callback_command(Client, CallbackQuery.message)
-
-    if CallbackQuery.data == "register":
-        await callback_register(Client, CallbackQuery.message)
-
-    if CallbackQuery.data == "HOME":
-        WELCOME_TEXT = f"""
+        if data == "HOME":
+            WELCOME_TEXT = f"""
 <b>Hello User!
 
 MASTER Checker Has plenty of Commands. We Have Auth Gates, Charge Gates, Tools, And Other Things.
 
 Click Each of Them Below to Know Them Better.</b>
-    """
-        WELCOME_BUTTONS = [
-            [
-                InlineKeyboardButton("AUTH/B3/VBV", callback_data="AUTH"),
-                InlineKeyboardButton("CHARGE", callback_data="CHARGE")
-            ],
-            [
-                InlineKeyboardButton("TOOLS", callback_data="TOOLS"),
-                InlineKeyboardButton("HELPER", callback_data="HELPER")
-            ],
-            [
-                InlineKeyboardButton("Close", callback_data="close")
+            """
+            WELCOME_BUTTONS = [
+                [
+                    InlineKeyboardButton("AUTH/B3/VBV", callback_data="AUTH"),
+                    InlineKeyboardButton("CHARGE", callback_data="CHARGE")
+                ],
+                [
+                    InlineKeyboardButton("TOOLS", callback_data="TOOLS"),
+                    InlineKeyboardButton("HELPER", callback_data="HELPER")
+                ],
+                [
+                    InlineKeyboardButton("Close", callback_data="close")
+                ]
             ]
-        ]
-        await CallbackQuery.edit_message_text(
-            text=WELCOME_TEXT,
-            reply_markup=InlineKeyboardMarkup(WELCOME_BUTTONS))
+            await callback_command_edit(Client, chat_id, WELCOME_TEXT, kb(WELCOME_BUTTONS))
+            await CallbackQuery.answer()
+            return
 
-    if CallbackQuery.data == "close":
-        await CallbackQuery.message.delete()
-        await CallbackQuery.message.reply_text("Enjoy Bro, ")
+        if data == "close":
+            # Delete stored menu message (so video remains but menu removed)
+            try:
+                if chat_id in MENU_MESSAGES:
+                    await Client.delete_messages(chat_id, MENU_MESSAGES[chat_id])
+                    del MENU_MESSAGES[chat_id]
+            except:
+                pass
+            # Keep behavior similar: reply a short confirmation
+            try:
+                await CallbackQuery.message.reply_text("Enjoy Bro, ")
+            except:
+                pass
+            await CallbackQuery.answer()
+            return
 
-
-    if CallbackQuery.data == "AUTH":
-        AUTH_TEXT = f"""
+        # ---------- AUTH ----------
+        if data == "AUTH":
+            AUTH_TEXT = f"""
 <b>Hello User!
 
 Master Checker  Auth Gates.
 
 Click on each one below to get to know them better. .</b>
-    """
-        AUTH_BUTTONS = [
-            [
-                InlineKeyboardButton("Stripe Auth", callback_data="Auth2"),
-                InlineKeyboardButton("Adyen Auth", callback_data="Adyen2"),
-            ],
-            [
-                InlineKeyboardButton(
-                    "Braintree B3", callback_data="BRAINTREEB3"),
+            """
+            AUTH_BUTTONS = [
+                [
+                    InlineKeyboardButton("Stripe Auth", callback_data="Auth2"),
+                    InlineKeyboardButton("Adyen Auth", callback_data="Adyen2"),
+                ],
+                [
+                    InlineKeyboardButton(
+                        "Braintree B3", callback_data="BRAINTREEB3"),
 
-                InlineKeyboardButton(
-                    "Braintree VBV", callback_data="BRAINTREEVBV"),
-            ],
-            [
-                InlineKeyboardButton("Back", callback_data="HOME"),
-                InlineKeyboardButton("Close", callback_data="close")
+                    InlineKeyboardButton(
+                        "Braintree VBV", callback_data="BRAINTREEVBV"),
+                ],
+                [
+                    InlineKeyboardButton("Back", callback_data="HOME"),
+                    InlineKeyboardButton("Close", callback_data="close")
+                ]
             ]
-        ]
-        await CallbackQuery.edit_message_text(
-            text=AUTH_TEXT,
-            reply_markup=InlineKeyboardMarkup(AUTH_BUTTONS))
-    if CallbackQuery.data == "Auth2":
-        CHARGE_TEXT = """
+            await callback_command_edit(Client, chat_id, AUTH_TEXT, kb(AUTH_BUTTONS))
+            await CallbackQuery.answer()
+            return
+
+        if data == "Auth2":
+            CHARGE_TEXT = """
 🔹 Stripe Auth Gates of Master Checker
 🔹 Status: ✅ Active
 
@@ -312,18 +369,18 @@ Click on each one below to get to know them better. .</b>
 Total Auth Commands: 1
 
 """
-        CHARGE_BUTTON = [
-            [
-                InlineKeyboardButton("Back", callback_data="AUTH"),
-                InlineKeyboardButton("Close", callback_data="close")
+            CHARGE_BUTTON = [
+                [
+                    InlineKeyboardButton("Back", callback_data="AUTH"),
+                    InlineKeyboardButton("Close", callback_data="close")
+                ]
             ]
-        ]
-        await CallbackQuery.edit_message_text(
-            text=CHARGE_TEXT,
-            reply_markup=InlineKeyboardMarkup(CHARGE_BUTTON)
-        )
-    if CallbackQuery.data == "Adyen2":
-        CHARGE_TEXT = """
+            await callback_command_edit(Client, chat_id, CHARGE_TEXT, kb(CHARGE_BUTTON))
+            await CallbackQuery.answer()
+            return
+
+        if data == "Adyen2":
+            CHARGE_TEXT = """
 🔹 Adyen Auth Gates of Master Checker
 🔹 Status: Inactive ❌
 
@@ -337,18 +394,18 @@ Total Auth Commands: 1
 Total Auth Commands: 1
 
 """
-        CHARGE_BUTTON = [
-            [
-                InlineKeyboardButton("Back", callback_data="AUTH"),
-                InlineKeyboardButton("Close", callback_data="close")
+            CHARGE_BUTTON = [
+                [
+                    InlineKeyboardButton("Back", callback_data="AUTH"),
+                    InlineKeyboardButton("Close", callback_data="close")
+                ]
             ]
-        ]
-        await CallbackQuery.edit_message_text(
-            text=CHARGE_TEXT,
-            reply_markup=InlineKeyboardMarkup(CHARGE_BUTTON)
-        )
-    if CallbackQuery.data == "BRAINTREEVBV":
-        CHARGE_TEXT = """
+            await callback_command_edit(Client, chat_id, CHARGE_TEXT, kb(CHARGE_BUTTON))
+            await CallbackQuery.answer()
+            return
+
+        if data == "BRAINTREEVBV":
+            CHARGE_TEXT = """
 🔹 Braintree Gates of Master Checker
 🔹 Status: ✅ Active
 
@@ -362,19 +419,18 @@ Total Auth Commands: 1
 Total Auth Commands: 1
 
 """
-        CHARGE_BUTTON = [
-            [
-                InlineKeyboardButton("Back", callback_data="AUTH"),
-                InlineKeyboardButton("Close", callback_data="close")
+            CHARGE_BUTTON = [
+                [
+                    InlineKeyboardButton("Back", callback_data="AUTH"),
+                    InlineKeyboardButton("Close", callback_data="close")
+                ]
             ]
-        ]
-        await CallbackQuery.edit_message_text(
-            text=CHARGE_TEXT,
-            reply_markup=InlineKeyboardMarkup(CHARGE_BUTTON)
-        )
+            await callback_command_edit(Client, chat_id, CHARGE_TEXT, kb(CHARGE_BUTTON))
+            await CallbackQuery.answer()
+            return
 
-    if CallbackQuery.data == "BRAINTREEB3":
-        CHARGE_TEXT = """
+        if data == "BRAINTREEB3":
+            CHARGE_TEXT = """
 🔹 Braintree B3 of MASTER Checker
 🔹 Status: ✅ Active
 
@@ -388,52 +444,48 @@ Total Auth Commands: 1
 Total Commands: 1
 
 """
-        CHARGE_BUTTON = [
-            [
-                InlineKeyboardButton("Back", callback_data="AUTH"),
-                InlineKeyboardButton("Close", callback_data="close")
+            CHARGE_BUTTON = [
+                [
+                    InlineKeyboardButton("Back", callback_data="AUTH"),
+                    InlineKeyboardButton("Close", callback_data="close")
+                ]
             ]
-        ]
-        await CallbackQuery.edit_message_text(
-            text=CHARGE_TEXT,
-            reply_markup=InlineKeyboardMarkup(CHARGE_BUTTON)
-        )
+            await callback_command_edit(Client, chat_id, CHARGE_TEXT, kb(CHARGE_BUTTON))
+            await CallbackQuery.answer()
+            return
 
-
-
-
-
-    if CallbackQuery.data == "CHARGE":
-        CHARGE_TEXT = f"""
+        # ---------- CHARGE ----------
+        if data == "CHARGE":
+            CHARGE_TEXT = f"""
 <b>Hello User!
 
 MASTER Checker Charge Gates.
 
 Click on each one below to get to know them better. .</b>
-    """
-        
-        CHARGE_BUTTONS = [
-            [
-                InlineKeyboardButton("SK Based", callback_data="SKBASED"),
-                InlineKeyboardButton("Braintree", callback_data="BRAINTREE"),
-            ],
-            [
-                InlineKeyboardButton("Stripe Api", callback_data="SITE"),
-                InlineKeyboardButton("Shopify", callback_data="SHOPIFY"),
-            ],
-            [
-                InlineKeyboardButton("Paypal", callback_data="PAYPAL"),
-            ],
-            [
-                InlineKeyboardButton("Back", callback_data="HOME"),
-                InlineKeyboardButton("Close", callback_data="close")
+            """
+            CHARGE_BUTTONS = [
+                [
+                    InlineKeyboardButton("SK Based", callback_data="SKBASED"),
+                    InlineKeyboardButton("Braintree", callback_data="BRAINTREE"),
+                ],
+                [
+                    InlineKeyboardButton("Stripe Api", callback_data="SITE"),
+                    InlineKeyboardButton("Shopify", callback_data="SHOPIFY"),
+                ],
+                [
+                    InlineKeyboardButton("Paypal", callback_data="PAYPAL"),
+                ],
+                [
+                    InlineKeyboardButton("Back", callback_data="HOME"),
+                    InlineKeyboardButton("Close", callback_data="close")
+                ]
             ]
-        ]
-        await CallbackQuery.edit_message_text(
-            text=CHARGE_TEXT,
-            reply_markup=InlineKeyboardMarkup(CHARGE_BUTTONS))
-    if CallbackQuery.data == "PAYPAL":
-        CHARGE_TEXT = """
+            await callback_command_edit(Client, chat_id, CHARGE_TEXT, kb(CHARGE_BUTTONS))
+            await CallbackQuery.answer()
+            return
+
+        if data == "PAYPAL":
+            CHARGE_TEXT = """
 🔹 PayPal Charge Gates of MASTER Checker
 🔹 Status: ❌ Inactive
 
@@ -451,20 +503,18 @@ Click on each one below to get to know them better. .</b>
 Total Auth Commands: 2
 
 """
-        CHARGE_BUTTON = [
-            [
-                InlineKeyboardButton("Back", callback_data="CHARGE"),
-                InlineKeyboardButton("Close", callback_data="close")
+            CHARGE_BUTTON = [
+                [
+                    InlineKeyboardButton("Back", callback_data="CHARGE"),
+                    InlineKeyboardButton("Close", callback_data="close")
+                ]
             ]
-        ]
-        await CallbackQuery.edit_message_text(
-            text=CHARGE_TEXT,
-            reply_markup=InlineKeyboardMarkup(CHARGE_BUTTON)
-        )  
+            await callback_command_edit(Client, chat_id, CHARGE_TEXT, kb(CHARGE_BUTTON))
+            await CallbackQuery.answer()
+            return
 
-
-    if CallbackQuery.data == "SKBASED":
-        CHARGE_TEXT = """
+        if data == "SKBASED":
+            CHARGE_TEXT = """
 🔹 Stripe Charge Gates of MASTER Checker
 🔹 Status: ✅ Active
 
@@ -492,18 +542,18 @@ Total Auth Commands: 2
 Total Charge Commands: 3
 
 """
-        CHARGE_BUTTON = [
-            [
-                InlineKeyboardButton("Back", callback_data="CHARGE"),
-                InlineKeyboardButton("Close", callback_data="close")
+            CHARGE_BUTTON = [
+                [
+                    InlineKeyboardButton("Back", callback_data="CHARGE"),
+                    InlineKeyboardButton("Close", callback_data="close")
+                ]
             ]
-        ]
-        await CallbackQuery.edit_message_text(
-            text=CHARGE_TEXT,
-            reply_markup=InlineKeyboardMarkup(CHARGE_BUTTON)
-        )
-    if CallbackQuery.data == "SITE":
-        CHARGE_TEXT = """
+            await callback_command_edit(Client, chat_id, CHARGE_TEXT, kb(CHARGE_BUTTON))
+            await CallbackQuery.answer()
+            return
+
+        if data == "SITE":
+            CHARGE_TEXT = """
 🔹 Site Charge Gates of MASTER Checker
 🔹 Status: ✅ Active
 
@@ -517,18 +567,18 @@ Total Charge Commands: 3
 Total Charge Commands: 1
 
 """
-        CHARGE_BUTTON = [
-            [
-                InlineKeyboardButton("Back", callback_data="CHARGE"),
-                InlineKeyboardButton("Close", callback_data="close")
+            CHARGE_BUTTON = [
+                [
+                    InlineKeyboardButton("Back", callback_data="CHARGE"),
+                    InlineKeyboardButton("Close", callback_data="close")
+                ]
             ]
-        ]
-        await CallbackQuery.edit_message_text(
-            text=CHARGE_TEXT,
-            reply_markup=InlineKeyboardMarkup(CHARGE_BUTTON)
-        )
-    if CallbackQuery.data == "BRAINTREE":
-        CHARGE_TEXT = """
+            await callback_command_edit(Client, chat_id, CHARGE_TEXT, kb(CHARGE_BUTTON))
+            await CallbackQuery.answer()
+            return
+
+        if data == "BRAINTREE":
+            CHARGE_TEXT = """
 🔹 Braintree Charge Gates of MASTER Checker
 🔹 Status: ✅ Active
 
@@ -542,18 +592,18 @@ Total Charge Commands: 1
 Total Auth Commands: 1
 
 """
-        CHARGE_BUTTON = [
-            [
-                InlineKeyboardButton("Back", callback_data="CHARGE"),
-                InlineKeyboardButton("Close", callback_data="close")
+            CHARGE_BUTTON = [
+                [
+                    InlineKeyboardButton("Back", callback_data="CHARGE"),
+                    InlineKeyboardButton("Close", callback_data="close")
+                ]
             ]
-        ]
-        await CallbackQuery.edit_message_text(
-            text=CHARGE_TEXT,
-            reply_markup=InlineKeyboardMarkup(CHARGE_BUTTON)
-        )
-    if CallbackQuery.data == "SHOPIFY":
-        CHARGE_TEXT = """
+            await callback_command_edit(Client, chat_id, CHARGE_TEXT, kb(CHARGE_BUTTON))
+            await CallbackQuery.answer()
+            return
+
+        if data == "SHOPIFY":
+            CHARGE_TEXT = """
 
 🔹 Shopify Charge Gates of MASTER Checker
 🔹 Status: ✅ Active
@@ -580,46 +630,47 @@ Total Auth Commands: 1
 Total Auth Commands: 4
 
 """
-        CHARGE_BUTTON = [
-            [
-                InlineKeyboardButton("Back", callback_data="CHARGE"),
-                InlineKeyboardButton("Close", callback_data="close")
+            CHARGE_BUTTON = [
+                [
+                    InlineKeyboardButton("Back", callback_data="CHARGE"),
+                    InlineKeyboardButton("Close", callback_data="close")
+                ]
             ]
-        ]
-        await CallbackQuery.edit_message_text(
-            text=CHARGE_TEXT,
-            reply_markup=InlineKeyboardMarkup(CHARGE_BUTTON)
-        )
-    if CallbackQuery.data == "TOOLS":
-        TOOLS_TEXT = f"""
+            await callback_command_edit(Client, chat_id, CHARGE_TEXT, kb(CHARGE_BUTTON))
+            await CallbackQuery.answer()
+            return
+
+        # ---------- TOOLS ----------
+        if data == "TOOLS":
+            TOOLS_TEXT = f"""
 <b>Hello User!
 
 MASTER Checker Tools.
 
 Click on each one below to get to know them better..</b>
-    """
-        CHARGE_BUTTONS = [
-            [
-                InlineKeyboardButton("Scrapper", callback_data="SCRAPPER"),
-                InlineKeyboardButton("SK TOOLS", callback_data="SKSTOOL"),
-            ],
-            [
-                InlineKeyboardButton(
-                    "Genarator", callback_data="GENARATORTOOLS"),
-                InlineKeyboardButton(
-                    "Bin & Others", callback_data="BINANDOTHERS"),
-            ],
-            [
-                InlineKeyboardButton("Back", callback_data="HOME"),
-                InlineKeyboardButton("Close", callback_data="close")
+            """
+            CHARGE_BUTTONS = [
+                [
+                    InlineKeyboardButton("Scrapper", callback_data="SCRAPPER"),
+                    InlineKeyboardButton("SK TOOLS", callback_data="SKSTOOL"),
+                ],
+                [
+                    InlineKeyboardButton(
+                        "Genarator", callback_data="GENARATORTOOLS"),
+                    InlineKeyboardButton(
+                        "Bin & Others", callback_data="BINANDOTHERS"),
+                ],
+                [
+                    InlineKeyboardButton("Back", callback_data="HOME"),
+                    InlineKeyboardButton("Close", callback_data="close")
+                ]
             ]
-        ]
-        await CallbackQuery.edit_message_text(
-            text=TOOLS_TEXT,
-            reply_markup=InlineKeyboardMarkup(CHARGE_BUTTONS))
+            await callback_command_edit(Client, chat_id, TOOLS_TEXT, kb(CHARGE_BUTTONS))
+            await CallbackQuery.answer()
+            return
 
-    if CallbackQuery.data == "SKSTOOL":
-        CHARGE_TEXT = """
+        if data == "SKSTOOL":
+            CHARGE_TEXT = """
 🔹 SK Tools of MASTER Checker
 🔹 Status: ✅ Active
 
@@ -634,18 +685,18 @@ Click on each one below to get to know them better..</b>
 Total Auth Commands: 4
 
 """
-        CHARGE_BUTTON = [
-            [
-                InlineKeyboardButton("Back", callback_data="TOOLS"),
-                InlineKeyboardButton("Close", callback_data="close")
+            CHARGE_BUTTON = [
+                [
+                    InlineKeyboardButton("Back", callback_data="TOOLS"),
+                    InlineKeyboardButton("Close", callback_data="close")
+                ]
             ]
-        ]
-        await CallbackQuery.edit_message_text(
-            text=CHARGE_TEXT,
-            reply_markup=InlineKeyboardMarkup(CHARGE_BUTTON)
-        )
-    if CallbackQuery.data == "SCRAPPER":
-        CHARGE_TEXT = """
+            await callback_command_edit(Client, chat_id, CHARGE_TEXT, kb(CHARGE_BUTTON))
+            await CallbackQuery.answer()
+            return
+
+        if data == "SCRAPPER":
+            CHARGE_TEXT = """
 🔹 Scrapper Tools Gates of MASTER Checker
 🔹 Status: ✅ Active
 
@@ -659,18 +710,18 @@ Total Auth Commands: 4
 Total Auth Commands: 3
 
 """
-        CHARGE_BUTTON = [
-            [
-                InlineKeyboardButton("Back", callback_data="TOOLS"),
-                InlineKeyboardButton("Close", callback_data="close")
+            CHARGE_BUTTON = [
+                [
+                    InlineKeyboardButton("Back", callback_data="TOOLS"),
+                    InlineKeyboardButton("Close", callback_data="close")
+                ]
             ]
-        ]
-        await CallbackQuery.edit_message_text(
-            text=CHARGE_TEXT,
-            reply_markup=InlineKeyboardMarkup(CHARGE_BUTTON)
-        )
-    if CallbackQuery.data == "GENARATORTOOLS":
-        CHARGE_TEXT = """
+            await callback_command_edit(Client, chat_id, CHARGE_TEXT, kb(CHARGE_BUTTON))
+            await CallbackQuery.answer()
+            return
+
+        if data == "GENARATORTOOLS":
+            CHARGE_TEXT = """
 🔹 Generator Tools of MASTER Checker
 🔹 Status: ✅ Active
 
@@ -683,18 +734,18 @@ Total Auth Commands: 3
 Total Auth Commands: 2
 
 """
-        CHARGE_BUTTON = [
-            [
-                InlineKeyboardButton("Back", callback_data="TOOLS"),
-                InlineKeyboardButton("Close", callback_data="close")
+            CHARGE_BUTTON = [
+                [
+                    InlineKeyboardButton("Back", callback_data="TOOLS"),
+                    InlineKeyboardButton("Close", callback_data="close")
+                ]
             ]
-        ]
-        await CallbackQuery.edit_message_text(
-            text=CHARGE_TEXT,
-            reply_markup=InlineKeyboardMarkup(CHARGE_BUTTON)
-        )
-    if CallbackQuery.data == "BINANDOTHERS":
-        CHARGE_TEXT = """
+            await callback_command_edit(Client, chat_id, CHARGE_TEXT, kb(CHARGE_BUTTON))
+            await CallbackQuery.answer()
+            return
+
+        if data == "BINANDOTHERS":
+            CHARGE_TEXT = """
 🔹 Bin and Other Tools Of MASTER Checker
 🔹 Status: ✅ Active
 
@@ -714,41 +765,41 @@ Total Auth Commands: 6
 
 
 """
-
-        CHARGE_BUTTON = [
-            [
-                InlineKeyboardButton("Back", callback_data="TOOLS"),
-                InlineKeyboardButton("Close", callback_data="close")
+            CHARGE_BUTTON = [
+                [
+                    InlineKeyboardButton("Back", callback_data="TOOLS"),
+                    InlineKeyboardButton("Close", callback_data="close")
+                ]
             ]
-        ]
-        await CallbackQuery.edit_message_text(
-            text=CHARGE_TEXT,
-            reply_markup=InlineKeyboardMarkup(CHARGE_BUTTON)
-        )
+            await callback_command_edit(Client, chat_id, CHARGE_TEXT, kb(CHARGE_BUTTON))
+            await CallbackQuery.answer()
+            return
 
-    if CallbackQuery.data == "HELPER":
-        HELPER_TEXT = f"""
+        # ---------- HELPER ----------
+        if data == "HELPER":
+            HELPER_TEXT = f"""
 <b>Hello User!
 
 Master Checker  Helper.
 
 Click on each one below to get to know them better.</b>
-    """
-        CHARGE_BUTTONS = [
-            [
-                InlineKeyboardButton("Helper", callback_data="INFO"),
-                # InlineKeyboardButton("SK TOOLS", callback_data="SKTOOLS"),
-            ],
-            [
-                InlineKeyboardButton("Back", callback_data="HOME"),
-                InlineKeyboardButton("Close", callback_data="close")
+            """
+            CHARGE_BUTTONS = [
+                [
+                    InlineKeyboardButton("Helper", callback_data="INFO"),
+                    # InlineKeyboardButton("SK TOOLS", callback_data="SKTOOLS"),
+                ],
+                [
+                    InlineKeyboardButton("Back", callback_data="HOME"),
+                    InlineKeyboardButton("Close", callback_data="close")
+                ]
             ]
-        ]
-        await CallbackQuery.edit_message_text(
-            text=HELPER_TEXT,
-            reply_markup=InlineKeyboardMarkup(CHARGE_BUTTONS))
-    if CallbackQuery.data == "INFO":
-        CHARGE_TEXT = """
+            await callback_command_edit(Client, chat_id, HELPER_TEXT, kb(CHARGE_BUTTONS))
+            await CallbackQuery.answer()
+            return
+
+        if data == "INFO":
+            CHARGE_TEXT = """
 🔹 Helper Gates of MASTER Checker
 🔹 Status: ✅ Active
 
@@ -775,14 +826,22 @@ Click on each one below to get to know them better.</b>
 Total Commands: 10
 
         """
-
-        CHARGE_BUTTON = [
-            [
-                InlineKeyboardButton("Back", callback_data="HELPER"),
-                InlineKeyboardButton("Close", callback_data="close")
+            CHARGE_BUTTON = [
+                [
+                    InlineKeyboardButton("Back", callback_data="HELPER"),
+                    InlineKeyboardButton("Close", callback_data="close")
+                ]
             ]
-        ]
-        await CallbackQuery.edit_message_text(
-            text=CHARGE_TEXT,
-            reply_markup=InlineKeyboardMarkup(CHARGE_BUTTON)
-        )
+            await callback_command_edit(Client, chat_id, CHARGE_TEXT, kb(CHARGE_BUTTON))
+            await CallbackQuery.answer()
+            return
+
+        # Unknown fallback
+        await CallbackQuery.answer("Unknown action.", show_alert=False)
+    except Exception:
+        import traceback
+        await error_log(traceback.format_exc())
+        try:
+            await CallbackQuery.answer("An internal error occurred.", show_alert=False)
+        except:
+            pass
