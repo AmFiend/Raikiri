@@ -61,12 +61,16 @@ return_and_exit_gates = InlineKeyboardMarkup(
 text_gates_auth = f"""
 𝙂𝙖𝙩𝙚𝙬𝙖𝙮𝙨 𝘼𝙪𝙩𝙝
 
-{symbol("朱 𝙀𝙭𝙖𝙢𝙥𝙡𝙚")} -» <code>Sample Auth System</code>
-{symbol("零 𝘾𝙢𝙙")} -» <code>.auth_demo</code> -» <code>Free</code>
+{symbol("朱 𝙀𝙭𝙖𝙢𝙥𝙡𝙚")} -» <code>Stripe auth</code>
+{symbol("零 𝘾𝙢𝙙")} -» <code>.chk</code> -» <code>premium</code>
 {symbol("ᥫ᭡ 𝙎𝙩𝙖𝙩𝙪𝙨")} -» <code>On ✅</code>
 
-{symbol("朱 𝙎𝙚𝙘𝙪𝙧𝙚")} -» <code>User Validation</code>
-{symbol("零 𝘾𝙢𝙙")} -» <code>.verify</code> -» <code>Free</code>
+{symbol("朱 𝙎𝙚𝙘𝙪𝙧𝙚")} -» <code>Stripe  premium</code>
+{symbol("零 𝘾𝙢𝙙")} -» <code>.au</code> -» <code>premium</code>
+{symbol("ᥫ᭡ 𝙎𝙩𝙖𝙩𝙪𝙨")} -» <code>On ✅</code>
+
+{symbol("朱 𝙎𝙚𝙘𝙪𝙧𝙚")} -» <code>Auto Stripe</code>
+{symbol("零 𝘾𝙢𝙙")} -» <code>.as</code> -» <code>premium</code>
 {symbol("ᥫ᭡ 𝙎𝙩𝙖𝙩𝙪𝙨")} -» <code>On ✅</code>
 """
 
@@ -84,12 +88,12 @@ buttons_auth_page_1 = InlineKeyboardMarkup(
 text_gates_charged = f"""
 𝙂𝙖𝙩𝙚𝙬𝙖𝙮𝙨 𝘾𝙝𝙖𝙧𝙜𝙚𝙙
 
-{symbol("朱 𝙁𝙚𝙚 𝙎𝙞𝙢𝙪𝙡𝙖𝙩𝙤𝙧")} -» <code>Fee Calculator</code>
-{symbol("零 𝘾𝙢𝙙")} -» <code>.fees</code> -» <code>Free</code>
+{symbol("朱 𝙁𝙚𝙚 𝙎𝙞𝙢𝙪𝙡𝙖𝙩𝙤𝙧")} -» <code>payflow charged</code>
+{symbol("零 𝘾𝙢𝙙")} -» <code>.py</code> -» <code>premium</code>
 {symbol("ᥫ᭡ 𝙎𝙩𝙖𝙩𝙪𝙨")} -» <code>On ✅</code>
 
-{symbol("朱 𝙏𝙚𝙨𝙩 𝙋𝙖𝙮")} -» <code>Demo Transaction</code>
-{symbol("零 𝘾𝙢𝙙")} -» <code>.demo_pay</code> -» <code>Free</code>
+{symbol("朱 𝙏𝙚𝙨𝙩 𝙋𝙖𝙮")} -» <code>Shopify single check</code>
+{symbol("零 𝘾𝙢𝙙")} -» <code>.sp</code> -» <code>Free</code>
 {symbol("ᥫ᭡ 𝙎𝙩𝙖𝙩𝙪𝙨")} -» <code>On ✅</code>
 """
 
