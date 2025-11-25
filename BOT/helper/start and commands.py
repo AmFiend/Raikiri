@@ -194,7 +194,7 @@ async def cb_home(client: Client, query: CallbackQuery):
     )
     await query.answer()
 
-@Client.on_callback_query(filters.Regex("^gates$"))
+@Client.on_callback_query(filters.regex("^gates$"))
 async def cb_gates(client: Client, query: CallbackQuery):
     await query.message.edit_text(
         "〈〄〉𝙒𝙚𝙡𝙘𝙤𝙢𝙚 𝙩𝙤 𝙎𝙥𝙮𝙙𝙚\n\n"
