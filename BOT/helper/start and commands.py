@@ -78,35 +78,23 @@ async def callback_command_edit(client, chat_id, text, reply_markup):
     except Exception as e:
         await error_log(str(e))
 
+Any other animation to put here
 @Client.on_message(filters.command("start", [".", "/"]))
 async def cmd_start(Client, message):
-    try:
-        frames = [
-            "<b>𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊 🌊</b>",
-            "<b>𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊 🌊🌊</b>",
-            "<b>𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊 🌊🌊🌊</b>",
-            "<b>𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊 🌊🌊🌊🌊</b>",
-            "<b>𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊 🌊🌊🌊🌊🌊</b>",
-            "<b>𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊 🌊🌊🌊🌊</b>",
-            "<b>𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊 🌊🌊🌊</b>",
-            "<b>𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊 🌊🌊</b>",
-        ]
+try:
+text = """<b>
+𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊  ■□□
+</b>"""
+edit = await message.reply_text(text, message.id)
+await asyncio.sleep(0.5)
 
-        edit = await message.reply_text(frames[0])
-        last_frame = None
+text = """<b>
 
-        for frame in frames:
-            await asyncio.sleep(0.25)
-
-            if frame != last_frame:   # prevent MESSAGE_NOT_MODIFIED
-                await edit.edit_text(frame)
-
-            last_frame = frame
-
-        await asyncio.sleep(0.3)
-        await edit.edit_text("<b>🌊 𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊 𝐑𝐄𝐀𝐃𝐘 ✔️</b>")
-
-        await asyncio.sleep(0.3)  # give Telegram time before final edit
+𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊  ■■■
+</b> """
+# use edit on the message object
+await edit.edit_text(text)
+await asyncio.sleep(0.5)
 
         text = f"""
 <b>🌟 Hello <a href="tg://user?id={message.from_user.id}">{message.from_user.first_name}</a>!</b>
