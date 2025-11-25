@@ -7,6 +7,7 @@ from utilsdf.functions import symbol   # your symbol function
 # ----------------------------------------------------
 
 text_home = """[朱] 𝙒𝙚𝙡𝙘𝙤𝙢𝙚 𝙩𝙤 𝙎𝙥𝙮𝙙𝙚 𝘾𝙝𝙚𝙘𝙠𝙚𝙧 »
+
 <code>[㊄] Akatsuki is renewed, we present our new improved version, with fast and secure checks with different payment gateways and perfect tools for your use.</code>
 
 <a href='tg://user?id={}'>╰┈➤ 𝙑𝙚𝙧𝙨𝙞𝙤𝙣 </a> -» <code>1.4</code>"""
