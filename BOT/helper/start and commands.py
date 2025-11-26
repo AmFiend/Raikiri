@@ -6,9 +6,9 @@ from utilsdf.functions import symbol   # your symbol function
 # TEXTS
 # ----------------------------------------------------
 
-text_home = """[朱] 𝙒𝙚𝙡𝙘𝙤𝙢𝙚 𝙩𝙤 𝙎𝙥𝙮𝙙𝙚 𝘾𝙝𝙚𝙘𝙠𝙚𝙧 »
+text_home = """<a href='https://t.me/spid_3r'>朱</a> 𝙒𝙚𝙡𝙘𝙤𝙢𝙚 𝙩𝙤 𝙎𝙥𝙮𝙙𝙚 𝘾𝙝𝙚𝙘𝙠𝙚𝙧 »
 
-<code>[㊄] Akatsuki is renewed, we present our new improved version, with fast and secure checks with different payment gateways and perfect tools for your use.</code>
+<code><a href='https://t.me/spid_3r'>㊄</a> Spyde is renewed, we present our new improved version, with fast and secure checks with different payment gateways and perfect tools for your use.</code>
 
 <a href='tg://user?id={}'>╰┈➤ 𝙑𝙚𝙧𝙨𝙞𝙤𝙣 </a> -» <code>1.4</code>"""
 
@@ -198,12 +198,13 @@ async def cb_home(client: Client, query: CallbackQuery):
 @Client.on_callback_query(filters.regex("^gates$"))
 async def cb_gates(client: Client, query: CallbackQuery):
     await query.message.edit_text(
-        "〈〄〉𝙒𝙚𝙡𝙘𝙤𝙢𝙚 𝙩𝙤 𝙎𝙥𝙮𝙙𝙚\n\n"
-        "║㊕║ 𝙏𝙤𝙩𝙖𝙡 -» 68\n"
-        "║㊡║ 𝙊𝙣 -» 66 ✅\n"
-        "║㊤║ 𝙊𝙛𝙛 -» 0 ❌\n"
-        "║㊬║ 𝙈𝙖𝙣𝙩𝙚𝙣𝙞𝙚𝙣𝙘𝙚 -» 2 ⚠️\n\n"
-        "〈ゼ〉𝙎𝙚𝙡𝙚𝙘𝙩 𝙩𝙝𝙚 𝙩𝙮𝙥𝙚 𝙤𝙛 𝙜𝙖𝙩𝙚 𝙮𝙤𝙪 𝙬𝙖𝙣𝙩 𝙛𝙤𝙧 𝙮𝙤𝙪𝙧 𝙪𝙨𝙚!",
+        "<a href='https://t.me/spid_3r'>〄</a>𝙒𝙚𝙡𝙘𝙤𝙢𝙚 𝙩𝙤 𝙎𝙥𝙮𝙙𝙚\n\n"
+            "║<a href='https://t.me/spid_3r'>㊕</a>║ 𝙏𝙤𝙩𝙖𝙡 -» 5\n"
+            "║<a href='https://t.me/spid_3r'>㊡</a>║ 𝙊𝙣 -» 1 ✅\n"
+            "║<a href='https://t.me/spid_3r'>㊤</a>║ 𝙊𝙛𝙛 -» 4 ❌\n"
+            "║<a href='https://t.me/spid_3r'>㊬</a> 》𝙈𝙖𝙣𝙩𝙚𝙣𝙞𝙚𝙣𝙘𝙚 -» 4 ⚠️\n\n"
+            "〈<a href='https://t.me/spid_3r'>ゼ</a>〉𝙎𝙚𝙡𝙚𝙘𝙩 𝙩𝙝𝙚 𝙩𝙮𝙥𝙚 𝙤𝙛 𝙜𝙖𝙩𝙚 𝙮𝙤𝙪 𝙬𝙖𝙣𝙩 𝙛𝙤𝙧 𝙮𝙤𝙪𝙧 𝙪𝙨𝙚!"
+    )
         reply_markup=buttons_gates
     )
 
