@@ -10,22 +10,20 @@ with open("FILES/config.json", "r", encoding="utf-8") as f:
     API_HASH  = DATA["API_HASH"]
     BOT_TOKEN = DATA["BOT_TOKEN"]
 
-# USER CLIENT
-user = Client(
+user = Client( 
     "Scrapper",
-    api_id     = API_ID,
-    api_hash   = API_HASH,
-    parse_mode = "html"      # FIXED
+    api_id=API_ID, 
+    api_hash=API_HASH,
+    default_parse_mode="HTML"   # ← FIX 1
 )
 
-# BOT CLIENT
 bot = Client(
     "MY_BOT",
-    api_id     = API_ID,
-    api_hash   = API_HASH,
-    bot_token  = BOT_TOKEN,
-    plugins    = plugins,
-    parse_mode = "html"      # FIXED + COMMA
+    api_id=API_ID, 
+    api_hash=API_HASH, 
+    bot_token=BOT_TOKEN,
+    plugins=plugins,
+    default_parse_mode="HTML"   # ← FIX 2
 )
 
 if __name__ == "__main__":
