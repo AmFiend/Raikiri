@@ -7,8 +7,8 @@ from utilsdf.functions import symbol   # your symbol function
 # ----------------------------------------------------
 
 text_home = (
-    "<a href='https://t.me/spid_3r'>朱</a> 𝙒𝙚𝙡𝙘𝙤𝙢𝙚 𝙩𝙤 𝙎𝙥𝙮𝙙𝙚 𝘾𝙝𝙚𝙘𝙠𝙚𝙧\n\n"
-    "<a href='https://t.me/spid_3r'>㊄</a> Spyde is renewed, we present our new improved version, "
+    "[<a href='https://t.me/spid_3r'>朱</a>] 𝙒𝙚𝙡𝙘𝙤𝙢𝙚 𝙩𝙤 𝙎𝙥𝙮𝙙𝙚 𝘾𝙝𝙚𝙘𝙠𝙚𝙧\n\n"
+    "[<a href='https://t.me/spid_3r'>㊄</a>] Spyde is renewed, we present our new improved version, "
     "with fast and secure checks with different payment gateways and perfect tools for your use.\n\n"
     "<a href='https://t.me/spid_3_'>╰┈➤</a> 𝙑𝙚𝙧𝙨𝙞𝙤𝙣 -» 1.0"
 )
@@ -85,31 +85,31 @@ buttons_auth_page_1 = InlineKeyboardMarkup(
 # ----------------------------------------------------
 
 text_gates_charged = f"""
-〈<a href='https://t.me/spid_3r'>朱</a>〉𝙂𝙖𝙩𝙚𝙬𝙖𝙮𝙨 𝘾𝙝𝙖𝙧𝙜𝙚𝙙\n\n
-〈<a href='https://t.me/spid_3r'>朱</a>〉 𝙉𝙞𝙜𝙝𝙩 -» Moneris -» $0.01\n
-〈<a href='https://t.me/spid_3r'>零</a>〉 𝘾𝙢𝙙 -» .ni -» Premium\n
-〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» Off ❌\n\n
-〈<a href='https://t.me/spid_3r'>朱</a>〉 𝙁𝙧𝙞𝙚𝙣𝙙 -» ePay -» $0.01\n
-〈<a href='https://t.me/spid_3r'>零</a>〉 𝘾𝙢𝙙 -» .fr -» Premium\n
-〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» Off ❌\n\n
-〈<a href='https://t.me/spid_3r'>朱</a>〉 𝘼𝙨𝙪𝙢𝙖 -» Authorize.net -» $0.01\n
-〈<a href='https://t.me/spid_3r'>零</a>〉 𝘾𝙢𝙙 -» .as -» Premium\n
-〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» Off ❌\n\n
-〈<a href='https://t.me/spid_3r'>朱</a>〉 𝘿𝙞𝙤𝙢𝙚𝙙𝙚𝙨 -» Tunl -» $0.01\n
-〈<a href='https://t.me/spid_3r'>零</a>〉 𝘾𝙢𝙙 -» .di -» Premium\n
-〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» Off ❌\n\n
-〈<a href='https://t.me/spid_3r'>朱</a>〉 𝙋𝙖𝙮𝙋𝙖𝙡 -» PayPal -» $0.01\n
-〈<a href='https://t.me/spid_3r'>零</a>〉 𝘾𝙢𝙙 -» .pp -» Premium\n
-〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» Off ❌\n\n
-〈<a href='https://t.me/spid_3r'>朱</a>〉 𝙏𝙧𝙞𝙙𝙚𝙣𝙩 -» Transax Gateway -» $0.01\n
-〈<a href='https://t.me/spid_3r'>零</a>〉 𝘾𝙢𝙙 -» .tr -» Premium\n
-〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» Mantenience ⚠️\n\n
-〈<a href='https://t.me/spid_3r'>朱</a>〉 𝙋𝙚𝙧𝙞𝙘𝙤 -» wc Sagepay(Opayo) -» €1.00\n
-〈<a href='https://t.me/spid_3r'>零</a>〉 𝘾𝙢𝙙 -» .pr -» Premium\n
-〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» Off ❌\n\n
-〈<a href='https://t.me/spid_3r'>朱</a>〉 𝙅𝙪𝙖𝙣 -» WorldPay -» ₤0.89\n
-〈<a href='https://t.me/spid_3r'>零</a>〉 𝘾𝙢𝙙 -» .jn -» Premium\n
-〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» Off ❌
+"〈<a href='https://t.me/spid_3r'>朱</a>〉𝙂𝙖𝙩𝙚𝙬𝙖𝙮𝙨 𝘾𝙝𝙖𝙧𝙜𝙚𝙙\n\n"
+"〈<a href='https://t.me/spid_3r'>朱</a>〉 𝙉𝙞𝙜𝙝𝙩 -» Moneris -» $0.01\n"
+"〈<a href='https://t.me/spid_3r'>零</a>〉 𝘾𝙢𝙙 -» .ni -» Premium\n"
+"〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» Off ❌\n\n"
+"〈<a href='https://t.me/spid_3r'>朱</a>〉 𝙁𝙧𝙞𝙚𝙣𝙙 -» ePay -» $0.01\n"
+"〈<a href='https://t.me/spid_3r'>零</a>〉 𝘾𝙢𝙙 -» .fr -» Premium\n"
+"〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» Off ❌\n\n"
+"〈<a href='https://t.me/spid_3r'>朱</a>〉 𝘼𝙨𝙪𝙢𝙖 -» Authorize.net -» $0.01\n"
+"〈<a href='https://t.me/spid_3r'>零</a>〉 𝘾𝙢𝙙 -» .as -» Premium\n"
+"〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» Off ❌\n\n"
+"〈<a href='https://t.me/spid_3r'>朱</a>〉 𝘿𝙞𝙤𝙢𝙚𝙙𝙚𝙨 -» Tunl -» $0.01\n"
+"〈<a href='https://t.me/spid_3r'>零</a>〉 𝘾𝙢𝙙 -» .di -» Premium\n"
+"〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» Off ❌\n\n"
+"〈<a href='https://t.me/spid_3r'>朱</a>〉 𝙋𝙖𝙮𝙋𝙖𝙡 -» PayPal -» $0.01\n"
+"〈<a href='https://t.me/spid_3r'>零</a>〉 𝘾𝙢𝙙 -» .pp -» Premium\n"
+"〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» Off ❌\n\n"
+"〈<a href='https://t.me/spid_3r'>朱</a>〉 𝙏𝙧𝙞𝙙𝙚𝙣𝙩 -» Transax Gateway -» $0.01\n"
+"〈<a href='https://t.me/spid_3r'>零</a>〉 𝘾𝙢𝙙 -» .tr -» Premium\n"
+"〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» Mantenience ⚠️\n\n"
+"〈<a href='https://t.me/spid_3r'>朱</a>〉 𝙋𝙚𝙧𝙞𝙘𝙤 -» wc Sagepay(Opayo) -» €1.00\n"
+"〈<a href='https://t.me/spid_3r'>零</a>〉 𝘾𝙢𝙙 -» .pr -» Premium\n"
+"〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» Off ❌\n\n"
+"〈<a href='https://t.me/spid_3r'>朱</a>〉 𝙅𝙪𝙖𝙣 -» WorldPay -» ₤0.89\n"
+"〈<a href='https://t.me/spid_3r'>零</a>〉 𝘾𝙢𝙙 -» .jn -» Premium\n"
+"〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» Off ❌"
 """
 
 buttons_charged_page_1 = InlineKeyboardMarkup(
@@ -125,21 +125,21 @@ buttons_charged_page_1 = InlineKeyboardMarkup(
 text_gates_specials = f"""
 𝙂𝙖𝙩𝙚𝙬𝙖𝙮𝙨 𝙎𝙥𝙚𝙘𝙞𝙖𝙡
 
-{symbol("朱 𝙋𝙧𝙤 𝙏𝙤𝙤𝙡")} -» <code>payflow nass</code>
-{symbol("零 𝘾𝙢𝙙")} -» <code>.mpy</code> -» <code>Premium</code>
-{symbol("ᥫ᭡ 𝙎𝙩𝙖𝙩𝙪𝙨")} -» <code>On ✅</code>
+〈<a href='https://t.me/spid_3r'>朱</a>〉 -» <code>payflow nass</code>
+〈<a href='https://t.me/spid_3r'>零</a>〉 -» <code>.mpy</code> -» <code>Premium</code>
+〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 -» <code>On ✅</code>
 
-{symbol("朱 𝙎𝙘𝙖𝙣𝙣𝙚𝙧")} -» <code>mass stripe</code>
-{symbol("零 𝘾𝙢𝙙")} -» <code>.mstxt</code> -» <code>Premium</code>
-{symbol("ᥫ᭡ 𝙎𝙩𝙖𝙩𝙪𝙨")} -» <code>On ✅</code>
+〈<a href='https://t.me/spid_3r'>朱</a>〉 -» <code>mass stripe</code>
+〈<a href='https://t.me/spid_3r'>零</a>〉 -» <code>.mstxt</code> -» <code>Premium</code>
+〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 -» <code>On ✅</code>
 
-{symbol("朱 𝙎𝙘𝙖𝙣𝙣𝙚𝙧")} -» <code>mass Auto stripe</code>
-{symbol("零 𝘾𝙢𝙙")} -» <code>.asm</code> -» <code>Premium</code>
-{symbol("ᥫ᭡ 𝙎𝙩𝙖𝙩𝙪𝙨")} -» <code>On ✅</code>
+〈<a href='https://t.me/spid_3r'>朱</a>〉 -» <code>mass Auto stripe</code>
+〈<a href='https://t.me/spid_3r'>零</a>〉 -» <code>.asm</code> -» <code>Premium</code>
+〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 -» <code>On ✅</code>
 
-{symbol("朱 𝙎𝙘𝙖𝙣𝙣𝙚𝙧")} -» <code>mass stipe</code>
-{symbol("零 𝘾𝙢𝙙")} -» <code>.mchk</code> -» <code>Premium</code>
-{symbol("ᥫ᭡ 𝙎𝙩𝙖𝙩𝙪𝙨")} -» <code>On ✅</code>
+〈<a href='https://t.me/spid_3r'>朱</a>〉 -» <code>mass stipe</code>
+〈<a href='https://t.me/spid_3r'>零</a>〉 -» <code>.mchk</code> -» <code>Premium</code>
+〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 -» <code>On ✅</code>
 """
 
 buttons_specials_page_1 = InlineKeyboardMarkup(
