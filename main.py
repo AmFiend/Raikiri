@@ -10,25 +10,25 @@ with open("FILES/config.json", "r", encoding="utf-8") as f:
     API_HASH  = DATA["API_HASH"]
     BOT_TOKEN = DATA["BOT_TOKEN"]
 
-user = Client( 
-            "Scrapper", 
-             api_id   = API_ID, 
-             api_hash = API_HASH
-              )
-
-bot = Client(
-    "MY_BOT", 
-    api_id    = API_ID, 
-    api_hash  = API_HASH, 
-    bot_token = BOT_TOKEN, 
-    plugins   = plugins 
+# USER CLIENT
+user = Client(
+    "Scrapper",
+    api_id     = API_ID,
+    api_hash   = API_HASH,
+    parse_mode = "html"      # FIXED
 )
 
-
+# BOT CLIENT
+bot = Client(
+    "MY_BOT",
+    api_id     = API_ID,
+    api_hash   = API_HASH,
+    bot_token  = BOT_TOKEN,
+    plugins    = plugins,
+    parse_mode = "html"      # FIXED + COMMA
+)
 
 if __name__ == "__main__":
-    # send_server_alert()
     print("Done Bot Active ✅")
     print("NOW START BOT ONCE MY MASTER")
-
     bot.run()
