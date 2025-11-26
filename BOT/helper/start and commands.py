@@ -24,17 +24,17 @@ async def send_video_or_text(message, text, buttons):
     video_file = get_next_menu_video()
     try:
         with open(video_file, "rb") as v:
+            # reply_video will use the Client parse_mode setting (main.py)
             await message.reply_video(
                 video=v,
                 caption=text,
-                reply_markup=buttons,
-                parse_mode="html"
+                reply_markup=buttons
             )
     except Exception:
-        await message.reply(
+        # fallback to send text if video fails
+        await message.reply_text(
             text,
-            reply_markup=buttons,
-            parse_mode="html"
+            reply_markup=buttons
         )
 
 # NEW: edit-in-place helper (for smooth instant UI updates)
@@ -45,14 +45,14 @@ async def edit_message_in_place(message, text, buttons):
     """
     try:
         # Try edit caption (works if original message is a media with caption)
-        await message.edit_caption(caption=text, reply_markup=buttons, parse_mode="html")
+        await message.edit_caption(caption=text, reply_markup=buttons)
         return
     except Exception:
         pass
 
     try:
         # Try edit text
-        await message.edit_text(text, reply_markup=buttons, parse_mode="html")
+        await message.edit_text(text, reply_markup=buttons)
         return
     except Exception:
         pass
@@ -62,7 +62,7 @@ async def edit_message_in_place(message, text, buttons):
         await send_video_or_text(message, text, buttons)
     except Exception:
         # last resort: simple reply_text
-        await message.reply(text, reply_markup=buttons, parse_mode="html")
+        await message.reply_text(text, reply_markup=buttons)
 
 
 # ----------------------------------------------------
@@ -151,31 +151,11 @@ buttons_auth_page_1 = InlineKeyboardMarkup(
 # ----------------------------------------------------
 
 text_gates_charged = f"""
-〈<a href='https://t.me/spid_3r'>朱</a>〉𝙂𝙖𝙩𝙚𝙬𝙖𝙮𝙨 𝘾𝙝𝙖𝙧𝙜𝙚𝙙\n\n"
+〈<a href='https://t.me/spid_3r'>朱</a>〉𝙂𝙖𝙩𝙚𝙬𝙖𝙮𝙨 𝘾𝙝𝙖𝙧𝙜𝙚𝙙
+
 〈<a href='https://t.me/spid_3r'>朱</a>〉 𝐀𝐔𝐓𝐇𝐍𝐄𝐓 -» authnet -» $0.01
 〈<a href='https://t.me/spid_3r'>零</a>〉 𝘾𝙢𝙙 -» .authnet1 -» Premium
-〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» On ✅\n
-〈<a href='https://t.me/spid_3r'>朱</a>〉 𝐀𝐔𝐓𝐎 𝐒𝐇𝐎𝐏𝐈𝐅𝐘  -» ePay -» $0.01
-〈<a href='https://t.me/spid_3r'>零</a>〉 𝘾𝙢𝙙 -» .sh -» Premium
-〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» On ✅\n
-〈<a href='https://t.me/spid_3r'>朱</a>〉 𝐂𝐇𝐄𝐂𝐊 -» Authorize.net -» $0.01
-〈<a href='https://t.me/spid_3r'>零</a>〉 𝘾𝙢𝙙 -» .check -» Premium
-〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» om ✅\n
-〈<a href='https://t.me/spid_3r'>朱</a>〉 𝐑𝐚𝐳𝐨𝐩𝐚𝐲 -» razopay -» $0.01
-〈<a href='https://t.me/spid_3r'>零</a>〉 𝘾𝙢𝙙 -» .rz -» Premium
-〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» On ✅\n
-〈<a href='https://t.me/spid_3r'>朱</a>〉 𝐒𝐄𝐋𝐅 𝐒𝐇𝐎𝐏𝐈𝐅𝐘  -» self shopify -» $0.01
-〈<a href='https://t.me/spid_3r'>零</a>〉 𝘾𝙢𝙙 -» .sh -» Premium
-〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» On ✅\n
-〈<a href='https://t.me/spid_3r'>朱</a>〉 𝙏𝙧𝙞𝙙𝙚𝙣𝙩 -» Transax Gateway -» $0.01
-〈<a href='https://t.me/spid_3r'>零</a>〉 𝘾𝙢𝙙 -» .tr -» Premium
-〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» Mantenience ⚠️\n
-〈<a href='https://t.me/spid_3r'>朱</a>〉 𝙋𝙚𝙧𝙞𝙘𝙤 -» wc Sagepay(Opayo) -» €1.00
-〈<a href='https://t.me/spid_3r'>零</a>〉 𝘾𝙢𝙙 -» .pr -» Premium
-〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» Off ❌\n
-〈<a href='https://t.me/spid_3r'>朱</a>〉 𝙅𝙪𝙖𝙣 -» WorldPay -» ₤0.89
-〈<a href='https://t.me/spid_3r'>零</a>〉 𝘾𝙢𝙙 -» .jn -» Premium
-〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» Off ❌
+〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» On ✅
 """
 
 buttons_charged_page_1 = InlineKeyboardMarkup(
@@ -193,20 +173,6 @@ text_gates_specials = f"""
 𝙂𝙖𝙩𝙚𝙬𝙖𝙮𝙨 𝙎𝙥𝙚𝙘𝙞𝙖𝙡
 
 〈<a href='https://t.me/spid_3r'>朱</a>〉 -» <code>payflow Mass</code>
-〈<a href='https://t.me/spid_3r'>零</a>〉 -» <code>.mpy</code> -» <code>Premium</code>
-〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 -» <code>On ✓</code>
-
-〈<a href='https://t.me/spid_3r'>朱</a>〉 -» <code>mass stripe</code>
-〈<a href='https://t.me/spid_3r'>零</a>〉 -» <code>.mstxt</code> -» <code>Premium</code>
-〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 -» <code>On ✓</code>
-
-〈<a href='https://t.me/spid_3r'>朱</a>〉 -» <code>mass Auto stripe</code>
-〈<a href='https://t.me/spid_3r'>零</a>〉 -» <code>.asm</code> -» <code>Premium</code>
-〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 -» <code>On ✓</code>
-
-〈<a href='https://t.me/spid_3r'>朱</a>〉 -» <code>mass stipe</code>
-〈<a href='https://t.me/spid_3r'>零</a>〉 -» <code>.mchk</code> -» <code>Premium</code>
-〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 -» <code>On ✓</code>
 """
 
 buttons_specials_page_1 = InlineKeyboardMarkup(
@@ -224,24 +190,6 @@ text_tools = f"""
 𝙏𝙤𝙤𝙡𝙨 🛠
 
 〈<a href='https://t.me/spid_3r'>朱</a>〉 𝙍𝙚𝙛𝙚 -» add group  
-〈<a href='https://t.me/spid_3r'>零</a>〉 .howgp -» Free  
-〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 On ✓  
-
-〈<a href='https://t.me/spid_3r'>朱</a>〉 𝘽𝙞𝙣 -» info bin  
-〈<a href='https://t.me/spid_3r'>零</a>〉 .bin -» Free  
-〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 On ✓  
-
-〈<a href='https://t.me/spid_3r'>朱</a>〉 𝘾𝙝𝙖𝙩 GPT -» filter cc  
-〈<a href='https://t.me/spid_3r'>零</a>〉 .fl -» Premium  
-〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 Off ❌  
-
-〈<a href='https://t.me/spid_3r'>朱</a>〉 𝘼𝙙𝙙𝙧𝙚𝙨𝙨 -» fake address  
-〈<a href='https://t.me/spid_3r'>零</a>〉 .fake -» Free  
-〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 On ✓  
-
-〈<a href='https://t.me/spid_3r'>朱</a>〉 𝙎𝙠 -» credits  
-〈<a href='https://t.me/spid_3r'>零</a>〉 .claim -» Free  
-〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 On ✓  
 """
 
 # ----------------------------------------------------
@@ -250,21 +198,8 @@ text_tools = f"""
 
 async def is_registered(user_id):
     """Return True if user exists in DB"""
-    user = await getuserinfo(user_id)
+    user = await getuserinfo(str(user_id))
     return user is not None
-
-def create_user_in_db(user_id):
-    """Insert default user doc (sync insert as your other code uses insert_one sync)"""
-    usersdb.insert_one({
-        "id": str(user_id),
-        "username": None,
-        "status": "FREE",
-        "plan": "N/A",
-        "credit": 50,
-        "expiry": "N/A",
-        "antispam_time": 0,
-        "reg_at": None
-    })
 
 @Client.on_message(filters.command("register"))
 async def register_cmd(client, message):
@@ -275,9 +210,8 @@ async def register_cmd(client, message):
 
     usr = await getuserinfo(str(user_id))
     if usr is not None:
-        return await message.reply(
-            "<b>✅ You are already registered.</b>\nUse /start to open the menu.",
-            parse_mode="html"
+        return await message.reply_text(
+            "✅ You are already registered.\nUse /start to open the menu."
         )
 
     # build reg date
@@ -305,16 +239,16 @@ async def register_cmd(client, message):
         ]
     )
 
-    resp = f"""<b>Registration Successful ♻️</b>
+    resp = f"""Registration Successful ♻️
 
-● Name: {message.from_user.first_name}
-● User ID: {user_id}
-● Role: Free
-● Credits: 50
+Name: {message.from_user.first_name}
+User ID: {user_id}
+Role: Free
+Credits: 50
 
 Use /start to open the menu.
 """
-    await message.reply_text(resp, reply_markup=WELCOME_BUTTON, parse_mode="html")
+    await message.reply_text(resp, reply_markup=WELCOME_BUTTON)
 
 
 # ----------------------------------------------------
@@ -346,10 +280,9 @@ async def start_menu(client: Client, message: Message):
                 [InlineKeyboardButton("Close", callback_data="exit")]
             ]
         )
-        return await message.reply(
-            "<b>⚠️ You are not registered.\nPress Register to create your account.</b>",
-            reply_markup=btns,
-            parse_mode="html"
+        return await message.reply_text(
+            "⚠️ You are not registered.\nPress Register to create your account.",
+            reply_markup=btns
         )
 
     # Registered → show normal menu (send new video/text)
@@ -454,15 +387,14 @@ async def cb_register_button(client: Client, query: CallbackQuery):
 
     await query.answer("🎉 Registered! Use /start", show_alert=True)
     # optionally update the same message to show main menu immediately
-    await update_menu_for_query(query, "<b>Registered! Press /start to open menu.</b>", InlineKeyboardMarkup([[InlineKeyboardButton("Start", callback_data="home")]]))
+    await update_menu_for_query(query, "Registered! Press /start to open menu.", InlineKeyboardMarkup([[InlineKeyboardButton("Start", callback_data="home")]]))
 
 @Client.on_callback_query(filters.regex("^exit$"))
 async def cb_exit(client: Client, query: CallbackQuery):
     # gentle exit: edit text
     try:
         await query.message.edit_text(
-            "𝙀𝙭𝙞𝙩𝙚𝙙 𝙢𝙚𝙣𝙪 ⚠️\n\nUse /start to open it again.",
-            parse_mode="html"
+            "𝙀𝙭𝙞𝙩𝙚𝙙 𝙢𝙚𝙣𝙪 ⚠️\n\nUse /start to open it again."
         )
     except Exception:
         # fallback
