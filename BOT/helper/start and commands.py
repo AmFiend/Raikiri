@@ -62,15 +62,18 @@ return_and_exit_gates = InlineKeyboardMarkup(
 
 text_gates_auth = (
     "〈<a href='https://t.me/spid_3r'>朱</a>〉 𝙂𝙖𝙩𝙚𝙬𝙖𝙮𝙨 𝘼𝙪𝙩𝙝\n\n"
-    "〈<a href='https://t.me/spid_3r'>朱</a>〉 𝗔𝗱𝗿𝗶 -» Zuora + Stripe -» Auth\n"
-    "〈<a href='https://t.me/spid_3r'>零</a>〉 𝘾𝙢𝙙 -» .adr -» Free\n"
-    "〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» Off ❌️\n\n"
-    "〈<a href='https://t.me/spid_3r'>朱</a>〉 𝘼𝙠𝙩𝙯 -» Braintree -» Auth\n"
-    "〈<a href='https://t.me/spid_3r'>零</a>〉 𝘾𝙢𝙙 -» .b3 -» Free\n"
+    "〈<a href='https://t.me/spid_3r'>朱</a>〉 𝐒𝐭𝐫𝐢𝐩𝐞 -» Zuora + Stripe -» Auth\n"
+    "〈<a href='https://t.me/spid_3r'>零</a>〉 𝘾𝙢𝙙 -» .chk -» Free\n"
     "〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» On ✅\n\n"
-    "〈<a href='https://t.me/spid_3r'>朱</a>〉 𝙎𝙚𝙭 -» Intuit -» Auth\n"
-    "〈<a href='https://t.me/spid_3r'>零</a>〉 𝘾𝙢𝙙 -» .sx -» Premium\n"
-    "〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» Off ❌"
+    "〈<a href='https://t.me/spid_3r'>朱</a>〉 𝐚𝐮𝐭𝐨 𝐬𝐭𝐫𝐢𝐩𝐞 -» Auto stripe -» Auth\n"
+    "〈<a href='https://t.me/spid_3r'>零</a>〉 𝘾𝙢𝙙 -» .as -» Free\n"
+    "〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» On ✅\n\n"
+    "〈<a href='https://t.me/spid_3r'>朱</a>〉 𝐒𝐭𝐫𝐢𝐩𝐞 𝐚𝐮𝐭𝐡𝟏 -» Auth1 -» Auth\n"
+    "〈<a href='https://t.me/spid_3r'>零</a>〉 𝘾𝙢𝙙 -» .au -» Premium\n"
+    "〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» On ✅"
+    "〈<a href='https://t.me/spid_3r'>朱</a>〉 𝐁𝐫𝐚𝐢𝐧𝐭𝐫𝐞𝐞  -» Braintree Premium -» Auth\n"
+    "〈<a href='https://t.me/spid_3r'>零</a>〉 𝘾𝙢𝙙 -» .b3 -» Premium\n"
+    "〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» On ✅"
 )
 
 buttons_auth_page_1 = InlineKeyboardMarkup(
@@ -85,31 +88,31 @@ buttons_auth_page_1 = InlineKeyboardMarkup(
 # ----------------------------------------------------
 
 text_gates_charged = f"""
-"〈<a href='https://t.me/spid_3r'>朱</a>〉𝙂𝙖𝙩𝙚𝙬𝙖𝙮𝙨 𝘾𝙝𝙖𝙧𝙜𝙚𝙙\n\n"
-"〈<a href='https://t.me/spid_3r'>朱</a>〉 𝙉𝙞𝙜𝙝𝙩 -» Moneris -» $0.01\n"
-"〈<a href='https://t.me/spid_3r'>零</a>〉 𝘾𝙢𝙙 -» .ni -» Premium\n"
-"〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» Off ❌\n\n"
-"〈<a href='https://t.me/spid_3r'>朱</a>〉 𝙁𝙧𝙞𝙚𝙣𝙙 -» ePay -» $0.01\n"
-"〈<a href='https://t.me/spid_3r'>零</a>〉 𝘾𝙢𝙙 -» .fr -» Premium\n"
-"〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» Off ❌\n\n"
-"〈<a href='https://t.me/spid_3r'>朱</a>〉 𝘼𝙨𝙪𝙢𝙖 -» Authorize.net -» $0.01\n"
-"〈<a href='https://t.me/spid_3r'>零</a>〉 𝘾𝙢𝙙 -» .as -» Premium\n"
-"〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» Off ❌\n\n"
-"〈<a href='https://t.me/spid_3r'>朱</a>〉 𝘿𝙞𝙤𝙢𝙚𝙙𝙚𝙨 -» Tunl -» $0.01\n"
-"〈<a href='https://t.me/spid_3r'>零</a>〉 𝘾𝙢𝙙 -» .di -» Premium\n"
-"〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» Off ❌\n\n"
-"〈<a href='https://t.me/spid_3r'>朱</a>〉 𝙋𝙖𝙮𝙋𝙖𝙡 -» PayPal -» $0.01\n"
-"〈<a href='https://t.me/spid_3r'>零</a>〉 𝘾𝙢𝙙 -» .pp -» Premium\n"
-"〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» Off ❌\n\n"
-"〈<a href='https://t.me/spid_3r'>朱</a>〉 𝙏𝙧𝙞𝙙𝙚𝙣𝙩 -» Transax Gateway -» $0.01\n"
-"〈<a href='https://t.me/spid_3r'>零</a>〉 𝘾𝙢𝙙 -» .tr -» Premium\n"
-"〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» Mantenience ⚠️\n\n"
-"〈<a href='https://t.me/spid_3r'>朱</a>〉 𝙋𝙚𝙧𝙞𝙘𝙤 -» wc Sagepay(Opayo) -» €1.00\n"
-"〈<a href='https://t.me/spid_3r'>零</a>〉 𝘾𝙢𝙙 -» .pr -» Premium\n"
-"〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» Off ❌\n\n"
-"〈<a href='https://t.me/spid_3r'>朱</a>〉 𝙅𝙪𝙖𝙣 -» WorldPay -» ₤0.89\n"
-"〈<a href='https://t.me/spid_3r'>零</a>〉 𝘾𝙢𝙙 -» .jn -» Premium\n"
-"〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» Off ❌"
+〈<a href='https://t.me/spid_3r'>朱</a>〉𝙂𝙖𝙩𝙚𝙬𝙖𝙮𝙨 𝘾𝙝𝙖𝙧𝙜𝙚𝙙\n\n"
+〈<a href='https://t.me/spid_3r'>朱</a>〉 𝐀𝐔𝐓𝐇𝐍𝐄𝐓 -» authnet -» $0.01
+〈<a href='https://t.me/spid_3r'>零</a>〉 𝘾𝙢𝙙 -» .authnet1 -» Premium
+〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» On ✅\n
+〈<a href='https://t.me/spid_3r'>朱</a>〉 𝐀𝐔𝐓𝐎 𝐒𝐇𝐎𝐏𝐈𝐅𝐘  -» ePay -» $0.01
+〈<a href='https://t.me/spid_3r'>零</a>〉 𝘾𝙢𝙙 -» .sh -» Premium
+〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» On ✅\n
+〈<a href='https://t.me/spid_3r'>朱</a>〉 𝐂𝐇𝐄𝐂𝐊 -» Authorize.net -» $0.01
+〈<a href='https://t.me/spid_3r'>零</a>〉 𝘾𝙢𝙙 -» .check -» Premium
+〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» om ✅\n
+〈<a href='https://t.me/spid_3r'>朱</a>〉 𝐑𝐚𝐳𝐨𝐩𝐚𝐲 -» razopay -» $0.01
+〈<a href='https://t.me/spid_3r'>零</a>〉 𝘾𝙢𝙙 -» .rz -» Premium
+〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» On ✅\n
+〈<a href='https://t.me/spid_3r'>朱</a>〉 𝐒𝐄𝐋𝐅 𝐒𝐇𝐎𝐏𝐈𝐅𝐘  -» self shopify -» $0.01
+〈<a href='https://t.me/spid_3r'>零</a>〉 𝘾𝙢𝙙 -» .sh -» Premium
+〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» On ✅\n
+〈<a href='https://t.me/spid_3r'>朱</a>〉 𝙏𝙧𝙞𝙙𝙚𝙣𝙩 -» Transax Gateway -» $0.01
+〈<a href='https://t.me/spid_3r'>零</a>〉 𝘾𝙢𝙙 -» .tr -» Premium
+〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» Mantenience ⚠️\n
+〈<a href='https://t.me/spid_3r'>朱</a>〉 𝙋𝙚𝙧𝙞𝙘𝙤 -» wc Sagepay(Opayo) -» €1.00
+〈<a href='https://t.me/spid_3r'>零</a>〉 𝘾𝙢𝙙 -» .pr -» Premium
+〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» Off ❌\n
+〈<a href='https://t.me/spid_3r'>朱</a>〉 𝙅𝙪𝙖𝙣 -» WorldPay -» ₤0.89
+〈<a href='https://t.me/spid_3r'>零</a>〉 𝘾𝙢𝙙 -» .jn -» Premium
+〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» Off ❌
 """
 
 buttons_charged_page_1 = InlineKeyboardMarkup(
@@ -125,7 +128,7 @@ buttons_charged_page_1 = InlineKeyboardMarkup(
 text_gates_specials = f"""
 𝙂𝙖𝙩𝙚𝙬𝙖𝙮𝙨 𝙎𝙥𝙚𝙘𝙞𝙖𝙡
 
-〈<a href='https://t.me/spid_3r'>朱</a>〉 -» <code>payflow nass</code>
+〈<a href='https://t.me/spid_3r'>朱</a>〉 -» <code>payflow Mass</code>
 〈<a href='https://t.me/spid_3r'>零</a>〉 -» <code>.mpy</code> -» <code>Premium</code>
 〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 -» <code>On ✅</code>
 
@@ -157,20 +160,20 @@ text_tools = f"""
 𝙏𝙤𝙤𝙡𝙨 🛠
 
             "〈<a href='https://t.me/spid_3r'>朱</a>〉𝙂𝙖𝙩𝙚𝙬𝙖𝙮𝙨 𝙏𝙤𝙤𝙡𝙨 🛠\n\n"
-            "<a href='https://t.me/spid_3r'>朱</a> 𝙍𝙚𝙛𝙚 -» send review reference\n"
-            "<a href='https://t.me/spid_3r'>零</a> 𝘾𝙢𝙙 -» .refe -» reply message -» Free\n"
+            "<a href='https://t.me/spid_3r'>朱</a> 𝙍𝙚𝙛𝙚 -» add group \n"
+            "<a href='https://t.me/spid_3r'>零</a> 𝘾𝙢𝙙 -» .howgp -» reply message -» Free\n"
             "<a href='https://t.me/spid_3r'>ᥫ᭡</a> 𝙎𝙩𝙖𝙩𝙪𝙨 -» On ✅\n\n"
             "<a href='https://t.me/spid_3r'>朱</a> 𝘽𝙞𝙣 -» info bin\n"
             "<a href='https://t.me/spid_3r'>零</a> 𝘾𝙢𝙙 -» .bin -» Free\n"
             "<a href='https://t.me/spid_3r'>ᥫ᭡</a> 𝙎𝙩𝙖𝙩𝙪𝙨 -» On ✅\n\n"
-            "<a href='https://t.me/spid_3r'>朱</a> 𝘾𝙝𝙖𝙩 𝙂𝙋𝙏 -» ChatGPT\n"
-            "<a href='https://t.me/spid_3r'>零</a> 𝘾𝙢𝙙 -» .gpt hola -» Premium\n"
+            "<a href='https://t.me/spid_3r'>朱</a> 𝘾𝙝𝙖𝙩 𝙂𝙋𝙏 -» filter cc\n"
+            "<a href='https://t.me/spid_3r'>零</a> 𝘾𝙢𝙙 -» .fl-» Premium\n"
             "<a href='https://t.me/spid_3r'>ᥫ᭡</a> 𝙎𝙩𝙖𝙩𝙪𝙨 -» Off ❌\n\n"
             "<a href='https://t.me/spid_3r'>朱</a> 𝘼𝙙𝙙𝙧𝙚𝙨𝙨 -» generate address\n"
-            "<a href='https://t.me/spid_3r'>零</a> 𝘾𝙢𝙙 -» .rnd us -» Free\n"
+            "<a href='https://t.me/spid_3r'>零</a> 𝘾𝙢𝙙 -» .fake -» Free\n"
             "<a href='https://t.me/spid_3r'>ᥫ᭡</a> 𝙎𝙩𝙖𝙩𝙪𝙨 -» On ✅\n\n"
-            "<a href='https://t.me/spid_3r'>朱</a> 𝙎𝙠 -» info sk\n"
-            "<a href='https://t.me/spid_3r'>零</a> 𝘾𝙢𝙙 -» .sk -» Free\n"
+            "<a href='https://t.me/spid_3r'>朱</a> 𝙎𝙠 -» claim credits\n"
+            "<a href='https://t.me/spid_3r'>零</a> 𝘾𝙢𝙙 -» .claim -» Free\n"
             "<a href='https://t.me/spid_3r'>ᥫ᭡</a> 𝙎𝙩𝙖𝙩𝙪𝙨 -» On ✅\n\n"
             "<a href='https://t.me/spid_3r'>朱</a> 𝙂𝘽𝙞𝙣 -» generate bins\n"
             "<a href='https://t.me/spid_3r'>零</a> 𝘾𝙢𝙙 -» .gbin -» Free\n"
@@ -179,13 +182,13 @@ text_tools = f"""
             "<a href='https://t.me/spid_3r'>零</a> 𝘾𝙢𝙙 -» .gen -» Free\n"
             "<a href='https://t.me/spid_3r'>ᥫ᭡</a> 𝙎𝙩𝙖𝙩𝙪𝙨 -» On ✅\n\n"
             "<a href='https://t.me/spid_3r'>朱</a> 𝙄𝙣𝙛𝙤 -» info user\n"
-            "<a href='https://t.me/spid_3r'>零</a> 𝘾𝙢𝙙 -» .my -» Free\n"
+            "<a href='https://t.me/spid_3r'>零</a> 𝘾𝙢𝙙 -» .id -» Free\n"
             "<a href='https://t.me/spid_3r'>ᥫ᭡</a> 𝙎𝙩𝙖𝙩𝙪𝙨 -» On ✅\n\n"
-            "<a href='https://t.me/spid_3r'>朱</a> 𝙋𝙡𝙖𝙣 -» info plan user\n"
-            "<a href='https://t.me/spid_3r'>零</a> 𝘾𝙢𝙙 -» .plan -» Free\n"
+            "<a href='https://t.me/spid_3r'>朱</a> 𝙋𝙡𝙖𝙣 -» bin info\n"
+            "<a href='https://t.me/spid_3r'>零</a> 𝘾𝙢𝙙 -» .bin -» Free\n"
             "<a href='https://t.me/spid_3r'>ᥫ᭡</a> 𝙎𝙩𝙖𝙩𝙪𝙨 -» On ✅\n\n"
-            "<a href='https://t.me/spid_3r'>朱</a> 𝙋𝙡𝙖𝙣𝙂 -» info plan group\n"
-            "<a href='https://t.me/spid_3r'>零</a> 𝘾𝙢𝙙 -» .plang -» Free\n"
+            "<a href='https://t.me/spid_3r'>朱</a> 𝙋𝙡𝙖𝙣𝙂 -» scrape çc\n"
+            "<a href='https://t.me/spid_3r'>零</a> 𝘾𝙢𝙙 -» .scr -» Free\n"
             "<a href='https://t.me/spid_3r'>ᥫ᭡</a> 𝙎𝙩𝙖𝙩𝙪𝙨 -» On ✅"
 """
 
