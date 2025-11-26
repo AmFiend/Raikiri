@@ -6,13 +6,17 @@ from utilsdf.functions import symbol   # your symbol function
 # TEXTS
 # ----------------------------------------------------
 
-text_home = """        f"<a href='https://t.me/spid_3r'>朱</a> 𝙒𝙚𝙡𝙘𝙤𝙢𝙚 𝙩𝙤 𝙎𝙥𝙮𝙙𝙚 𝘾𝙝𝙚𝙘𝙠𝙚𝙧\n\n"
-        f"<a href='https://t.me/spid_3r'>㊄</a> Spyde is renewed, we present our new improved version, with fast and secure checks with different payment gateways and perfect tools for your use.\n\n"
-        f"<a href='https://t.me/spid_3r'>╰┈➤</a> 𝙑𝙚𝙧𝙨𝙞𝙤𝙣  -» 1.0"
+text_home = (
+    "<a href='https://t.me/spid_3r'>朱</a> 𝙒𝙚𝙡𝙘𝙤𝙢𝙚 𝙩𝙤 𝙎𝙥𝙮𝙙𝙚 𝘾𝙝𝙚𝙘𝙠𝙚𝙧\n\n"
+    "<a href='https://t.me/spid_3r'>㊄</a> Spyde is renewed, we present our new improved version, "
+    "with fast and secure checks with different payment gateways and perfect tools for your use.\n\n"
+    "<a href='https://t.me/spid_3_'>╰┈➤</a> 𝙑𝙚𝙧𝙨𝙞𝙤𝙣 -» 1.0"
+)
+
 # ----------------------------------------------------
 # BUTTONS
 # ----------------------------------------------------
-            
+
 exit_button = InlineKeyboardButton("𝙀𝙭𝙞𝙩 ⚠️", "exit")
 
 buttons_home = InlineKeyboardMarkup(
@@ -29,10 +33,10 @@ buttons_home = InlineKeyboardMarkup(
 buttons_gates = InlineKeyboardMarkup(
     [
         [
-            InlineKeyboardButton("𝘼𝙪𝙩𝙝 ", "auths"),
-            InlineKeyboardButton("𝘾𝙝𝙖𝙧𝙜𝙚𝙙 ", "chargeds"),
+            InlineKeyboardButton("𝘼𝙪𝙩𝙝", "auths"),
+            InlineKeyboardButton("𝘾𝙝𝙖𝙧𝙜𝙚𝙙", "chargeds"),
         ],
-        [InlineKeyboardButton("𝙎𝙥𝙚𝙘𝙞𝙖𝙡 ", "specials")],
+        [InlineKeyboardButton("𝙎𝙥𝙚𝙘𝙞𝙖𝙡", "specials")],
         [InlineKeyboardButton("𝙍𝙚𝙩𝙪𝙧𝙣 🔄", "home")],
         [exit_button],
     ]
@@ -57,18 +61,17 @@ return_and_exit_gates = InlineKeyboardMarkup(
 # ----------------------------------------------------
 
 text_gates_auth = (
-    "〈<a href='https://t.me/spid_3r'>朱</a>〉𝙂𝙖𝙩𝙚𝙬𝙚𝙮𝙨 𝘼𝙪𝙩𝙝\n\n"
+    "〈<a href='https://t.me/spid_3r'>朱</a>〉 𝙂𝙖𝙩𝙚𝙬𝙖𝙮𝙨 𝘼𝙪𝙩𝙝\n\n"
     "〈<a href='https://t.me/spid_3r'>朱</a>〉 𝗔𝗱𝗿𝗶 -» Zuora + Stripe -» Auth\n"
     "〈<a href='https://t.me/spid_3r'>零</a>〉 𝘾𝙢𝙙 -» .adr -» Free\n"
     "〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» Off ❌️\n\n"
-    "〈<a href='https://t.me/spid_3r'>朱</a>〉 𝘼𝙠𝙩𝙯 -» braintree -» Auth\n"
+    "〈<a href='https://t.me/spid_3r'>朱</a>〉 𝘼𝙠𝙩𝙯 -» Braintree -» Auth\n"
     "〈<a href='https://t.me/spid_3r'>零</a>〉 𝘾𝙢𝙙 -» .b3 -» Free\n"
     "〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» On ✅\n\n"
     "〈<a href='https://t.me/spid_3r'>朱</a>〉 𝙎𝙚𝙭 -» Intuit -» Auth\n"
     "〈<a href='https://t.me/spid_3r'>零</a>〉 𝘾𝙢𝙙 -» .sx -» Premium\n"
     "〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» Off ❌"
 )
-"""
 
 buttons_auth_page_1 = InlineKeyboardMarkup(
     [
