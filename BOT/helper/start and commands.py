@@ -3,6 +3,34 @@ from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQ
 from utilsdf.functions import symbol   # your symbol function
 
 # ----------------------------------------------------
+# VIDEO ROTATION SYSTEM (ADDED)
+# ----------------------------------------------------
+
+MENU_VIDEOS = ["menu1.mp4", "menu2.mp4", "menu3.mp4", "menu4.mp4", "menu5.mp4"]
+current_video_index = 0
+
+def get_next_menu_video():
+    global current_video_index
+    video = MENU_VIDEOS[current_video_index % len(MENU_VIDEOS)]
+    current_video_index += 1
+    return video
+
+async def send_video_or_text(message, text, buttons):
+    video_file = get_next_menu_video()
+    try:
+        with open(video_file, "rb") as v:
+            await message.reply_video(
+                video=v,
+                caption=text,
+                reply_markup=buttons
+            )
+    except:
+        await message.reply(
+            text,
+            reply_markup=buttons
+        )
+
+# ----------------------------------------------------
 # TEXTS
 # ----------------------------------------------------
 
@@ -121,6 +149,7 @@ buttons_charged_page_1 = InlineKeyboardMarkup(
         [exit_button],
     ]
 )
+
 # ----------------------------------------------------
 # GATES — SPECIAL PAGE
 # ----------------------------------------------------
@@ -130,19 +159,19 @@ text_gates_specials = f"""
 
 〈<a href='https://t.me/spid_3r'>朱</a>〉 -» <code>payflow Mass</code>
 〈<a href='https://t.me/spid_3r'>零</a>〉 -» <code>.mpy</code> -» <code>Premium</code>
-〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 -» <code>On ✅</code>
+〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 -» <code>On ✓</code>
 
 〈<a href='https://t.me/spid_3r'>朱</a>〉 -» <code>mass stripe</code>
 〈<a href='https://t.me/spid_3r'>零</a>〉 -» <code>.mstxt</code> -» <code>Premium</code>
-〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 -» <code>On ✅</code>
+〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 -» <code>On ✓</code>
 
 〈<a href='https://t.me/spid_3r'>朱</a>〉 -» <code>mass Auto stripe</code>
 〈<a href='https://t.me/spid_3r'>零</a>〉 -» <code>.asm</code> -» <code>Premium</code>
-〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 -» <code>On ✅</code>
+〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 -» <code>On ✓</code>
 
 〈<a href='https://t.me/spid_3r'>朱</a>〉 -» <code>mass stipe</code>
 〈<a href='https://t.me/spid_3r'>零</a>〉 -» <code>.mchk</code> -» <code>Premium</code>
-〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 -» <code>On ✅</code>
+〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 -» <code>On ✓</code>
 """
 
 buttons_specials_page_1 = InlineKeyboardMarkup(
@@ -159,105 +188,80 @@ buttons_specials_page_1 = InlineKeyboardMarkup(
 text_tools = f"""
 𝙏𝙤𝙤𝙡𝙨 🛠
 
-            "〈<a href='https://t.me/spid_3r'>朱</a>〉𝙂𝙖𝙩𝙚𝙬𝙖𝙮𝙨 𝙏𝙤𝙤𝙡𝙨 🛠\n\n"
-            "<a href='https://t.me/spid_3r'>朱</a> 𝙍𝙚𝙛𝙚 -» add group \n"
-            "<a href='https://t.me/spid_3r'>零</a> 𝘾𝙢𝙙 -» .howgp -» reply message -» Free\n"
-            "<a href='https://t.me/spid_3r'>ᥫ᭡</a> 𝙎𝙩𝙖𝙩𝙪𝙨 -» On ✅\n\n"
-            "<a href='https://t.me/spid_3r'>朱</a> 𝘽𝙞𝙣 -» info bin\n"
-            "<a href='https://t.me/spid_3r'>零</a> 𝘾𝙢𝙙 -» .bin -» Free\n"
-            "<a href='https://t.me/spid_3r'>ᥫ᭡</a> 𝙎𝙩𝙖𝙩𝙪𝙨 -» On ✅\n\n"
-            "<a href='https://t.me/spid_3r'>朱</a> 𝘾𝙝𝙖𝙩 𝙂𝙋𝙏 -» filter cc\n"
-            "<a href='https://t.me/spid_3r'>零</a> 𝘾𝙢𝙙 -» .fl-» Premium\n"
-            "<a href='https://t.me/spid_3r'>ᥫ᭡</a> 𝙎𝙩𝙖𝙩𝙪𝙨 -» Off ❌\n\n"
-            "<a href='https://t.me/spid_3r'>朱</a> 𝘼𝙙𝙙𝙧𝙚𝙨𝙨 -» generate address\n"
-            "<a href='https://t.me/spid_3r'>零</a> 𝘾𝙢𝙙 -» .fake -» Free\n"
-            "<a href='https://t.me/spid_3r'>ᥫ᭡</a> 𝙎𝙩𝙖𝙩𝙪𝙨 -» On ✅\n\n"
-            "<a href='https://t.me/spid_3r'>朱</a> 𝙎𝙠 -» claim credits\n"
-            "<a href='https://t.me/spid_3r'>零</a> 𝘾𝙢𝙙 -» .claim -» Free\n"
-            "<a href='https://t.me/spid_3r'>ᥫ᭡</a> 𝙎𝙩𝙖𝙩𝙪𝙨 -» On ✅\n\n"
-            "<a href='https://t.me/spid_3r'>朱</a> 𝙂𝘽𝙞𝙣 -» generate bins\n"
-            "<a href='https://t.me/spid_3r'>零</a> 𝘾𝙢𝙙 -» .gbin -» Free\n"
-            "<a href='https://t.me/spid_3r'>ᥫ᭡</a> 𝙎𝙩𝙖𝙩𝙪𝙨 -» On ✅\n\n"
-            "<a href='https://t.me/spid_3r'>朱</a> 𝘾𝘾 𝙂𝙚𝙣 -» generate ccs\n"
-            "<a href='https://t.me/spid_3r'>零</a> 𝘾𝙢𝙙 -» .gen -» Free\n"
-            "<a href='https://t.me/spid_3r'>ᥫ᭡</a> 𝙎𝙩𝙖𝙩𝙪𝙨 -» On ✅\n\n"
-            "<a href='https://t.me/spid_3r'>朱</a> 𝙄𝙣𝙛𝙤 -» info user\n"
-            "<a href='https://t.me/spid_3r'>零</a> 𝘾𝙢𝙙 -» .id -» Free\n"
-            "<a href='https://t.me/spid_3r'>ᥫ᭡</a> 𝙎𝙩𝙖𝙩𝙪𝙨 -» On ✅\n\n"
-            "<a href='https://t.me/spid_3r'>朱</a> 𝙋𝙡𝙖𝙣 -» bin info\n"
-            "<a href='https://t.me/spid_3r'>零</a> 𝘾𝙢𝙙 -» .bin -» Free\n"
-            "<a href='https://t.me/spid_3r'>ᥫ᭡</a> 𝙎𝙩𝙖𝙩𝙪𝙨 -» On ✅\n\n"
-            "<a href='https://t.me/spid_3r'>朱</a> 𝙋𝙡𝙖𝙣𝙂 -» scrape çc\n"
-            "<a href='https://t.me/spid_3r'>零</a> 𝘾𝙢𝙙 -» .scr -» Free\n"
-            "<a href='https://t.me/spid_3r'>ᥫ᭡</a> 𝙎𝙩𝙖𝙩𝙪𝙨 -» On ✅"
+〈<a href='https://t.me/spid_3r'>朱</a>〉 𝙍𝙚𝙛𝙚 -» add group  
+〈<a href='https://t.me/spid_3r'>零</a>〉 .howgp -» Free  
+〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 On ✓  
+
+〈<a href='https://t.me/spid_3r'>朱</a>〉 𝘽𝙞𝙣 -» info bin  
+〈<a href='https://t.me/spid_3r'>零</a>〉 .bin -» Free  
+〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 On ✓  
+
+〈<a href='https://t.me/spid_3r'>朱</a>〉 𝘾𝙝𝙖𝙩 GPT -» filter cc  
+〈<a href='https://t.me/spid_3r'>零</a>〉 .fl -» Premium  
+〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 Off ❌  
+
+〈<a href='https://t.me/spid_3r'>朱</a>〉 𝘼𝙙𝙙𝙧𝙚𝙨𝙨 -» fake address  
+〈<a href='https://t.me/spid_3r'>零</a>〉 .fake -» Free  
+〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 On ✓  
+
+〈<a href='https://t.me/spid_3r'>朱</a>〉 𝙎𝙠 -» credits  
+〈<a href='https://t.me/spid_3r'>零</a>〉 .claim -» Free  
+〈<a href='https://t.me/spid_3r'>ᥫ᭡</a>〉 On ✓  
 """
 
 # ----------------------------------------------------
-# CALLBACK HANDLERS
+# CALLBACK HANDLERS WITH VIDEO (ADDED)
 # ----------------------------------------------------
-
-
 
 @Client.on_message(filters.command("start"))
 async def start_menu(client: Client, message: Message):
     user_id = message.from_user.id
-    await message.reply(
-        text_home.format(user_id),
-        reply_markup=buttons_home
-    )
+    await send_video_or_text(message, text_home.format(user_id), buttons_home)
 
 @Client.on_callback_query(filters.regex("^home$"))
 async def cb_home(client: Client, query: CallbackQuery):
     user_id = query.from_user.id
-    await query.message.edit_text(
-        text_home.format(user_id),
-        reply_markup=buttons_home
-    )
+    await query.message.delete()
+    await send_video_or_text(query.message, text_home.format(user_id), buttons_home)
     await query.answer()
 
 @Client.on_callback_query(filters.regex("^gates$"))
 async def cb_gates(client: Client, query: CallbackQuery):
-    await query.message.edit_text(
+    await query.message.delete()
+    await send_video_or_text(
+        query.message,
         "<a href='https://t.me/spid_3r'>〄</a>𝙒𝙚𝙡𝙘𝙤𝙢𝙚 𝙩𝙤 𝙎𝙥𝙮𝙙𝙚\n\n"
         "║<a href='https://t.me/spid_3r'>㊕</a>║ 𝙏𝙤𝙩𝙖𝙡 -» 5\n"
-        "║<a href='https://t.me/spid_3r'>㊡</a>║ 𝙊𝙣 -» 1 ✅\n"
+        "║<a href='https://t.me/spid_3r'>㊡</a>║ 𝙊𝙣 -» 1 ✓\n"
         "║<a href='https://t.me/spid_3r'>㊤</a>║ 𝙊𝙛𝙛 -» 4 ❌\n"
         "║<a href='https://t.me/spid_3r'>㊬</a> 》𝙈𝙖𝙣𝙩𝙚𝙣𝙞𝙚𝙣𝙘𝙚 -» 4 ⚠️\n\n"
-        "〈<a href='https://t.me/spid_3r'>ゼ</a>〉𝙎𝙚𝙡𝙚𝙘𝙩 𝙩𝙝𝙚 𝙩𝙮𝙥𝙚 𝙤𝙛 𝙜𝙖𝙩𝙚 𝙮𝙤𝙪 𝙬𝙖𝙣𝙩 𝙛𝙤𝙧 𝙮𝙤𝙪𝙧 𝙪𝙨𝙚!",
-        reply_markup=buttons_gates
+        "〈<a href='https://t.me/spid_3r'>ゼ</a>〉 𝙎𝙚𝙡𝙚𝙘𝙩 𝙮𝙤𝙪𝙧 𝙜𝙖𝙩𝙚!",
+        buttons_gates
     )
-
     await query.answer()
+
 @Client.on_callback_query(filters.regex("^auths$"))
 async def cb_auth(client: Client, query: CallbackQuery):
-    await query.message.edit_text(
-        text_gates_auth,
-        reply_markup=buttons_auth_page_1
-    )
+    await query.message.delete()
+    await send_video_or_text(query.message, text_gates_auth, buttons_auth_page_1)
     await query.answer()
 
 @Client.on_callback_query(filters.regex("^chargeds$"))
 async def cb_charged(client: Client, query: CallbackQuery):
-    await query.message.edit_text(
-        text_gates_charged,
-        reply_markup=buttons_charged_page_1
-    )
+    await query.message.delete()
+    await send_video_or_text(query.message, text_gates_charged, buttons_charged_page_1)
     await query.answer()
 
 @Client.on_callback_query(filters.regex("^specials$"))
 async def cb_specials(client: Client, query: CallbackQuery):
-    await query.message.edit_text(
-        text_gates_specials,
-        reply_markup=buttons_specials_page_1
-    )
+    await query.message.delete()
+    await send_video_or_text(query.message, text_gates_specials, buttons_specials_page_1)
     await query.answer()
 
 @Client.on_callback_query(filters.regex("^tools$"))
 async def cb_tools(client: Client, query: CallbackQuery):
-    await query.message.edit_text(
-        text_tools,
-        reply_markup=return_home_and_exit
-    )
+    await query.message.delete()
+    await send_video_or_text(query.message, text_tools, return_home_and_exit)
     await query.answer()
 
 @Client.on_callback_query(filters.regex("^exit$"))
