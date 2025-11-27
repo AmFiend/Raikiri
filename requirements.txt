@@ -9,7 +9,11 @@ psutil
 httpcore
 cryptography
 pytz
+httpx
 openai
+pycountry
+countryinfo
+retry
 pycountry
 httpx==0.23.0
 user_agent
