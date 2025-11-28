@@ -12,7 +12,7 @@ async def cmd_scr(client, message):
         WELCOME_TEXT = f"""
 <b>𝗛𝗲𝗹𝗹𝗼 <a href="tg://user?id={message.from_user.id}"> {message.from_user.first_name}</a> !
 
-𝐒𝐏𝐈𝐋𝐔𝐗 𝐂𝐂 𝐁𝐎𝐓  𝗛𝗮𝘀 𝗽𝗹𝗲𝗻𝘁𝘆 𝗼𝗳 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀. 𝗪𝗲 𝗛𝗮𝘃𝗲 𝗔𝘂𝘁𝗵 𝗚𝗮𝘁𝗲𝘀, 𝗖𝗵𝗮𝗿𝗴𝗲 𝗚𝗮𝘁𝗲𝘀, 𝗧𝗼𝗼𝗹𝘀, 𝗔𝗻𝗱 𝗢𝘁𝗵𝗲𝗿 𝗧𝗵𝗶𝗻𝗴𝘀.
+𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆  𝗛𝗮𝘀 𝗽𝗹𝗲𝗻𝘁𝘆 𝗼𝗳 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀. 𝗪𝗲 𝗛𝗮𝘃𝗲 𝗔𝘂𝘁𝗵 𝗚𝗮𝘁𝗲𝘀, 𝗖𝗵𝗮𝗿𝗴𝗲 𝗚𝗮𝘁𝗲𝘀, 𝗧𝗼𝗼𝗹𝘀, 𝗔𝗻𝗱 𝗢𝘁𝗵𝗲𝗿 𝗧𝗵𝗶𝗻𝗴𝘀.
 
 𝗖𝗹𝗶𝗰𝗸 𝗘𝗮𝗰𝗵 𝗼𝗳 𝗧𝗵𝗲𝗺 𝗕𝗲𝗹𝗼𝘄 𝘁𝗼 𝗞𝗻𝗼𝘄 𝗧𝗵𝗲𝗺 𝗕𝗲𝘁𝘁𝗲𝗿.</b>
         """
@@ -43,7 +43,7 @@ async def callback_command(client, message):
         WELCOME_TEXT = f"""
 <b>𝗛𝗲𝗹𝗹𝗼 𝗨𝘀𝗲𝗿!
 
-𝐒𝐏𝐈𝐋𝐔𝐗 𝐂𝐂 𝐁𝐎𝐓   𝗛𝗮𝘀 𝗽𝗹𝗲𝗻𝘁𝘆 𝗼𝗳 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀. 𝗪𝗲 𝗛𝗮𝘃𝗲 𝗔𝘂𝘁𝗵 𝗚𝗮𝘁𝗲𝘀, 𝗖𝗵𝗮𝗿𝗴𝗲 𝗚𝗮𝘁𝗲𝘀, 𝗧𝗼𝗼𝗹𝘀, 𝗔𝗻𝗱 𝗢𝘁𝗵𝗲𝗿 𝗧𝗵𝗶𝗻𝗴𝘀.
+𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆   𝗛𝗮𝘀 𝗽𝗹𝗲𝗻𝘁𝘆 𝗼𝗳 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀. 𝗪𝗲 𝗛𝗮𝘃𝗲 𝗔𝘂𝘁𝗵 𝗚𝗮𝘁𝗲𝘀, 𝗖𝗵𝗮𝗿𝗴𝗲 𝗚𝗮𝘁𝗲𝘀, 𝗧𝗼𝗼𝗹𝘀, 𝗔𝗻𝗱 𝗢𝘁𝗵𝗲𝗿 𝗧𝗵𝗶𝗻𝗴𝘀.
 
 𝗖𝗹𝗶𝗰𝗸 𝗘𝗮𝗰𝗵 𝗼𝗳 𝗧𝗵𝗲𝗺 𝗕𝗲𝗹𝗼𝘄 𝘁𝗼 𝗞𝗻𝗼𝘄 𝗧𝗵𝗲𝗺 𝗕𝗲𝘁𝘁𝗲𝗿.</b>
         """
@@ -74,70 +74,70 @@ async def cmd_start(Client, message):
     try:
         # First frame - First letter
         text = """<b>
-ª
+𝙎
       </b>"""
         edit = await message.reply_text(text, message.id)
         await asyncio.sleep(0.2)  # Faster animation pace
 
         # Second frame - Two letters
         text = """<b>
-ª𝗠
+𝙎𝙋
       </b>"""
         await Client.edit_message_text(message.chat.id, edit.id, text)
         await asyncio.sleep(0.2)
 
         # Third frame - Three letters
         text = """<b>
-ª𝗠𝗸
+𝙎𝙋𝙔
       </b>"""
         await Client.edit_message_text(message.chat.id, edit.id, text)
         await asyncio.sleep(0.2)
 
         # Fourth frame - Four letters
         text = """<b>
-ª𝗠𝗸𝗨
+𝙎𝙋𝙔𝘿
       </b>"""
         await Client.edit_message_text(message.chat.id, edit.id, text)
         await asyncio.sleep(0.2)
 
         # Fifth frame - Five letters
         text = """<b>
-ª𝗠𝗸𝗨𝘀
+𝙎𝙋𝙔𝘿𝙀
       </b>"""
         await Client.edit_message_text(message.chat.id, edit.id, text)
         await asyncio.sleep(0.2)
 
         # Sixth frame - Six letters
         text = """<b>
-ª𝗠𝗸𝗨𝘀𝗛
+_
       </b>"""
         await Client.edit_message_text(message.chat.id, edit.id, text)
         await asyncio.sleep(0.2)
 
         # Seventh frame - Seven letters
         text = """<b>
-ª𝗠𝗸𝗨𝘀𝗛𝘅
+𝙎𝙋𝙔𝘿𝙀 𝘾
       </b>"""
         await Client.edit_message_text(message.chat.id, edit.id, text)
         await asyncio.sleep(0.2)
 
         # Eighth frame - Eight letters
         text = """<b>
-ª𝗠𝗸𝗨𝘀𝗛𝘅𝗖
+𝙎𝙋𝙔𝘿𝙀 𝘾𝙃
       </b>"""
         await Client.edit_message_text(message.chat.id, edit.id, text)
         await asyncio.sleep(0.2)
 
         # Ninth frame - Nine letters
         text = """<b>
-ª𝗠𝗸𝗨𝘀𝗛𝘅𝗖𝗵
+𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆
       </b>"""
         await Client.edit_message_text(message.chat.id, edit.id, text)
         await asyncio.sleep(0.2)
 
         # Final animation frame - Complete name
         text = """<b>
-𝐒𝐏𝐈𝐋𝐔𝐗 𝐂𝐂 𝐁𝐎𝐓
+𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆
       </b>"""
         await Client.edit_message_text(message.chat.id, edit.id, text)
         await asyncio.sleep(0.5)  # Slightly longer pause for the complete name
@@ -145,7 +145,7 @@ async def cmd_start(Client, message):
         text = f"""
 <b>🌟 𝗛𝗲𝗹𝗹𝗼 <a href="tg://user?id={message.from_user.id}">{message.from_user.first_name}</a>!</b>
 
-<b>𝗪𝗲𝗹𝗰𝗼𝗺𝗲 𝗮𝗯𝗼𝗮𝗿𝗱 𝘁𝗵𝗲 𝐒𝐏𝐈𝐋𝐔𝐗 𝐂𝐂 𝐁𝐎𝐓! 🚀</b>
+<b>𝗪𝗲𝗹𝗰𝗼𝗺𝗲 𝗮𝗯𝗼𝗮𝗿𝗱 𝘁𝗵𝗲 𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆! 🚀</b>
 
 <b>𝗜 𝗮𝗺 𝘆𝗼𝘂𝗿 𝗴𝗼-𝘁𝗼 𝗯𝗼𝘁, 𝗽𝗮𝗰𝗸𝗲𝗱 𝘄𝗶𝘁𝗵 𝗮 𝘃𝗮𝗿𝗶𝗲𝘁𝘆 𝗼𝗳 𝗴𝗮𝘁𝗲𝘀, 𝘁𝗼𝗼𝗹𝘀, 𝗮𝗻𝗱 𝗰𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝘁𝗼 𝗲𝗻𝗵𝗮𝗻𝗰𝗲 𝘆𝗼𝘂𝗿 𝗲𝘅𝗽𝗲𝗿𝗶𝗲𝗻𝗰𝗲. 𝗘𝘅𝗰𝗶𝘁𝗲𝗱 𝘁𝗼 𝘀𝗲𝗲 𝘄𝗵𝗮𝘁 𝗜 𝗰𝗮𝗻 𝗱𝗼?</b>
 
@@ -303,7 +303,7 @@ async def callback_query(Client, CallbackQuery):
         WELCOME_TEXT = f"""
 <b>𝗛𝗲𝗹𝗹𝗼 User!
 
-𝐒𝐏𝐈𝐋𝐔𝐗 𝐂𝐂 𝐁𝐎𝐓 𝗛𝗮𝘀 𝗽𝗹𝗲𝗻𝘁𝘆 𝗼𝗳 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀.𝗪𝗲 𝗛𝗮𝘃𝗲 𝗔𝘂𝘁𝗵 𝗚𝗮𝘁𝗲𝘀, 𝗖𝗵𝗮𝗿𝗴𝗲 𝗚𝗮𝘁𝗲𝘀,𝗧𝗼𝗼𝗹𝘀 𝗔𝗻𝗱 𝗢𝘁𝗵𝗲𝗿 𝗧𝗵𝗶𝗻𝗴𝘀.
+𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆 𝗛𝗮𝘀 𝗽𝗹𝗲𝗻𝘁𝘆 𝗼𝗳 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀.𝗪𝗲 𝗛𝗮𝘃𝗲 𝗔𝘂𝘁𝗵 𝗚𝗮𝘁𝗲𝘀, 𝗖𝗵𝗮𝗿𝗴𝗲 𝗚𝗮𝘁𝗲𝘀,𝗧𝗼𝗼𝗹𝘀 𝗔𝗻𝗱 𝗢𝘁𝗵𝗲𝗿 𝗧𝗵𝗶𝗻𝗴𝘀.
 
 𝗖𝗹𝗶𝗰𝗸 𝗘𝗮𝗰𝗵 𝗼𝗳 𝗧𝗵𝗲𝗺 𝗕𝗲𝗹𝗼𝘄 𝘁𝗼 𝗞𝗻𝗼𝘄 𝗧𝗵𝗲𝗺 𝗕𝗲𝘁𝘁𝗲𝗿.</b>
     """
@@ -333,7 +333,7 @@ async def callback_query(Client, CallbackQuery):
         AUTH_TEXT = f"""
 <b>𝗛𝗲𝗹𝗹𝗼 𝗨𝘀𝗲𝗿!
 
-𝐒𝐏𝐈𝐋𝐔𝐗 𝐂𝐂 𝐁𝐎𝐓 𝗔𝘂𝘁𝗵 𝗚𝗮𝘁𝗲𝘀.
+𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆 𝗔𝘂𝘁𝗵 𝗚𝗮𝘁𝗲𝘀.
 
 𝗖𝗹𝗶𝗰𝗸 𝗼𝗻 𝗲𝗮𝗰𝗵 𝗼𝗳 𝘁𝗵𝗲𝗺 𝗯𝗲𝗹𝗼𝘄 𝘁𝗼 𝗴𝗲𝘁 𝘁𝗼  𝗸𝗻𝗼𝘄 𝘁𝗵𝗲𝗺 𝗯𝗲𝘁𝘁𝗲𝗿.</b>
     """
@@ -360,7 +360,7 @@ async def callback_query(Client, CallbackQuery):
             reply_markup=InlineKeyboardMarkup(AUTH_BUTTONS))
     if CallbackQuery.data == "Auth2":
         CHARGE_TEXT = """
-🔹 𝗦𝗧𝗥𝗜𝗣𝗘 𝗔𝗨𝗧𝗛 𝗚𝗔𝗧𝗘𝗦 𝗼𝗳 𝐒𝐏𝐈𝐋𝐔𝐗 𝐂𝐂 𝐁𝐎𝐓
+🔹 𝗦𝗧𝗥𝗜𝗣𝗘 𝗔𝗨𝗧𝗛 𝗚𝗔𝗧𝗘𝗦 𝗼𝗳 𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆
 🔹 𝗦𝘁𝗮𝘁𝘂𝘀: ✅ 𝗔𝗰𝘁𝗶𝘃𝗲
 
 🚀 𝗤𝘂𝗶𝗰𝗸 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗢𝘃𝗲𝗿𝘃𝗶𝗲𝘄:
@@ -386,7 +386,7 @@ async def callback_query(Client, CallbackQuery):
         )
     if CallbackQuery.data == "Adyen2":
         CHARGE_TEXT = """
-🔹 𝗔𝗱𝘆𝗲𝗻 𝗔𝘂𝘁𝗵 𝗚𝗮𝘁𝗲𝘀 𝗼𝗳 𝐒𝐏𝐈𝐋𝐔𝐗 𝐂𝐂 𝐁𝐎𝐓
+🔹 𝗔𝗱𝘆𝗲𝗻 𝗔𝘂𝘁𝗵 𝗚𝗮𝘁𝗲𝘀 𝗼𝗳 𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆
 🔹 𝗦𝘁𝗮𝘁𝘂𝘀: 𝗔𝗰𝘁𝗶𝘃𝗲 ❌
 
 🚀 𝗤𝘂𝗶𝗰𝗸 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗢𝘃𝗲𝗿𝘃𝗶𝗲𝘄:
@@ -411,7 +411,7 @@ async def callback_query(Client, CallbackQuery):
         )
     if CallbackQuery.data == "BRAINTREEVBV":
         CHARGE_TEXT = """
-🔹 𝗕𝗿𝗮𝗶𝗻𝘁𝗿𝗲𝗲 𝗚𝗮𝘁𝗲𝘀 𝗼𝗳 𝐒𝐏𝐈𝐋𝐔𝐗 𝐂𝐂 𝐁𝐎𝐓
+🔹 𝗕𝗿𝗮𝗶𝗻𝘁𝗿𝗲𝗲 𝗚𝗮𝘁𝗲𝘀 𝗼𝗳 𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆
 🔹 𝗦𝘁𝗮𝘁𝘂𝘀: ✅ 𝗔𝗰𝘁𝗶𝘃𝗲
 
 🚀 𝗤𝘂𝗶𝗰𝗸 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗢𝘃𝗲𝗿𝘃𝗶𝗲𝘄:
@@ -437,7 +437,7 @@ async def callback_query(Client, CallbackQuery):
 
     if CallbackQuery.data == "BRAINTREEB3":
         CHARGE_TEXT = """
-🔹 𝗕𝗿𝗮𝗶𝗻𝘁𝗿𝗲𝗲 𝗔𝘂𝘁𝗵 𝗼𝗳 𝐒𝐏𝐈𝐋𝐔𝐗 𝐂𝐂 𝐁𝐎𝐓 
+🔹 𝗕𝗿𝗮𝗶𝗻𝘁𝗿𝗲𝗲 𝗔𝘂𝘁𝗵 𝗼𝗳 𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆 
 🔹 𝗦𝘁𝗮𝘁𝘂𝘀: ✅ 𝗔𝗰𝘁𝗶𝘃𝗲
 
 🚀 𝗤𝘂𝗶𝗰𝗸 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗢𝘃𝗲𝗿𝘃𝗶𝗲𝘄:
@@ -469,7 +469,7 @@ async def callback_query(Client, CallbackQuery):
         
     if CallbackQuery.data == "SQUAREAUTH":
         CHARGE_TEXT = """
-🔹 𝗦𝗾𝘂𝗮𝗿𝗲 𝗔𝘂𝘁𝗵 𝗚𝗮𝘁𝗲𝘀 𝗼𝗳 𝐒𝐏𝐈𝐋𝐔𝐗 𝐂𝐂 𝐁𝐎𝐓
+🔹 𝗦𝗾𝘂𝗮𝗿𝗲 𝗔𝘂𝘁𝗵 𝗚𝗮𝘁𝗲𝘀 𝗼𝗳 𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆
 🔹 𝗦𝘁𝗮𝘁𝘂𝘀: ❌ 𝗔𝗰𝘁𝗶𝘃𝗲
 
 🚀 𝗤𝘂𝗶𝗰𝗸 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗢𝘃𝗲𝗿𝘃𝗶𝗲𝘄:
@@ -495,7 +495,7 @@ async def callback_query(Client, CallbackQuery):
     
     if CallbackQuery.data == "CLOVERAUTH":
         CHARGE_TEXT = """
-🔹 𝗖𝗹𝗼𝘃𝗲𝗿 𝗔𝘂𝘁𝗵 𝗚𝗮𝘁𝗲𝘀 𝗼𝗳 𝐒𝐏𝐈𝐋𝐔𝐗 𝐂𝐂 𝐁𝐎𝐓
+🔹 𝗖𝗹𝗼𝘃𝗲𝗿 𝗔𝘂𝘁𝗵 𝗚𝗮𝘁𝗲𝘀 𝗼𝗳 𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆
 🔹 𝗦𝘁𝗮𝘁𝘂𝘀: ❌ 𝗔𝗰𝘁𝗶𝘃𝗲
 
 🚀 𝗤𝘂𝗶𝗰𝗸 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗢𝘃𝗲𝗿𝘃𝗶𝗲𝘄:
@@ -526,7 +526,7 @@ async def callback_query(Client, CallbackQuery):
         CHARGE_TEXT = f"""
 <b>𝗛𝗲𝗹𝗹𝗼 𝗨𝘀𝗲𝗿!
 
-𝐒𝐏𝐈𝐋𝐔𝐗 𝐂𝐂 𝐁𝐎𝐓 𝗖𝗵𝗮𝗿𝗴𝗲 𝗚𝗮𝘁𝗲𝘀.
+𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆 𝗖𝗵𝗮𝗿𝗴𝗲 𝗚𝗮𝘁𝗲𝘀.
 
 𝗖𝗹𝗶𝗰𝗸 𝗼𝗻 𝗲𝗮𝗰𝗵 𝗼𝗳 𝘁𝗵𝗲𝗺 𝗯𝗲𝗹𝗼𝘄 𝘁𝗼 𝗴𝗲𝘁 𝘁𝗼 𝗸𝗻𝗼𝘄 𝘁𝗵𝗲𝗺 𝗯𝗲𝘁𝘁𝗲𝗿.</b>
     """
@@ -556,7 +556,7 @@ async def callback_query(Client, CallbackQuery):
             reply_markup=InlineKeyboardMarkup(CHARGE_BUTTONS))
     if CallbackQuery.data == "PAYPAL":
         CHARGE_TEXT = """
-🔹 𝗣𝗮𝘆𝗣𝗮𝗹 𝗖𝗵𝗮𝗿𝗴𝗲 𝗚𝗮𝘁𝗲𝘀 𝗼𝗳 𝐒𝐏𝐈𝐋𝐔𝐗 𝐂𝐂 𝐁𝐎𝐓
+🔹 𝗣𝗮𝘆𝗣𝗮𝗹 𝗖𝗵𝗮𝗿𝗴𝗲 𝗚𝗮𝘁𝗲𝘀 𝗼𝗳 𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆
 🔹 𝗦𝘁𝗮𝘁𝘂𝘀: ❌ 𝗔𝗰𝘁𝗶𝘃𝗲
 
 🚀 𝗤𝘂𝗶𝗰𝗸 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗢𝘃𝗲𝗿𝘃𝗶𝗲𝘄:
@@ -586,7 +586,7 @@ async def callback_query(Client, CallbackQuery):
 
     if CallbackQuery.data == "SKBASED":
         CHARGE_TEXT = """
-🔹 𝗦𝗧𝗥𝗜𝗣𝗘 𝗖𝗵𝗮𝗿𝗴𝗲 𝗚𝗮𝘁𝗲𝘀 𝗼𝗳 𝐒𝐏𝐈𝐋𝐔𝐗 𝐂𝐂 𝐁𝐎𝐓
+🔹 𝗦𝗧𝗥𝗜𝗣𝗘 𝗖𝗵𝗮𝗿𝗴𝗲 𝗚𝗮𝘁𝗲𝘀 𝗼𝗳 𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆
 🔹 𝗦𝘁𝗮𝘁𝘂𝘀: ✅ 𝗔𝗰𝘁𝗶𝘃𝗲
 
 🚀 𝗤𝘂𝗶𝗰𝗸 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗢𝘃𝗲𝗿𝘃𝗶𝗲𝘄:
@@ -624,7 +624,7 @@ async def callback_query(Client, CallbackQuery):
         )
     if CallbackQuery.data == "SITE":
         CHARGE_TEXT = """
-🔹 𝗦𝗶𝘁𝗲 𝗕𝗮𝘀𝗲𝗱 𝗔𝗽𝗶 𝗚𝗮𝘁𝗲𝘀 𝗼𝗳 𝐒𝐏𝐈𝐋𝐔𝐗 𝐂𝐂 𝐁𝐎𝐓
+🔹 𝗦𝗶𝘁𝗲 𝗕𝗮𝘀𝗲𝗱 𝗔𝗽𝗶 𝗚𝗮𝘁𝗲𝘀 𝗼𝗳 𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆
 🔹 𝗦𝘁𝗮𝘁𝘂𝘀: ✅ 𝗔𝗰𝘁𝗶𝘃𝗲
 
 🚀 𝗤𝘂𝗶𝗰𝗸 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗢𝘃𝗲𝗿𝘃𝗶𝗲𝘄:
@@ -653,7 +653,7 @@ async def callback_query(Client, CallbackQuery):
         )
     if CallbackQuery.data == "BRAINTREE":
         CHARGE_TEXT = """
-🔹 𝗕𝗿𝗮𝗶𝗻𝘁𝗿𝗲𝗲 𝗖𝗵𝗮𝗿𝗴𝗲 𝗚𝗮𝘁𝗲𝘀 𝗼𝗳 𝐒𝐏𝐈𝐋𝐔𝐗 𝐂𝐂 𝐁𝐎𝐓
+🔹 𝗕𝗿𝗮𝗶𝗻𝘁𝗿𝗲𝗲 𝗖𝗵𝗮𝗿𝗴𝗲 𝗚𝗮𝘁𝗲𝘀 𝗼𝗳 𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆
 🔹 𝗦𝘁𝗮𝘁𝘂𝘀: ❌ 𝗔𝗰𝘁𝗶𝘃𝗲
 
 🚀 𝗤𝘂𝗶𝗰𝗸 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗢𝘃𝗲𝗿𝘃𝗶𝗲𝘄:
@@ -679,7 +679,7 @@ async def callback_query(Client, CallbackQuery):
     if CallbackQuery.data == "SHOPIFY":
         CHARGE_TEXT = """
 
-🔹 Shopify Charge Gates of 𝐒𝐏𝐈𝐋𝐔𝐗 𝐂𝐂 𝐁𝐎𝐓
+🔹 Shopify Charge Gates of 𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆
 🔹 Status: ✅ Active
 
 🚀 Quick Commands Overview:
@@ -716,7 +716,7 @@ async def callback_query(Client, CallbackQuery):
         )
     if CallbackQuery.data == "AUTHNET":
         CHARGE_TEXT = """
-🔹 Authnet Charge 𝗚𝗮𝘁𝗲𝘀 𝗼𝗳 𝐒𝐏𝐈𝐋𝐔𝐗 𝐂𝐂 𝐁𝐎𝐓
+🔹 Authnet Charge 𝗚𝗮𝘁𝗲𝘀 𝗼𝗳 𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆
 🔹 𝗦𝘁𝗮𝘁𝘂𝘀: ✅ 𝗔𝗰𝘁𝗶𝘃𝗲
 
 🚀 𝗤𝘂𝗶𝗰𝗸 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗢𝘃𝗲𝗿𝘃𝗶𝗲𝘄:
@@ -743,7 +743,7 @@ async def callback_query(Client, CallbackQuery):
         TOOLS_TEXT = f"""
 <b>𝗛𝗲𝗹𝗹𝗼 𝗨𝘀𝗲𝗿!
 
-𝐒𝐏𝐈𝐋𝐔𝐗 𝐂𝐂 𝐁𝐎𝐓 𝗧𝗼𝗼𝗹𝘀.
+𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆 𝗧𝗼𝗼𝗹𝘀.
 
 𝗖𝗹𝗶𝗰𝗸 𝗼𝗻 𝗲𝗮𝗰𝗵 𝗼𝗳 𝘁𝗵𝗲𝗺 𝗯𝗲𝗹𝗼𝘄 𝘁𝗼 𝗴𝗲𝘁 𝘁𝗼 𝗸𝗻𝗼𝘄 𝘁𝗵𝗲𝗺 𝗯𝗲𝘁𝘁𝗲𝗿.</b>
     """
@@ -769,7 +769,7 @@ async def callback_query(Client, CallbackQuery):
 
     if CallbackQuery.data == "SKSTOOL":
         CHARGE_TEXT = """
-🔹 𝗦𝗞 𝗧𝗼𝗼𝗹𝘀 𝗼𝗳 𝐒𝐏𝐈𝐋𝐔𝐗 𝐂𝐂 𝐁𝐎𝐓
+🔹 𝗦𝗞 𝗧𝗼𝗼𝗹𝘀 𝗼𝗳 𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆
 🔹 𝗦𝘁𝗮𝘁𝘂𝘀: ✅ 𝗔𝗰𝘁𝗶𝘃𝗲
 
 🚀 𝗤𝘂𝗶𝗰𝗸 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗢𝘃𝗲𝗿𝘃𝗶𝗲𝘄:
@@ -795,7 +795,7 @@ async def callback_query(Client, CallbackQuery):
         )
     if CallbackQuery.data == "SCRAPPER":
         CHARGE_TEXT = """
-🔹 𝗦𝗰𝗿𝗮𝗽𝗽𝗲𝗿 𝗧𝗼𝗼𝗹𝘀 𝗚𝗮𝘁𝗲𝘀 𝗼𝗳 𝐒𝐏𝐈𝐋𝐔𝐗 𝐂𝐂 𝐁𝐎𝐓
+🔹 𝗦𝗰𝗿𝗮𝗽𝗽𝗲𝗿 𝗧𝗼𝗼𝗹𝘀 𝗚𝗮𝘁𝗲𝘀 𝗼𝗳 𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆
 🔹 𝗦𝘁𝗮𝘁𝘂𝘀: ✅ 𝗔𝗰𝘁𝗶𝘃𝗲
 
 🚀 𝗤𝘂𝗶𝗰𝗸 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗢𝘃𝗲𝗿𝘃𝗶𝗲𝘄:
@@ -820,7 +820,7 @@ async def callback_query(Client, CallbackQuery):
         )
     if CallbackQuery.data == "GENARATORTOOLS":
         CHARGE_TEXT = """
-🔹 𝗚𝗲𝗻𝗲𝗿𝗮𝘁𝗼𝗿 𝗧𝗼𝗼𝗹𝘀 𝗼𝗳 𝐒𝐏𝐈𝐋𝐔𝐗 𝐂𝐂 𝐁𝐎𝐓
+🔹 𝗚𝗲𝗻𝗲𝗿𝗮𝘁𝗼𝗿 𝗧𝗼𝗼𝗹𝘀 𝗼𝗳 𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆
 🔹 𝗦𝘁𝗮𝘁𝘂𝘀: ✅ 𝗔𝗰𝘁𝗶𝘃𝗲
 
 🚀 𝗤𝘂𝗶𝗰𝗸 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗢𝘃𝗲𝗿𝘃𝗶𝗲𝘄:
@@ -844,7 +844,7 @@ async def callback_query(Client, CallbackQuery):
         )
     if CallbackQuery.data == "BINANDOTHERS":
         CHARGE_TEXT = """
-🔹 𝗕𝗶𝗻 𝗮𝗻𝗱 𝗢𝘁𝗵𝗲𝗿 𝗧𝗼𝗼𝗹𝘀 𝗢𝗳 𝐒𝐏𝐈𝐋𝐔𝐗 𝐂𝐂 𝐁𝐎𝐓
+🔹 𝗕𝗶𝗻 𝗮𝗻𝗱 𝗢𝘁𝗵𝗲𝗿 𝗧𝗼𝗼𝗹𝘀 𝗢𝗳 𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆
 🔹 𝗦𝘁𝗮𝘁𝘂𝘀: ✅ 𝗔𝗰𝘁𝗶𝘃𝗲
 
 🚀 𝗤𝘂𝗶𝗰𝗸 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗢𝘃𝗲𝗿𝘃𝗶𝗲𝘄:
@@ -879,7 +879,7 @@ async def callback_query(Client, CallbackQuery):
         HELPER_TEXT = f"""
 <b>𝗛𝗲𝗹𝗹𝗼 𝗨𝘀𝗲𝗿!
 
-𝐒𝐏𝐈𝐋𝐔𝐗 𝐂𝐂 𝐁𝐎𝐓 𝗛𝗲𝗹𝗽𝗲𝗿.
+𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆 𝗛𝗲𝗹𝗽𝗲𝗿.
 
 𝗖𝗹𝗶𝗰𝗸 𝗼𝗻 𝗲𝗮𝗰𝗵 𝗼𝗳 𝘁𝗵𝗲𝗺 𝗯𝗲𝗹𝗼𝘄 𝘁𝗼 𝗴𝗲𝘁 𝘁𝗼 𝗸𝗻𝗼𝘄 𝘁𝗵𝗲𝗺 𝗯𝗲𝘁𝘁𝗲𝗿.</b>
     """
@@ -898,7 +898,7 @@ async def callback_query(Client, CallbackQuery):
             reply_markup=InlineKeyboardMarkup(CHARGE_BUTTONS))
     if CallbackQuery.data == "INFO":
         CHARGE_TEXT = """
-🔹 𝗛𝗲𝗹𝗽𝗲𝗿 𝗚𝗮𝘁𝗲𝘀 𝗼𝗳 𝐒𝐏𝐈𝐋𝐔𝐗 𝐂𝐂 𝐁𝐎𝐓
+🔹 𝗛𝗲𝗹𝗽𝗲𝗿 𝗚𝗮𝘁𝗲𝘀 𝗼𝗳 𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆
 🔹 𝗦𝘁𝗮𝘁𝘂𝘀: ✅ 𝗔𝗰𝘁𝗶𝘃𝗲
 
 🚀 𝗤𝘂𝗶𝗰𝗸 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗢𝘃𝗲𝗿𝘃𝗶𝗲𝘄:
