@@ -104,7 +104,7 @@ async def cmd_start(Client, message):
 <b>👇 𝗧𝗮𝗽 𝘁𝗵𝗲 𝗥𝗲𝗴𝗶𝘀𝘁𝗲𝗿 𝗯𝘂𝘁𝘁𝗼𝗻 𝘁𝗼 𝗯𝗲𝗴𝗶𝗻 𝘆𝗼𝘂𝗿 𝗷𝗼𝘂𝗿𝗻𝗲𝘆.</b>
 <b>👇 𝗗𝗶𝘀𝗰𝗼𝘃𝗲𝗿 𝗺𝘆 𝗳𝘂𝗹𝗹 𝗰𝗮𝗽𝗮𝗯𝗶𝗹𝗶𝘁𝗶𝗲𝘀 𝗯𝘆 𝘁𝗮𝗽𝗽𝗶𝗻𝗴 𝘁𝗵𝗲 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗯𝘂𝘁𝘁𝗼𝗻.</b>
 """
-        WELCOME_BUTTON = [
+WELCOME_BUTTON = [
             [
                 InlineKeyboardButton("Register", callback_data="register"),
                 InlineKeyboardButton("Commands", callback_data="cmds")
