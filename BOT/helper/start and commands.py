@@ -4,6 +4,13 @@ from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from FUNC.defs import *
 from FUNC.usersdb_func import *
+from pyrogram.errors import MessageNotModified
+
+async def safe_edit(client, chat_id, message_id, text):
+    try:
+        await client.edit_message_text(chat_id, message_id, text)
+    except MessageNotModified:
+        pass
 
 
 @Client.on_message(filters.command("cmds", [".", "/"]))
@@ -93,7 +100,10 @@ async def cmd_start(Client, message):
         for frame in frames[1:]:
             await safe_edit(Client, message.chat.id, edit.id, frame)
             await asyncio.sleep(0.2)
-
+        for frame in frames[1:]:
+        await safe_edit(Client, message.chat.id, edit.id, frame)
+        await asyncio.sleep(0.2)
+   
         # Final greeting message
         final_text = f"""
 <b>🌟 𝗛𝗲𝗹𝗹𝗼 <a href="tg://user?id={message.from_user.id}">{message.from_user.first_name}</a>!</b>
