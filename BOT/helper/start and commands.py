@@ -71,30 +71,31 @@ async def callback_command(client, message):
 
 @Client.on_message(filters.command("start", [".", "/"]))
 async def cmd_start(Client, message):
-    # Frames of animation
-    frames = [
-        "<b>\n𝙎\n</b>",
-        "<b>\n𝙎𝙋\n</b>",
-        "<b>\n𝙎𝙋𝙔\n</b>",
-        "<b>\n𝙎𝙋𝙔𝘿\n</b>",
-        "<b>\n𝙎𝙋𝙔𝘿𝙀\n</b>",
-        "<b>\n_\n</b>",
-        "<b>\n𝙎𝙋𝙔𝘿𝙀 𝘾\n</b>",
-        "<b>\n𝙎𝙋𝙔𝘿𝙀 𝘾𝙃\n</b>",
-        "<b>\n𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆\n</b>",
-    ]
+    try:
+        # Frames of animation
+        frames = [
+            "<b>\n𝙎\n</b>",
+            "<b>\n𝙎𝙋\n</b>",
+            "<b>\n𝙎𝙋𝙔\n</b>",
+            "<b>\n𝙎𝙋𝙔𝘿\n</b>",
+            "<b>\n𝙎𝙋𝙔𝘿𝙀\n</b>",
+            "<b>\n_\n</b>",
+            "<b>\n𝙎𝙋𝙔𝘿𝙀 𝘾\n</b>",
+            "<b>\n𝙎𝙋𝙔𝘿𝙀 𝘾𝙃\n</b>",
+            "<b>\n𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆\n</b>",
+        ]
 
-    # Send first message
-    edit = await message.reply_text(frames[0], message.id)
-    await asyncio.sleep(0.2)
-
-    # Loop through remaining frames
-    for frame in frames[1:]:
-        await safe_edit(Client, message.chat.id, edit.id, frame)
+        # Send first message
+        edit = await message.reply_text(frames[0], message.id)
         await asyncio.sleep(0.2)
 
-    # Final greeting message
-    final_text = f"""
+        # Loop through remaining frames
+        for frame in frames[1:]:
+            await safe_edit(Client, message.chat.id, edit.id, frame)
+            await asyncio.sleep(0.2)
+
+        # Final greeting message
+        final_text = f"""
 <b>🌟 𝗛𝗲𝗹𝗹𝗼 <a href="tg://user?id={message.from_user.id}">{message.from_user.first_name}</a>!</b>
 
 <b>𝗪𝗲𝗹𝗰𝗼𝗺𝗲 𝗮𝗯𝗼𝗮𝗿𝗱 𝘁𝗵𝗲 𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆! 🚀</b>
@@ -104,27 +105,28 @@ async def cmd_start(Client, message):
 <b>👇 𝗧𝗮𝗽 𝘁𝗵𝗲 𝗥𝗲𝗴𝗶𝘀𝘁𝗲𝗿 𝗯𝘂𝘁𝘁𝗼𝗻 𝘁𝗼 𝗯𝗲𝗴𝗶𝗻 𝘆𝗼𝘂𝗿 𝗷𝗼𝘂𝗿𝗻𝗲𝘆.</b>
 <b>👇 𝗗𝗶𝘀𝗰𝗼𝘃𝗲𝗿 𝗺𝘆 𝗳𝘂𝗹𝗹 𝗰𝗮𝗽𝗮𝗯𝗶𝗹𝗶𝘁𝗶𝗲𝘀 𝗯𝘆 𝘁𝗮𝗽𝗽𝗶𝗻𝗴 𝘁𝗵𝗲 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗯𝘂𝘁𝘁𝗼𝗻.</b>
 """
-    WELCOME_BUTTON = [
-        [
-            InlineKeyboardButton("Register", callback_data="register"),
-            InlineKeyboardButton("Commands", callback_data="cmds")
-        ],
-        [
-            InlineKeyboardButton("Close", callback_data="close")
+
+        WELCOME_BUTTON = [
+            [
+                InlineKeyboardButton("Register", callback_data="register"),
+                InlineKeyboardButton("Commands", callback_data="cmds")
+            ],
+            [
+                InlineKeyboardButton("Close", callback_data="close")
+            ]
         ]
-    ]
 
-    await Client.edit_message_text(
-        message.chat.id,
-        edit.id,
-        final_text,
-        reply_markup=InlineKeyboardMarkup(WELCOME_BUTTON)
-    )
+        await Client.edit_message_text(
+            message.chat.id,
+            edit.id,
+            final_text,
+            reply_markup=InlineKeyboardMarkup(WELCOME_BUTTON)
+        )
 
-except Exception:
-    import traceback
-    await error_log(traceback.format_exc())
-
+    except Exception:
+        import traceback
+        await error_log(traceback.format_exc())
+        
 async def register_user(user_id, username, antispam_time, reg_at):
     info = {
         "id": f"{user_id}",
