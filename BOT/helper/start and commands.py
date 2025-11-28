@@ -71,78 +71,30 @@ async def callback_command(client, message):
 
 @Client.on_message(filters.command("start", [".", "/"]))
 async def cmd_start(Client, message):
-    try:
-        # First frame - First letter
-        text = """<b>
-𝙎
-      </b>"""
-        edit = await message.reply_text(text, message.id)
-        await asyncio.sleep(0.2)  # Faster animation pace
+    # Frames of animation
+    frames = [
+        "<b>\n𝙎\n</b>",
+        "<b>\n𝙎𝙋\n</b>",
+        "<b>\n𝙎𝙋𝙔\n</b>",
+        "<b>\n𝙎𝙋𝙔𝘿\n</b>",
+        "<b>\n𝙎𝙋𝙔𝘿𝙀\n</b>",
+        "<b>\n_\n</b>",
+        "<b>\n𝙎𝙋𝙔𝘿𝙀 𝘾\n</b>",
+        "<b>\n𝙎𝙋𝙔𝘿𝙀 𝘾𝙃\n</b>",
+        "<b>\n𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆\n</b>",
+    ]
 
-        # Second frame - Two letters
-        text = """<b>
-𝙎𝙋
-      </b>"""
-        await Client.edit_message_text(message.chat.id, edit.id, text)
+    # Send first message
+    edit = await message.reply_text(frames[0], message.id)
+    await asyncio.sleep(0.2)
+
+    # Loop through remaining frames
+    for frame in frames[1:]:
+        await safe_edit(Client, message.chat.id, edit.id, frame)
         await asyncio.sleep(0.2)
 
-        # Third frame - Three letters
-        text = """<b>
-𝙎𝙋𝙔
-      </b>"""
-        await Client.edit_message_text(message.chat.id, edit.id, text)
-        await asyncio.sleep(0.2)
-
-        # Fourth frame - Four letters
-        text = """<b>
-𝙎𝙋𝙔𝘿
-      </b>"""
-        await Client.edit_message_text(message.chat.id, edit.id, text)
-        await asyncio.sleep(0.2)
-
-        # Fifth frame - Five letters
-        text = """<b>
-𝙎𝙋𝙔𝘿𝙀
-      </b>"""
-        await Client.edit_message_text(message.chat.id, edit.id, text)
-        await asyncio.sleep(0.2)
-
-        # Sixth frame - Six letters
-        text = """<b>
-_
-      </b>"""
-        await Client.edit_message_text(message.chat.id, edit.id, text)
-        await asyncio.sleep(0.2)
-
-        # Seventh frame - Seven letters
-        text = """<b>
-𝙎𝙋𝙔𝘿𝙀 𝘾
-      </b>"""
-        await Client.edit_message_text(message.chat.id, edit.id, text)
-        await asyncio.sleep(0.2)
-
-        # Eighth frame - Eight letters
-        text = """<b>
-𝙎𝙋𝙔𝘿𝙀 𝘾𝙃
-      </b>"""
-        await Client.edit_message_text(message.chat.id, edit.id, text)
-        await asyncio.sleep(0.2)
-
-        # Ninth frame - Nine letters
-        text = """<b>
-𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆
-      </b>"""
-        await Client.edit_message_text(message.chat.id, edit.id, text)
-        await asyncio.sleep(0.2)
-
-        # Final animation frame - Complete name
-        text = """<b>
-𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆
-      </b>"""
-        await Client.edit_message_text(message.chat.id, edit.id, text)
-        await asyncio.sleep(0.5)  # Slightly longer pause for the complete name
-
-        text = f"""
+    # Final greeting message
+    final_text = f"""
 <b>🌟 𝗛𝗲𝗹𝗹𝗼 <a href="tg://user?id={message.from_user.id}">{message.from_user.first_name}</a>!</b>
 
 <b>𝗪𝗲𝗹𝗰𝗼𝗺𝗲 𝗮𝗯𝗼𝗮𝗿𝗱 𝘁𝗵𝗲 𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆! 🚀</b>
@@ -151,8 +103,9 @@ _
 
 <b>👇 𝗧𝗮𝗽 𝘁𝗵𝗲 𝗥𝗲𝗴𝗶𝘀𝘁𝗲𝗿 𝗯𝘂𝘁𝘁𝗼𝗻 𝘁𝗼 𝗯𝗲𝗴𝗶𝗻 𝘆𝗼𝘂𝗿 𝗷𝗼𝘂𝗿𝗻𝗲𝘆.</b>
 <b>👇 𝗗𝗶𝘀𝗰𝗼𝘃𝗲𝗿 𝗺𝘆 𝗳𝘂𝗹𝗹 𝗰𝗮𝗽𝗮𝗯𝗶𝗹𝗶𝘁𝗶𝗲𝘀 𝗯𝘆 𝘁𝗮𝗽𝗽𝗶𝗻𝗴 𝘁𝗵𝗲 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗯𝘂𝘁𝘁𝗼𝗻.</b>
-
 """
+    await safe_edit(Client, message.chat.id, edit.id, final_text)
+
         WELCOME_BUTTON = [
             [
                 InlineKeyboardButton("Register", callback_data="register"),
