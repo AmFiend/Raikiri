@@ -86,7 +86,6 @@ async def cmd_start(Client, message):
             "<b>\n𝙎𝙋𝙔\n</b>",
             "<b>\n𝙎𝙋𝙔𝘿\n</b>",
             "<b>\n𝙎𝙋𝙔𝘿𝙀\n</b>",
-            "<b>\n_\n</b>",
             "<b>\n𝙎𝙋𝙔𝘿𝙀 𝘾\n</b>",
             "<b>\n𝙎𝙋𝙔𝘿𝙀 𝘾𝙃\n</b>",
             "<b>\n𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆\n</b>",
@@ -100,10 +99,11 @@ async def cmd_start(Client, message):
         for frame in frames[1:]:
             await safe_edit(Client, message.chat.id, edit.id, frame)
             await asyncio.sleep(0.2)
+
         for frame in frames[1:]:
-        await safe_edit(Client, message.chat.id, edit.id, frame)
-        await asyncio.sleep(0.2)
-   
+            await safe_edit(Client, message.chat.id, edit.id, frame)
+            await asyncio.sleep(0.2)
+
         # Final greeting message
         final_text = f"""
 <b>🌟 𝗛𝗲𝗹𝗹𝗼 <a href="tg://user?id={message.from_user.id}">{message.from_user.first_name}</a>!</b>
