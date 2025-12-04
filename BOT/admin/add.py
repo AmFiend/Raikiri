@@ -11,7 +11,7 @@ async def cmd_add(client, message):
             resp = (
                 "<b>⛔️ Access Denied</b>\n\n"
                 "<i>You do not have permission to use this command.</i>\n"
-                "Please contact the bot owner @Zer0_ke for access."
+                "Please contact the bot owner @spid_3r for access."
             )
             await message.reply_text(resp, quote=True)
             return
