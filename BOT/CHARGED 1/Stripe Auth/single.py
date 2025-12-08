@@ -117,7 +117,17 @@ Usage: /au cc|mes|ano|cvv</b>"""
             vbv_status = "VBV BIN file missing"
 
         proxy_status = "Live ✨"
+        start = time.time()
 
+# your process...
+
+        end = time.time()
+        elapsed_time = round(end - start, 2)
+
+finalresp = f"""
+Your response...
+Time Taken: {elapsed_time}s
+"""
         finalresp = f"""
 {status}
 ━━━━━━━━━━━━━
@@ -148,6 +158,7 @@ Usage: /au cc|mes|ano|cvv</b>"""
     except Exception:
         import traceback
         await error_log(traceback.format_exc())
+
 
 
 
