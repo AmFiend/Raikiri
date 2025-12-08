@@ -95,8 +95,7 @@ Usage: /au cc|mes|ano|cvv</b>"""
         country = getbin[4] if len(getbin) > 4 else "Unknown"
         flag = getbin[5] if len(getbin) > 5 else ""
         currency = getbin[6] if len(getbin) > 6 else "Unknown"
-
-        # VBV BIN check: get full descriptive message from vbvbin.txt
+# VBV BIN check: get full descriptive message from vbvbin.txt
         vbv_status = "Not Found"
         try:
             with open("FILES/vbvbin.txt", "r", encoding="utf-8") as file:
@@ -119,15 +118,11 @@ Usage: /au cc|mes|ano|cvv</b>"""
         proxy_status = "Live ✨"
         start = time.time()
 
-# your process...
+        # your process...
 
         end = time.time()
         elapsed_time = round(end - start, 2)
 
-finalresp = f"""
-Your response...
-Time Taken: {elapsed_time}s
-"""
         finalresp = f"""
 {status}
 ━━━━━━━━━━━━━
@@ -137,7 +132,7 @@ Time Taken: {elapsed_time}s
 ━━━━━━━━━━━━━
 [⟐] 𝗩𝗕𝗩 - {vbv_status}
 ━━━━━━━━━━━━━
-[⟐] B𝗶𝗻 : {bin6}
+[⟐] 𝗕𝗶𝗻 : {bin6}
 [⟐] 𝗖𝗼𝘂𝗻𝘁𝗿𝘆 : {country} {flag}
 [⟐] 𝗜𝘀𝘀𝘂𝗲𝗿 : {bank}
 [⟐] 𝗧𝘆𝗽𝗲 : {brand} | {type_} - {level}
@@ -147,18 +142,17 @@ Time Taken: {elapsed_time}s
 [⟐] 𝗢𝘄𝗻𝗲𝗿: <a href="tg://user?id=8340881349">𝑺𝑷𝑰𝑫𝑬𝑹</a>
 ╚═══⟐「 𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊  」⟐═════╝
 """
+
         await asyncio.sleep(0.5)
         await Client.edit_message_text(message.chat.id, thirdcheck.id, finalresp)
         await setantispamtime(user_id)
         await deductcredit(user_id)
+
         if status == "Approved ✅":
             await sendcc(finalresp, session)
+
         await session.aclose()
 
     except Exception:
         import traceback
         await error_log(traceback.format_exc())
-
-
-
-
