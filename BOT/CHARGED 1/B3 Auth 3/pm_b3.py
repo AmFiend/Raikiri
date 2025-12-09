@@ -26,7 +26,7 @@ async def braintree_auth_api_check(fullcc: str, session: httpx.AsyncClient) -> d
     except Exception as e:
         return {"status": "Api Error ⚠️", "response": str(e)}
 
-@Client.on_message(filters.command("b3", [".", "/"]))
+@Client.on_message(filters.command("br", [".", "/"]))
 async def braintree_chk_cmd(Client, message):
     try:
         user_id = str(message.from_user.id)
@@ -42,11 +42,11 @@ async def braintree_chk_cmd(Client, message):
         if getcc == False:
             resp = f"""<b>
 Gate Name: {gateway} ♻️
-CMD: /b3
+CMD: /br
 
 Message: No CC Found in your input ❌
 
-Usage: /b3 cc|mes|ano|cvv</b>"""
+Usage: /br cc|mes|ano|cvv</b>"""
             await message.reply_text(resp, message.id)
             return
 
