@@ -19,7 +19,7 @@ async def braintree_auth_api_check(fullcc: str, session: httpx.AsyncClient) -> d
         if status_raw == "𝗗𝗲𝗰𝗹𝗶𝗻𝗲𝗱 ❌":
             status = "Declined ❌"
         elif "approved" in status_raw.lower():
-            status = "Approved ✅"
+            status = "1000: Approved"
         else:
             status = "Unknown Status"
         return {"status": status, "response": message}
@@ -130,7 +130,7 @@ Usage: /br cc|mes|ano|cvv</b>"""
 {status_top}
 ━━━━━━━━━━━━━
 [⟐] 𝗖𝗖 - <code>{fullcc}</code>
-[⟐] 𝗦𝘁𝗮𝘁𝘂𝘀 : {status_clean}
+[⟐] 𝗦𝘁𝗮𝘁𝘂𝘀 : ⤿ <i>{status_clean}</i> ⤾
 [⟐] 𝗚𝗮𝘁𝗲 - {gateway}
 ━━━━━━━━━━━━━
 [⟐] 𝗩𝗕𝗩 - {vbv_status}
