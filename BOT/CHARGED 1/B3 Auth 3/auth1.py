@@ -113,7 +113,7 @@ async def stripe_cmd(Client, message):
     user_id = str(message.from_user.id)
     try:
         checkall = await check_all_thing(Client, message)
-        gateway = "Stripe Gate 💎"
+        gateway = "Stripe Gate Premium 💎"
         if not checkall[0]:
             return
 
@@ -122,7 +122,7 @@ async def stripe_cmd(Client, message):
         if getcc is False:
             resp = f"""<b>
 Gate Name: {gateway} ♻️
-CMD: /stripe
+CMD: /auth1
 
 Message: No CC Found in your input ❌
 
@@ -223,8 +223,8 @@ Usage: /stripe cc|mes|ano|cvv</b>"""
 ━━━━━━━━━━━━━
 [⟐] T/t : {time.perf_counter() - start:0.2f}s | Proxy : {proxy_status}
 [⟐] 𝗖𝗵𝗲𝗰𝗸𝗲𝗱 𝗯𝘆: <a href='tg://user?id={message.from_user.id}'> {message.from_user.first_name}</a> [ {role} ]
-[⟐] 𝗢𝘄𝗻𝗲𝗿: <a href=\"tg://user?id=7345217777\">𝑵𝒂𝒊𝒓𝒐𝒃𝒊𝒂𝒏𝒈𝒐𝒐𝒏</a>
-╚━━━━━━「𝐀𝐏𝐏𝐑𝐎𝐕𝐄𝐃 𝐂𝐇𝐄𝐂𝐊𝐄𝐑」━━━━━━╝
+[⟐] 𝗢𝘄𝗻𝗲𝗿: <a href=\"tg://user?id=8340881349\">ᏕᎮᎥᎴᏋᏒ</a>
+╚━━━━━━「𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊」━━━━━━╝
 """
         await Client.edit_message_text(message.chat.id, thirdcheck.id, finalresp)
 
