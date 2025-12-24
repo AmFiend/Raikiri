@@ -4,7 +4,7 @@ import re
 from pyrogram import Client, filters
 from FUNC.usersdb_func import *
 from FUNC.defs import *
-from .gate import check_card, PROXY
+from .gate import check_card
 from .response import *
 from TOOLS.check_all_func import *
 from TOOLS.getbin import *
