@@ -44,7 +44,7 @@ async def mchkfunc(fullcc, user_id, session):
             else:
                 return {}, "DECLINED ❌", "Card Declined ❌"
 
-@Client.on_message(filters.command("mbtxt", [".", "/"]) & filters.reply)
+@Client.on_message(filters.command("mstxt", [".", "/"]) & filters.reply)
 def multi(Client, message):
     t1 = threading.Thread(target=bcall, args=(Client, message))
     t1.start()
@@ -102,7 +102,7 @@ async def braintree_mass_check(Client, message):
             return
 
         resp = f"""
-- 𝐆𝐚𝐭𝐞𝐰𝐚𝐲 - Braintree Auth 💎
+- 𝐆𝐚𝐭𝐞𝐰𝐚𝐲 - Auto Stripe Masstxt
 
 - 𝐂𝐂 𝐀𝐦𝐨𝐮𝐧𝐭 - {len(cards)}
 - 𝐂𝐡𝐞𝐜𝐤𝗲𝗱 - Checking CC For {first_name}
@@ -111,7 +111,7 @@ async def braintree_mass_check(Client, message):
         nov = await message.reply_text(resp, message.id)
 
         text = f"""
-<b>↯ Braintree Auth Checker Mass [/mstxt]
+<b>↯ Ato Stripe Txt Checker Mass [/mstxt]
 
 Number Of CC Check : [{len(cards)}]
 </b>
