@@ -44,7 +44,7 @@ async def mchkfunc(fullcc, user_id, session):
             else:
                 return {}, "DECLINED ❌", "Card Declined ❌"
 
-@Client.on_message(filters.command("b3txt", [".", "/"]) & filters.reply)
+@Client.on_message(filters.command("mbtxt", [".", "/"]) & filters.reply)
 def multi(Client, message):
     t1 = threading.Thread(target=bcall, args=(Client, message))
     t1.start()
