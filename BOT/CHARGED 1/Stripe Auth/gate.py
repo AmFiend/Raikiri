@@ -121,3 +121,4 @@ async def create_cvv_charge(fullz, session: httpx.AsyncClient):
     except Exception as e:
 
         return f"Exception in create_cvv_charge: {e}"
+check_card = create_cvv_charge
