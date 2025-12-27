@@ -140,7 +140,7 @@ Number Of CC Check : [{len(cards)}]
                     flag = getbin[5] if len(getbin) > 5 else ""
 
                     proxy_status = "Live ✨"
-                    gateway = "Braintree Auth"
+                    gateway = "Auto stripe mass"
                     bin6 = fullcc[:6]
 
                     finalresp = f"""
