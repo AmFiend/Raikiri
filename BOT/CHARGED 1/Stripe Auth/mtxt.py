@@ -28,7 +28,7 @@ async def msp_chkfunc(fullcc, user_id):
             else:
                 return f"<code>{fullcc}</code>\n<b>Result - DECLINED ❌</b>\n"
 
-@Client.on_message(filters.command("mtxt", [".", "/"]) & filters.document)
+@Client.on_message(filters.command("masst", [".", "/"]) & filters.document)
 async def msp_mass_check(Client, message):
     user_id = str(message.from_user.id)
     first_name = str(message.from_user.first_name)
