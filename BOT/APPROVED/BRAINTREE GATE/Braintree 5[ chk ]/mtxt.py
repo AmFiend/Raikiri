@@ -142,7 +142,7 @@ async def payflow_mass_auth_cmd(Client, message):
 """
         nov = await message.reply_text(resp, quote=True)
         text = f"""
-<b>↯ Payflow [/mpy] Number Of CC Check : [{len(ccs)}] </b>\n
+<b>↯ Payflow [/mptxt] Number Of CC Check : [{len(ccs)}] </b>\n
 """
         amt = 0
         start = time.perf_counter()
@@ -168,7 +168,7 @@ async def payflow_mass_auth_cmd(Client, message):
                 flag = getbin[5] if len(getbin) > 5 else ""
                 currency = getbin[6] if len(getbin) > 6 else "Unknown"
                 proxy_status = "Live ✨"
-                gateway = "Payflow"
+                gateway = "Payflow 10$"
                 bin6 = fullcc[:6]
                 
                 # FIX: Corrected and more robust regex
