@@ -64,7 +64,7 @@ async def mchkfunc(fullcc, user_id):
                 return f"Card↯ <code>{fullcc}</code>\n<b>Status - Declined ❌</b>\n<b>Result -⤿ Request Failed ⤾</b>\n\n"
 
 # --- UNCHANGED multi and bcall functions ---
-@Client.on_message(filters.command("mpy", [".", "/"]))
+@Client.on_message(filters.command("mptxt", [".", "/"]))
 def multi(Client, message):
     t1 = threading.Thread(target=bcall, args=(Client, message))
     t1.start()
