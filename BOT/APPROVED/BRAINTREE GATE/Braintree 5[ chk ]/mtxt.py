@@ -177,14 +177,12 @@ async def payflow_mass_auth_cmd(Client, message):
                 
                 # Use .strip() to clean up whitespace from captured groups
                 status_text = status_match.group(1).strip() if status_match else "UNKNOWN"
-                response_text = response_match.group(1).strip() if response_match else "UNKNOWN"
                 
                 finalresp = f"""
 {status_text}
 ━━━━━━━━━━━━━
 [⟐] 𝗖𝗖 - <code>{fullcc}</code>
 [⟐] 𝗦𝘁𝗮𝘁𝘂𝘀 : {status_text}
-[⟐] 𝗥𝗲𝘀𝘂𝗹𝘁 : {response_text}
 [⟐] 𝗚𝗮𝘁𝗲 - {gateway}
 ━━━━━━━━━━━━━
 [⟐] B𝗶𝗻 : {bin6}
