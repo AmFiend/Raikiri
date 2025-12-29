@@ -108,7 +108,7 @@ async def stripe_check(card):
     return await asyncio.to_thread(sync_stripe, card)
 
 
-@Client.on_message(filters.command("auth1", [".", "/"]))
+@Client.on_message(filters.command("pr", [".", "/"]))
 async def stripe_cmd(Client, message):
     user_id = str(message.from_user.id)
     try:
@@ -122,11 +122,11 @@ async def stripe_cmd(Client, message):
         if getcc is False:
             resp = f"""<b>
 Gate Name: {gateway} ♻️
-CMD: /auth1
+CMD: /pr
 
 Message: No CC Found in your input ❌
 
-Usage: /stripe cc|mes|ano|cvv</b>"""
+Usage: /pr cc|mes|ano|cvv</b>"""
             await message.reply_text(resp, message.id)
             return
 
