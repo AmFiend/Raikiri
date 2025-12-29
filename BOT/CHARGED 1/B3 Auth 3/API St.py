@@ -121,7 +121,7 @@ Number Of CC Check : [{len(ccs)}]
                 currency = getbin[6] if len(getbin) > 6 else "Unknown"
 
                 proxy_status = "Live ✨"
-                gateway = "STRIPE CHARGE"
+                gateway = "stripe charge 1$"
                 bin6 = fullcc[:6]
 
                 status_match = re.match(r"(Approved ✅|Declined ❌)", result_text)
