@@ -1,3 +1,4 @@
+
 import asyncio
 import time
 from pyrogram import Client, filters
@@ -5,40 +6,60 @@ from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from FUNC.defs import *
 from FUNC.usersdb_func import *
 from pyrogram.errors import MessageNotModified
+from datetime import date
 
-async def safe_edit(client, chat_id, message_id, text):
+async def safe_edit(client, chat_id, message_id, text, reply_markup=None):
     try:
-        await client.edit_message_text(chat_id, message_id, text)
+        await client.edit_message_text(chat_id, message_id, text, reply_markup=reply_markup)
     except MessageNotModified:
         pass
 
+async def animated_edit(client, chat_id, message_id, text, reply_markup=None, delay=0.02):
+    current_text = ""
+    for char in text:
+        current_text += char
+        try:
+            await client.edit_message_text(chat_id, message_id, current_text, reply_markup=reply_markup)
+        except MessageNotModified:
+            pass
+        await asyncio.sleep(delay)
 
 @Client.on_message(filters.command("cmds", [".", "/"]))
 async def cmd_scr(client, message):
     try:
         WELCOME_TEXT = f"""
-<b>𝗛𝗲𝗹𝗹𝗼 <a href="tg://user?id={message.from_user.id}"> {message.from_user.first_name}</a> !
+<b>[ SYSTEM INITIALIZED ]</b>
+<b>> USER_ID:</b> <a href="tg://user?id={message.from_user.id}">{message.from_user.first_name}</a>
+<b>> ACCESS_LEVEL:</b> GRANTED
 
-𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆  𝗛𝗮𝘀 𝗽𝗹𝗲𝗻𝘁𝘆 𝗼𝗳 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀. 𝗪𝗲 𝗛𝗮𝘃𝗲 𝗔𝘂𝘁𝗵 𝗚𝗮𝘁𝗲𝘀, 𝗖𝗵𝗮𝗿𝗴𝗲 𝗚𝗮𝘁𝗲𝘀, 𝗧𝗼𝗼𝗹𝘀, 𝗔𝗻𝗱 𝗢𝘁𝗵𝗲𝗿 𝗧𝗵𝗶𝗻𝗴𝘀.
+<b>[ SPYDE_CHK MAINFRAME ]</b>
+<b>> STATUS:</b> ONLINE
+<b>> MODULES:</b> AUTH_GATES | CHARGE_GATES | TOOLS | UTILITIES
 
-𝗖𝗹𝗶𝗰𝗸 𝗘𝗮𝗰𝗵 𝗼𝗳 𝗧𝗵𝗲𝗺 𝗕𝗲𝗹𝗼𝘄 𝘁𝗼 𝗞𝗻𝗼𝘄 𝗧𝗵𝗲𝗺 𝗕𝗲𝘁𝘁𝗲𝗿.</b>
+<b>[!] SELECT A NODE TO INTERFACE:</b>
         """
         WELCOME_BUTTONS = [
             [
-                InlineKeyboardButton("AUTH/B3/VBV", callback_data="AUTH"),
-                InlineKeyboardButton("CHARGE", callback_data="CHARGE")
+                InlineKeyboardButton("AUTH / B3 / VBV", callback_data="AUTH"),
+                InlineKeyboardButton("CHARGE PROTOCOLS", callback_data="CHARGE")
             ],
             [
-                InlineKeyboardButton("TOOLS", callback_data="TOOLS"),
-                InlineKeyboardButton("HELPER", callback_data="HELPER")
+                InlineKeyboardButton("CYBER TOOLS", callback_data="TOOLS"),
+                InlineKeyboardButton("SYSTEM HELPER", callback_data="HELPER")
             ],
             [
-                InlineKeyboardButton("Close", callback_data="close")
+                InlineKeyboardButton("TERMINATE CONNECTION", callback_data="close")
             ]
         ]
-        await message.reply(
-            text=WELCOME_TEXT,
-            reply_markup=InlineKeyboardMarkup(WELCOME_BUTTONS))
+        edit_msg = await message.reply_text("<b>[ SYSTEM INITIALIZING... ]</b>")
+        await animated_edit(
+            client,
+            message.chat.id,
+            edit_msg.id,
+            WELCOME_TEXT,
+            reply_markup=InlineKeyboardMarkup(WELCOME_BUTTONS),
+            delay=0.01
+        )
 
     except Exception:
         import traceback
@@ -48,51 +69,53 @@ async def cmd_scr(client, message):
 async def callback_command(client, message):
     try:
         WELCOME_TEXT = f"""
-<b>𝗛𝗲𝗹𝗹𝗼 𝗨𝘀𝗲𝗿!
+<b>[ SYSTEM INITIALIZED ]</b>
+<b>> USER_ID:</b> <a href="tg://user?id={message.chat.id}">GUEST</a>
+<b>> ACCESS_LEVEL:</b> GRANTED
 
-𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆   𝗛𝗮𝘀 𝗽𝗹𝗲𝗻𝘁𝘆 𝗼𝗳 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀. 𝗪𝗲 𝗛𝗮𝘃𝗲 𝗔𝘂𝘁𝗵 𝗚𝗮𝘁𝗲𝘀, 𝗖𝗵𝗮𝗿𝗴𝗲 𝗚𝗮𝘁𝗲𝘀, 𝗧𝗼𝗼𝗹𝘀, 𝗔𝗻𝗱 𝗢𝘁𝗵𝗲𝗿 𝗧𝗵𝗶𝗻𝗴𝘀.
+<b>[ SPYDE_CHK MAINFRAME ]</b>
+<b>> STATUS:</b> ONLINE
+<b>> MODULES:</b> AUTH_GATES | CHARGE_GATES | TOOLS | UTILITIES
 
-𝗖𝗹𝗶𝗰𝗸 𝗘𝗮𝗰𝗵 𝗼𝗳 𝗧𝗵𝗲𝗺 𝗕𝗲𝗹𝗼𝘄 𝘁𝗼 𝗞𝗻𝗼𝘄 𝗧𝗵𝗲𝗺 𝗕𝗲𝘁𝘁𝗲𝗿.</b>
+<b>[!] SELECT A NODE TO INTERFACE:</b>
         """
         WELCOME_BUTTONS = [
             [
-                InlineKeyboardButton("AUTH/B3/VBV", callback_data="AUTH"),
-                InlineKeyboardButton("CHARGE", callback_data="CHARGE")
+                InlineKeyboardButton("AUTH / B3 / VBV", callback_data="AUTH"),
+                InlineKeyboardButton("CHARGE PROTOCOLS", callback_data="CHARGE")
             ],
             [
-                InlineKeyboardButton("TOOLS", callback_data="TOOLS"),
-                InlineKeyboardButton("HELPER", callback_data="HELPER")
+                InlineKeyboardButton("CYBER TOOLS", callback_data="TOOLS"),
+                InlineKeyboardButton("SYSTEM HELPER", callback_data="HELPER")
             ],
             [
-                InlineKeyboardButton("Close", callback_data="close")
+                InlineKeyboardButton("TERMINATE CONNECTION", callback_data="close")
             ]
         ]
-        await message.reply(
-            text=WELCOME_TEXT,
-            reply_markup=InlineKeyboardMarkup(WELCOME_BUTTONS))
+        await animated_edit(client, message.chat.id, message.id, WELCOME_TEXT, InlineKeyboardMarkup(WELCOME_BUTTONS), delay=0.01)
 
     except Exception:
         import traceback
         await error_log(traceback.format_exc())
-
 
 @Client.on_message(filters.command("start", [".", "/"]))
 async def cmd_start(Client, message):
     try:
         # Frames of animation
         frames = [
-            "<b>\n𝙎\n</b>",
-            "<b>\n𝙎𝙋\n</b>",
-            "<b>\n𝙎𝙋𝙔\n</b>",
-            "<b>\n𝙎𝙋𝙔𝘿\n</b>",
-            "<b>\n𝙎𝙋𝙔𝘿𝙀\n</b>",
-            "<b>\n𝙎𝙋𝙔𝘿𝙀 𝘾\n</b>",
-            "<b>\n𝙎𝙋𝙔𝘿𝙀 𝘾𝙃\n</b>",
-            "<b>\n𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆\n</b>",
+            "<b>[ BOOT SEQUENCE INITIATED ]</b>\n<b>> SPYDE_CHK.OS LOADING... [0%]</b>",
+            "<b>[ BOOT SEQUENCE INITIATED ]</b>\n<b>> SPYDE_CHK.OS LOADING... [10%]</b>",
+            "<b>[ BOOT SEQUENCE INITIATED ]</b>\n<b>> SPYDE_CHK.OS LOADING... [25%]</b>",
+            "<b>[ BOOT SEQUENCE INITIATED ]</b>\n<b>> SPYDE_CHK.OS LOADING... [40%]</b>",
+            "<b>[ BOOT SEQUENCE INITIATED ]</b>\n<b>> SPYDE_CHK.OS LOADING... [55%]</b>",
+            "<b>[ BOOT SEQUENCE INITIATED ]</b>\n<b>> SPYDE_CHK.OS LOADING... [70%]</b>",
+            "<b>[ BOOT SEQUENCE INITIATED ]</b>\n<b>> SPYDE_CHK.OS LOADING... [85%]</b>",
+            "<b>[ BOOT SEQUENCE INITIATED ]</b>\n<b>> SPYDE_CHK.OS LOADING... [99%]</b>",
+            "<b>[ BOOT SEQUENCE COMPLETE ]</b>\n<b>> WELCOME TO SPYDE_CHK NETWORK.</b>",
         ]
 
         # Send first message
-        edit = await message.reply_text(frames[0], message.id)
+        edit = await message.reply_text(frames[0])
         await asyncio.sleep(0.2)
 
         # Loop through remaining frames
@@ -100,43 +123,38 @@ async def cmd_start(Client, message):
             await safe_edit(Client, message.chat.id, edit.id, frame)
             await asyncio.sleep(0.2)
 
-        for frame in frames[1:]:
-            await safe_edit(Client, message.chat.id, edit.id, frame)
-            await asyncio.sleep(0.2)
-
-        # Final greeting message
         final_text = f"""
-<b>🌟 𝗛𝗲𝗹𝗹𝗼 <a href="tg://user?id={message.from_user.id}">{message.from_user.first_name}</a>!</b>
+<b>[ SPYDE_CHK NETWORK ]</b>
+<b>> STATUS:</b> ONLINE
+<b>> USER_ID:</b> <a href="tg://user?id={message.from_user.id}">{message.from_user.first_name}</a>
+<b>> ACCESS_LEVEL:</b> GRANTED
 
-<b>𝗪𝗲𝗹𝗰𝗼𝗺𝗲 𝗮𝗯𝗼𝗮𝗿𝗱 𝘁𝗵𝗲 𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆! 🚀</b>
-
-<b>𝗜 𝗮𝗺 𝘆𝗼𝘂𝗿 𝗴𝗼-𝘁𝗼 𝗯𝗼𝘁, 𝗽𝗮𝗰𝗸𝗲𝗱 𝘄𝗶𝘁𝗵 𝗮 𝘃𝗮𝗿𝗶𝗲𝘁𝘆 𝗼𝗳 𝗴𝗮𝘁𝗲𝘀, 𝘁𝗼𝗼𝗹𝘀, 𝗮𝗻𝗱 𝗰𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝘁𝗼 𝗲𝗻𝗵𝗮𝗻𝗰𝗲 𝘆𝗼𝘂𝗿 𝗲𝘅𝗽𝗲𝗿𝗶𝗲𝗻𝗰𝗲. 𝗘𝘅𝗰𝗶𝘁𝗲𝗱 𝘁𝗼 𝘀𝗲𝗲 𝘄𝗵𝗮𝘁 𝗜 𝗰𝗮𝗻 𝗱𝗼?</b>
-
-<b>👇 𝗧𝗮𝗽 𝘁𝗵𝗲 𝗥𝗲𝗴𝗶𝘀𝘁𝗲𝗿 𝗯𝘂𝘁𝘁𝗼𝗻 𝘁𝗼 𝗯𝗲𝗴𝗶𝗻 𝘆𝗼𝘂𝗿 𝗷𝗼𝘂𝗿𝗻𝗲𝘆.</b>
-<b>👇 𝗗𝗶𝘀𝗰𝗼𝘃𝗲𝗿 𝗺𝘆 𝗳𝘂𝗹𝗹 𝗰𝗮𝗽𝗮𝗯𝗶𝗹𝗶𝘁𝗶𝗲𝘀 𝗯𝘆 𝘁𝗮𝗽𝗽𝗶𝗻𝗴 𝘁𝗵𝗲 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗯𝘂𝘁𝘁𝗼𝗻.</b>
-"""
+<b>[!] INITIATE PROTOCOL REGISTRATION OR ACCESS COMMAND INTERFACE.</b>
+        """
 
         WELCOME_BUTTON = [
             [
-                InlineKeyboardButton("Register", callback_data="register"),
-                InlineKeyboardButton("Commands", callback_data="cmds")
+                InlineKeyboardButton("REGISTER // NEW USER", callback_data="register"),
+                InlineKeyboardButton("COMMANDS // ACCESS LOGS", callback_data="cmds")
             ],
             [
-                InlineKeyboardButton("Close", callback_data="close")
+                InlineKeyboardButton("TERMINATE SESSION", callback_data="close")
             ]
         ]
 
-        await Client.edit_message_text(
+        await animated_edit(
+            Client,
             message.chat.id,
             edit.id,
             final_text,
-            reply_markup=InlineKeyboardMarkup(WELCOME_BUTTON)
+            reply_markup=InlineKeyboardMarkup(WELCOME_BUTTON),
+            delay=0.01
         )
 
     except Exception:
         import traceback
         await error_log(traceback.format_exc())
-        
+
 async def register_user(user_id, username, antispam_time, reg_at):
     info = {
         "id": f"{user_id}",
@@ -170,48 +188,56 @@ async def cmd_register(Client, message):
 
         WELCOME_BUTTON = [
             [
-                InlineKeyboardButton("Commands", callback_data="cmds")
+                InlineKeyboardButton("COMMANDS // ACCESS LOGS", callback_data="cmds")
             ],
             [
-                InlineKeyboardButton("Close", callback_data="close")
+                InlineKeyboardButton("TERMINATE SESSION", callback_data="close")
             ]
         ]
         if registration_check == "None":
             await register_user(user_id, username, antispam_time, reg_at)
             resp = f"""<b>
-𝗥𝗲𝗴𝗶𝘀𝘁𝗿𝗮𝘁𝗶𝗼𝗻 𝗦𝘂𝗰𝗰𝗲𝘀𝘀𝗳𝘂𝗹 ♻️ 
-━━━━━━━━━━━━━━
-● 𝗡𝗮𝗺𝗲: {message.from_user.first_name}
-● 𝗨𝘀𝗲𝗿 𝗜𝗗: {message.from_user.id}
-● 𝗥𝗼𝗹𝗲: Free
-● 𝗖𝗿𝗲𝗱𝗶𝘁𝘀: 50
+[ REGISTRATION PROTOCOL ]
+> STATUS: SUCCESSFUL
+> USER_ID: {message.from_user.id}
+> USERNAME: {message.from_user.first_name}
+> ACCESS_LEVEL: FREE TIER
+> CREDITS_ALLOCATED: 50 UNITS
 
-𝗠𝗲𝘀𝘀𝗮𝗴𝗲: 𝗬𝗼𝘂 𝗚𝗼𝘁 50 𝗖𝗿𝗲𝗱𝗶𝘁𝘀 𝗮𝘀 𝗿𝗲𝗴𝗶𝘀𝘁𝗿𝗮𝘁𝗶𝗼𝗻 𝗯𝗼𝗻𝘂𝘀 . 𝗧𝗼 𝗞𝗻𝗼𝘄 𝗖𝗿𝗲𝗱𝗶𝘁𝘀  𝗦𝘆𝘀𝘁𝗲𝗺 /howcrd
+[!] BONUS: 50 CREDITS GRANTED FOR INITIAL REGISTRATION.
+[!] REFER TO /howcrd FOR CREDIT SYSTEM DETAILS.
 
-
-𝗘𝘅𝗽𝗹𝗼𝗿𝗲 𝗠𝘆 𝗩𝗮𝗿𝗶𝗼𝘂𝘀 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗔𝗻𝗱 𝗔𝗯𝗶𝗹𝗶𝘁𝗶𝗲𝘀 𝗕𝘆 𝗧𝗮𝗽𝗽𝗶𝗻𝗴 𝗼𝗻 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀         𝗕𝘂𝘁𝘁𝗼𝗻.  
+[!] PROCEED TO COMMAND INTERFACE FOR SYSTEM EXPLORATION.
             </b>"""
 
         else:
             resp = f"""<b>
-𝗔𝗹𝗿𝗲𝗮𝗱𝘆 𝗥𝗲𝗴𝗶𝘀𝘁𝗲𝗿𝗲𝗱 ⚠️
+[ REGISTRATION PROTOCOL ]
+> STATUS: ALREADY REGISTERED
+> USER_ID: {message.from_user.id}
 
-𝗠𝗲𝘀𝘀𝗮𝗴𝗲: 𝗬𝗼𝘂 𝗮𝗿𝗲 𝗮𝗹𝗿𝗲𝗮𝗱𝘆 𝗿𝗲𝗴𝗶𝘀𝘁𝗲𝗿𝗲𝗱 𝗶𝗻 𝗼𝘂𝗿 𝗯𝗼𝘁 . 𝗡𝗼 𝗻𝗲𝗲𝗱 𝘁𝗼 𝗿𝗲𝗴𝗶𝘀𝘁𝗲𝗿 𝗻𝗼𝘄 
+[!] MESSAGE: USER PROFILE DETECTED. NO FURTHER REGISTRATION REQUIRED.
 
-𝗘𝘅𝗽𝗹𝗼𝗿𝗲 𝗠𝘆 𝗩𝗮𝗿𝗶𝗼𝘂𝘀 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗔𝗻𝗱 𝗔𝗯𝗶𝗹𝗶𝘁𝗶𝗲𝘀 𝗕𝘆 𝗧𝗮𝗽𝗽𝗶𝗻𝗴 𝗼𝗻 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗕𝘂𝘁𝘁𝗼𝗻  
+[!] PROCEED TO COMMAND INTERFACE FOR SYSTEM EXPLORATION.
             </b>"""
 
-        await message.reply_text(resp, reply_markup=InlineKeyboardMarkup(WELCOME_BUTTON))
+        await animated_edit(
+            Client,
+            message.chat.id,
+            message.id,
+            resp,
+            reply_markup=InlineKeyboardMarkup(WELCOME_BUTTON),
+            delay=0.01
+        )
 
     except Exception:
         import traceback
         await error_log(traceback.format_exc())
 
-
 async def callback_register(Client, message):
     try:
-        user_id = str(message.reply_to_message.from_user.id)
-        username = str(message.reply_to_message.from_user.username)
+        user_id = str(message.reply_to_message.from_user.id) if message.reply_to_message else str(message.from_user.id)
+        username = str(message.reply_to_message.from_user.username) if message.reply_to_message else str(message.from_user.username)
         antispam_time = int(time.time())
         yy, mm, dd = str(date.today()).split("-")
         reg_at = f"{dd}-{mm}-{yy}"
@@ -220,45 +246,53 @@ async def callback_register(Client, message):
 
         WELCOME_BUTTON = [
             [
-                InlineKeyboardButton("Commands", callback_data="cmds")
+                InlineKeyboardButton("COMMANDS // ACCESS LOGS", callback_data="cmds")
             ],
             [
-                InlineKeyboardButton("Close", callback_data="close")
+                InlineKeyboardButton("TERMINATE SESSION", callback_data="close")
             ]
         ]
         if registration_check == "None":
             await register_user(user_id, username, antispam_time, reg_at)
             resp = f"""<b>
-𝗥𝗲𝗴𝗶𝘀𝘁𝗿𝗮𝘁𝗶𝗼𝗻 𝗦𝘂𝗰𝗰𝗲𝘀𝘀𝗳𝘂𝗹 ♻️ 
-━━━━━━━━━━━━━━
-● 𝗡𝗮𝗺𝗲: {message.from_user.first_name}
-● 𝗨𝘀𝗲𝗿 𝗜𝗗: {message.from_user.id}
-● 𝗥𝗼𝗹𝗲: Free
-● 𝗖𝗿𝗲𝗱𝗶𝘁𝘀: 50
+[ REGISTRATION PROTOCOL ]
+> STATUS: SUCCESSFUL
+> USER_ID: {user_id}
+> USERNAME: {username}
+> ACCESS_LEVEL: FREE TIER
+> CREDITS_ALLOCATED: 50 UNITS
 
-𝗠𝗲𝘀𝘀𝗮𝗴𝗲: 𝗬𝗼𝘂 𝗚𝗼𝘁 50 𝗖𝗿𝗲𝗱𝗶𝘁𝘀 𝗮𝘀 𝗿𝗲𝗴𝗶𝘀𝘁𝗿𝗮𝘁𝗶𝗼𝗻 𝗯𝗼𝗻𝘂𝘀 . 𝗧𝗼 𝗞𝗻𝗼𝘄 𝗖𝗿𝗲𝗱𝗶𝘁𝘀  𝗦𝘆𝘀𝘁𝗲𝗺 /howcrd .
+[!] BONUS: 50 CREDITS GRANTED FOR INITIAL REGISTRATION.
+[!] REFER TO /howcrd FOR CREDIT SYSTEM DETAILS.
 
-
-𝗘𝘅𝗽𝗹𝗼𝗿𝗲 𝗠𝘆 𝗩𝗮𝗿𝗶𝗼𝘂𝘀 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗔𝗻𝗱 𝗔𝗯𝗶𝗹𝗶𝘁𝗶𝗲𝘀 𝗕𝘆 𝗧𝗮𝗽𝗽𝗶𝗻𝗴 𝗼𝗻 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀         𝗕𝘂𝘁𝘁𝗼𝗻.  
+[!] PROCEED TO COMMAND INTERFACE FOR SYSTEM EXPLORATION.
             </b>"""
 
         else:
             resp = f"""<b>
-𝗔𝗹𝗿𝗲𝗮𝗱𝘆 𝗥𝗲𝗴𝗶𝘀𝘁𝗲𝗿𝗲𝗱 ⚠️
+[ REGISTRATION PROTOCOL ]
+> STATUS: ALREADY REGISTERED
+> USER_ID: {user_id}
 
-𝗠𝗲𝘀𝘀𝗮𝗴𝗲: 𝗬𝗼𝘂 𝗮𝗿𝗲 𝗮𝗹𝗿𝗲𝗮𝗱𝘆 𝗿𝗲𝗴𝗶𝘀𝘁𝗲𝗿𝗲𝗱 𝗶𝗻 𝗼𝘂𝗿 𝗯𝗼𝘁 . 𝗡𝗼 𝗻𝗲𝗲𝗱 𝘁𝗼 𝗿𝗲𝗴𝗶𝘀𝘁𝗲𝗿 𝗻𝗼𝘄 
+[!] MESSAGE: USER PROFILE DETECTED. NO FURTHER REGISTRATION REQUIRED.
 
-𝗘𝘅𝗽𝗹𝗼𝗿𝗲 𝗠𝘆 𝗩𝗮𝗿𝗶𝗼𝘂𝘀 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗔𝗻𝗱 𝗔𝗯𝗶𝗹𝗶𝘁𝗶𝗲𝘀 𝗕𝘆 𝗧𝗮𝗽𝗽𝗶𝗻𝗴 𝗼𝗻 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗕𝘂𝘁𝘁𝗼𝗻  
+[!] PROCEED TO COMMAND INTERFACE FOR SYSTEM EXPLORATION.
             </b>"""
 
-        await message.reply_text(resp, message.id, reply_markup=InlineKeyboardMarkup(WELCOME_BUTTON))
+        await animated_edit(
+            Client,
+            message.chat.id,
+            message.id,
+            resp,
+            reply_markup=InlineKeyboardMarkup(WELCOME_BUTTON),
+            delay=0.01
+        )
 
     except Exception:
         import traceback
         await error_log(traceback.format_exc())
 
 
-@Client.on_callback_query()
 @Client.on_callback_query()
 async def callback_query(Client, CallbackQuery):
     if CallbackQuery.data == "cmds":
@@ -269,637 +303,503 @@ async def callback_query(Client, CallbackQuery):
 
     if CallbackQuery.data == "HOME":
         WELCOME_TEXT = f"""
-<b>𝗛𝗲𝗹𝗹𝗼 User!
+<b>[ SYSTEM STATUS: ONLINE ]</b>
+<b>> USER_ID:</b> <a href="tg://user?id={CallbackQuery.from_user.id}">{CallbackQuery.from_user.first_name}</a>
+<b>> ACCESS_LEVEL:</b> GRANTED
 
-𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆 𝗛𝗮𝘀 𝗽𝗹𝗲𝗻𝘁𝘆 𝗼𝗳 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀.𝗪𝗲 𝗛𝗮𝘃𝗲 𝗔𝘂𝘁𝗵 𝗚𝗮𝘁𝗲𝘀, 𝗖𝗵𝗮𝗿𝗴𝗲 𝗚𝗮𝘁𝗲𝘀,𝗧𝗼𝗼𝗹𝘀 𝗔𝗻𝗱 𝗢𝘁𝗵𝗲𝗿 𝗧𝗵𝗶𝗻𝗴𝘀.
+<b>[ SPYDE_CHK MAINFRAME ]</b>
+<b>> CORE MODULES:</b> AUTH_GATES | CHARGE_GATES | TOOLS | UTILITIES
 
-𝗖𝗹𝗶𝗰𝗸 𝗘𝗮𝗰𝗵 𝗼𝗳 𝗧𝗵𝗲𝗺 𝗕𝗲𝗹𝗼𝘄 𝘁𝗼 𝗞𝗻𝗼𝘄 𝗧𝗵𝗲𝗺 𝗕𝗲𝘁𝘁𝗲𝗿.</b>
-    """
+<b>[!] SELECT A NODE TO INTERFACE:</b>
+        """
         WELCOME_BUTTONS = [
             [
-                InlineKeyboardButton("AUTH/B3/VBV", callback_data="AUTH"),
-                InlineKeyboardButton("CHARGE", callback_data="CHARGE")
+                InlineKeyboardButton("AUTH / B3 / VBV", callback_data="AUTH"),
+                InlineKeyboardButton("CHARGE PROTOCOLS", callback_data="CHARGE")
             ],
             [
-                InlineKeyboardButton("TOOLS", callback_data="TOOLS"),
-                InlineKeyboardButton("HELPER", callback_data="HELPER")
+                InlineKeyboardButton("CYBER TOOLS", callback_data="TOOLS"),
+                InlineKeyboardButton("SYSTEM HELPER", callback_data="HELPER")
             ],
             [
-                InlineKeyboardButton("Close", callback_data="close")
+                InlineKeyboardButton("TERMINATE CONNECTION", callback_data="close")
             ]
         ]
-        await CallbackQuery.edit_message_text(
-            text=WELCOME_TEXT,
-            reply_markup=InlineKeyboardMarkup(WELCOME_BUTTONS))
+        await animated_edit(Client, CallbackQuery.message.chat.id, CallbackQuery.message.id, WELCOME_TEXT, InlineKeyboardMarkup(WELCOME_BUTTONS), delay=0.01)
 
     if CallbackQuery.data == "close":
         await CallbackQuery.message.delete()
-        await CallbackQuery.message.reply_text("𝗘𝗻𝗷𝗼𝘆")
+        await CallbackQuery.message.reply_text("<b>[ SESSION TERMINATED ] > ENJOY THE SILENCE.</b>")
 
 
     if CallbackQuery.data == "AUTH":
         AUTH_TEXT = f"""
-<b>𝗛𝗲𝗹𝗹𝗼 𝗨𝘀𝗲𝗿!
+<b>[ AUTHENTICATION GATES ]</b>
+<b>> STATUS:</b> ACTIVE
 
-𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆 𝗔𝘂𝘁𝗵 𝗚𝗮𝘁𝗲𝘀.
-
-𝗖𝗹𝗶𝗰𝗸 𝗼𝗻 𝗲𝗮𝗰𝗵 𝗼𝗳 𝘁𝗵𝗲𝗺 𝗯𝗲𝗹𝗼𝘄 𝘁𝗼 𝗴𝗲𝘁 𝘁𝗼  𝗸𝗻𝗼𝘄 𝘁𝗵𝗲𝗺 𝗯𝗲𝘁𝘁𝗲𝗿.</b>
-    """
+<b>[!] SELECT AUTH PROTOCOL:</b>
+> _Secure your access. Choose your weapon._
+        """
         AUTH_BUTTONS = [
-    [
-        InlineKeyboardButton("Stripe Auth", callback_data="Auth2"),
-        InlineKeyboardButton("Adyen Auth", callback_data="Adyen2"),
-    ],
-    [
-        InlineKeyboardButton("Braintree B3", callback_data="BRAINTREEB3"),
-        InlineKeyboardButton("Braintree VBV", callback_data="BRAINTREEVBV"),
-    ],
-    [
-        InlineKeyboardButton("Clover Auth", callback_data="CLOVERAUTH"),
-        InlineKeyboardButton("Square Auth", callback_data="SQUAREAUTH"),
-    ],
-    [
-        InlineKeyboardButton("Back", callback_data="HOME"),
-        InlineKeyboardButton("Close", callback_data="close")
-    ]
-]
-        await CallbackQuery.edit_message_text(
-            text=AUTH_TEXT,
-            reply_markup=InlineKeyboardMarkup(AUTH_BUTTONS))
+            [
+                InlineKeyboardButton("STRIPE_AUTH", callback_data="Auth2"),
+                InlineKeyboardButton("ADYEN_AUTH", callback_data="Adyen2"),
+            ],
+            [
+                InlineKeyboardButton("BRAINTREE_B3", callback_data="BRAINTREEB3"),
+                InlineKeyboardButton("BRAINTREE_VBV", callback_data="BRAINTREEVBV"),
+            ],
+            [
+                InlineKeyboardButton("CLOVER_AUTH", callback_data="CLOVERAUTH"),
+                InlineKeyboardButton("SQUARE_AUTH", callback_data="SQUAREAUTH"),
+            ],
+            [
+                InlineKeyboardButton("// BACK //", callback_data="HOME"),
+                InlineKeyboardButton("// TERMINATE //", callback_data="close")
+            ]
+        ]
+        await animated_edit(Client, CallbackQuery.message.chat.id, CallbackQuery.message.id, AUTH_TEXT, InlineKeyboardMarkup(AUTH_BUTTONS), delay=0.01)
+
     if CallbackQuery.data == "Auth2":
-        CHARGE_TEXT = """
-🔹 𝗦𝗧𝗥𝗜𝗣𝗘 𝗔𝗨𝗧𝗛 𝗚𝗔𝗧𝗘𝗦 𝗼𝗳 𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆
-🔹 𝗦𝘁𝗮𝘁𝘂𝘀: ✅ 𝗔𝗰𝘁𝗶𝘃𝗲
+        AUTH_TEXT = f"""
+<b>[ PROTOCOL: STRIPE_AUTH ]</b>
+<b>> STATUS:</b> ACTIVE
 
-🚀 𝗤𝘂𝗶𝗰𝗸 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗢𝘃𝗲𝗿𝘃𝗶𝗲𝘄:
+<b>[ COMMAND SYNTAX ]</b>
+> _Initiate secure transaction._
+> `/str cc|mm|yy|cvv`
+> `/mstr cc|mm|yy|cvv`
 
-👤 𝗦𝘁𝗿𝗶𝗽𝗲 𝗔𝘂𝘁𝗵 𝗢𝗽𝘁𝗶𝗼𝗻𝘀:
-
-   1. 𝗦𝘁𝗿𝗶𝗽𝗲 𝗔𝘂𝘁𝗵:
-     ➜ 𝗦𝗶𝗻𝗴𝗹𝗲: /au cc|mm|yy|cvv ✅
-      ➜ 𝗠𝗮𝘀𝘀: /mass cc|mm|yy|cvv ✅
-
-𝗧𝗼𝘁𝗮𝗹 𝗔𝘂𝘁𝗵 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀: 1
-
-"""
-        CHARGE_BUTTON = [
+<b>[!] WARNING:</b> _Unauthorized access will be logged._
+        """
+        AUTH_BUTTON = [
             [
-                InlineKeyboardButton("Back", callback_data="AUTH"),
-                InlineKeyboardButton("Close", callback_data="close")
+                InlineKeyboardButton("// BACK //", callback_data="AUTH"),
+                InlineKeyboardButton("// TERMINATE //", callback_data="close")
             ]
         ]
-        await CallbackQuery.edit_message_text(
-            text=CHARGE_TEXT,
-            reply_markup=InlineKeyboardMarkup(CHARGE_BUTTON)
-        )
+        await animated_edit(Client, CallbackQuery.message.chat.id, CallbackQuery.message.id, AUTH_TEXT, InlineKeyboardMarkup(AUTH_BUTTON), delay=0.01)
+
     if CallbackQuery.data == "Adyen2":
-        CHARGE_TEXT = """
-🔹 𝗔𝗱𝘆𝗲𝗻 𝗔𝘂𝘁𝗵 𝗚𝗮𝘁𝗲𝘀 𝗼𝗳 𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆
-🔹 𝗦𝘁𝗮𝘁𝘂𝘀: 𝗔𝗰𝘁𝗶𝘃𝗲 ❌
+        AUTH_TEXT = f"""
+<b>[ PROTOCOL: ADYEN_AUTH ]</b>
+<b>> STATUS:</b> ACTIVE
 
-🚀 𝗤𝘂𝗶𝗰𝗸 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗢𝘃𝗲𝗿𝘃𝗶𝗲𝘄:
+<b>[ COMMAND SYNTAX ]</b>
+> _Process payment through Adyen network._
+> `/ady cc|mm|yy|cvv`
+> `/mady cc|mm|yy|cvv`
 
-👤 𝗔𝗱𝘆𝗲𝗻 𝗔𝘂𝘁𝗵 𝗢𝗽𝘁𝗶𝗼𝗻𝘀:
-   1. 𝗔𝗱𝘆𝗲𝗻 𝗔𝘂𝘁𝗵:
-      ➜ 𝗦𝗶𝗻𝗴𝗹𝗲: /ad cc|mm|yy|cvv ❌
-      ➜ 𝗠𝗮𝘀𝘀: /mad cc|mm|yy|cvv ❌
-
-𝗧𝗼𝘁𝗮𝗹 𝗔𝘂𝘁𝗵 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀: 1
-
-"""
-        CHARGE_BUTTON = [
+<b>[!] WARNING:</b> _Data integrity is paramount._
+        """
+        AUTH_BUTTON = [
             [
-                InlineKeyboardButton("Back", callback_data="AUTH"),
-                InlineKeyboardButton("Close", callback_data="close")
+                InlineKeyboardButton("// BACK //", callback_data="AUTH"),
+                InlineKeyboardButton("// TERMINATE //", callback_data="close")
             ]
         ]
-        await CallbackQuery.edit_message_text(
-            text=CHARGE_TEXT,
-            reply_markup=InlineKeyboardMarkup(CHARGE_BUTTON)
-        )
-    if CallbackQuery.data == "BRAINTREEVBV":
-        CHARGE_TEXT = """
-🔹 𝗕𝗿𝗮𝗶𝗻𝘁𝗿𝗲𝗲 𝗚𝗮𝘁𝗲𝘀 𝗼𝗳 𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆
-🔹 𝗦𝘁𝗮𝘁𝘂𝘀: ✅ 𝗔𝗰𝘁𝗶𝘃𝗲
-
-🚀 𝗤𝘂𝗶𝗰𝗸 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗢𝘃𝗲𝗿𝘃𝗶𝗲𝘄:
-
-👤 𝗕𝗿𝗮𝗶𝗻𝘁𝗿𝗲𝗲 𝗩𝗕𝗩 𝗢𝗽𝘁𝗶𝗼𝗻𝘀:
-   1. 𝗩𝗕𝗩 𝗟𝗼𝗼𝗸𝘂𝗽 𝗚𝗮𝘁𝗲:
-      ➜ 𝗦𝗶𝗻𝗴𝗹𝗲: /vbv cc|mm|yy|cvv ✅
-      ➜ 𝗠𝗮𝘀𝘀 (𝗟𝗶𝗺𝗶𝘁=𝟮𝟱): /mvbv cc|mm|yy|cvv ✅
-
-𝗧𝗼𝘁𝗮𝗹 𝗔𝘂𝘁𝗵 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀: 1
-
-"""
-        CHARGE_BUTTON = [
-            [
-                InlineKeyboardButton("Back", callback_data="AUTH"),
-                InlineKeyboardButton("Close", callback_data="close")
-            ]
-        ]
-        await CallbackQuery.edit_message_text(
-            text=CHARGE_TEXT,
-            reply_markup=InlineKeyboardMarkup(CHARGE_BUTTON)
-        )
+        await animated_edit(Client, CallbackQuery.message.chat.id, CallbackQuery.message.id, AUTH_TEXT, InlineKeyboardMarkup(AUTH_BUTTON), delay=0.01)
 
     if CallbackQuery.data == "BRAINTREEB3":
-        CHARGE_TEXT = """
-🔹 𝗕𝗿𝗮𝗶𝗻𝘁𝗿𝗲𝗲 𝗔𝘂𝘁𝗵 𝗼𝗳 𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆 
-🔹 𝗦𝘁𝗮𝘁𝘂𝘀: ✅ 𝗔𝗰𝘁𝗶𝘃𝗲
+        AUTH_TEXT = f"""
+<b>[ PROTOCOL: BRAINTREE_B3 ]</b>
+<b>> STATUS:</b> ACTIVE
 
-🚀 𝗤𝘂𝗶𝗰𝗸 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗢𝘃𝗲𝗿𝘃𝗶𝗲𝘄:
+<b>[ COMMAND SYNTAX ]</b>
+> _Braintree B3 verification sequence._
+> `/b3 cc|mm|yy|cvv`
+> `/mb3 cc|mm|yy|cvv`
 
-👤 𝗕𝗿𝗮𝗶𝗻𝘁𝗿𝗲𝗲 𝗢𝗽𝘁𝗶𝗼𝗻𝘀:
-   1. 𝗕𝗿𝗮𝗶𝗻𝘁𝗿𝗲𝗲 𝗔𝘂𝘁𝗵 1 𝗚𝗮𝘁𝗲: ✅
-      ➜ 𝗦𝗶𝗻𝗴𝗹𝗲: /chk cc|mm|yy|cvv 
-      ➜ 𝗠𝗮𝘀𝘀 : /mchk cc|mm|yy|cvv        
-   2. 𝗕𝗿𝗮𝗶𝗻𝘁𝗿𝗲𝗲 𝗔𝘂𝘁𝗵 2 𝗚𝗮𝘁𝗲: ✅
-      ➜ 𝗦𝗶𝗻𝗴𝗹𝗲: /b3 cc|mm|yy|cvv 
-      ➜ 𝗠𝗮𝘀𝘀 (𝗟𝗶𝗺𝗶𝘁=25): /mb3 cc|mm|yy|cvv 
-   3. 𝗕𝗿𝗮𝗶𝗻𝘁𝗿𝗲𝗲 𝗔𝘂𝘁𝗵 3 𝗚𝗮𝘁𝗲: ✅
-      ➜ 𝗦𝗶𝗻𝗴𝗹𝗲: /b4 cc|mm|yy|cvv 
-      ➜ 𝗠𝗮𝘀𝘀: /mb4 cc|mm|yy|cvv
-      
-  𝗧𝗼𝘁𝗮𝗹 𝗔𝘂𝘁𝗵 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀: 3  
-
-"""
-        CHARGE_BUTTON = [
+<b>[!] WARNING:</b> _Ensure all parameters are valid._
+        """
+        AUTH_BUTTON = [
             [
-                InlineKeyboardButton("Back", callback_data="AUTH"),
-                InlineKeyboardButton("Close", callback_data="close")
+                InlineKeyboardButton("// BACK //", callback_data="AUTH"),
+                InlineKeyboardButton("// TERMINATE //", callback_data="close")
             ]
         ]
-        await CallbackQuery.edit_message_text(
-            text=CHARGE_TEXT,
-            reply_markup=InlineKeyboardMarkup(CHARGE_BUTTON)
-        )
-        
-    if CallbackQuery.data == "SQUAREAUTH":
-        CHARGE_TEXT = """
-🔹 𝗦𝗾𝘂𝗮𝗿𝗲 𝗔𝘂𝘁𝗵 𝗚𝗮𝘁𝗲𝘀 𝗼𝗳 𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆
-🔹 𝗦𝘁𝗮𝘁𝘂𝘀: ❌ 𝗔𝗰𝘁𝗶𝘃𝗲
+        await animated_edit(Client, CallbackQuery.message.chat.id, CallbackQuery.message.id, AUTH_TEXT, InlineKeyboardMarkup(AUTH_BUTTON), delay=0.01)
 
-🚀 𝗤𝘂𝗶𝗰𝗸 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗢𝘃𝗲𝗿𝘃𝗶𝗲𝘄:
+    if CallbackQuery.data == "BRAINTREEVBV":
+        AUTH_TEXT = f"""
+<b>[ PROTOCOL: BRAINTREE_VBV ]</b>
+<b>> STATUS:</b> ACTIVE
 
-👤 𝗦𝗾𝘂𝗮𝗿𝗲 𝗔𝘂𝘁𝗵 𝗢𝗽𝘁𝗶𝗼𝗻𝘀:
-   1. 𝗦𝗾𝘂𝗮𝗿𝗲 𝗔𝘂𝘁𝗵:
-      ➜ 𝗦𝗶𝗻𝗴𝗹𝗲: /sq cc|mm|yy|cvv ❌
-      ➜ 𝗠𝗮𝘀𝘀: /msq cc|mm|yy|cvv ❌
+<b>[ COMMAND SYNTAX ]</b>
+> _Braintree VBV security protocol._
+> `/vbv cc|mm|yy|cvv`
+> `/mvbv cc|mm|yy|cvv`
 
-𝗧𝗼𝘁𝗮𝗹 𝗔𝘂𝘁𝗵 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀: 1
-
-"""
-        CHARGE_BUTTON = [
+<b>[!] WARNING:</b> _Strict adherence to protocol required._
+        """
+        AUTH_BUTTON = [
             [
-                InlineKeyboardButton("Back", callback_data="AUTH"),
-                InlineKeyboardButton("Close", callback_data="close")
+                InlineKeyboardButton("// BACK //", callback_data="AUTH"),
+                InlineKeyboardButton("// TERMINATE //", callback_data="close")
             ]
         ]
-        await CallbackQuery.edit_message_text(
-            text=CHARGE_TEXT,
-            reply_markup=InlineKeyboardMarkup(CHARGE_BUTTON)
-        )
-    
+        await animated_edit(Client, CallbackQuery.message.chat.id, CallbackQuery.message.id, AUTH_TEXT, InlineKeyboardMarkup(AUTH_BUTTON), delay=0.01)
+
     if CallbackQuery.data == "CLOVERAUTH":
-        CHARGE_TEXT = """
-🔹 𝗖𝗹𝗼𝘃𝗲𝗿 𝗔𝘂𝘁𝗵 𝗚𝗮𝘁𝗲𝘀 𝗼𝗳 𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆
-🔹 𝗦𝘁𝗮𝘁𝘂𝘀: ❌ 𝗔𝗰𝘁𝗶𝘃𝗲
+        AUTH_TEXT = f"""
+<b>[ PROTOCOL: CLOVER_AUTH ]</b>
+<b>> STATUS:</b> ACTIVE
 
-🚀 𝗤𝘂𝗶𝗰𝗸 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗢𝘃𝗲𝗿𝘃𝗶𝗲𝘄:
+<b>[ COMMAND SYNTAX ]</b>
+> _Clover payment gateway initiation._
+> `/clv cc|mm|yy|cvv`
+> `/mclv cc|mm|yy|cvv`
 
-👤 𝗖𝗹𝗼𝘃𝗲𝗿 𝗔𝘂𝘁𝗵 𝗢𝗽𝘁𝗶𝗼𝗻𝘀:
-   1. 𝗖𝗹𝗼𝘃𝗲𝗿 𝗔𝘂𝘁𝗵:
-      ➜ 𝗦𝗶𝗻𝗴𝗹𝗲: /cl cc|mm|yy|cvv ❌
-      ➜ 𝗠𝗮𝘀𝘀: /mcl cc|mm|yy|cvv ❌
-
-𝗧𝗼𝘁𝗮𝗹 𝗔𝘂𝘁𝗵 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀: 1
-
-"""
-        CHARGE_BUTTON = [
+<b>[!] WARNING:</b> _Monitor transaction logs closely._
+        """
+        AUTH_BUTTON = [
             [
-                InlineKeyboardButton("Back", callback_data="AUTH"),
-                InlineKeyboardButton("Close", callback_data="close")
+                InlineKeyboardButton("// BACK //", callback_data="AUTH"),
+                InlineKeyboardButton("// TERMINATE //", callback_data="close")
             ]
         ]
-        await CallbackQuery.edit_message_text(
-            text=CHARGE_TEXT,
-            reply_markup=InlineKeyboardMarkup(CHARGE_BUTTON))
+        await animated_edit(Client, CallbackQuery.message.chat.id, CallbackQuery.message.id, AUTH_TEXT, InlineKeyboardMarkup(AUTH_BUTTON), delay=0.01)
 
+    if CallbackQuery.data == "SQUAREAUTH":
+        AUTH_TEXT = f"""
+<b>[ PROTOCOL: SQUARE_AUTH ]</b>
+<b>> STATUS:</b> ACTIVE
 
+<b>[ COMMAND SYNTAX ]</b>
+> _Square payment system integration._
+> `/sqr cc|mm|yy|cvv`
+> `/msqr cc|mm|yy|cvv`
 
-
+<b>[!] WARNING:</b> _Verify all input data._
+        """
+        AUTH_BUTTON = [
+            [
+                InlineKeyboardButton("// BACK //", callback_data="AUTH"),
+                InlineKeyboardButton("// TERMINATE //", callback_data="close")
+            ]
+        ]
+        await animated_edit(Client, CallbackQuery.message.chat.id, CallbackQuery.message.id, AUTH_TEXT, InlineKeyboardMarkup(AUTH_BUTTON), delay=0.01)
 
     if CallbackQuery.data == "CHARGE":
         CHARGE_TEXT = f"""
-<b>𝗛𝗲𝗹𝗹𝗼 𝗨𝘀𝗲𝗿!
+<b>[ CHARGE PROTOCOLS ]</b>
+<b>> STATUS:</b> ACTIVE
 
-𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆 𝗖𝗵𝗮𝗿𝗴𝗲 𝗚𝗮𝘁𝗲𝘀.
-
-𝗖𝗹𝗶𝗰𝗸 𝗼𝗻 𝗲𝗮𝗰𝗵 𝗼𝗳 𝘁𝗵𝗲𝗺 𝗯𝗲𝗹𝗼𝘄 𝘁𝗼 𝗴𝗲𝘁 𝘁𝗼 𝗸𝗻𝗼𝘄 𝘁𝗵𝗲𝗺 𝗯𝗲𝘁𝘁𝗲𝗿.</b>
-    """
-        
+<b>[!] SELECT CHARGE GATEWAY:</b>
+> _Unleash the flow of digital currency._
+        """
         CHARGE_BUTTONS = [
             [
-                InlineKeyboardButton("SK Based", callback_data="SKBASED"),
-                InlineKeyboardButton("Braintree", callback_data="BRAINTREE"),
+                InlineKeyboardButton("SK_BASED", callback_data="SKBASED"),
+                InlineKeyboardButton("BRAINTREE_CHARGE", callback_data="BRAINTREE"),
             ],
             [
-                InlineKeyboardButton("Stripe Api", callback_data="SITE"),
-                InlineKeyboardButton("Shopify", callback_data="SHOPIFY"),
+                InlineKeyboardButton("STRIPE_API", callback_data="SITE"),
+                InlineKeyboardButton("SHOPIFY_CHARGE", callback_data="SHOPIFY"),
             ],
             [
-                InlineKeyboardButton("Authnet", callback_data="AUTHNET"),
+                InlineKeyboardButton("AUTHNET_CHARGE", callback_data="AUTHNET"),
+                InlineKeyboardButton("PAYPAL_CHARGE", callback_data="PAYPAL"),
             ],
             [
-                InlineKeyboardButton("Paypal", callback_data="PAYPAL"),
-            ],
-            [
-                InlineKeyboardButton("Back", callback_data="HOME"),
-                InlineKeyboardButton("Close", callback_data="close")
+                InlineKeyboardButton("// BACK //", callback_data="HOME"),
+                InlineKeyboardButton("// TERMINATE //", callback_data="close")
             ]
         ]
-        await CallbackQuery.edit_message_text(
-            text=CHARGE_TEXT,
-            reply_markup=InlineKeyboardMarkup(CHARGE_BUTTONS))
+        await animated_edit(Client, CallbackQuery.message.chat.id, CallbackQuery.message.id, CHARGE_TEXT, InlineKeyboardMarkup(CHARGE_BUTTONS), delay=0.01)
+
     if CallbackQuery.data == "PAYPAL":
         CHARGE_TEXT = """
-🔹 𝗣𝗮𝘆𝗣𝗮𝗹 𝗖𝗵𝗮𝗿𝗴𝗲 𝗚𝗮𝘁𝗲𝘀 𝗼𝗳 𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆
-🔹 𝗦𝘁𝗮𝘁𝘂𝘀: ❌ 𝗔𝗰𝘁𝗶𝘃𝗲
+<b>[ CHARGE PROTOCOL: PAYPAL ]</b>
+<b>> STATUS:</b> <span style='color:red;'>INACTIVE</span>
 
-🚀 𝗤𝘂𝗶𝗰𝗸 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗢𝘃𝗲𝗿𝘃𝗶𝗲𝘄:
-👤 𝗣𝗮𝘆𝗣𝗮𝗹 𝗖𝗵𝗮𝗿𝗴𝗲 𝗢𝗽𝘁𝗶𝗼𝗻𝘀:
-   1. 𝗣𝗮𝘆𝗣𝗮𝗹 𝗖𝗵𝗮𝗿𝗴𝗲 0.01$: ❌
-      ➜ 𝗦𝗶𝗻𝗴𝗹𝗲: /pp cc|mm|yy|cvv [ON] 
-      ➜ 𝗠𝗮𝘀𝘀: /mpp cc|mm|yy|cvv [ON] 
+<b>[ COMMAND SYNTAX ]</b>
+> _PayPal integration modules._
+> `/pp cc|mm|yy|cvv`
+> `/mpp cc|mm|yy|cvv`
+> `/py cc|mm|yy|cvv`
+> `/mpy cc|mm|yy|cvv`
 
-   2. 𝗣𝗮𝘆𝗣𝗮𝗹 𝗖𝗵𝗮𝗿𝗴𝗲 1$: ❌
-      ➜ 𝗦𝗶𝗻𝗴𝗹𝗲: /py cc|mm|yy|cvv [OFF] 
-      ➜ 𝗠𝗮𝘀𝘀: /mpy cc|mm|yy|cvv [OFF] 
-
-𝗧𝗼𝘁𝗮𝗹 𝗖𝗵𝗮𝗿𝗴𝗲 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀: 2
-
-"""
+<b>[!] WARNING:</b> _Module currently offline. Awaiting reactivation._
+        """
         CHARGE_BUTTON = [
             [
-                InlineKeyboardButton("Back", callback_data="CHARGE"),
-                InlineKeyboardButton("Close", callback_data="close")
+                InlineKeyboardButton("// BACK //", callback_data="CHARGE"),
+                InlineKeyboardButton("// TERMINATE //", callback_data="close")
             ]
         ]
-        await CallbackQuery.edit_message_text(
-            text=CHARGE_TEXT,
-            reply_markup=InlineKeyboardMarkup(CHARGE_BUTTON)
-        )  
-
+        await animated_edit(Client, CallbackQuery.message.chat.id, CallbackQuery.message.id, CHARGE_TEXT, InlineKeyboardMarkup(CHARGE_BUTTON), delay=0.01)
 
     if CallbackQuery.data == "SKBASED":
         CHARGE_TEXT = """
-🔹 𝗦𝗧𝗥𝗜𝗣𝗘 𝗖𝗵𝗮𝗿𝗴𝗲 𝗚𝗮𝘁𝗲𝘀 𝗼𝗳 𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆
-🔹 𝗦𝘁𝗮𝘁𝘂𝘀: ✅ 𝗔𝗰𝘁𝗶𝘃𝗲
+<b>[ CHARGE PROTOCOL: SK_BASED ]</b>
+<b>> STATUS:</b> ACTIVE
 
-🚀 𝗤𝘂𝗶𝗰𝗸 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗢𝘃𝗲𝗿𝘃𝗶𝗲𝘄:
-👤 𝗦𝘁𝗿𝗶𝗽𝗲 𝗖𝗵𝗮𝗿𝗴𝗲 𝗢𝗽𝘁𝗶𝗼𝗻𝘀: ✅
-   1. SK BASED CHARGE 0.5$ CVV:
-      ➜ Single: /svv cc|mm|yy|cvv ✅
-      ➜ Mass: /msvv cc|mm|yy|cvv ✅
-      ➜ Mass txt (Limit=3k): /svvtxt [in reply to file] ✅
-      ➜ Self SK also added, check: /selfcmd ✅
+<b>[ COMMAND SYNTAX ]</b>
+> _SK-based charge operations._
+> `/svv cc|mm|yy|cvv`
+> `/msvv cc|mm|yy|cvv`
+> `/svvtxt [in reply to file]`
+> `/ccn cc|mm|yy|cvv`
+> `/mccn cc|mm|yy|cvv`
+> `/ccntxt [in reply to file]`
+> `/cvv cc|mm|yy|cvv`
+> `/mcvv cc|mm|yy|cvv`
+> `/cvvtxt [in reply to file]`
 
-   2. SK BASED 0.5$ CCN CHARGE:
-      ➜ Single: /ccn cc|mm|yy|cvv ✅
-      ➜ Mass: /mccn cc|mm|yy|cvv ✅
-      ➜ Mass txt (Limit=3k): /ccntxt [in reply to file] ✅
-      ➜ Self SK also added, check: /selfcmd ✅
-
-   3. SK BASED 0.5$ CVV CHARGE:
-      ➜ Single: /cvv cc|mm|yy|cvv ✅
-      ➜ Mass: /mcvv cc|mm|yy|cvv ✅
-      ➜ Mass txt (Limit=3k): /cvvtxt [in reply to file] ✅
-      ➜ Self SK also added, check: /selfcmd ✅
-
-𝗧𝗼𝘁𝗮𝗹 𝗖𝗵𝗮𝗿𝗴𝗲 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀: 3
-
-"""
+<b>[!] NOTE:</b> _Self SK functionality available via /selfcmd._
+        """
         CHARGE_BUTTON = [
             [
-                InlineKeyboardButton("Back", callback_data="CHARGE"),
-                InlineKeyboardButton("Close", callback_data="close")
+                InlineKeyboardButton("// BACK //", callback_data="CHARGE"),
+                InlineKeyboardButton("// TERMINATE //", callback_data="close")
             ]
         ]
-        await CallbackQuery.edit_message_text(
-            text=CHARGE_TEXT,
-            reply_markup=InlineKeyboardMarkup(CHARGE_BUTTON)
-        )
+        await animated_edit(Client, CallbackQuery.message.chat.id, CallbackQuery.message.id, CHARGE_TEXT, InlineKeyboardMarkup(CHARGE_BUTTON), delay=0.01)
+
     if CallbackQuery.data == "SITE":
         CHARGE_TEXT = """
-🔹 𝗦𝗶𝘁𝗲 𝗕𝗮𝘀𝗲𝗱 𝗔𝗽𝗶 𝗚𝗮𝘁𝗲𝘀 𝗼𝗳 𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆
-🔹 𝗦𝘁𝗮𝘁𝘂𝘀: ✅ 𝗔𝗰𝘁𝗶𝘃𝗲
+<b>[ CHARGE PROTOCOL: STRIPE_API ]</b>
+<b>> STATUS:</b> ACTIVE
 
-🚀 𝗤𝘂𝗶𝗰𝗸 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗢𝘃𝗲𝗿𝘃𝗶𝗲𝘄:
+<b>[ COMMAND SYNTAX ]</b>
+> _Direct Stripe API charge methods._
+> `/sch cc|mm|yy|cvv`
+> `/msch cc|mm|yy|cvv`
+> `/st1 cc|mm|yy|cvv`
+> `/mst1 cc|mm|yy|cvv`
 
-👤 Site Charge Options:
-   1. 𝗡𝗢𝗡 𝗦𝗞 𝗖𝗩𝗩 5$ 𝗖𝗛𝗔𝗥𝗚𝗘𝗗: ✅
-      ➜ 𝗦𝗶𝗻𝗴𝗹𝗲: /sch cc|mm|yy|cvv 
-      ➜ 𝗠𝗮𝘀𝘀: /msch cc|mm|yy|cvv
-      
-   2. 𝗡𝗢𝗡 𝗦𝗞 𝗖𝗩𝗩 5$ 𝗖𝗛𝗔𝗥𝗚𝗘𝗗: ✅
-      ➜ 𝗦𝗶𝗻𝗴𝗹𝗲: /st1 cc|mm|yy|cvv 
-      ➜ 𝗠𝗮𝘀𝘀: /mst1 cc|mm|yy|cvv
-
-   𝗧𝗼𝘁𝗮𝗹 𝗖𝗵𝗮𝗿𝗴𝗲 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀: 2
-
-"""
+<b>[!] WARNING:</b> _Ensure API keys are valid._
+        """
         CHARGE_BUTTON = [
             [
-                InlineKeyboardButton("Back", callback_data="CHARGE"),
-                InlineKeyboardButton("Close", callback_data="close")
+                InlineKeyboardButton("// BACK //", callback_data="CHARGE"),
+                InlineKeyboardButton("// TERMINATE //", callback_data="close")
             ]
         ]
-        await CallbackQuery.edit_message_text(
-            text=CHARGE_TEXT,
-            reply_markup=InlineKeyboardMarkup(CHARGE_BUTTON)
-        )
+        await animated_edit(Client, CallbackQuery.message.chat.id, CallbackQuery.message.id, CHARGE_TEXT, InlineKeyboardMarkup(CHARGE_BUTTON), delay=0.01)
+
     if CallbackQuery.data == "BRAINTREE":
         CHARGE_TEXT = """
-🔹 𝗕𝗿𝗮𝗶𝗻𝘁𝗿𝗲𝗲 𝗖𝗵𝗮𝗿𝗴𝗲 𝗚𝗮𝘁𝗲𝘀 𝗼𝗳 𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆
-🔹 𝗦𝘁𝗮𝘁𝘂𝘀: ❌ 𝗔𝗰𝘁𝗶𝘃𝗲
+<b>[ CHARGE PROTOCOL: BRAINTREE ]</b>
+<b>> STATUS:</b> <span style='color:red;'>INACTIVE</span>
 
-🚀 𝗤𝘂𝗶𝗰𝗸 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗢𝘃𝗲𝗿𝘃𝗶𝗲𝘄:
+<b>[ COMMAND SYNTAX ]</b>
+> _Braintree charge operations._
+> `/br cc|mm|yy|cvv`
+> `/mbr cc|mm|yy|cvv`
 
-👤 𝗕𝗿𝗮𝗶𝗻𝘁𝗿𝗲𝗲 𝗖𝗵𝗮𝗿𝗴𝗲 𝗢𝗽𝘁𝗶𝗼𝗻𝘀:
-   1. 𝗕𝗿𝗮𝗶𝗻𝘁𝗿𝗲𝗲 𝗖𝗵𝗮𝗿𝗴𝗲 1£:
-      ➜ 𝗦𝗶𝗻𝗴𝗹𝗲: /br cc|mm|yy|cvv [off]
-      ➜ 𝗠𝗮𝘀𝘀: /mbr cc|mm|yy|cvv [off]
-
-𝗧𝗼𝘁𝗮𝗹 𝗖𝗵𝗮𝗿𝗴𝗲 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀: 1
-
-"""
+<b>[!] WARNING:</b> _Module currently offline. Awaiting reactivation._
+        """
         CHARGE_BUTTON = [
             [
-                InlineKeyboardButton("Back", callback_data="CHARGE"),
-                InlineKeyboardButton("Close", callback_data="close")
+                InlineKeyboardButton("// BACK //", callback_data="CHARGE"),
+                InlineKeyboardButton("// TERMINATE //", callback_data="close")
             ]
         ]
-        await CallbackQuery.edit_message_text(
-            text=CHARGE_TEXT,
-            reply_markup=InlineKeyboardMarkup(CHARGE_BUTTON)
-        )
+        await animated_edit(Client, CallbackQuery.message.chat.id, CallbackQuery.message.id, CHARGE_TEXT, InlineKeyboardMarkup(CHARGE_BUTTON), delay=0.01)
+
     if CallbackQuery.data == "SHOPIFY":
         CHARGE_TEXT = """
+<b>[ CHARGE PROTOCOL: SHOPIFY ]</b>
+<b>> STATUS:</b> ACTIVE
 
-🔹 Shopify Charge Gates of 𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆
-🔹 Status: ✅ Active
+<b>[ COMMAND SYNTAX ]</b>
+> _Shopify e-commerce charge protocols._
+> `/sh cc|mm|yy|cvv`
+> `/msh cc|mm|yy|cvv`
+> `/so cc|mm|yy|cvv`
+> `/mso cc|mm|yy|cvv`
+> `/sho cc|mm|yy|cvv`
+> `/msho cc|mm|yy|cvv`
+> `/sg cc|mm|yy|cvv`
+> `/msg cc|mm|yy|cvv`
 
-🚀 Quick Commands Overview:
-
-👤 Shopify Charge Options:
-   1. Shopify Charge 10$:
-      ➜ Single: /sh cc|mm|yy|cvv ✅
-      ➜ Mass: /msh cc|mm|yy|cvv ✅
-
-   2. Shopify Charge 27.51$:
-      ➜ Single: /so cc|mm|yy|cvv ✅
-      ➜ Mass: /mso cc|mm|yy|cvv ✅
-
-   3. Shopify Charge 20$:
-      ➜ Single: /sho cc|mm|yy|cvv ✅
-      ➜ Mass: /msho cc|mm|yy|cvv ✅
-
-   4. Shopify Charge 20$:
-      ➜ Single: /sg cc|mm|yy|cvv ✅
-      ➜ Mass: /msg cc|mm|yy|cvv ✅
-
-𝗧𝗼𝘁𝗮𝗹 𝗖𝗵𝗮𝗿𝗴𝗲 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀: 4
-
-"""
+<b>[!] NOTE:</b> _Multiple Shopify gateways available._
+        """
         CHARGE_BUTTON = [
             [
-                InlineKeyboardButton("Back", callback_data="CHARGE"),
-                InlineKeyboardButton("Close", callback_data="close")
+                InlineKeyboardButton("// BACK //", callback_data="CHARGE"),
+                InlineKeyboardButton("// TERMINATE //", callback_data="close")
             ]
         ]
-        await CallbackQuery.edit_message_text(
-            text=CHARGE_TEXT,
-            reply_markup=InlineKeyboardMarkup(CHARGE_BUTTON)
-        )
+        await animated_edit(Client, CallbackQuery.message.chat.id, CallbackQuery.message.id, CHARGE_TEXT, InlineKeyboardMarkup(CHARGE_BUTTON), delay=0.01)
+
     if CallbackQuery.data == "AUTHNET":
         CHARGE_TEXT = """
-🔹 Authnet Charge 𝗚𝗮𝘁𝗲𝘀 𝗼𝗳 𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆
-🔹 𝗦𝘁𝗮𝘁𝘂𝘀: ✅ 𝗔𝗰𝘁𝗶𝘃𝗲
+<b>[ CHARGE PROTOCOL: AUTHNET ]</b>
+<b>> STATUS:</b> ACTIVE
 
-🚀 𝗤𝘂𝗶𝗰𝗸 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗢𝘃𝗲𝗿𝘃𝗶𝗲𝘄:
+<b>[ COMMAND SYNTAX ]</b>
+> _Authorize.Net transaction initiation._
+> `/nt cc|mm|yy|cvv`
 
-👤 Authnet 𝗖𝗵𝗮𝗿𝗴𝗲 𝗢𝗽𝘁𝗶𝗼𝗻𝘀:
-   1. Authnet 𝗖𝗵𝗮𝗿𝗴𝗲 $3:
-      ➜ 𝗦𝗶𝗻𝗴𝗹𝗲: /nt cc|mm|yy|cvv 
-      
-𝗧𝗼𝘁𝗮𝗹 𝗖𝗵𝗮𝗿𝗴𝗲 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀: 1
-
-"""
+<b>[!] WARNING:</b> _Single transaction mode._
+        """
         CHARGE_BUTTON = [
             [
-                InlineKeyboardButton("Back", callback_data="CHARGE"),
-                InlineKeyboardButton("Close", callback_data="close")
+                InlineKeyboardButton("// BACK //", callback_data="CHARGE"),
+                InlineKeyboardButton("// TERMINATE //", callback_data="close")
             ]
         ]
-        await CallbackQuery.edit_message_text(
-            text=CHARGE_TEXT,
-            reply_markup=InlineKeyboardMarkup(CHARGE_BUTTON)
-        )    
-        
+        await animated_edit(Client, CallbackQuery.message.chat.id, CallbackQuery.message.id, CHARGE_TEXT, InlineKeyboardMarkup(CHARGE_BUTTON), delay=0.01)
+
     if CallbackQuery.data == "TOOLS":
         TOOLS_TEXT = f"""
-<b>𝗛𝗲𝗹𝗹𝗼 𝗨𝘀𝗲𝗿!
+<b>[ CYBER TOOLS ]</b>
+<b>> STATUS:</b> ACTIVE
 
-𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆 𝗧𝗼𝗼𝗹𝘀.
-
-𝗖𝗹𝗶𝗰𝗸 𝗼𝗻 𝗲𝗮𝗰𝗵 𝗼𝗳 𝘁𝗵𝗲𝗺 𝗯𝗲𝗹𝗼𝘄 𝘁𝗼 𝗴𝗲𝘁 𝘁𝗼 𝗸𝗻𝗼𝘄 𝘁𝗵𝗲𝗺 𝗯𝗲𝘁𝘁𝗲𝗿.</b>
-    """
+<b>[!] SELECT TOOL MODULE:</b>
+> _Sharpen your digital edge._
+        """
         CHARGE_BUTTONS = [
             [
-                InlineKeyboardButton("Scrapper", callback_data="SCRAPPER"),
-                InlineKeyboardButton("SK TOOLS", callback_data="SKSTOOL"),
+                InlineKeyboardButton("DATA_SCRAPPER", callback_data="SCRAPPER"),
+                InlineKeyboardButton("SK_UTILITIES", callback_data="SKSTOOL"),
             ],
             [
-                InlineKeyboardButton(
-                    "Genarator", callback_data="GENARATORTOOLS"),
-                InlineKeyboardButton(
-                    "Bin & Others", callback_data="BINANDOTHERS"),
+                InlineKeyboardButton("GENERATOR_MODULES", callback_data="GENARATORTOOLS"),
+                InlineKeyboardButton("BIN_ANALYTICS", callback_data="BINANDOTHERS"),
             ],
             [
-                InlineKeyboardButton("Back", callback_data="HOME"),
-                InlineKeyboardButton("Close", callback_data="close")
+                InlineKeyboardButton("// BACK //", callback_data="HOME"),
+                InlineKeyboardButton("// TERMINATE //", callback_data="close")
             ]
         ]
-        await CallbackQuery.edit_message_text(
-            text=TOOLS_TEXT,
-            reply_markup=InlineKeyboardMarkup(CHARGE_BUTTONS))
+        await animated_edit(Client, CallbackQuery.message.chat.id, CallbackQuery.message.id, TOOLS_TEXT, InlineKeyboardMarkup(CHARGE_BUTTONS), delay=0.01)
 
     if CallbackQuery.data == "SKSTOOL":
         CHARGE_TEXT = """
-🔹 𝗦𝗞 𝗧𝗼𝗼𝗹𝘀 𝗼𝗳 𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆
-🔹 𝗦𝘁𝗮𝘁𝘂𝘀: ✅ 𝗔𝗰𝘁𝗶𝘃𝗲
+<b>[ TOOL MODULE: SK_UTILITIES ]</b>
+<b>> STATUS:</b> ACTIVE
 
-🚀 𝗤𝘂𝗶𝗰𝗸 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗢𝘃𝗲𝗿𝘃𝗶𝗲𝘄:
+<b>[ COMMAND SYNTAX ]</b>
+> _Stripe Key analysis and generation._
+> `/sk sk_live_xxxxxx`
+> `/pk sk_live_xxxxxx`
+> `/skuser sk_live_xxxxxx`
+> `/skinfo sk_live_xxxxxx`
 
-👤 𝗦𝗞 𝗧𝗼𝗼𝗹𝘀:
-   1. 𝗦𝗞 𝗞𝗲𝘆 𝗖𝗵𝗲𝗰𝗸𝗲𝗿 𝗚𝗮𝘁𝗲: /sk sk_live_xxxxxx ✅ (𝗟𝗶𝗺𝗶𝘁: 𝗦𝗶𝗻𝗴𝗹𝗲)
-   2. 𝗦𝗞 𝗧𝗼 𝗣𝗞 𝗚𝗲𝗻𝗲𝗿𝗮𝘁𝗼𝗿 𝗚𝗮𝘁𝗲: /pk sk_live_xxxxxx ✅ (𝗟𝗶𝗺𝗶𝘁: 𝗦𝗶𝗻𝗴𝗹𝗲)
-   3. 𝗦𝗞 𝗨𝘀𝗲𝗿 𝗖𝗵𝗲𝗰𝗸𝗲𝗿 𝗚𝗮𝘁𝗲: /skuser sk_live_xxxxxx ✅ (𝗟𝗶𝗺𝗶𝘁: 𝗦𝗶𝗻𝗴𝗹𝗲)
-   4. 𝗦𝗞 𝗜𝗻𝗳𝗼 𝗖𝗵𝗲𝗰𝗸𝗲𝗿 𝗚𝗮𝘁𝗲: /skinfo sk_live_xxxxxx ✅ (𝗟𝗶𝗺𝗶𝘁: 𝗦𝗶𝗻𝗴𝗹𝗲)
-
-𝗧𝗼𝘁𝗮𝗹 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀: 4
-
-"""
+<b>[!] NOTE:</b> _Single-use commands for key validation._
+        """
         CHARGE_BUTTON = [
             [
-                InlineKeyboardButton("Back", callback_data="TOOLS"),
-                InlineKeyboardButton("Close", callback_data="close")
+                InlineKeyboardButton("// BACK //", callback_data="TOOLS"),
+                InlineKeyboardButton("// TERMINATE //", callback_data="close")
             ]
         ]
-        await CallbackQuery.edit_message_text(
-            text=CHARGE_TEXT,
-            reply_markup=InlineKeyboardMarkup(CHARGE_BUTTON)
-        )
+        await animated_edit(Client, CallbackQuery.message.chat.id, CallbackQuery.message.id, CHARGE_TEXT, InlineKeyboardMarkup(CHARGE_BUTTON), delay=0.01)
+
     if CallbackQuery.data == "SCRAPPER":
         CHARGE_TEXT = """
-🔹 𝗦𝗰𝗿𝗮𝗽𝗽𝗲𝗿 𝗧𝗼𝗼𝗹𝘀 𝗚𝗮𝘁𝗲𝘀 𝗼𝗳 𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆
-🔹 𝗦𝘁𝗮𝘁𝘂𝘀: ✅ 𝗔𝗰𝘁𝗶𝘃𝗲
+<b>[ TOOL MODULE: DATA_SCRAPPER ]</b>
+<b>> STATUS:</b> ACTIVE
 
-🚀 𝗤𝘂𝗶𝗰𝗸 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗢𝘃𝗲𝗿𝘃𝗶𝗲𝘄:
+<b>[ COMMAND SYNTAX ]</b>
+> _Harvesting digital fragments._
+> `/scr channel_username 100`
+> `/scrbin 440393 channel_username 100`
+> `/scrsk channel_username 100`
 
-👤 𝗦𝗰𝗿𝗮𝗽𝗲𝗿 𝗧𝗼𝗼𝗹𝘀:
-   1. 𝗖𝗖 𝗦𝗰𝗿𝗮𝗽𝗲𝗿 𝗚𝗮𝘁𝗲: /scr channel_username 100 ✅ (𝗟𝗶𝗺𝗶𝘁: 5K)
-   2. 𝗕𝗶𝗻 𝗕𝗮𝘀𝗲𝗱 𝗖𝗖 𝗦𝗰𝗿𝗮𝗽𝗲𝗿 𝗚𝗮𝘁𝗲: /scrbin 440393 channel_username 100 ✅ (𝗟𝗶𝗺𝗶𝘁: 5K)
-   3. 𝗦𝗞 𝗦𝗰𝗿𝗮𝗽𝗲𝗿 𝗚𝗮𝘁𝗲: /scrsk channel_username 100 ✅ (𝗟𝗶𝗺𝗶𝘁: 5K)
-
-𝗧𝗼𝘁𝗮𝗹 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀: 3
-
-"""
+<b>[!] WARNING:</b> _Scraping limits apply (5K)._
+        """
         CHARGE_BUTTON = [
             [
-                InlineKeyboardButton("Back", callback_data="TOOLS"),
-                InlineKeyboardButton("Close", callback_data="close")
+                InlineKeyboardButton("// BACK //", callback_data="TOOLS"),
+                InlineKeyboardButton("// TERMINATE //", callback_data="close")
             ]
         ]
-        await CallbackQuery.edit_message_text(
-            text=CHARGE_TEXT,
-            reply_markup=InlineKeyboardMarkup(CHARGE_BUTTON)
-        )
+        await animated_edit(Client, CallbackQuery.message.chat.id, CallbackQuery.message.id, CHARGE_TEXT, InlineKeyboardMarkup(CHARGE_BUTTON), delay=0.01)
+
     if CallbackQuery.data == "GENARATORTOOLS":
         CHARGE_TEXT = """
-🔹 𝗚𝗲𝗻𝗲𝗿𝗮𝘁𝗼𝗿 𝗧𝗼𝗼𝗹𝘀 𝗼𝗳 𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆
-🔹 𝗦𝘁𝗮𝘁𝘂𝘀: ✅ 𝗔𝗰𝘁𝗶𝘃𝗲
+<b>[ TOOL MODULE: GENERATOR_MODULES ]</b>
+<b>> STATUS:</b> ACTIVE
 
-🚀 𝗤𝘂𝗶𝗰𝗸 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗢𝘃𝗲𝗿𝘃𝗶𝗲𝘄:
+<b>[ COMMAND SYNTAX ]</b>
+> _Fabricating digital identities._
+> `/gen 440393 500`
+> `/fake us`
 
-👤 𝗚𝗲𝗻𝗲𝗿𝗮𝘁𝗼𝗿 𝗧𝗼𝗼𝗹𝘀:
-   1. 𝗥𝗮𝗻𝗱𝗼𝗺 𝗖𝗖 𝗚𝗲𝗻𝗲𝗿𝗮𝘁𝗼𝗿 𝗚𝗮𝘁𝗲: /gen 440393 500 ✅ (𝗟𝗶𝗺𝗶𝘁: 10k)
-   2. 𝗙𝗮𝗸𝗲 𝗔𝗱𝗱𝗿𝗲𝘀𝘀 𝗚𝗲𝗻𝗲𝗿𝗮𝘁𝗼𝗿 𝗚𝗮𝘁𝗲: /fake us ✅
-
-𝗧𝗼𝘁𝗮𝗹 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀: 2
-
-"""
+<b>[!] WARNING:</b> _Generation limits apply (10K)._
+        """
         CHARGE_BUTTON = [
             [
-                InlineKeyboardButton("Back", callback_data="TOOLS"),
-                InlineKeyboardButton("Close", callback_data="close")
+                InlineKeyboardButton("// BACK //", callback_data="TOOLS"),
+                InlineKeyboardButton("// TERMINATE //", callback_data="close")
             ]
         ]
-        await CallbackQuery.edit_message_text(
-            text=CHARGE_TEXT,
-            reply_markup=InlineKeyboardMarkup(CHARGE_BUTTON)
-        )
+        await animated_edit(Client, CallbackQuery.message.chat.id, CallbackQuery.message.id, CHARGE_TEXT, InlineKeyboardMarkup(CHARGE_BUTTON), delay=0.01)
+
     if CallbackQuery.data == "BINANDOTHERS":
         CHARGE_TEXT = """
-🔹 𝗕𝗶𝗻 𝗮𝗻𝗱 𝗢𝘁𝗵𝗲𝗿 𝗧𝗼𝗼𝗹𝘀 𝗢𝗳 𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆
-🔹 𝗦𝘁𝗮𝘁𝘂𝘀: ✅ 𝗔𝗰𝘁𝗶𝘃𝗲
+<b>[ TOOL MODULE: BIN_ANALYTICS ]</b>
+<b>> STATUS:</b> ACTIVE
 
-🚀 𝗤𝘂𝗶𝗰𝗸 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗢𝘃𝗲𝗿𝘃𝗶𝗲𝘄:
+<b>[ COMMAND SYNTAX ]</b>
+> _Decoding financial identifiers._
+> `/bin 440393`
+> `/fl [in reply to text]`
+> `/massbin 440393`
 
-👤 𝗕𝗜𝗡 𝗜𝗻𝗳𝗼 𝗖𝗵𝗲𝗰𝗸𝗲𝗿𝘀:
-   1. 𝗕𝗜𝗡 𝗜𝗻𝗳𝗼 𝗖𝗵𝗲𝗰𝗸𝗲𝗿 𝗚𝗮𝘁𝗲: /bin 440393 ✅ (𝗦𝗶𝗻𝗴𝗹𝗲 𝗟𝗶𝗺𝗶𝘁)
-   2. 𝗧𝗲𝘅𝘁 𝗧𝗼 𝗖𝗖 𝗙𝗶𝗹𝘁𝗲𝗿 𝗚𝗮𝘁𝗲: /fl [in reply to text] ✅
-   3. 𝗠𝗮𝘀𝘀 𝗕𝗜𝗡 𝗜𝗻𝗳𝗼 𝗖𝗵𝗲𝗰𝗸𝗲𝗿 𝗚𝗮𝘁𝗲: /massbin 440393 ❌ (𝗟𝗶𝗺𝗶𝘁: 30)
+<b>[ ADDITIONAL UTILITIES ]</b>
+> `/ip your_ip`
+> `/url website_url`
+> `/gpt Promote`
 
-💡 𝗔𝗱𝗱𝗶𝘁𝗶𝗼𝗻𝗮𝗹 𝗧𝗼𝗼𝗹𝘀:
-   4. 𝗜𝗣 𝗟𝗼𝗼𝗸𝘂𝗽 𝗚𝗮𝘁𝗲: /ip your_ip ✅
-   5. 𝗚𝗮𝘁𝗲𝘄𝗮𝘆𝘀 𝗛𝘂𝗻𝘁𝗲𝗿 𝗚𝗮𝘁𝗲: /url website_url ✅ (𝗟𝗶𝗺𝗶𝘁: 20)
-   6. 𝗚𝗣𝗧-𝟰: /gpt Promote ❌
-
-𝗧𝗼𝘁𝗮𝗹  𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀: 6
-
-
-"""
-
+<b>[!] WARNING:</b> _Mass BIN limit (30). Gateway Hunter limit (20). GPT-4 access restricted._
+        """
         CHARGE_BUTTON = [
             [
-                InlineKeyboardButton("Back", callback_data="TOOLS"),
-                InlineKeyboardButton("Close", callback_data="close")
+                InlineKeyboardButton("// BACK //", callback_data="TOOLS"),
+                InlineKeyboardButton("// TERMINATE //", callback_data="close")
             ]
         ]
-        await CallbackQuery.edit_message_text(
-            text=CHARGE_TEXT,
-            reply_markup=InlineKeyboardMarkup(CHARGE_BUTTON)
-        )
+        await animated_edit(Client, CallbackQuery.message.chat.id, CallbackQuery.message.id, CHARGE_TEXT, InlineKeyboardMarkup(CHARGE_BUTTON), delay=0.01)
 
     if CallbackQuery.data == "HELPER":
         HELPER_TEXT = f"""
-<b>𝗛𝗲𝗹𝗹𝗼 𝗨𝘀𝗲𝗿!
+<b>[ SYSTEM HELPER ]</b>
+<b>> STATUS:</b> ACTIVE
 
-𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆 𝗛𝗲𝗹𝗽𝗲𝗿.
-
-𝗖𝗹𝗶𝗰𝗸 𝗼𝗻 𝗲𝗮𝗰𝗵 𝗼𝗳 𝘁𝗵𝗲𝗺 𝗯𝗲𝗹𝗼𝘄 𝘁𝗼 𝗴𝗲𝘁 𝘁𝗼 𝗸𝗻𝗼𝘄 𝘁𝗵𝗲𝗺 𝗯𝗲𝘁𝘁𝗲𝗿.</b>
-    """
+<b>[!] SELECT ASSISTANCE PROTOCOL:</b>
+> _Navigating the digital labyrinth._
+        """
         CHARGE_BUTTONS = [
             [
-                InlineKeyboardButton("Helper", callback_data="INFO"),
-                # InlineKeyboardButton("SK TOOLS", callback_data="SKTOOLS"),
+                InlineKeyboardButton("INFO_MODULES", callback_data="INFO"),
             ],
             [
-                InlineKeyboardButton("Back", callback_data="HOME"),
-                InlineKeyboardButton("Close", callback_data="close")
+                InlineKeyboardButton("// BACK //", callback_data="HOME"),
+                InlineKeyboardButton("// TERMINATE //", callback_data="close")
             ]
         ]
-        await CallbackQuery.edit_message_text(
-            text=HELPER_TEXT,
-            reply_markup=InlineKeyboardMarkup(CHARGE_BUTTONS))
+        await animated_edit(Client, CallbackQuery.message.chat.id, CallbackQuery.message.id, HELPER_TEXT, InlineKeyboardMarkup(CHARGE_BUTTONS), delay=0.01)
+
     if CallbackQuery.data == "INFO":
         CHARGE_TEXT = """
-🔹 𝗛𝗲𝗹𝗽𝗲𝗿 𝗚𝗮𝘁𝗲𝘀 𝗼𝗳 𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆
-🔹 𝗦𝘁𝗮𝘁𝘂𝘀: ✅ 𝗔𝗰𝘁𝗶𝘃𝗲
+<b>[ HELPER PROTOCOL: INFO_MODULES ]</b>
+<b>> STATUS:</b> ACTIVE
 
-🚀 𝗤𝘂𝗶𝗰𝗸 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗢𝘃𝗲𝗿𝘃𝗶𝗲𝘄:
+<b>[ COMMAND SYNTAX ]</b>
+> _Accessing system diagnostics and user data._
+> `/start`
+> `/register`
+> `/id`
+> `/info`
+> `/credits`
+> `/howcrd`
+> `/howpm`
+> `/buy`
+> `/howgp`
+> `/ping`
 
-👤 𝗔𝗰𝗰𝗼𝘂𝗻𝘁 𝗠𝗮𝗻𝗮𝗴𝗲𝗺𝗲𝗻𝘁:
-   1. 𝗦𝘁𝗮𝗿𝘁 𝗕𝗼𝘁: /start
-   2. 𝗥𝗲𝗴𝗶𝘀𝘁𝗲𝗿: /register
-   3. 𝗨𝘀𝗲𝗿 𝗜𝗗: /id
-   4. 𝗨𝘀𝗲𝗿 𝗜𝗻𝗳𝗼: /info
-   5. 𝗖𝗿𝗲𝗱𝗶𝘁𝘀 𝗕𝗮𝗹𝗮𝗻𝗰𝗲: /credits
-
-💡 𝗖𝗿𝗲𝗱𝗶𝘁𝘀 & 𝗣𝗿𝗲𝗺𝗶𝘂𝗺𝘀:
-   6. 𝗖𝗿𝗲𝗱𝗶𝘁𝘀 𝗦𝘆𝘀𝘁𝗲𝗺: /howcrd
-   7. 𝗣𝗿𝗲𝗺𝗶𝘂𝗺 𝗣𝗿𝗶𝘃𝗶𝗹𝗲𝗴𝗲𝘀: /howpm
-   8. 𝗕𝘂𝘆 𝗣𝗿𝗲𝗺𝗶𝘂𝗺: /buy
-
-👥 𝗖𝗼𝗺𝗺𝘂𝗻𝗶𝘁𝘆 𝗧𝗼𝗼𝗹𝘀:
-   9. 𝗔𝗱𝗱 𝘁𝗼 𝗚𝗿𝗼𝘂𝗽: /howgp
-
-📡 𝗧𝗲𝗰𝗵 𝗦𝘂𝗽𝗽𝗼𝗿𝘁:
-   10. 𝗣𝗶𝗻𝗴 𝗦𝘁𝗮𝘁𝘂𝘀: /ping
-
-𝗧𝗼𝘁𝗮𝗹 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀: 10
--
+<b>[!] NOTE:</b> _Refer to specific commands for detailed information._
         """
-
         CHARGE_BUTTON = [
             [
-                InlineKeyboardButton("Back", callback_data="HELPER"),
-                InlineKeyboardButton("Close", callback_data="close")
+                InlineKeyboardButton("// BACK //", callback_data="HELPER"),
+                InlineKeyboardButton("// TERMINATE //", callback_data="close")
             ]
         ]
-        await CallbackQuery.edit_message_text(
-            text=CHARGE_TEXT,
-            reply_markup=InlineKeyboardMarkup(CHARGE_BUTTON)
-        )
+        await animated_edit(Client, CallbackQuery.message.chat.id, CallbackQuery.message.id, CHARGE_TEXT, InlineKeyboardMarkup(CHARGE_BUTTON), delay=0.01)
