@@ -1,7 +1,7 @@
 import pymongo
 
 client = pymongo.MongoClient(
-    "mongodb+srv://Glitch:PETnvMU8X0414oW2@glitch.u5ylwcm.mongodb.net/?retryWrites=true&w=majority&appName=Glitch"
+    "mongodb+srv://spydechk:Ofqfcb3m@cluster0.ucczpx3.mongodb.net/?appName=Cluster0"
 )
 
 try:
