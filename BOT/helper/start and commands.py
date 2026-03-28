@@ -319,7 +319,7 @@ if query.data == "tools2":
         reply_markup=reply_markup
     )
     
-    elif query.data == "exit" or query.data == "close":
+    if query.data == "exit" or query.data == "close":
         await query.message.delete()
     
     elif query.data == "back":
