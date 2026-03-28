@@ -120,23 +120,23 @@ Usage: /pf cc|mes|ano|cvv</b>"""
         proxy_status = "Live ✨"
 
         finalresp = f"""
-{status}
-━━━━━━━━━━━━━
-[⟐] 𝗖𝗖 - <code>{fullcc}</code>
-[⟐] 𝗦𝘁𝗮𝗍𝘂𝘀 : {response}
-[⟐] 𝗚𝗮𝘁𝗲 - {gateway}
-━━━━━━━━━━━━━
-[⟐] 𝗩𝗕𝗩 - {vbv_status}
-━━━━━━━━━━━━━
-[⟐] B𝗶𝗻 : {bin6}
-[⟐] 𝗖𝗼𝘂𝗻𝘁𝗿𝘆 : {country} {flag}
-[⟐] 𝗜𝘀𝘀𝘂𝗲𝗿 : {bank}
-[⟐] 𝗧𝘆𝗽𝗲 : {brand} | {type_} - {level}
-━━━━━━━━━━━━━
-[⟐] T/t : {time.perf_counter() - start:0.2f}s | Proxy : {proxy_status}
-[⟐] 𝗖𝗵𝗲𝗰𝗸𝗲𝗱 𝗯𝘆: <a href='tg://user?id={message.from_user.id}'> {message.from_user.first_name}</a> [ {role} ]
-[⟐] 𝗢𝘄𝗻𝗲𝗿: <a href="tg://user?id=8340881349">������</a>
-╚═══════⟐「 𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊  」⟐═══════╝
+━━━〔 RESULT 〕━━━
+[〄] 𝘾𝘾        ⟶ <code>{fullcc}</code>
+[〄] 𝙎𝙏𝘼𝙏𝙐𝙎    ⟶ {status}
+[〄] 𝙍𝙀𝙎𝙐𝙇𝙏    ⟶ {response}
+
+━━━〔 INFO 〕━━━
+[〄] 𝘽𝙄𝙉 ⟶ {bin6}
+[〄] 𝘽𝘼𝙉𝙆 ⟶ {bank}
+[〄] 𝘾𝙊𝙐𝙉𝙏𝙍𝙔⟶ {country}
+
+━━━〔 META 〕━━━
+[〄] 𝙂𝘼𝙏𝙀𝙒𝘼𝙔 ⟶ {gateway}
+[〄] 𝙏𝙄𝙈𝙀 ⟶ {time.perf_counter() - start:0.2f}s
+[〄] 𝘾𝙃𝙀𝘾𝙆𝙀𝘿 𝘽𝙔 𝙏𝙄𝙈𝙀 ⟶<a href='tg://user?id={message.from_user.id}'> {message.from_user.first_name}</a> {role} 
+
+━━━〔 OWNER 〕━━━
+<a href="tg://user?id=8340881349">╏╠══[𝍖𝍖𝍖 𝚂𝙿𝙸𝙳𝙴𝚁 𝍖𝍖𝍖]      🕷️</a>
 """
         await asyncio.sleep(0.5)
         await Client.edit_message_text(message.chat.id, thirdcheck.id, finalresp)
