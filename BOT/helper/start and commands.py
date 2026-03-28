@@ -16,7 +16,8 @@ from FUNC.usersdb_func import *
 # Utility functions from original start.py
 async def safe_edit(client, chat_id, message_id, text, reply_markup=None):
     try:
-        await client.edit_message_text(chat_id, message_id, text, reply_markup=reply_markup)
+        # Added disable_web_page_preview=True to hide the "SEND MESSAGE" card
+        await client.edit_message_text(chat_id, message_id, text, reply_markup=reply_markup, disable_web_page_preview=True)
     except MessageNotModified:
         pass
 
@@ -25,7 +26,8 @@ async def animated_edit(client, chat_id, message_id, text, reply_markup=None, de
     for char in text:
         current_text += char
         try:
-            await client.edit_message_text(chat_id, message_id, current_text, reply_markup=reply_markup)
+            # Added disable_web_page_preview=True to hide the "SEND MESSAGE" card
+            await client.edit_message_text(chat_id, message_id, current_text, reply_markup=reply_markup, disable_web_page_preview=True)
         except MessageNotModified:
             pass
         await asyncio.sleep(delay)
@@ -73,7 +75,7 @@ async def start_command(client, message):
         ],
         [
             InlineKeyboardButton("Register 📝", callback_data="register"),
-            InlineKeyboardButton("Channel 🥷", url="https://t.me/+mHjmygCKHU5lMjBl"),
+            InlineKeyboardButton("Channel 🥷", url="https://t.me/migeldumps"),
         ],
         [
             InlineKeyboardButton("Exit ⚠️", callback_data="exit"),
@@ -83,9 +85,9 @@ async def start_command(client, message):
     
     # New style caption
     caption = (
-        f"[朱](t.me/amspidr) 𝙒𝙚𝙡𝙘𝙤𝙢𝙚 𝙩𝙤 𝙎𝙥𝙮𝙙𝙚 𝙘𝙝𝙠\n\n"
-        f"[㊄](t.me/amspidr) Migel is renewed, we present our new improved version, with fast and secure checks with different payment gateways and perfect tools for your use.\n\n"
-        f"[╰┈➤](t.me/amspidr) 𝙑𝙚𝙧𝙨𝙞𝙤𝙣  -» 2.6"
+        f"[朱](t.me/themigel) 𝙒𝙚𝙡𝙘𝙤𝙢𝙚 𝙩𝙤 𝙈𝙞𝙜𝙚𝙡 𝘾𝙝𝙚𝙘𝙠𝙚𝙧\n\n"
+        f"[㊄](t.me/themigel) Migel is renewed, we present our new improved version, with fast and secure checks with different payment gateways and perfect tools for your use.\n\n"
+        f"[╰┈➤](t.me/themigel) 𝙑𝙚𝙧𝙨𝙞𝙤𝙣  -» 1.0"
     )
     
     try:
@@ -101,14 +103,16 @@ async def start_command(client, message):
             await message.reply_text(
                 caption,
                 parse_mode=ParseMode.MARKDOWN,
-                reply_markup=reply_markup
+                reply_markup=reply_markup,
+                disable_web_page_preview=True # Added to hide the "SEND MESSAGE" card
             )
     except Exception as e:
         print(f"Error in start command: {e}")
         await message.reply_text(
             caption,
             parse_mode=ParseMode.MARKDOWN,
-            reply_markup=reply_markup
+            reply_markup=reply_markup,
+            disable_web_page_preview=True # Added to hide the "SEND MESSAGE" card
         )
 
 @Client.on_message(filters.command(["register", "Register"], prefixes=[".", "/", "!", "$"]))
@@ -121,7 +125,7 @@ async def cmd_register(client, message):
     
     if is_new:
         resp = (
-            f"<b>registration module r\n"
+            f"<b>[ REGISTRATION PROTOCOL ]</b>\n"
             f"<b>> STATUS:</b> SUCCESSFUL\n"
             f"<b>> USER_ID:</b> {uid}\n"
             f"<b>> USERNAME:</b> {uname}\n"
@@ -140,7 +144,7 @@ async def cmd_register(client, message):
         )
 
     keyboard = [[InlineKeyboardButton("Gates ♻️", callback_data="gates")]]
-    await message.reply_text(resp, parse_mode=ParseMode.HTML, reply_markup=InlineKeyboardMarkup(keyboard))
+    await message.reply_text(resp, parse_mode=ParseMode.HTML, reply_markup=InlineKeyboardMarkup(keyboard), disable_web_page_preview=True)
 
 @Client.on_callback_query()
 async def button_callback(client, callback_query):
@@ -149,9 +153,9 @@ async def button_callback(client, callback_query):
     await query.answer()
     
     original_message = (
-        f"<a href='https://t.me/amspidr'>朱</a> 𝙒𝙚𝙡𝙘𝙤𝙢𝙚 𝙩𝙤 𝙎𝙥𝙮𝙙𝙚 𝙘𝙝𝙠\n\n"
-        f"<a href='https://t.me/amspidr'>㊄</a> 𝗦𝗸1𝗺𝗺𝗲𝗿 is renewed, we present our new improved version, with fast and secure checks with different payment gateways and perfect tools for your use.\n\n"
-        f"<a href='https://t.me/amspidr'>╰┈➤</a> 𝙑𝙚𝙧𝙨𝙞𝙤𝙣  -» 2.6"
+        f"<a href='https://t.me/themigel'>朱</a> 𝙒𝙚𝙡𝙘𝙤𝙢𝙚 𝙩𝙤 𝙈𝙞𝙜𝙚𝙡 𝘾𝙝𝙚𝙘𝙠𝙚𝙧\n\n"
+        f"<a href='https://t.me/themigel'>㊄</a> 𝗦𝗸1𝗺𝗺𝗲𝗿 is renewed, we present our new improved version, with fast and secure checks with different payment gateways and perfect tools for your use.\n\n"
+        f"<a href='https://t.me/themigel'>╰┈➤</a> 𝙑𝙚𝙧𝙨𝙞𝙤𝙣  -» 1.0"
     )
     
     if query.data == "register":
@@ -184,12 +188,12 @@ async def button_callback(client, callback_query):
 
     elif query.data == "gates":
         message = (
-            "#MigelAktz                                                                                𝙒𝙚𝙡𝙘𝙤𝙢𝙚 𝙩𝙤 𝙎𝙥𝙮𝙙𝙚 𝙘𝙝𝙠 -» >_\n\n"
-            "║<a href='https://t.me/amspidr'>㊕</a>║ 𝙏𝙤𝙩𝙖𝙡 -» 5\n"
-            "║<a href='https://t.me/amspidr'>㊡</a>║ 𝙊𝙣 -» 1 ✅\n"
-            "║<a href='https://t.me/amspidr'>㊤</a>║ 𝙊𝙛𝙛 -» 4 ❌\n"
-            "║<a href='https://t.me/amspidr'>㊬</a> 》𝙈𝙖𝙣𝙩𝙚𝙣𝙞𝙚𝙣𝙘𝙚 -» 4 ⚠️\n\n"
-            "〈<a href='https://t.me/amspidr'>ゼ</a>〉𝙎𝙚𝙡𝙚𝙘𝙩 𝙩𝙝𝙚 𝙩𝙮𝙥𝙚 𝙤𝙛 𝙜𝙖𝙩𝙚 𝙮𝙤𝙪 𝙬𝙖𝙣𝙩 𝙛𝙤𝙧 𝙮𝙤𝙪𝙧 𝙪𝙨𝙚!"
+            "#MigelAktz                                                                                𝙒𝙚𝙡𝙘𝙤𝙢𝙚 𝙩𝙤 Sk1mmer -» >_\n\n"
+            "║<a href='https://t.me/themigel'>㊕</a>║ 𝙏𝙤𝙩𝙖𝙡 -» 5\n"
+            "║<a href='https://t.me/themigel'>㊡</a>║ 𝙊𝙣 -» 1 ✅\n"
+            "║<a href='https://t.me/themigel'>㊤</a>║ 𝙊𝙛𝙛 -» 4 ❌\n"
+            "║<a href='https://t.me/themigel'>㊬</a> 》𝙈𝙖𝙣𝙩𝙚𝙣𝙞𝙚𝙣𝙘𝙚 -» 4 ⚠️\n\n"
+            "〈<a href='https://t.me/themigel'>ゼ</a>〉𝙎𝙚𝙡𝙚𝙘𝙩 𝙩𝙝𝙚 𝙩𝙮𝙥𝙚 𝙤𝙛 𝙜𝙖𝙩𝙚 𝙮𝙤𝙪 𝙬𝙖𝙣𝙩 𝙛𝙤𝙧 𝙮𝙤𝙪𝙧 𝙪𝙨𝙚!"
         )
         keyboard = [
             [
@@ -207,10 +211,10 @@ async def button_callback(client, callback_query):
     
     elif query.data == "AUTH":
         message = (
-            "〈<a href='https://t.me/amspidr'>朱</a>〉𝙂𝙖𝙩𝙚𝙬𝙖𝙮𝙨 𝘼𝙪𝙩𝙝\n\n"
-            "〈<a href='https://t.me/amspidr'>朱</a>〉 𝗔𝗱𝘆𝗲𝗻 -» Adyen -» Auth\n"
-            "〈<a href='https://t.me/amspidr'>零</a>〉 𝘾𝙢𝙙 -» .ad -» Free\n"
-            "〈<a href='https://t.me/amspidr'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» On ✅\n\n"
+            "〈<a href='https://t.me/themigel'>朱</a>〉𝙂𝙖𝙩𝙚𝙬𝙖𝙮𝙨 𝘼𝙪𝙩𝙝\n\n"
+            "〈<a href='https://t.me/themigel'>朱</a>〉 𝗔𝗱𝘆𝗲𝗻 -» Adyen -» Auth\n"
+            "〈<a href='https://t.me/themigel'>零</a>〉 𝘾𝙢𝙙 -» .ad -» Free\n"
+            "〈<a href='https://t.me/themigel'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» On ✅\n\n"
         )
         keyboard = [[InlineKeyboardButton("Back", callback_data="gates")]]
         reply_markup = InlineKeyboardMarkup(keyboard)
@@ -222,10 +226,10 @@ async def button_callback(client, callback_query):
     
     elif query.data == "CHARGE":
         message = (
-            "〈<a href='https://t.me/amspidr'>朱</a>〉𝙂𝙖𝙩𝙚𝙬𝙖𝙮𝙨 𝘾𝙝𝙖𝙧𝙜𝙚𝙙\n\n"
-            "〈<a href='https://t.me/amspidr'>朱</a>〉 𝙉𝙞𝙜𝙝𝙩 -» Moneris -» $0.01\n"
-            "〈<a href='https://t.me/amspidr'>零</a>〉 𝘾𝙢𝙙 -» .ni -» Premium \n"
-            "〈<a href='https://t.me/amspidr'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» Off ❌\n\n"
+            "〈<a href='https://t.me/themigel'>朱</a>〉𝙂𝙖𝙩𝙚𝙬𝙖𝙮𝙨 𝘾𝙝𝙖𝙧𝙜𝙚𝙙\n\n"
+            "〈<a href='https://t.me/themigel'>朱</a>〉 𝙉𝙞𝙜𝙝𝙩 -» Moneris -» $0.01\n"
+            "〈<a href='https://t.me/themigel'>零</a>〉 𝘾𝙢𝙙 -» .ni -» Premium \n"
+            "〈<a href='https://t.me/themigel'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» Off ❌\n\n"
         )
         keyboard = [[InlineKeyboardButton("Back", callback_data="gates")]]
         reply_markup = InlineKeyboardMarkup(keyboard)
@@ -237,10 +241,10 @@ async def button_callback(client, callback_query):
     
     elif query.data == "tools":
         message = (
-            "〈<a href='https://t.me/amspidr'>朱</a>〉𝙂𝙖𝙩𝙚𝙬𝙖𝙮𝙨 𝙏𝙤𝙤𝙡𝙨 🛠\n\n"
-            "<a href='https://t.me/amspidr'>朱</a> 𝘽𝙞𝙣 -» info bin\n"
-            "<a href='https://t.me/amspidr'>零</a> 𝘾𝙢𝙙 -» .bin -» Free\n"
-            "<a href='https://t.me/amspidr'>ᥫ᭡</a> 𝙎𝙩𝙖𝙩𝙪𝙨 -» On ✅\n\n"
+            "〈<a href='https://t.me/themigel'>朱</a>〉𝙂𝙖𝙩𝙚𝙬𝙖𝙮𝙨 𝙏𝙤𝙤𝙡𝙨 🛠\n\n"
+            "<a href='https://t.me/themigel'>朱</a> 𝘽𝙞𝙣 -» info bin\n"
+            "<a href='https://t.me/themigel'>零</a> 𝘾𝙢𝙙 -» .bin -» Free\n"
+            "<a href='https://t.me/themigel'>ᥫ᭡</a> 𝙎𝙩𝙖𝙩𝙪𝙨 -» On ✅\n\n"
         )
         keyboard = [[InlineKeyboardButton("Back", callback_data="back")]]
         reply_markup = InlineKeyboardMarkup(keyboard)
@@ -261,7 +265,7 @@ async def button_callback(client, callback_query):
             ],
             [
                 InlineKeyboardButton("Register 📝", callback_data="register"),
-                InlineKeyboardButton("Channel 🥷", url="https://t.me/+mHjmygCKHU5lMjBl"),
+                InlineKeyboardButton("Channel 🥷", url="https://t.me/migeldumps"),
             ],
             [
                 InlineKeyboardButton("Exit ⚠️", callback_data="exit"),
@@ -272,6 +276,8 @@ async def button_callback(client, callback_query):
         try:
             video_file = "VID/menu1.mp4"
             if os.path.exists(video_file):
+                # For edit_message_media, the preview is typically controlled by the media type, 
+                # but we'll ensure captions don't trigger it where possible.
                 media = InputMediaVideo(media=video_file, caption=original_message, parse_mode=ParseMode.HTML)
                 await query.edit_message_media(media=media, reply_markup=reply_markup)
             else:
