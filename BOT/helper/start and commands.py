@@ -240,8 +240,8 @@ async def button_callback(client, callback_query):
         )
     
     elif query.data == "tools":
-        message = (
-            "〈<a href='https://https://t.me/elitechkbot?start=start'>朱</a>〉𝙂𝙖𝙩𝙚𝙬𝙖𝙮𝙨 𝙏𝙤𝙤𝙡𝙨 🛠\n\n"
+    message = (
+        "〈<a href='https://https://t.me/elitechkbot?start=start'>朱</a>〉𝙂𝙖𝙩𝙚𝙬𝙖𝙮𝙨 𝙏𝙤𝙤𝙡𝙨 🛠\n\n"
         "<a href='https://https://t.me/elitechkbot?start=start'>〈朱〉</a> Name   :  Generate cc\n"
         "<a href='https://https://t.me/elitechkbot?start=start'>〈零〉</a> Cmd    : /gen -xxxx\n"
         "<a href='https://https://t.me/elitechkbot?start=start'>〈↻〉</a> Status : On ✅\n\n"
@@ -257,32 +257,38 @@ async def button_callback(client, callback_query):
         "<a href='https://https://t.me/elitechkbot?start=start'>〈朱〉</a> Name   : Fake location\n"
         "<a href='https://https://t.me/elitechkbot?start=start'>〈零〉</a> Cmd    : /fake\n"
         "<a href='https://https://t.me/elitechkbot?start=start'>〈↻〉</a> Status : On ✅\n\n"
- 
+
         "<a href='https://https://t.me/elitechkbot?start=start'>〈朱〉</a> Name   : claim credits\n"
         "<a href='https://https://t.me/elitechkbot?start=start'>〈零〉</a> Cmd    : /claim\n"
         "<a href='https://https://t.me/elitechkbot?start=start'>〈↻〉</a> Status : On ✅\n\n"
- 
+
         "<a href='https://https://t.me/elitechkbot?start=start'>〈朱〉</a> Name   : Fetch ip\n"
         "<a href='https://https://t.me/elitechkbot?start=start'>〈零〉</a> Cmd    : /ip\n"
         "<a href='https://https://t.me/elitechkbot?start=start'>〈↻〉</a> Status : On ✅\n\n"
- 
+
         "<a href='https://https://t.me/elitechkbot?start=start'>〈朱〉</a> Name   : Sort cc\n"
         "<a href='https://https://t.me/elitechkbot?start=start'>〈零〉</a> Cmd    : /sort\n"
         "<a href='https://https://t.me/elitechkbot?start=start'>〈↻〉</a> Status : On ✅\n\n"
- 
-        )
-        keyboard = [[InlineKeyboardButton("Back", callback_data="back")]
-        [InlineKeyboardButton("NEXT", callback_data="tools2")]]
-        reply_markup = InlineKeyboardMarkup(keyboard)
-        await query.edit_message_caption(
-            caption=message,
-            parse_mode=ParseMode.HTML,
-            reply_markup=reply_markup
-        )
-        elif query.data == "tools2":
+    )
+
+    keyboard = [
+        [InlineKeyboardButton("Back", callback_data="back")],
+        [InlineKeyboardButton("NEXT", callback_data="tools2")]
+    ]
+
+    reply_markup = InlineKeyboardMarkup(keyboard)
+
+    await query.edit_message_caption(
+        caption=message,
+        parse_mode=ParseMode.HTML,
+        reply_markup=reply_markup
+    )
+
+# 🔥 FIX HERE (elif → if)
+if query.data == "tools2":
     message = (
         "<b>⟨ More Tools ⚙️ ⟩</b>\n\n"
-
+        
         "<a href='https://https://t.me/elitechkbot?start=start'>〈朱〉</a> Name   : Redeem Keys\n"
         "<a href='https://https://t.me/elitechkbot?start=start'>〈零〉</a> Cmd    : /claim key-xxxx\n"
         "<a href='https://https://t.me/elitechkbot?start=start'>〈↻〉</a> Status : On ✅\n\n"
