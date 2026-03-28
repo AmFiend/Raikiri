@@ -307,8 +307,8 @@ if query.data == "tools2":
     )
 
     keyboard = [
-        [InlineKeyboardButton("◀️ Back", callback_data="tools")],
-        [InlineKeyboardButton("Main Menu", callback_data="start")]
+        [InlineKeyboardButton("⬅ Back", callback_data="tools")],
+        [InlineKeyboardButton("Main Menu", callback_data="back")]
     ]
 
     reply_markup = InlineKeyboardMarkup(keyboard)
