@@ -318,8 +318,6 @@ if query.data == "tools2":
         parse_mode=ParseMode.HTML,
         reply_markup=reply_markup
     )
-    elif query.data == "tools2":
-        message = (
     
     elif query.data == "exit" or query.data == "close":
         await query.message.delete()
