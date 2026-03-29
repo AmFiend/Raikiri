@@ -86,13 +86,13 @@ async def start_command(client, message):
     
     # New style caption
     caption = (
-    f"[朱](https://t.me/elitechkbot?start=start) 𝙒𝙚𝙡𝙘𝙤𝙢𝙚 𝙩𝙤 𝙎𝙥𝙮𝙙𝙚 𝙘𝙝𝙠\n\n"
-    f"[㊄](https://t.me/elitechkbot?start=start) spyde is renewed — faster, sharper, and more secure. 🚀\n"
-    f"Built for real performance with lightning-fast checks, advanced security, and powerful tools.\n"
-    f"While others are improving…\n"
-    f"Spyde is already ahead.\n"
-    f"No delays. No compromises. Just results..\n\n"
-    f"[╰┈➤](https://t.me/elitechkbot?start=start) 𝙑𝙚𝙧𝙨𝙞𝙤𝙣  -» 2.5"
+    f"[朱](https://t.me/elitechkbot?start=start) 𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆\n\n"
+    f"[㊄](https://t.me/elitechkbot?start=start) 𝙍𝙀𝙑𝘼𝙈𝙋𝙀𝘿 — 𝙈𝙊𝙍𝙀 𝙋𝙊𝙒𝙀𝙍\n"
+    f"Speed unmatched. Security reinforced.\n\n"
+    f"Others are catching up…\n"
+    f"We’re already ahead.\n\n"
+    f"No lag. No mercy. Just results.\n\n"
+    f"[╰┈➤](https://t.me/elitechkbot?start=start) 𝙑2.5"
     )
     
     try:
@@ -160,13 +160,13 @@ async def button_callback(client, callback_query):
     await query.answer()
     
     original_message = (
-        f"<a href='https://t.me/elitechkbot?start=start'>朱</a> 𝙒𝙚𝙡𝙘𝙤𝙢𝙚 𝙩𝙤 𝙎𝙥𝙮𝙙𝙚 𝙘𝙝𝙠\n\n"
-        f"<a href='https://t.me/elitechkbot?start=start'>㊄</a> Spyde is renewed — faster, sharper, and more secure. 🚀\n"
-        f"Built for real performance with lightning-fast checks, advanced security, and powerful tools.\n"
-        f"While others are improving…\n"
-        f"Spyde is already ahead.\n"
-        f"No delays. No compromises. Just results..\n\n"
-        f"<a href='https://t.me/elitechkbot?start=start'>╰┈➤</a> 𝙑𝙚𝙧𝙨𝙞𝙤𝙣  -» 1.0"
+        f"[朱](https://t.me/elitechkbot?start=start) 𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆\n\n"
+    f"[㊄](https://t.me/elitechkbot?start=start) 𝙍𝙀𝙑𝘼𝙈𝙋𝙀𝘿 — 𝙈𝙊𝙍𝙀 𝙋𝙊𝙒𝙀𝙍\n"
+    f"Speed unmatched. Security reinforced.\n\n"
+    f"Others are catching up…\n"
+    f"We’re already ahead.\n\n"
+    f"No lag. No mercy. Just results.\n\n"
+    f"[╰┈➤](https://t.me/elitechkbot?start=start) 𝙑2.5"
     )
 
     if query.data == "register":
