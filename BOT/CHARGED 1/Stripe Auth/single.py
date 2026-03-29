@@ -124,7 +124,6 @@ Usage: /au cc|mes|ano|cvv</b>"""
         elapsed_time = round(end - start, 2)
 
         finalresp = f"""
-━━━〔 RESULT 〕━━━
 [〄] 𝘾𝘾        ⟶ <code>{fullcc}</code>
 [〄] 𝙎𝙏𝘼𝙏𝙐𝙎    ⟶ {status}
 [〄] 𝙍𝙀𝙎𝙐𝙇𝙏    ⟶ {response}
