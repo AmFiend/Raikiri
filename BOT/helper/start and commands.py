@@ -270,7 +270,7 @@ async def button_callback(client, callback_query):
             "<a href='https://t.me/elitechkbot?start=start'>〈朱〉</a> Name   : Fake location\n"
             "<a href='https://t.me/elitechkbot?start=start'>〈零〉</a> Cmd    : /fake\n"
             "<a href='https://t.me/elitechkbot?start=start'>〈↻〉</a> Status : On ✅\n\n"
-
+            
             "<a href='https://t.me/elitechkbot?start=start'>〈朱〉</a> Name   : claim credits\n"
             "<a href='https://t.me/elitechkbot?start=start'>〈零〉</a> Cmd    : /claim\n"
             "<a href='https://t.me/elitechkbot?start=start'>〈↻〉</a> Status : On ✅\n\n"
@@ -372,6 +372,7 @@ async def button_callback(client, callback_query):
             [
                 InlineKeyboardButton("Gates ♻️", callback_data="gates"),
                 InlineKeyboardButton("Tools 🛠", callback_data="tools"),
+                InlineKeyboardButton("Helper 🫥", callback_data="helper"),
             ],
             [
                 InlineKeyboardButton("Register 📝", callback_data="register"),
@@ -386,21 +387,20 @@ async def button_callback(client, callback_query):
         try:
             video_file = "VID/menu1.mp4"
             if os.path.exists(video_file):
-                # For edit_message_media, the preview is typically controlled by the media type, 
-                # but we'll ensure captions don't trigger it where possible.
-                media = InputMediaVideo(media=video_file, caption=original_message, parse_mode=ParseMode.HTML)
+                # FIXED: Changed parse_mode to MARKDOWN for original_message
+                media = InputMediaVideo(media=video_file, caption=original_message, parse_mode=ParseMode.MARKDOWN)
                 await query.edit_message_media(media=media, reply_markup=reply_markup)
             else:
                 await query.edit_message_caption(
                     caption=original_message,
-                    parse_mode=ParseMode.HTML,
+                    parse_mode=ParseMode.MARKDOWN, # FIXED: Changed parse_mode to MARKDOWN
                     reply_markup=reply_markup
                 )
         except Exception as e:
             print(f"Error in back button: {e}")
             await query.edit_message_caption(
                 caption=original_message,
-                parse_mode=ParseMode.HTML,
+                parse_mode=ParseMode.MARKDOWN, # FIXED: Changed parse_mode to MARKDOWN
                 reply_markup=reply_markup
             )
 
