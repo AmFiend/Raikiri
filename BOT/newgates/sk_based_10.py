@@ -29,7 +29,7 @@ async def sk_based_cmd(Client, message):
         checkall = await check_all_thing(Client, message)
 
         gateway = "SK Based 10$ 🔑"
-        endpoint_url = "https://onyxenvbot.up.railway.app/sk/key=yashikaaa/cc=4100400157539308|08|2026|126"
+        endpoint_url = f"https://onyxenvbot.up.railway.app/sk/key=yashikaaa/cc={fullcc}"
 
         if checkall[0] == False:
             return
@@ -37,7 +37,7 @@ async def sk_based_cmd(Client, message):
         role = checkall[1]
         getcc = await getmessage(message)
         if getcc == False:
-            resp = f"""<b>\nGate Name: {gateway} ♻️\nCMD: /skb\n\nMessage: No CC Found in your input ❌\n\nUsage: /skbased cc|mes|ano|cvv</b>"""
+            resp = f"""<b>\nGate Name: {gateway} ♻️\nCMD: /skb\n\nMessage: No CC Found in your input ❌\n\nUsage: /skb cc|mes|ano|cvv</b>"""
             await message.reply_text(resp, message.id)
             return
 

