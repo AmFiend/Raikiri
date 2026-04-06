@@ -29,7 +29,6 @@ async def skrill_cmd(Client, message):
         checkall = await check_all_thing(Client, message)
 
         gateway = "Skrill 30$ 💰"
-        endpoint_url = f"https://onyxenvbot.up.railway.app/skrill/key=yashikaaa/cc={fullcc}"
 
         if checkall[0] == False:
             return
@@ -37,13 +36,16 @@ async def skrill_cmd(Client, message):
         role = checkall[1]
         getcc = await getmessage(message)
         if getcc == False:
-            resp = f"""<b>\nGate Name: {gateway} ♻️\nCMD: /sk\n\nMessage: No CC Found in your input ❌\n\nUsage: /sk cc|mes|ano|cvv</b>"""
+            resp = f"""〈<a href='tg://user?id={user_id}'>꫟</a>〉-» Skrill 30$ - CHECK\n\n〈♻️〉𝙂𝙖𝙩𝙚𝙬𝙖𝙮 -» {gateway} \n\n<a href='tg://user?id={user_id}'>╰┈➤</a> 𝙁𝙤𝙧𝙢𝙖𝙩 -» /sk cc|month|year|cvc"""
             await message.reply_text(resp, message.id)
             return
 
         cc, mes, ano, cvv = getcc[0], getcc[1], getcc[2], getcc[3]
         fullcc = f"{cc}|{mes}|{ano}|{cvv}"
         bin6 = cc[:6]  # BIN for easy reference
+        
+        # Now define endpoint_url after fullcc is defined
+        endpoint_url = f"https://onyxenvbot.up.railway.app/skrill/key=yashikaaa/cc={fullcc}"
 
         firstresp = f"""\n↯ Checking.\n\n- 𝐂𝐚𝐫𝐝 - <code>{fullcc}</code> \n- 𝐆𝐚𝐭𝐞𝐰𝐚𝐲 -  <i>{gateway}</i>\n- 𝐑𝐞𝐬𝐩𝐨𝐧𝐬𝐞 - ■□□□\n</b>\n"""
         # await asyncio.sleep(0.5)
@@ -58,12 +60,9 @@ async def skrill_cmd(Client, message):
         start = time.perf_counter()
         session = httpx.AsyncClient(timeout=30, follow_redirects=True)
         
-        # Prepare the data for the POST request
-        cc_data = {"cc": fullcc}
-        
-        # Make the POST request to the specific gateway endpoint
+        # Make the GET request to the specific gateway endpoint
         try:
-            response_obj = await session.post(endpoint_url, json=cc_data)
+            response_obj = await session.get(endpoint_url)
             result_json = response_obj.json()
             status = result_json.get("status", "Unknown")
             response = result_json.get("response", "No response message")
@@ -96,7 +95,7 @@ async def skrill_cmd(Client, message):
         end = time.perf_counter()
         elapsed_time = round(end - start, 2)
 
-        finalresp = f"""\n[〄] 𝘾𝘾        ⟶ <code>{fullcc}</code>\n[〄] 𝙎𝙏𝘼𝙏𝙐𝙎    ⟶ {status}\n[〄] 𝙍𝙀𝙎𝙐𝙇𝙏    ⟶ {response}\n\n━━━〔 INFO 〕━━━\n[〄] 𝘽𝙄𝙉 ⟶ {brand} | {type_} - {level}\n[〄] 𝘽𝘼𝙉𝙆 ⟶ {bank}\n[〄] 𝘾𝙊𝙐𝙉𝙏𝙍𝙔⟶ {country} {flag}\n\n━━━〔 META 〕━━━\n[〄] 𝙂𝘼𝙏𝙀𝙒𝘼𝙔 ⟶ {gateway}\n[〄] 𝙏𝙄𝙈𝙀 ⟶  {elapsed_time:0.2f}s\n[〄] 𝘾𝙃𝙀𝘾𝙆𝙀𝘿 𝘽𝙔 𝙏𝙄𝙈𝙀 ⟶<a href=\'tg://user?id={user_id}\'> User</a> {role} \n\n━━━〔 OWNER 〕━━━\n<a href=\"tg://user?id=8340881349\">╏╠══[𝍖𝍖𝍖 𝚂𝙿𝙸𝙳𝙴𝚁 𝍖𝍖𝍖]      🕷️</a>\n"""
+        finalresp = f"""\n[〄] 𝘾𝘾        ⟶ <code>{fullcc}</code>\n[〄] 𝙎𝙏𝘼𝙏𝙐𝙎    ⟶ {status}\n[〄] 𝙍𝙀𝙎𝙐𝙇𝙏    ⟶ {response}\n\n━━━〔 INFO 〕━━━\n[〄] 𝘽𝙄𝙉 ⟶ {brand} | {type_} - {level}\n[〄] 𝘽𝘼𝙉𝙆 ⟶ {bank}\n[〄] 𝘾𝙊𝙐𝙉𝗧𝗥𝗬⟶ {country} {flag}\n\n━━━〔 META 〕━━━\n[〄] 𝙂𝘼𝙏𝙀𝙒𝘼𝙔 ⟶ {gateway}\n[〄] 𝗧𝙄𝗠𝗘 ⟶  {elapsed_time:0.2f}s\n[〄] 𝘾𝙃𝙀𝘾𝙆𝙀𝘿 𝘽𝙔 𝙏𝙄𝙈𝙀 ⟶<a href=\'tg://user?id={user_id}\'> User</a> {role} \n\n━━━〔 OWNER 〕━━━\n<a href=\"tg://user?id=8340881349\">╏╠══[𝍖𝍖𝍖 𝚂𝙿𝙸𝙳𝙴𝚁 𝍖𝍖𝍖]      🕷️</a>\n"""
 
         # await asyncio.sleep(0.5)
         # await Client.edit_message_text(message.chat.id, thirdcheck.id, finalresp)

