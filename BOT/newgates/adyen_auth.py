@@ -37,7 +37,7 @@ async def adyen_auth_cmd(Client, message):
         getcc = await getmessage(message)
         if getcc == False:
             resp = f"""〈<a href='tg://user?id={user_id}'>꫟</a>〉-» Adyen Auth - CHECK\n\n〈♻️〉𝙂𝙖𝙩𝙚𝙬𝙖𝙮 -» {gateway} \n\n<a href='tg://user?id={user_id}'>╰┈➤</a> 𝙁𝙤𝙧𝙢𝙖𝙩 -» /ad cc|month|year|cvc"""
-            await message.reply_text(resp, message.id)
+            await message.reply_text(resp, quote=True)
             return
 
         cc, mes, ano, cvv = getcc[0], getcc[1], getcc[2], getcc[3]
@@ -48,14 +48,15 @@ async def adyen_auth_cmd(Client, message):
         endpoint_url = f"https://onyxenvbot.up.railway.app/adyen/key=yashikaaa/cc={fullcc}"
 
         firstresp = f"""\n↯ Checking.\n\n- 𝐂𝐚𝐫𝐝 - <code>{fullcc}</code> \n- 𝐆𝐚𝐭𝐞𝐰𝐚𝐲 -  <i>{gateway}</i>\n- 𝐑𝐞𝐬𝐩𝐨𝐧𝐬𝐞 - ■□□□\n</b>\n"""
-        # await asyncio.sleep(0.5)
-        # firstchk = await message.reply_text(firstresp, message.id)
-        print(firstresp)
+        # Send the first message and store it to edit later
+        firstchk = await message.reply_text(firstresp, quote=True)
+        print(f"Sent initial checking message to Telegram: {firstresp.strip()}")
 
         secondresp = f"""\n↯ Checking..\n\n- 𝐂𝐚𝐫𝐝 - <code>{fullcc}</code> \n- 𝐆𝐚𝐭𝐞𝐰𝐚𝐲 -  <i>{gateway}</i>\n- 𝐑𝐞𝐬𝐩𝐨𝐧𝐬𝐞 - ■■■□\n"""
-        # await asyncio.sleep(0.5)
-        # secondchk = await Client.edit_message_text(message.chat.id, firstchk.id, secondresp)
-        print(secondresp)
+        await asyncio.sleep(0.5)
+        # Edit the message we just sent
+        await firstchk.edit_text(secondresp)
+        print(f"Updated to second stage: {secondresp.strip()}")
 
         start = time.perf_counter()
         session = httpx.AsyncClient(timeout=30, follow_redirects=True)
@@ -77,9 +78,10 @@ async def adyen_auth_cmd(Client, message):
         getbin = ["VISA", "DEBIT", "PLATINUM", "BANK OF AMERICA", "US", "🇺🇸", "USD"]
 
         thirdresp = f"""\n↯ Checking...\n\n- 𝐂𝐚𝐫𝐝 - <code>{fullcc}</code> \n- 𝐆𝐚𝐭𝐞𝐰𝐚𝐲 -  <i>{gateway}</i>\n- 𝐑𝐞𝐬𝐩𝐨𝐧𝐬𝐞 - ■■■■\n"""
-        # await asyncio.sleep(0.5)
-        # thirdcheck = await Client.edit_message_text(message.chat.id, secondchk.id, thirdresp)
-        print(thirdresp)
+        await asyncio.sleep(0.5)
+        # Edit the message again
+        await firstchk.edit_text(thirdresp)
+        print(f"Updated to third stage: {thirdresp.strip()}")
 
         brand = getbin[0] if len(getbin) > 0 else "Unknown"
         type_ = getbin[1] if len(getbin) > 1 else "Unknown"
@@ -97,9 +99,11 @@ async def adyen_auth_cmd(Client, message):
 
         finalresp = f"""\n[〄] 𝘾𝘾        ⟶ <code>{fullcc}</code>\n[〄] 𝙎𝙏𝘼𝙏𝙐𝙎    ⟶ {status}\n[〄] 𝙍𝙀𝙎𝙐𝙇𝙏    ⟶ {response}\n\n━━━〔 INFO 〕━━━\n[〄] 𝘽𝙄𝙉 ⟶ {brand} | {type_} - {level}\n[〄] 𝘽𝘼𝙉𝙆 ⟶ {bank}\n[〄] 𝘾𝙊𝙐𝙉𝙏𝗥𝗬⟶ {country} {flag}\n\n━━━〔 META 〕━━━\n[〄] 𝙂𝘼𝙏𝙀𝙒𝘼𝙔 ⟶ {gateway}\n[〄] 𝙏𝙄𝙈𝙀 ⟶  {elapsed_time:0.2f}s\n[〄] 𝘾𝙃𝙀𝘾𝙆𝙀𝘿 𝘽𝙔 𝙏𝙄𝙈𝙀 ⟶<a href=\'tg://user?id={user_id}\'> User</a> {role} \n\n━━━〔 OWNER 〕━━━\n<a href=\"tg://user?id=8340881349\">╏╠══[𝍖𝍖𝍖 𝚂𝙿𝙸𝙳𝙴𝚁 𝍖𝍖𝍖]      🕷️</a>\n"""
 
-        # await asyncio.sleep(0.5)
-        # await Client.edit_message_text(message.chat.id, thirdcheck.id, finalresp)
-        print(finalresp)
+        await asyncio.sleep(0.5)
+        # Final edit with the full result
+        await firstchk.edit_text(finalresp)
+        print(f"Final response sent to Telegram: {finalresp.strip()}")
+
         await setantispamtime(user_id)
         await deductcredit(user_id)
 
