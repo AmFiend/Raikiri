@@ -223,11 +223,25 @@ async def button_callback(client, callback_query):
     
     elif query.data == "AUTH":
         message = (
-            "〈<a href='https://t.me/elitechkbot?start=start'>朱</a>〉𝙂𝙖𝙩𝙚𝙬𝙖𝙮𝙨 𝘼𝙪𝙩𝙝\n\n"
-            "〈<a href='https://t.me/elitechkbot?start=start'>朱</a>〉 𝗔𝗱𝘆𝗲𝗻 -» Adyen -» Auth\n"
-            "〈<a href='https://t.me/elitechkbot?start=start'>零</a>〉 𝘾𝙢𝙙 -» .ad -» Free\n"
-            "〈<a href='https://t.me/elitechkbot?start=start'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» On ✅\n\n"
+            "〈<a href=\'https://t.me/elitechkbot?start=start\'>朱</a>〉𝙂𝙖𝙩𝙚𝙬𝙖𝙮𝙨 𝘼𝙪𝙩𝙝\n\n"
+
+            "<a href=\'https://t.me/elitechkbot?start=start\'>〈朱〉</a> Name   : Adyen Auth\n"
+            "<a href=\'https://t.me/elitechkbot?start=start\'>〈零〉</a> Cmd    : /ad\n"
+            "<a href=\'https://t.me/elitechkbot?start=start\'>〈↻〉</a> Status : On ✅\n\n"
+
+            "<a href=\'https://t.me/elitechkbot?start=start\'>〈朱〉</a> Name   : App Based Auth\n"
+            "<a href=\'https://t.me/elitechkbot?start=start\'>〈零〉</a> Cmd    : /ap\n"
+            "<a href=\'https://t.me/elitechkbot?start=start\'>〈↻〉</a> Status : On ✅\n\n"
+
+            "<a href=\'https://t.me/elitechkbot?start=start\'>〈朱〉</a> Name   : Chaos Auth\n"
+            "<a href=\'https://t.me/elitechkbot?start=start\'>〈零〉</a> Cmd    : /ch\n"
+            "<a href=\'https://t.me/elitechkbot?start=start\'>〈↻〉</a> Status : On ✅\n\n"
+
+            "<a href=\'https://t.me/elitechkbot?start=start\'>〈朱〉</a> Name   : Random Auth\n"
+            "<a href=\'https://t.me/elitechkbot?start=start\'>〈零〉</a> Cmd    : /ra\n"
+            "<a href=\'https://t.me/elitechkbot?start=start\'>〈↻〉</a> Status : On ✅\n\n"
         )
+
         keyboard = [[InlineKeyboardButton("Back", callback_data="gates")]]
         reply_markup = InlineKeyboardMarkup(keyboard)
         await query.edit_message_caption(
@@ -238,18 +252,78 @@ async def button_callback(client, callback_query):
     
     elif query.data == "CHARGE":
         message = (
-            "〈<a href='https://t.me/elitechkbot?start=start'>朱</a>〉𝙂𝙖𝙩𝙚𝙬𝙖𝙮𝙨 𝘾𝙝𝙖𝙧𝙜𝙚𝙙\n\n"
-            "〈<a href='https://t.me/elitechkbot?start=start'>朱</a>〉 𝙉𝙞𝙜𝙝𝙩 -» Moneris -» $0.01\n"
-            "〈<a href='https://t.me/elitechkbot?start=start'>零</a>〉 𝘾𝙢𝙙 -» .ni -» Premium \n"
-            "〈<a href='https://t.me/elitechkbot?start=start'>ᥫ᭡</a>〉 𝙎𝙩𝙖𝙩𝙪𝙨 -» Off ❌\n\n"
+            "〈<a href='https://t.me/elitechkbot?start=start'>朱</a>〉𝙂𝙖𝙩𝙚𝙬𝙖𝙮𝙨 𝘾𝙝𝙖𝙧𝙜𝙚 💸 (Page 1/2)\n\n"
+
+            "<a href='https://t.me/elitechkbot?start=start'>〈朱〉</a> Name   : Stripe 1$\n"
+            "<a href='https://t.me/elitechkbot?start=start'>〈零〉</a> Cmd    : /st\n"
+            "<a href='https://t.me/elitechkbot?start=start'>〈↻〉</a> Status : On ✅\n\n"
+
+            "<a href='https://t.me/elitechkbot?start=start'>〈朱〉</a> Name   : Braintree 10$\n"
+            "<a href='https://t.me/elitechkbot?start=start'>〈零〉</a> Cmd    : /bt\n"
+            "<a href='https://t.me/elitechkbot?start=start'>〈↻〉</a> Status : On ✅\n\n"
+
+            "<a href='https://t.me/elitechkbot?start=start'>〈朱〉</a> Name   : Arcenus 1.0$\n"
+            "<a href='https://t.me/elitechkbot?start=start'>〈零〉</a> Cmd    : /ar\n"
+            "<a href='https://t.me/elitechkbot?start=start'>〈↻〉</a> Status : On ✅\n\n"
+
+            "<a href='https://t.me/elitechkbot?start=start'>〈朱〉</a> Name   : Payflow 20$\n"
+            "<a href='https://t.me/elitechkbot?start=start'>〈零〉</a> Cmd    : /pf\n"
+            "<a href='https://t.me/elitechkbot?start=start'>〈↻〉</a> Status : On ✅\n\n"
+
+            "<a href='https://t.me/elitechkbot?start=start'>〈朱〉</a> Name   : PayPal charge 2$\n"
+            "<a href='https://t.me/elitechkbot?start=start'>〈零〉</a> Cmd    : /pp\n"
+            "<a href='https://t.me/elitechkbot?start=start'>〈↻〉</a> Status : On ✅\n\n"
         )
-        keyboard = [[InlineKeyboardButton("Back", callback_data="gates")]]
+        keyboard = [
+            [InlineKeyboardButton("𝙋𝙖𝙜𝙚 2 ➡️", callback_data="CHARGE_PAGE2")],
+            [InlineKeyboardButton("𝘽𝙖𝙘𝙠", callback_data="gates")]
+        ]
         reply_markup = InlineKeyboardMarkup(keyboard)
         await query.edit_message_caption(
             caption=message,
             parse_mode=ParseMode.HTML,
             reply_markup=reply_markup
         )
+
+elif query.data == "CHARGE_PAGE2":
+        message = (
+            "〈<a href='https://t.me/elitechkbot?start=start'>朱</a>〉𝙂𝙖𝙩𝙚𝙬𝙖𝙮𝙨 𝘾𝙝𝙖𝙧𝙜𝙚 💸 (Page 2/2)\n\n"
+
+            "<a href='https://t.me/elitechkbot?start=start'>〈朱〉</a> Name   : PayU Charge 1$\n"
+            "<a href='https://t.me/elitechkbot?start=start'>〈零〉</a> Cmd    : /pu\n"
+            "<a href='https://t.me/elitechkbot?start=start'>〈↻〉</a> Status : On ✅\n\n"
+
+            "<a href='https://t.me/elitechkbot?start=start'>〈朱〉</a> Name   : RazorPay 10$\n"
+            "<a href='https://t.me/elitechkbot?start=start'>〈零〉</a> Cmd    : /rp\n"
+            "<a href='https://t.me/elitechkbot?start=start'>〈↻〉</a> Status : On ✅\n\n"
+
+            "<a href='https://t.me/elitechkbot?start=start'>〈朱〉</a> Name   : Random Stripe 15$\n"
+            "<a href='https://t.me/elitechkbot?start=start'>〈零〉</a> Cmd    : /rst\n"
+            "<a href='https://t.me/elitechkbot?start=start'>〈↻〉</a> Status : On ✅\n\n"
+
+            "<a href='https://t.me/elitechkbot?start=start'>〈朱〉</a> Name   : Shopify 20$\n"
+            "<a href='https://t.me/elitechkbot?start=start'>〈零〉</a> Cmd    : /sh\n"
+            "<a href='https://t.me/elitechkbot?start=start'>〈↻〉</a> Status : On ✅\n\n"
+
+            "<a href='https://t.me/elitechkbot?start=start'>〈朱〉</a> Name   : SK Based 10$\n"
+            "<a href='https://t.me/elitechkbot?start=start'>〈零〉</a> Cmd    : /skb\n"
+            "<a href='https://t.me/elitechkbot?start=start'>〈↻〉</a> Status : On ✅\n\n"
+
+            "<a href='https://t.me/elitechkbot?start=start'>〈朱〉</a> Name   : Skrill 30$\n"
+            "<a href='https://t.me/elitechkbot?start=start'>〈零〉</a> Cmd    : /skr\n"
+            "<a href='https://t.me/elitechkbot?start=start'>〈↻〉</a> Status : On ✅\n\n"
+        )
+        keyboard = [
+            [InlineKeyboardButton("⬅️ 𝙋𝙖𝙜𝙚 1", callback_data="CHARGE")],
+            [InlineKeyboardButton("𝘽𝙖𝙘𝙠", callback_data="gates")]
+        ]
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        await query.edit_message_caption(
+            caption=message,
+            parse_mode=ParseMode.HTML,
+            reply_markup=reply_markup
+        )
+
     
     elif query.data == "tools":
         message = (
