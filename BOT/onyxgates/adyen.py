@@ -42,20 +42,10 @@ async def adyen_cmd(Client, message):
         endpoint_url = f"https://onyxenvbot.up.railway.app/adyen/key=yashikaaa/cc={fullcc}"
 
         
-        # 1. Send Cooking Emoji Animation
+        
+        # 1. Send Single Cooking Emoji (Telegram will animate it automatically)
         loading_msg = await message.reply("🍳", quote=True)
         
-        async def animate_loading():
-            emojis = ["🍳", "🍳🍳", "🍳🍳🍳", "🍳🍳🍳🍳", "🍳🍳🍳🍳🍳"]
-            i = 0
-            while not task.done():
-                try:
-                    await loading_msg.edit_text(emojis[i % len(emojis)])
-                    i += 1
-                    await asyncio.sleep(0.5)
-                except:
-                    break
-
         start = time.perf_counter()
         
         # Define the API task
@@ -83,11 +73,8 @@ async def adyen_cmd(Client, message):
 
         status = "Error"
         response = "Request failed"
-        task = asyncio.create_task(call_api())
-        animation_task = asyncio.create_task(animate_loading())
-        
-        status, response = await task
-        animation_task.cancel()
+        status, response = await call_api()
+
 
 
         getbin = await get_bin_details(cc)
@@ -96,7 +83,7 @@ async def adyen_cmd(Client, message):
         end = time.perf_counter()
         elapsed_time = round(end - start, 2)
 
-        finalresp = f"\n[〄] 𝙎𝙏𝘼𝙏𝙐𝙎    ⟶ {status}\n[〄] 𝙍𝙀𝙎𝙐𝙇𝙏    ⟶ {response}\n\n━━━〔 INFO 〕━━━\n[〄] 𝘽𝙄𝙉 ⟶ {brand} | {type_} - {level}\n[〄] 𝘽𝘼𝙉𝙆 ⟶ {bank}\n[〄] 𝘾𝙊𝙐𝙉𝙏𝗥𝗬⟶ {country} {flag}\n\n━━━〔 META 〕━━━\n[〄] 𝙂𝘼𝙏𝙀𝙒𝘼𝙔 ⟶ {gateway}\n[〄] 𝙏𝙄𝙈𝙀 ⟶  {elapsed_time:0.2f}s\n[〄] 𝘾𝙃𝙀𝘾𝙆𝙀𝘿 𝘽𝙔 𝙏𝙄𝙈𝙀 ⟶<a href='tg://user?id={user_id}'>{first_name}</a> [{role}] \n\n━━━〔 OWNER 〕━━━\n<a href=\"tg://user?id=8340881349\">╏╠══[𝍖𝍖𝍖 𝚂𝙿𝙸𝙳𝙴𝚁 𝍖𝍖𝍖]      🕷️</a>\n"
+        finalresp = f"\n[〄] 𝘾𝘾        ⟶ <code>{fullcc}</code>\n[〄] 𝙎𝙏𝘼𝙏𝙐𝙎    ⟶ {status}\n[〄] 𝙍𝙀𝙎𝙐𝙇𝙏    ⟶ {response}\n\n━━━〔 INFO 〕━━━\n[〄] 𝘽𝙄𝙉 ⟶ {brand} | {type_} - {level}\n[〄] 𝘽𝘼𝙉𝙆 ⟶ {bank}\n[〄] 𝘾𝙊𝙐𝙉𝙏𝗥𝗬⟶ {country} {flag}\n\n━━━〔 META 〕━━━\n[〄] 𝙂𝘼𝙏𝙀𝙒𝘼𝙔 ⟶ {gateway}\n[〄] 𝙏𝙄𝙈𝙀 ⟶  {elapsed_time:0.2f}s\n[〄] 𝘾𝙃𝙀𝘾𝙆𝙀𝘿 𝘽𝙔 𝙏𝙄𝙈𝙀 ⟶<a href='tg://user?id={user_id}'>{first_name}</a> [{role}] \n\n━━━〔 OWNER 〕━━━\n<a href=\"tg://user?id=8340881349\">╏╠══[𝍖𝍖𝍖 𝚂𝙿𝙸𝙳𝙴𝚁 𝍖𝍖𝍖]      🕷️</a>\n"
 
         # 2. Delete Cooking GIF and Show Final Result immediately
         try:
