@@ -201,10 +201,10 @@ async def button_callback(client, callback_query):
     elif query.data == "gates":
         message = (
             "#Simplicity                                                                                𝙒𝙚𝙡𝙘𝙤𝙢𝙚 𝙩𝙤 𝙎𝙥𝙮𝙙𝙚 𝙘𝙝𝙠 -» >_\n\n"
-            "║<a href='https://t.me/elitechkbot?start=start'>㊕</a>║ 𝙏𝙤𝙩𝙖𝙡 -» 5\n"
-            "║<a href='https://t.me/elitechkbot?start=start'>㊡</a>║ 𝙊𝙣 -» 1 ✅\n"
-            "║<a href='https://t.me/elitechkbot?start=start'>㊤</a>║ 𝙊𝙛𝙛 -» 4 ❌\n"
-            "║<a href='https://t.me/elitechkbot?start=start'>㊬</a> 》𝙈𝙖𝙣𝙩𝙚𝙣𝙞𝙚𝙣𝙘𝙚 -» 4 ⚠️\n\n"
+            "║<a href='https://t.me/elitechkbot?start=start'>㊕</a>║ 𝙏𝙤𝙩𝙖𝙡 -» 15\n"
+            "║<a href='https://t.me/elitechkbot?start=start'>㊡</a>║ 𝙊𝙣 -» 15 ✅\n"
+            "║<a href='https://t.me/elitechkbot?start=start'>㊤</a>║ 𝙊𝙛𝙛 -» 0 ❌\n"
+            "║<a href='https://t.me/elitechkbot?start=start'>㊬</a> 》𝙈𝙖𝙣𝙩𝙚𝙣𝙞𝙚𝙣𝙘𝙚 -» 0 ⚠️\n\n"
             "〈<a href='https://t.me/elitechkbot?start=start'>ゼ</a>〉𝙎𝙚𝙡𝙚𝙘𝙩 𝙩𝙝𝙚 𝙩𝙮𝙥𝙚 𝙤𝙛 𝙜𝙖𝙩𝙚 𝙮𝙤𝙪 𝙬𝙖𝙣𝙩 𝙛𝙤𝙧 𝙮𝙤𝙪𝙧 𝙪𝙨𝙚!"
         )
         keyboard = [
@@ -285,7 +285,7 @@ async def button_callback(client, callback_query):
             reply_markup=reply_markup
         )
 
-elif query.data == "CHARGE_PAGE2":
+    elif query.data == "CHARGE_PAGE2":  # ✅ FIXED INDENT
         message = (
             "〈<a href='https://t.me/elitechkbot?start=start'>朱</a>〉𝙂𝙖𝙩𝙚𝙬𝙖𝙮𝙨 𝘾𝙝𝙖𝙧𝙜𝙚 💸 (Page 2/2)\n\n"
 
