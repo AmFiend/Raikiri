@@ -9,49 +9,29 @@ from TOOLS.check_all_func import *
 from TOOLS.getbin import *
 from BOT.tools.hit_stealer import send_hit_if_approved
 
-# --- Helper: Proxy Checker ---
+# --- Helper: Intelligent Proxy Checker ---
 async def check_proxy_working(proxy_str):
+    """Tests if the proxy is working. Supports host:port:user:pass and host:port."""
     try:
         parts = proxy_str.split(':')
         if len(parts) == 4:
             host, port, user, pwd = parts
-            proxy_url = f"http://{user}:{pwd}@{host}:{port}"
+            # Try SOCKS5 first as it's common for these proxies
+            proxy_url = f"socks5://{user}:{pwd}@{host}:{port}"
         elif len(parts) == 2:
             host, port = parts
             proxy_url = f"http://{host}:{port}"
         else:
             return False, "Invalid Format (Use host:port:user:pass)"
 
-        async with httpx.AsyncClient(proxies=proxy_url, timeout=10) as client:
+        # Increased timeout to 20s for slower proxies
+        async with httpx.AsyncClient(proxies=proxy_url, timeout=20, follow_redirects=True) as client:
             response = await client.get("http://google.com")
-            return (True, "Working ✅") if response.status_code == 200 else (False, "Failed Connection")
-    except:
-        return False, "Proxy Error"
-# --- Command: Remove Proxy ---
-@Client.on_message(filters.command("rmproxy", [".", "/"]))
-async def remove_proxy_cmd(client, message):
-    user_id = message.from_user.id
-    await remove_user_proxy(user_id)
-    await message.reply("🗑️ **Proxy Removed Successfully!**", quote=True)
-
-# --- Command: Remove Specific Site ---
-@Client.on_message(filters.command("rmsite", [".", "/"]))
-async def remove_site_cmd(client, message):
-    user_id = message.from_user.id
-    if len(message.command) < 2:
-        return await message.reply("❌ **Usage:** `/removesite https://example.com`", quote=True)
-    
-    site_url = message.text.split(None, 1)[1]
-    await remove_user_site(user_id, site_url)
-    await message.reply(f"🗑️ **Site Removed!**\n`{site_url}`", quote=True)
-
-# --- Command: Clear All Sites ---
-@Client.on_message(filters.command("clearsites", [".", "/"]))
-async def clear_sites_cmd(client, message):
-    user_id = message.from_user.id
-    await clear_all_user_sites(user_id)
-    await message.reply("🗑️ **All Saved Sites Cleared!**", quote=True)
-    
+            if response.status_code == 200:
+                return True, "Working ✅"
+            return False, f"Failed (Status: {response.status_code})"
+    except Exception as e:
+        return False, f"Proxy Error: {str(e)}"
 
 # --- Management Commands ---
 
@@ -62,30 +42,53 @@ async def set_proxy_cmd(client, message):
         return await message.reply("❌ **Usage:** `/setproxy host:port:user:pass`", quote=True)
     
     proxy = message.text.split(None, 1)[1]
-    wait_msg = await message.reply("⏳ **Testing Proxy...**", quote=True)
-    is_working, status = await check_proxy_working(proxy)
+    wait_msg = await message.reply("⏳ **Testing Proxy Connection...**", quote=True)
     
+    is_working, status = await check_proxy_working(proxy)
     if is_working:
         await set_user_proxy(user_id, proxy)
-        await wait_msg.edit(f"✅ **Proxy Saved!**\n`{proxy}`")
+        await wait_msg.edit(f"✅ **Proxy Saved & Verified!**\n`{proxy}`")
     else:
-        await wait_msg.edit(f"❌ **Proxy Not Working!**\n`{status}`")
+        await wait_msg.edit(f"❌ **Proxy Not Working!**\n`{status}`\n\n💡 _Make sure your server IP is whitelisted if required._")
+
+@Client.on_message(filters.command("removeproxy", [".", "/"]))
+async def remove_proxy_cmd(client, message):
+    await remove_user_proxy(message.from_user.id)
+    await message.reply("🗑️ **Proxy Removed Successfully!**", quote=True)
 
 @Client.on_message(filters.command("addsite", [".", "/"]))
 async def add_site_cmd(client, message):
     if len(message.command) < 2:
         return await message.reply("❌ **Usage:** `/addsite https://example.com`", quote=True)
     site_url = message.text.split(None, 1)[1]
+    if not site_url.startswith("http"):
+        return await message.reply("❌ **Invalid URL!** Must start with http:// or https://", quote=True)
     await add_user_site(message.from_user.id, site_url)
     await message.reply(f"✅ **Site Added!**\n`{site_url}`", quote=True)
 
-@Client.on_message(filters.command("sets", [".", "/"]))
+@Client.on_message(filters.command("removesite", [".", "/"]))
+async def remove_site_cmd(client, message):
+    if len(message.command) < 2:
+        return await message.reply("❌ **Usage:** `/removesite https://site.com`", quote=True)
+    site_url = message.text.split(None, 1)[1]
+    await remove_user_site(message.from_user.id, site_url)
+    await message.reply(f"🗑️ **Site Removed!**\n`{site_url}`", quote=True)
+
+@Client.on_message(filters.command("myconfig", [".", "/"]))
 async def my_config_cmd(client, message):
     user_id = message.from_user.id
     proxy = await get_user_proxy(user_id)
     sites = await get_user_sites(user_id)
-    resp = f"⚙️ **YOUR CONFIG**\n\n🌐 **Proxy:** `{proxy if proxy else 'None'}`\n🛍️ **Sites:**\n"
-    resp += "\n".join([f"• `{s}`" for s in sites]) if sites else "_No sites added._"
+    
+    resp = "⚙️ **YOUR CONFIGURATION**\n\n"
+    resp += f"🌐 **Proxy:** `{proxy if proxy else 'Not Set'}`\n\n"
+    resp += "🛍️ **Saved Sites:**\n"
+    if not sites:
+        resp += "_No sites added yet._"
+    else:
+        for s in sites:
+            resp += f"• `{s}`\n"
+    resp += "\n💡 _Use /setproxy and /addsite to update._"
     await message.reply(resp, quote=True)
 
 # --- Main /sfs Command ---
@@ -140,7 +143,7 @@ async def sfs_shopify_cmd(Client, message):
         await asyncio.sleep(2) # Ensure animation plays
         status, response = await task
 
-        # 5. Final Response (Fixed Indentation)
+        # 5. Final Response
         getbin = await get_bin_details(cc)
         brand, type_, level, bank, country, flag = getbin[0], getbin[1], getbin[2], getbin[3], getbin[4], getbin[5]
         elapsed = round(time.perf_counter() - start, 2)
@@ -151,9 +154,9 @@ async def sfs_shopify_cmd(Client, message):
 ━━━〔 INFO 〕━━━
 [〄] 𝘽𝙄𝙉 ⟶ {brand} | {type_} - {level}
 [〄] 𝘽𝘼𝙉𝙆 ⟶ {bank}
-[〄] 𝘾𝙊𝙐𝙉𝙏𝗥𝗬⟶ {country} {flag}
+[〄] 𝘾𝙊𝙐𝑁𝙏𝗥𝗬⟶ {country} {flag}
 ━━━〔 META 〕━━━
-[〄] 𝙂𝘼𝙏𝙀𝙒𝘼𝙔 ⟶ Self Shopify 🛍️
+[〄] 𝙂𝘼𝙏𝙀𝙒𝘼𝙔 ⟶ Shopify Custom 🛍️
 [〄] 𝙏𝙄𝙈𝙀 ⟶  {elapsed}s
 [〄] 𝘾𝙃𝙀𝘾𝙆𝙀𝘿 𝘽𝙔 ⟶ <a href='tg://user?id={user_id}'>{first_name}</a>
 ━━━〔 OWNER 〕━━━
