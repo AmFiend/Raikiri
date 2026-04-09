@@ -42,9 +42,9 @@ async def set_proxy_cmd(client, message):
     
     if is_working:
         await set_user_proxy(user_id, proxy)
-        await wait_msg.edit(f"✅ **Proxy Saved!**\\n`{proxy}`")
+        await wait_msg.edit(f"✅ **Proxy Saved!**\n`{proxy}`")
     else:
-        await wait_msg.edit(f"❌ **Proxy Not Working!**\\n`{status}`")
+        await wait_msg.edit(f"❌ **Proxy Not Working!**\n`{status}`")
 
 @Client.on_message(filters.command("addsite", [".", "/"]))
 async def add_site_cmd(client, message):
@@ -52,15 +52,15 @@ async def add_site_cmd(client, message):
         return await message.reply("❌ **Usage:** `/addsite https://example.com`", quote=True)
     site_url = message.text.split(None, 1)[1]
     await add_user_site(message.from_user.id, site_url)
-    await message.reply(f"✅ **Site Added!**\\n`{site_url}`", quote=True)
+    await message.reply(f"✅ **Site Added!**\n`{site_url}`", quote=True)
 
 @Client.on_message(filters.command("myconfig", [".", "/"]))
 async def my_config_cmd(client, message):
     user_id = message.from_user.id
     proxy = await get_user_proxy(user_id)
     sites = await get_user_sites(user_id)
-    resp = f"⚙️ **YOUR CONFIG**\\n\\n🌐 **Proxy:** `{proxy if proxy else 'None'}`\\n🛍️ **Sites:**\\n"
-    resp += "\\n".join([f"• `{s}`" for s in sites]) if sites else "_No sites added._"
+    resp = f"⚙️ **YOUR CONFIG**\n\n🌐 **Proxy:** `{proxy if proxy else 'None'}`\n🛍️ **Sites:**\n"
+    resp += "\n".join([f"• `{s}`" for s in sites]) if sites else "_No sites added._"
     await message.reply(resp, quote=True)
 
 # --- Main /sfs Command ---
@@ -76,9 +76,9 @@ async def sfs_shopify_cmd(Client, message):
         user_sites = await get_user_sites(user_id)
         
         if not user_proxy:
-            return await message.reply("❌ **No Proxy Set!**\\nUse `/setproxy host:port:user:pass` first.", quote=True)
+            return await message.reply("❌ **No Proxy Set!**\nUse `/setproxy host:port:user:pass` first.", quote=True)
         if not user_sites:
-            return await message.reply("❌ **No Sites Added!**\\nUse `/addsite https://site.com` first.", quote=True)
+            return await message.reply("❌ **No Sites Added!**\nUse `/addsite https://site.com` first.", quote=True)
 
         # 2. Check CC Input
         checkall = await check_all_thing(Client, message)
@@ -115,24 +115,24 @@ async def sfs_shopify_cmd(Client, message):
         await asyncio.sleep(2) # Ensure animation plays
         status, response = await task
 
-        # 5. Final Response
+        # 5. Final Response (Fixed Indentation)
         getbin = await get_bin_details(cc)
         brand, type_, level, bank, country, flag = getbin[0], getbin[1], getbin[2], getbin[3], getbin[4], getbin[5]
         elapsed = round(time.perf_counter() - start, 2)
 
         finalresp = f"""[〄] 𝘾𝘾        ⟶ <code>{fullcc}</code>
-        [〄] 𝙎𝙏𝘼𝙏𝙐𝙎    ⟶ {status}
-        [〄] 𝙍𝙀𝙎𝙐𝙇𝙏    ⟶ {response}
-        ━━━〔 INFO 〕━━━
-        [〄] 𝘽𝙄𝙉 ⟶ {brand} | {type_} - {level}
-        [〄] 𝘽𝘼𝙉𝙆 ⟶ {bank}
-        [〄] 𝘾𝙊𝙐𝑁𝙏𝗥𝗬⟶ {country} {flag}
-        ━━━〔 META 〕━━━
-        [〄] 𝙂𝘼𝙏𝙀𝙒𝘼𝙔 ⟶ Shopify Custom 🛍️
-        [〄] 𝙏𝙄𝙈𝙀 ⟶  {elapsed}s
-        [〄] 𝘾𝙃𝙀𝘾𝙆𝙀𝘿 𝘽𝙔 ⟶ <a href='tg://user?id={user_id}'>{first_name}</a>
-        ━━━〔 OWNER 〕━━━
-        <a href="tg://user?id=8340881349">╏╠══[𝍖𝍖𝍖 𝚂𝙿𝙸𝙳𝙴𝚁 𝍖𝍖𝍖]      🕷️</a>"""
+[〄] 𝙎𝙏𝘼𝙏𝙐𝙎    ⟶ {status}
+[〄] 𝙍𝙀𝙎𝙐𝙇𝙏    ⟶ {response}
+━━━〔 INFO 〕━━━
+[〄] 𝘽𝙄𝙉 ⟶ {brand} | {type_} - {level}
+[〄] 𝘽𝘼𝙉𝙆 ⟶ {bank}
+[〄] 𝘾𝙊𝙐𝙉𝙏𝗥𝗬⟶ {country} {flag}
+━━━〔 META 〕━━━
+[〄] 𝙂𝘼𝙏𝙀𝙒𝘼𝙔 ⟶ Self Shopify 🛍️
+[〄] 𝙏𝙄𝙈𝙀 ⟶  {elapsed}s
+[〄] 𝘾𝙃𝙀𝘾𝙆𝙀𝘿 𝘽𝙔 ⟶ <a href='tg://user?id={user_id}'>{first_name}</a>
+━━━〔 OWNER 〕━━━
+<a href="tg://user?id=8340881349">╏╠══[𝍖𝍖𝍖 𝚂𝙿𝙸𝙳𝙴𝚁 𝍖𝍖𝍖]      🕷️</a>"""
 
         try: await loading_msg.delete()
         except: pass
