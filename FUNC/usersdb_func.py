@@ -15,7 +15,46 @@ from mongodb import *
 
 
 
+# --- Custom Proxy & Site Management Functions (MongoDB) ---
 
+async def set_user_proxy(user_id, proxy):
+    """Saves or updates a custom proxy for the user."""
+    user_id = str(user_id)
+    usersdb.update_one({"id": user_id}, {"$set": {"custom_proxy": proxy}})
+
+async def get_user_proxy(user_id):
+    """Retrieves the user's custom proxy."""
+    user_id = str(user_id)
+    user = usersdb.find_one({"id": user_id}, {"_id": 0, "custom_proxy": 1})
+    return user.get("custom_proxy") if user else None
+
+async def remove_user_proxy(user_id):
+    """Clears the user's custom proxy."""
+    user_id = str(user_id)
+    usersdb.update_one({"id": user_id}, {"$unset": {"custom_proxy": ""}})
+
+async def add_user_site(user_id, site_url):
+    """Adds a new site to the user's custom sites list."""
+    user_id = str(user_id)
+    # Using $addToSet to prevent duplicate URLs
+    usersdb.update_one({"id": user_id}, {"$addToSet": {"custom_sites": site_url}})
+
+async def get_user_sites(user_id):
+    """Retrieves the list of custom sites for the user."""
+    user_id = str(user_id)
+    user = usersdb.find_one({"id": user_id}, {"_id": 0, "custom_sites": 1})
+    return user.get("custom_sites", []) if user else []
+
+async def remove_user_site(user_id, site_url):
+    """Removes a specific site from the user's list."""
+    user_id = str(user_id)
+    usersdb.update_one({"id": user_id}, {"$pull": {"custom_sites": site_url}})
+
+async def clear_all_user_sites(user_id):
+    """Clears all saved sites for the user."""
+    user_id = str(user_id)
+    usersdb.update_one({"id": user_id}, {"$unset": {"custom_sites": ""}})
+    
 async def getuserinfo(user_id):
     return usersdb.find_one({"id": user_id}, {"_id": 0})
 
