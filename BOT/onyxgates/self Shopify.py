@@ -120,7 +120,19 @@ async def sfs_shopify_cmd(Client, message):
         brand, type_, level, bank, country, flag = getbin[0], getbin[1], getbin[2], getbin[3], getbin[4], getbin[5]
         elapsed = round(time.perf_counter() - start, 2)
 
-        finalresp = f"[〄] 𝘾𝘾        ⟶ <code>{fullcc}</code>\\n[〄] 𝙎𝙏𝘼𝙏𝙐𝙎    ⟶ {status}\\n[〄] 𝙍𝙀𝙎𝙐𝙇𝙏    ⟶ {response}\\n━━━〔 INFO 〕━━━\\n[〄] 𝘽𝙄𝙉 ⟶ {brand} | {type_} - {level}\\n[〄] 𝘽𝘼𝙉𝙆 ⟶ {bank}\\n[〄] 𝘾𝙊𝙐𝙉𝙏𝗥𝗬⟶ {country} {flag}\\n━━━〔 META 〕━━━\\n[〄] 𝙂𝘼𝙏𝙀𝙒𝘼𝙔 ⟶ Shopify Custom 🛍️\\n[〄] 𝙏𝙄𝙈𝙀 ⟶  {elapsed}s\\n[〄] 𝘾𝙃𝙀𝘾𝙆𝙀𝘿 𝘽𝙔 ⟶ <a href=\'tg://user?id={user_id}\'>{first_name}</a>\\n━━━〔 OWNER 〕━━━\\n<a href=\\"tg://user?id=8340881349\\">╏╠══[𝍖𝍖𝍖 𝚂𝙿𝙸𝙳𝙴𝚁 𝍖𝍖𝍖]      🕷️</a>"
+        finalresp = f"""[〄] 𝘾𝘾        ⟶ <code>{fullcc}</code>
+        [〄] 𝙎𝙏𝘼𝙏𝙐𝙎    ⟶ {status}
+        [〄] 𝙍𝙀𝙎𝙐𝙇𝙏    ⟶ {response}
+        ━━━〔 INFO 〕━━━
+        [〄] 𝘽𝙄𝙉 ⟶ {brand} | {type_} - {level}
+        [〄] 𝘽𝘼𝙉𝙆 ⟶ {bank}
+        [〄] 𝘾𝙊𝙐𝑁𝙏𝗥𝗬⟶ {country} {flag}
+        ━━━〔 META 〕━━━
+        [〄] 𝙂𝘼𝙏𝙀𝙒𝘼𝙔 ⟶ Shopify Custom 🛍️
+        [〄] 𝙏𝙄𝙈𝙀 ⟶  {elapsed}s
+        [〄] 𝘾𝙃𝙀𝘾𝙆𝙀𝘿 𝘽𝙔 ⟶ <a href='tg://user?id={user_id}'>{first_name}</a>
+        ━━━〔 OWNER 〕━━━
+        <a href="tg://user?id=8340881349">╏╠══[𝍖𝍖𝍖 𝚂𝙿𝙸𝙳𝙴𝚁 𝍖𝍖𝍖]      🕷️</a>"""
 
         try: await loading_msg.delete()
         except: pass
