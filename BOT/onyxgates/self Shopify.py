@@ -27,34 +27,15 @@ async def check_proxy_working(proxy_str):
             return (True, "Working ✅") if response.status_code == 200 else (False, "Failed Connection")
     except:
         return False, "Proxy Error"
-
-# --- Management Commands ---
-
-@Client.on_message(filters.command("setproxy", [".", "/"]))
-async def set_proxy_cmd(client, message):
-    user_id = message.from_user.id
-    if len(message.command) < 2:
-        return await message.reply("❌ **Usage:** `/setproxy host:port:user:pass`", quote=True)
-    
-    proxy = message.text.split(None, 1)[1]
-    wait_msg = await message.reply("⏳ **Testing Proxy...**", quote=True)
-    is_working, status = await check_proxy_working(proxy)
-    
-    if is_working:
-        await set_user_proxy(user_id, proxy)
-        await wait_msg.edit(f"✅ **Proxy Saved!**\n`{proxy}`")
-    else:
-        await wait_msg.edit(f"❌ **Proxy Not Working!**\n`{status}`")
-
 # --- Command: Remove Proxy ---
-@Client.on_message(filters.command("removeproxy", [".", "/"]))
+@Client.on_message(filters.command("rmproxy", [".", "/"]))
 async def remove_proxy_cmd(client, message):
     user_id = message.from_user.id
     await remove_user_proxy(user_id)
     await message.reply("🗑️ **Proxy Removed Successfully!**", quote=True)
 
 # --- Command: Remove Specific Site ---
-@Client.on_message(filters.command("removesite", [".", "/"]))
+@Client.on_message(filters.command("rmsite", [".", "/"]))
 async def remove_site_cmd(client, message):
     user_id = message.from_user.id
     if len(message.command) < 2:
@@ -71,6 +52,24 @@ async def clear_sites_cmd(client, message):
     await clear_all_user_sites(user_id)
     await message.reply("🗑️ **All Saved Sites Cleared!**", quote=True)
     
+
+# --- Management Commands ---
+
+@Client.on_message(filters.command("addproxy", [".", "/"]))
+async def set_proxy_cmd(client, message):
+    user_id = message.from_user.id
+    if len(message.command) < 2:
+        return await message.reply("❌ **Usage:** `/setproxy host:port:user:pass`", quote=True)
+    
+    proxy = message.text.split(None, 1)[1]
+    wait_msg = await message.reply("⏳ **Testing Proxy...**", quote=True)
+    is_working, status = await check_proxy_working(proxy)
+    
+    if is_working:
+        await set_user_proxy(user_id, proxy)
+        await wait_msg.edit(f"✅ **Proxy Saved!**\n`{proxy}`")
+    else:
+        await wait_msg.edit(f"❌ **Proxy Not Working!**\n`{status}`")
 
 @Client.on_message(filters.command("addsite", [".", "/"]))
 async def add_site_cmd(client, message):
