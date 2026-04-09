@@ -302,7 +302,7 @@ async def button_callback(client, callback_query):
             "<a href='https://t.me/elitechkbot?start=start'>〈↻〉</a> Status : On ✅\n\n"
 
             "<a href='https://t.me/elitechkbot?start=start'>〈朱〉</a> Name   : Shopify 20$\n"
-            "<a href='https://t.me/elitechkbot?start=start'>〈零〉</a> Cmd    : /sh\n"
+            "<a href='https://t.me/elitechkbot?start=start'>〈零〉</a> Cmd    : /shp\n"
             "<a href='https://t.me/elitechkbot?start=start'>〈↻〉</a> Status : On ✅\n\n"
 
             "<a href='https://t.me/elitechkbot?start=start'>〈朱〉</a> Name   : SK Based 10$\n"
