@@ -55,7 +55,7 @@ async def clear_sites_cmd(client, message):
 
 # --- Management Commands ---
 
-@Client.on_message(filters.command("addproxy", [".", "/"]))
+@Client.on_message(filters.command("setproxy", [".", "/"]))
 async def set_proxy_cmd(client, message):
     user_id = message.from_user.id
     if len(message.command) < 2:
