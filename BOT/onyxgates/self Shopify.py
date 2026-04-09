@@ -54,7 +54,7 @@ async def add_site_cmd(client, message):
     await add_user_site(message.from_user.id, site_url)
     await message.reply(f"✅ **Site Added!**\n`{site_url}`", quote=True)
 
-@Client.on_message(filters.command("myconfig", [".", "/"]))
+@Client.on_message(filters.command("sets", [".", "/"]))
 async def my_config_cmd(client, message):
     user_id = message.from_user.id
     proxy = await get_user_proxy(user_id)
