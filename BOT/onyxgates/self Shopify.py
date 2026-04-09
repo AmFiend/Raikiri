@@ -46,6 +46,32 @@ async def set_proxy_cmd(client, message):
     else:
         await wait_msg.edit(f"❌ **Proxy Not Working!**\n`{status}`")
 
+# --- Command: Remove Proxy ---
+@Client.on_message(filters.command("removeproxy", [".", "/"]))
+async def remove_proxy_cmd(client, message):
+    user_id = message.from_user.id
+    await remove_user_proxy(user_id)
+    await message.reply("🗑️ **Proxy Removed Successfully!**", quote=True)
+
+# --- Command: Remove Specific Site ---
+@Client.on_message(filters.command("removesite", [".", "/"]))
+async def remove_site_cmd(client, message):
+    user_id = message.from_user.id
+    if len(message.command) < 2:
+        return await message.reply("❌ **Usage:** `/removesite https://example.com`", quote=True)
+    
+    site_url = message.text.split(None, 1)[1]
+    await remove_user_site(user_id, site_url)
+    await message.reply(f"🗑️ **Site Removed!**\n`{site_url}`", quote=True)
+
+# --- Command: Clear All Sites ---
+@Client.on_message(filters.command("clearsites", [".", "/"]))
+async def clear_sites_cmd(client, message):
+    user_id = message.from_user.id
+    await clear_all_user_sites(user_id)
+    await message.reply("🗑️ **All Saved Sites Cleared!**", quote=True)
+    
+
 @Client.on_message(filters.command("addsite", [".", "/"]))
 async def add_site_cmd(client, message):
     if len(message.command) < 2:
