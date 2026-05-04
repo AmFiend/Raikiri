@@ -17,7 +17,7 @@ async def cmd_bin(Client, message):
             resp = """<b>
 Invalid SK ⚠️
 
-Message: Not Found Any Valid SK From Your Input.
+⟢ Not Found Any Valid SK From Your Input.
             </b>"""
             await message.reply_text(resp)
             return
@@ -40,7 +40,7 @@ Message: Not Found Any Valid SK From Your Input.
             resp = """<b>
 Error fetching SK info ⚠️
 
-Message: Unable to fetch SK info. Check if the SK is valid.
+⟢ Unable to fetch SK info. Check if the SK is valid.
             </b>"""
             await message.reply_text(resp)
             return
@@ -62,22 +62,22 @@ Message: Unable to fetch SK info. Check if the SK is valid.
         pending_balance = balance_info.get("pending", [{}])[0].get("amount", "N/A")
         livemode = balance_info.get("livemode", False)
 
-        resp = f"""<b>SK Info Fetched Successfully ✅</b>
-━━━━━━━━━━━━━━
+        resp = f"""<b>SK Info Fetched ✓</b>
+━━━━━━━━━━━━━━━━━━━━
 🔑 <b>SK:</b> <code>{sk}</code>
-🏢 <b>Name:</b> {name_data}
+🏢 <b>◈ <b>ɴᴀᴍᴇ :</b></b> {name_data}
 🌐 <b>Site Info:</b> {url}
-🌍 <b>Country:</b> {country}
-💱 <b>Currency:</b> {currency}
-📧 <b>Email:</b> {email}
-💰 <b>Balance Info:</b>
+🌍 <b>⟢ <b>ᴄᴏᴜɴᴛʀʏ :</b></b> {country}
+💱 <b>◈ <b>ᴄᴜʀʀᴇɴᴄʏ :</b></b> {currency}
+📧 <b>⟢ <b>ᴇᴍᴀɪʟ :</b></b> {email}
+💰 <b>✧ <b>ʙᴀʟᴀɴᴄᴇ ɪɴꜰᴏ</b> ✧</b>
    - Live Mode: {livemode}
    - Charges Enabled: {charges_enabled}
-   - Available Balance: {available_balance}
-   - Pending Balance: {pending_balance}
-━━━━━━━━━━━━━━
-<b>Checked By:</b> <a href="tg://user?id={message.from_user.id}">{message.from_user.first_name}</a> [ {role} ]
-<b>Bot by:</b> @Zer0_ke
+   - Available ⟢ <b>ʙᴀʟᴀɴᴄᴇ :</b> {available_balance}
+   - Pending ⟢ <b>ʙᴀʟᴀɴᴄᴇ :</b> {pending_balance}
+━━━━━━━━━━━━━━━━━━━━
+<b>⟢ <b>ᴄʜᴇᴄᴋᴇᴅ ʙʏ :</b>:</b> <a href="tg://user?id={message.from_user.id}">{message.from_user.first_name}</a> [ {role} ]
+<b>Bot by:</b> @pipin_o
 """
         await message.reply_text(resp)
 

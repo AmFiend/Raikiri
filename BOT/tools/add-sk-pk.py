@@ -15,8 +15,9 @@ async def skTopk(Client, message):
         user_id     = str(message.from_user.id)
         OWNER_ID    = json.loads(open("FILES/config.json", "r" , encoding="utf-8").read())["OWNER_ID"]
         if user_id not in OWNER_ID:
-            resp = """<b>You Don't Have Permission To Use This Command.    
-Contact Bot Owner @Zer0_ke !</b>"""
+            resp = """<b>✦ ᴀᴄᴄᴇꜱꜱ ᴅᴇɴɪᴇᴅ ✦
+⟢ ʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪꜱꜱɪᴏɴ.    
+◈ ᴄᴏɴᴛᴀᴄᴛ @pipin_o</b>"""
             await message.reply_text(resp, message.id)
             return
         checkall = await check_all_thing(Client, message)
@@ -25,7 +26,7 @@ Contact Bot Owner @Zer0_ke !</b>"""
             resp = """<b>
 Invalid SK ⚠️
 
-Message: Not Found Any Valid SK From Your Input.
+⟢ Not Found Any Valid SK From Your Input.
             </b>"""
             await message.reply_text(resp, message.id)
             return
@@ -38,7 +39,7 @@ Message: Not Found Any Valid SK From Your Input.
             resp = """<b>
 Invalid SK Key ⚠️
 
-Message: Not Found Valid Sk Key From Your Input.
+⟢ Not Found Valid Sk Key From Your Input.
             </b>"""
             await message.reply_text(resp, message.id)
             return
@@ -81,7 +82,7 @@ Message: Not Found Valid Sk Key From Your Input.
                     resp = """<b>
 SK Key Expired ⚠️
 
-Message: Your SK key has expired. Please obtain a new SK key.
+⟢ Your SK key has expired. Please obtain a new SK key.
                     </b>"""
       
                     await message.reply_text(resp, message.id)
@@ -101,7 +102,7 @@ Message: Your SK key has expired. Please obtain a new SK key.
             resp = """<b>
 Error fetching Sk info ⚠️
 
-Message: Unable to fetch Sk info. Check if the SK is Live.
+⟢ Unable to fetch Sk info. Check if the SK is Live.
             </b>"""
             await message.reply_text(resp, message.id)
             return
@@ -110,7 +111,7 @@ Message: Unable to fetch Sk info. Check if the SK is Live.
             resp = """<b>
 Error fetching Sk info ⚠️
 
-Message: Unable to fetch Sk info. Check if the SK is Live.
+⟢ Unable to fetch Sk info. Check if the SK is Live.
             </b>"""
             await message.reply_text(resp, message.id)
             return
@@ -146,13 +147,13 @@ Message: Unable to fetch Sk info. Check if the SK is Live.
 
         resp = f"""<b>
 SK OR PK SET ✅
-━━━━━━━━━━━━━━ 
+━━━━━━━━━━━━━━━━━━━━ 
 SK:➺ <code>{sk}</code>
 
 PK:➺ <code>{full_pk}</code>
 
-Currency:➺ <code>{currency}</code>
-━━━━━━━━━━━━━━ 
+◈ <b>ᴄᴜʀʀᴇɴᴄʏ :</b>➺ <code>{currency}</code>
+━━━━━━━━━━━━━━━━━━━━ 
 </b>"""
         await message.reply_text(resp, message.id)
 

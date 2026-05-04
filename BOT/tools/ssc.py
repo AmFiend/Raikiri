@@ -13,7 +13,7 @@ def format_result_telegram(site, item):
 ┗━━━━━━━━━━━⊛</b>
 
 ⊙ <b>Product Variant:</b> {item.get('variant', 'N/A')}
-⊙ <b>Product Name:</b> {item['title']}
+⊙ <b>Product ◈ <b>ɴᴀᴍᴇ :</b></b> {item['title']}
 ⊙ <b>Product Price:</b> ${item['price']}
 ⊙ <b>Product URL:</b> <code>{item['url']}</code>
 
@@ -26,7 +26,7 @@ def format_result_txt(site, item):
 ┗━━━━━━━━━━━⊛
 
 ⊙ Product Variant: {item.get('variant', 'N/A')}
-⊙ Product Name: {item['title']}
+⊙ Product ◈ <b>ɴᴀᴍᴇ :</b> {item['title']}
 ⊙ Product Price: ${item['price']}
 ⊙ Product URL: {item['url']}
 
@@ -129,7 +129,7 @@ async def sctxt_cmd(client: Client, message: Message):
     if total == 0:
         return await message.reply("❌ No valid Shopify URLs found.")
 
-    m = await message.reply(f"Reading site list... ⌛\nTotal: {total} sites")
+    m = await message.reply(f"Reading site list... ⌛\n◈ <b>ᴛᴏᴛᴀʟ :</b> {total} sites")
 
     start = time.time()
     results_telegram = []

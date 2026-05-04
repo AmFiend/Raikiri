@@ -23,7 +23,7 @@ async def cmd_bin(Client, message):
             resp = """<b>
 Invalid IP Address ⚠️
 
-Message: Not Found Valid IP Address From Your Input.
+⟢ Not Found Valid IP Address From Your Input.
             </b>"""
             await message.reply_text(resp)
             return
@@ -44,7 +44,7 @@ Message: Not Found Valid IP Address From Your Input.
             resp = """<b>
 Error fetching IP info ⚠️
 
-Message: Unable to fetch IP info. Check if the IP is valid.
+⟢ Unable to fetch IP info. Check if the IP is valid.
             </b>"""
             await message.reply_text(resp)
             return
@@ -53,7 +53,7 @@ Message: Unable to fetch IP info. Check if the IP is valid.
             resp = """<b>
 Error fetching IP info ⚠️
 
-Message: Unable to fetch IP info. Check if the IP is valid.
+⟢ Unable to fetch IP info. Check if the IP is valid.
             </b>"""
             await message.reply_text(resp)
             return
@@ -69,20 +69,20 @@ Message: Unable to fetch IP info. Check if the IP is valid.
         ProxyCheck = data.get('isProxy')
         Continent = data.get('continent')
 
-        resp = f"""<b>IP Address Fetched Successfully ✅</b>
-━━━━━━━━━━━━━━
-🌐 <b>IP:</b> <code>{IpAddress}</code>
+        resp = f"""<b>IP Address Fetched ✓</b>
+━━━━━━━━━━━━━━━━━━━━
+🌐 <b>◈ <b>ɪᴘ :</b></b> <code>{IpAddress}</code>
 🆔 <b>IP Version:</b> <code>{IpVersion}</code>
-🌍 <b>Country:</b> <code>{Country}</code> -> <code>{CountryCode}</code>
+🌍 <b>⟢ <b>ᴄᴏᴜɴᴛʀʏ :</b></b> <code>{Country}</code> -> <code>{CountryCode}</code>
 🕰️ <b>Time Zone:</b> <code>{timezone}</code>
 📮 <b>Zip Code:</b> <code>{ZipCode}</code>
-🏙️ <b>City Name:</b> <code>{CityName}</code>
-🌍 <b>Region Name:</b> <code>{RegionName}</code>
+🏙️ <b>City ◈ <b>ɴᴀᴍᴇ :</b></b> <code>{CityName}</code>
+🌍 <b>Region ◈ <b>ɴᴀᴍᴇ :</b></b> <code>{RegionName}</code>
 🛡️ <b>Proxy Check:</b> <code>{ProxyCheck}</code>
 🌏 <b>Continent:</b> <code>{Continent}</code>
-━━━━━━━━━━━━━━
-<b>Checked By:</b> <a href="tg://user?id={message.from_user.id}">{message.from_user.first_name}</a> [ {role} ]
-<b>Bot by:</b> @Zer0_ke
+━━━━━━━━━━━━━━━━━━━━
+<b>⟢ <b>ᴄʜᴇᴄᴋᴇᴅ ʙʏ :</b>:</b> <a href="tg://user?id={message.from_user.id}">{message.from_user.first_name}</a> [ {role} ]
+<b>Bot by:</b> @pipin_o
 """
         await message.reply_text(resp)
 

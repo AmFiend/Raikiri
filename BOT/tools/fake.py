@@ -264,7 +264,7 @@ def get_address_format(country_code: str) -> Dict:
             'order': ['street', 'city', 'state', 'postal_code'],
             'labels': {
                 'street': '🏠 <b>Street:</b>',
-                'city': '🏙️ <b>City:</b>',
+                'city': '🏙️ <b>⟢ <b>ᴄɪᴛʏ :</b></b>',
                 'state': '🌆 <b>State/Province:</b>',
                 'postal_code': '📮 <b>ZIP/Postal Code:</b>'
             }
@@ -346,7 +346,7 @@ def get_address_format(country_code: str) -> Dict:
             'order': ['street', 'postal_code', 'city', 'state'],
             'labels': {
                 'street': '🏠 <b>Street:</b>',
-                'city': '🏙️ <b>City:</b>',
+                'city': '🏙️ <b>⟢ <b>ᴄɪᴛʏ :</b></b>',
                 'state': '🌆 <b>Oblast/Region/County:</b>',
                 'postal_code': '📮 <b>Postal Code:</b>'
             },
@@ -359,7 +359,7 @@ def get_address_format(country_code: str) -> Dict:
             'labels': {
                 'street': '🏠 <b>Street:</b>',
                 'city': '🏙️ <b>City/Town:</b>',
-                'state': '🌆 <b>Province/Region:</b>',
+                'state': '🌆 <b>Province/◈ <b>ʀᴇɢɪᴏɴ :</b></b>',
                 'postal_code': '📮 <b>Postal Code:</b>'
             },
             'optional': ['state']
@@ -384,7 +384,7 @@ def get_address_format(country_code: str) -> Dict:
             'labels': {
                 'street': '🏠 <b>Street/Building:</b>',
                 'district': '🏘️ <b>Area/Locality:</b>',
-                'city': '🏙️ <b>City:</b>',
+                'city': '🏙️ <b>⟢ <b>ᴄɪᴛʏ :</b></b>',
                 'state': '🌆 <b>State/UT:</b>',
                 'postal_code': '📮 <b>PIN Code:</b>'
             },
@@ -398,7 +398,7 @@ def get_address_format(country_code: str) -> Dict:
                 'street': '🏠 <b>Street/Building:</b>',
                 'district': '🏘️ <b>Subdistrict/Locality:</b>',
                 'city': '🏙️ <b>City/Municipality:</b>',
-                'state': '🌆 <b>Province/Region:</b>',
+                'state': '🌆 <b>Province/◈ <b>ʀᴇɢɪᴏɴ :</b></b>',
                 'postal_code': '📮 <b>Postal Code:</b>'
             },
             'optional': ['district']
@@ -410,7 +410,7 @@ def get_address_format(country_code: str) -> Dict:
             'labels': {
                 'street': '🏠 <b>Street/Building:</b>',
                 'district': '🏘️ <b>District/Area:</b>',
-                'city': '🏙️ <b>City:</b>',
+                'city': '🏙️ <b>⟢ <b>ᴄɪᴛʏ :</b></b>',
                 'state': '🌆 <b>Governorate/Province:</b>',
                 'postal_code': '📮 <b>Postal Code/P.O. Box:</b>'
             },
@@ -447,8 +447,8 @@ def get_address_format(country_code: str) -> Dict:
             'labels': {
                 'street': '🏠 <b>Street/Plot:</b>',
                 'district': '🏘️ <b>Estate/Area:</b>',
-                'city': '🏙️ <b>Town/City:</b>',
-                'state': '🌆 <b>County/Region:</b>',
+                'city': '🏙️ <b>Town/⟢ <b>ᴄɪᴛʏ :</b></b>',
+                'state': '🌆 <b>County/◈ <b>ʀᴇɢɪᴏɴ :</b></b>',
                 'postal_code': '📮 <b>Postal Code:</b>'
             },
             'optional': ['district']
@@ -461,7 +461,7 @@ def get_address_format(country_code: str) -> Dict:
                 'street': '🏠 <b>Street/House:</b>',
                 'district': '🏘️ <b>Area/Locality:</b>',
                 'city': '🏙️ <b>City/Town:</b>',
-                'state': '🌆 <b>State/Region:</b>',
+                'state': '🌆 <b>State/◈ <b>ʀᴇɢɪᴏɴ :</b></b>',
                 'postal_code': '📮 <b>Postal Code:</b>'
             },
             'optional': ['postal_code']
@@ -486,7 +486,7 @@ def get_address_format(country_code: str) -> Dict:
                 'street': '🏠 <b>Street/Avenue:</b>',
                 'district': '🏘️ <b>Quarter/District:</b>',
                 'city': '🏙️ <b>City/Town:</b>',
-                'state': '🌆 <b>Province/Region:</b>'
+                'state': '🌆 <b>Province/◈ <b>ʀᴇɢɪᴏɴ :</b></b>'
             },
             'optional': ['district']
         },
@@ -3068,10 +3068,10 @@ async def cmd_fake(client, message):
             # Start timer before building the full response
             start = time.perf_counter()
             resp = f"""
-<b>Fake Info Created Successfully ✅</b>
+<b>Fake Info Created ✓</b>
 ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━
-🌍 <b>Country:</b> <code>{fake_country}{region_text}</code> {flag}
-🆔 <b>Full Name:</b> <code>{fake_name}</code>
+🌍 <b>⟢ <b>ᴄᴏᴜɴᴛʀʏ :</b></b> <code>{fake_country}{region_text}</code> {flag}
+🆔 <b>Full ◈ <b>ɴᴀᴍᴇ :</b></b> <code>{fake_name}</code>
 👤 <b>Gender:</b> <code>{fake_gender}</code>
 🎂 <b>Age:</b> <code>{age} years</code>
 """
@@ -3102,16 +3102,16 @@ async def cmd_fake(client, message):
             
             # Add contact information
             resp += f"📞 <b>Phone Number:</b> <code>{fake_phone}</code>\n"
-            resp += f"📧 <b>Email:</b> <code>{fake_email}</code>\n"
+            resp += f"📧 <b>⟢ <b>ᴇᴍᴀɪʟ :</b></b> <code>{fake_email}</code>\n"
             
             # Add data quality indicator
             resp += f"{quality_emoji} <b>Data Quality:</b> <code>{quality_text}</code>\n"
 
             # Add footer with original query if present
             query_text = f"\n🔍 <b>country :</b> <code>{country_query}</code>" if country_query else ""
-            resp += f"""━━━━━━━━━━━━━━{query_text}
-━━━━━━━━━━━━━━
-[ﾒ] Checked By ➺ <a href='tg://user?id={message.from_user.id}'> {message.from_user.first_name}</a> [ {role} ]
+            resp += f"""━━━━━━━━━━━━━━━━━━━━{query_text}
+━━━━━━━━━━━━━━━━━━━━
+[ﾒ] ⟢ <b>ᴄʜᴇᴄᴋᴇᴅ ʙʏ :</b> ➺ <a href='tg://user?id={message.from_user.id}'> {message.from_user.first_name}</a> [ {role} ]
 [ﾒ] Dev ➺ ⏤‌‌‌‌ <a href="tg://user?id=8340881349">𝑺𝑷𝑰𝑫𝑬𝑹</a>
 ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━
 [ﾒ] T/t ➺ [{time.perf_counter() - start:0.2f} seconds]

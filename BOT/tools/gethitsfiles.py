@@ -10,11 +10,11 @@ async def cmd_buy(Client, message):
             key = message.text.split(" ")[1]
             file = f"HITS/{key}.txt"
             text = f"""<b>HITS File Successfully Retrieved ✅</b>
-━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━━━━━━
 🆔 <b>Your User ID:</b> <code>{user_id}</code>
 🔑 <b>Hits Key:</b> <code>{key}</code>
 📄 <b>Status:</b> <code>Successful</code>
-━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━━━━━━
 """
             await message.reply_document(
                 document=file,
@@ -23,10 +23,10 @@ async def cmd_buy(Client, message):
             )
         except Exception:
             await message.reply_text(f"""<b>
-File Fetch Failed ❌
-━━━━━━━━━━━━━━
+File Fetch ꜰᴀɪʟᴇᴅ ✗
+━━━━━━━━━━━━━━━━━━━━
 Reason: Invalid or Incorrect Secret Key
-━━━━━━━━━━━━━━</b>""",
+━━━━━━━━━━━━━━━━━━━━</b>""",
                                     reply_to_message_id=message.id)
     except Exception:
         import traceback

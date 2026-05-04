@@ -20,7 +20,7 @@ async def cmd_skuser(client, message):
             resp = """<b>
 Invalid SK ⚠️
 
-Message: Not Found Any Valid SK From Your Input.
+⟢ Not Found Any Valid SK From Your Input.
             </b>"""
             await message.reply_text(resp)
             return
@@ -63,13 +63,13 @@ async def auto_reload_and_send(sk, message, max_refresh=10):
     sent_message = await message.reply_text(
         f"""<b>
 SK USER INFO FETCHED SUCCESSFULLY ✅
-━━━━━━━━━━━━━━ 
+━━━━━━━━━━━━━━━━━━━━ 
 SK:➺ 
 <code>{sk}</code>
 
 Loading...
 
-Checked By <a href="tg://user?id={message.from_user.id}"> {message.from_user.first_name}</a> 
+⟢ <b>ᴄʜᴇᴄᴋᴇᴅ ʙʏ :</b> <a href="tg://user?id={message.from_user.id}"> {message.from_user.first_name}</a> 
 Bot by - <a href="tg://user?id=8340881349">Failure</a>
         </b> """
     )
@@ -83,7 +83,7 @@ Bot by - <a href="tg://user?id=8340881349">Failure</a>
             await sent_message.edit_text(
                 f"""<b>
 SK USER INFO FETCHED SUCCESSFULLY ✅
-━━━━━━━━━━━━━━ 
+━━━━━━━━━━━━━━━━━━━━ 
 SK:➺ 
 <code>{sk}</code>
 
@@ -91,7 +91,7 @@ SK:➺
 
 Last Updated: {last_updated}
 
-Checked By <a href="tg://user?id={message.from_user.id}"> {message.from_user.first_name}</a> 
+⟢ <b>ᴄʜᴇᴄᴋᴇᴅ ʙʏ :</b> <a href="tg://user?id={message.from_user.id}"> {message.from_user.first_name}</a> 
 Bot by - <a href="tg://user?id="8340881349>Failure</a>
                     </b> """
             )
