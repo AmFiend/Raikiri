@@ -5,24 +5,25 @@ from pyrogram import Client, filters
 @Client.on_message(filters.command("howcrd", [".", "/"]))
 async def cmd_crdsystem(client, message):
     try:
-        resp = f"""<b>
-💳 𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊⚡ Credit System
-━━━━━━━━━━━━━━
-● AUTH GATES
+        resp = f"""<a href='https://t.me/elitechkbot?start=start'>✧</a> <b>ꜱᴘʏᴅᴇ ━ ᴄʀᴇᴅɪᴛ ꜱʏꜱᴛᴇᴍ</b> ✧
+━━━━━━━━━━━━━━━━━━━━
+
+◈ <b>AUTH GATES</b>
    ➔ 1 credit per CC check
 
-● CHARGE GATES
+◈ <b>CHARGE GATES</b>
    ➔ 1 credit per CC check
 
-● MASS AUTH GATES
+◈ <b>MASS AUTH GATES</b>
    ➔ 1 credit per CC check
 
-● MASS CHARGE GATES
+◈ <b>MASS CHARGE GATES</b>
    ➔ 1 credit per CC check
 
-● CC SCRAPER GATES
+◈ <b>CC SCRAPER GATES</b>
    ➔ 1 credit per scraping
-        </b>"""
+
+━━━━━━━━━━━━━━━━━━━━"""
         await message.reply_text(resp, quote=True)
 
     except Exception:
