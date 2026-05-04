@@ -20,10 +20,10 @@ Contact Bot Owner @PharaohHelperBot !</b>"""
 
         resp = f"""<b>
 VBV_TOKEN Successfully Added ✅
-━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━━━━━━
 {VBV_TOKEN}
 
-Status: Successfull
+◈ <b>ꜱᴛᴀᴛᴜꜱ :</b> Successfull
     </b>"""
         await message.reply_text(resp, message.id)
 

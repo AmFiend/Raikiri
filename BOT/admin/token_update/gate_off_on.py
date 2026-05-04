@@ -8,11 +8,11 @@ async def update_dead_amount(Client, message):
         user_id = str(message.from_user.id)
         OWNER_ID = json.loads(open("FILES/config.json", "r", encoding="utf-8").read())["OWNER_ID"]
         if user_id not in OWNER_ID:
-            resp = """<b>Privilege Not Found ⚠️
+            resp = """<b>✦ ᴀᴄᴄᴇꜱꜱ ᴅᴇɴɪᴇᴅ ✦
 
-Message: To Perform This Action, You Need Admin Level Power. 
+⟢ To Perform This Action, You Need Admin Level Power. 
 
-Contact @Zer0_ke For More Info ✅</b>"""
+◈ ᴄᴏɴᴛᴀᴄᴛ @pipin_o</b>"""
             await message.reply_text(resp)
             return
 
@@ -58,11 +58,11 @@ async def remove_command(Client, message):
         user_id = str(message.from_user.id)
         OWNER_ID = json.loads(open("FILES/config.json", "r", encoding="utf-8").read())["OWNER_ID"]
         if user_id not in OWNER_ID:
-            resp = """<b>Privilege Not Found ⚠️
+            resp = """<b>✦ ᴀᴄᴄᴇꜱꜱ ᴅᴇɴɪᴇᴅ ✦
 
-Message: To Perform This Action, You Need Admin Level Power. 
+⟢ To Perform This Action, You Need Admin Level Power. 
 
-Contact @Zer0_ke For More Info ✅</b>"""
+◈ ᴄᴏɴᴛᴀᴄᴛ @pipin_o</b>"""
             await message.reply_text(resp)
             return
 

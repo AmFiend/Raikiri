@@ -11,11 +11,11 @@ async def update_dead_amount(Client, message):
         OWNER_ID = json.loads(
             open("FILES/config.json", "r", encoding="utf-8").read())["OWNER_ID"]
         if user_id not in OWNER_ID:
-            resp = """<b>Privilege Not Found ⚠️
+            resp = """<b>✦ ᴀᴄᴄᴇꜱꜱ ᴅᴇɴɪᴇᴅ ✦
 
-Message: Do Perform This Action, You Need Admin Level Power. 
+⟢ Do Perform This Action, You Need Admin Level Power. 
 
-Contact @Zer0_ke For More Info ✅</b>"""
+◈ ᴄᴏɴᴛᴀᴄᴛ @pipin_o</b>"""
             await message.reply_text(resp)
             return
         try:
@@ -33,8 +33,8 @@ Contact @Zer0_ke For More Info ✅</b>"""
             json.dump(data, f, indent=4)
 
         resp = f"""<b>
-DEAD_AMOUNT Updated Successfully ✅
-━━━━━━━━━━━━━━
+DEAD_AMOUNT Updated ✓
+━━━━━━━━━━━━━━━━━━━━
 NEW DEAD_AMOUNT: {new_dead_amount}
     </b>"""
         await message.reply_text(resp)
@@ -64,9 +64,9 @@ async def update_shopify_url(Client, message):
         OWNER_ID = json.loads(
             open("FILES/config.json", "r", encoding="utf-8").read())["OWNER_ID"]
         if user_id not in OWNER_ID:
-            resp = """<b>Privilege Not Found ⚠️
+            resp = """<b>✦ ᴀᴄᴄᴇꜱꜱ ᴅᴇɴɪᴇᴅ ✦
 
-Message: Do Perform This Action, You Need Admin Level Power. 
+⟢ Do Perform This Action, You Need Admin Level Power. 
 
 Contact @PharaohHelperBot For More Info ✅</b>"""
             await message.reply_text(resp)
@@ -84,7 +84,7 @@ Contact @PharaohHelperBot For More Info ✅</b>"""
 
         resp = f"""<b>
 Auto Shopify Url Updated ✅
-━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━━━━━━
 NEW SITE: {new_url_so}
     </b>"""
         await message.reply_text(resp)

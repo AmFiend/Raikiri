@@ -18,10 +18,10 @@ Contact Bot Owner @PharaohHelperBot !</b>"""
         await addsk(message.reply_to_message.text)
         resp = f"""<b>
 SK Key ( Stripe Key ) Successfully Added ✅
-━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━━━━━━
 {message.reply_to_message.text}
 
-Status: Successfull
+◈ <b>ꜱᴛᴀᴛᴜꜱ :</b> Successfull
     </b>"""
         await message.reply_text(resp, message.id)
 
@@ -43,9 +43,9 @@ async def update_live_sk_key(Client, message):
         OWNER_ID = json.loads(
             open("FILES/config.json", "r", encoding="utf-8").read())["OWNER_ID"]
         if user_id not in OWNER_ID:
-            resp = """<b>Privilege Not Found ⚠️
+            resp = """<b>✦ ᴀᴄᴄᴇꜱꜱ ᴅᴇɴɪᴇᴅ ✦
 
-Message: Do Perform This Action, You Need Admin Level Power. 
+⟢ Do Perform This Action, You Need Admin Level Power. 
 
 Contact @PharaohHelperBot For More Info ✅</b>"""
             await message.reply_text(resp)
@@ -63,10 +63,10 @@ Contact @PharaohHelperBot For More Info ✅</b>"""
 
         resp = f"""<b>
 SK Key ( Stripe Key ) Successfully Added ✅
-━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━━━━━━
 {message.reply_to_message.text}
 
-Status: Successfull
+◈ <b>ꜱᴛᴀᴛᴜꜱ :</b> Successfull
     </b>"""
         await message.reply_text(resp)
 
