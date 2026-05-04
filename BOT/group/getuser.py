@@ -6,10 +6,11 @@ async def cmd_getuser(client, message):
     try:
         user = message.text.split(" ")[1]
     except IndexError:
-        resp = """<b>
-Usage:
-/getuser id_or_username
-        </b>"""
+        resp = """✦ <b>ꜱᴘʏᴅᴇ ━ ᴜꜱᴀɢᴇ</b> ✦
+▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰
+
+⟢ /getuser ɪᴅ_ᴏʀ_ᴜꜱᴇʀɴᴀᴍᴇ
+━━━━━━━━━━━━━━━━━━━━"""
         await message.reply_text(resp, quote=True)
         return
 
@@ -22,21 +23,22 @@ Usage:
         scam        = get.scam
         premium     = get.is_premium
 
-        resp = f"""<b>
-🔍 Info of '{user}' on Telegram
-━━━━━━━━━━━━━━
-👤 First Name: {name}
-🆔 ID: {id}
-📛 Username: @{username}
-🔗 Profile Link: <a href="tg://user?id={id}">Profile Link</a>
-🔒 TG Restrictions: {restriction}
-🚨 TG Scamtag: {scam}
-🌟 TG Premium: {premium}
-        </b>"""
+        resp = f"""✧ <b>ꜱᴘʏᴅᴇ ━ ᴜꜱᴇʀ ɪɴꜰᴏ</b> ✧
+▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰
+
+◈ <b>ɴᴀᴍᴇ :</b> {name}
+⟢ <b>ɪᴅ :</b> {id}
+◈ <b>ᴜꜱᴇʀɴᴀᴍᴇ :</b> @{username}
+⟢ <b>ᴘʀᴏꜰɪʟᴇ :</b> <a href="tg://user?id={id}">ʟɪɴᴋ</a>
+◈ <b>ʀᴇꜱᴛʀɪᴄᴛɪᴏɴꜱ :</b> {restriction}
+⟢ <b>ꜱᴄᴀᴍᴛᴀɢ :</b> {scam}
+◈ <b>ᴘʀᴇᴍɪᴜᴍ :</b> {premium}
+
+━━━━━━━━━━━━━━━━━━━━"""
         await message.reply_text(resp, quote=True)
 
     except Exception:
         try:
-            await message.reply_text("<b>Invalid Username or Incorrect ID ❌</b>", quote=True)
+            await message.reply_text("✦ ɪɴᴠᴀʟɪᴅ ᴜꜱᴇʀɴᴀᴍᴇ ᴏʀ ɪɴᴄᴏʀʀᴇᴄᴛ ɪᴅ ✗ ✦", quote=True)
         except Exception:
             pass
