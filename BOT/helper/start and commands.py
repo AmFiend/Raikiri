@@ -297,24 +297,7 @@ async def button_callback(client, callback_query):
     elif query.data == "CHARGE_PAGE2":
         message = (
             "<a href='https://t.me/elitechkbot?start=start'>✧</a> <b>ɢᴀᴛᴇᴡᴀʏꜱ ━ ᴄʜᴀʀɢᴇ</b> ✧ (2/2)\n\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : PayU Charge 1$\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /pu\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : RazorPay 10$\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /rp\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Random Stripe 15$\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /rst\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Shopify 20$\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /shp\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : SK Based 10$\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /skb\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Skrill 30$\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /skr\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
+            "soon 🔜"
             "━━━━━━━━━━━━━━━━━━━━"
         )
         keyboard = [
