@@ -86,7 +86,8 @@ async def start_command(client, message):
     caption = (
         f"[✧](https://t.me/elitechkbot?start=start) ꜱᴘʏᴅᴇ ᴄʜᴋ ✧\n\n"
         f"◈ ɴᴀᴍᴇ : {first_name}\n"
-        f"◈ ꜱᴛᴀᴛᴜꜱ : {user_status}\n\n"
+        f"◈ ꜱᴛᴀᴛᴜꜱ : {user_status}\n"
+        f"◈ ᴄʀᴇᴅɪᴛꜱ : {credit}\n\n"
         f"Speed unmatched. Security reinforced.\n"
         f"━━━━━━━━━━━━━━━━━━━━\n"
         f"[↪](https://t.me/elitechkbot?start=start) ꜱᴛᴀʀᴛ : /start\n"
