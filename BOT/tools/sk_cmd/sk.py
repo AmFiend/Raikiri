@@ -140,7 +140,7 @@ async def sk_cmd(Client, message):
         except:
             resp = """<b>Invalid SK ⚠️
 
-Message: Not Found Any Valid SK From Your Input .</b>"""
+⟢ Not Found Any Valid SK From Your Input .</b>"""
             await message.reply_text(resp, message.id)
             return
 
@@ -163,26 +163,26 @@ Message: Not Found Any Valid SK From Your Input .</b>"""
             card_payments = account_info.get("card_payments", "N/A")
 
             resp = f"""<b>
-Stripe Key Checked Successfully ✅
-━━━━━━━━━━━━━━ 
-Key : <code>{sk}</code>
-Response : SK LIVE 💚
+Stripe Key Checked ✓
+━━━━━━━━━━━━━━━━━━━━ 
+◈ <b>ᴋᴇʏ :</b> <code>{sk}</code>
+⟢ <b>ʀᴇꜱᴘᴏɴꜱᴇ :</b> ꜱᴋ ʟɪᴠᴇ ✓
 
-Balance Info:
-Currency: {currency}
-Balance: {balance}$
-Pending Balance :➺{pending_balance}
+✧ <b>ʙᴀʟᴀɴᴄᴇ ɪɴꜰᴏ</b> ✧
+◈ <b>ᴄᴜʀʀᴇɴᴄʏ :</b> {currency}
+⟢ <b>ʙᴀʟᴀɴᴄᴇ :</b> {balance}$
+◈ <b>ᴘᴇɴᴅɪɴɢ :</b> {pending_balance}
 
-Cards Processed: {cards}
+⟢ <b>ᴄᴀʀᴅꜱ :</b> {cards}
 
-More Info:
+✧ <b>ᴍᴏʀᴇ ɪɴꜰᴏ</b> ✧
 {usersipresp}
 {cardbinresp}
 {cardcountryresp}
 {ipcountryresp}
 
-Checked By <a href="tg://user?id={message.from_user.id}"> {message.from_user.first_name}</a> 
-Bot by - @Zer0_ke </a>
+⟢ <b>ᴄʜᴇᴄᴋᴇᴅ ʙʏ :</b> <a href="tg://user?id={message.from_user.id}"> {message.from_user.first_name}</a> 
+⟢ @pipin_o </a>
             </b>"""
             await addsk(sk)
             await sendsk(resp, session)
@@ -202,26 +202,26 @@ Bot by - @Zer0_ke </a>
             card_payments = account_info.get("card_payments", "N/A")
 
             resp = f"""<b>
-Stripe Key Checked Successfully ✅
-━━━━━━━━━━━━━━ 
-Key : <code>{sk}</code>
-Response : RATE LIMIT ⚠️
+Stripe Key Checked ✓
+━━━━━━━━━━━━━━━━━━━━ 
+◈ <b>ᴋᴇʏ :</b> <code>{sk}</code>
+⟢ <b>ʀᴇꜱᴘᴏɴꜱᴇ :</b> ʀᴀᴛᴇ ʟɪᴍɪᴛ ⚠
 
-Balance Info:
-Currency: {currency}
-Balance: {balance}$
-Pending Balance :➺{pending_balance}
+✧ <b>ʙᴀʟᴀɴᴄᴇ ɪɴꜰᴏ</b> ✧
+◈ <b>ᴄᴜʀʀᴇɴᴄʏ :</b> {currency}
+⟢ <b>ʙᴀʟᴀɴᴄᴇ :</b> {balance}$
+◈ <b>ᴘᴇɴᴅɪɴɢ :</b> {pending_balance}
 
-Cards Processed: {cards}
+⟢ <b>ᴄᴀʀᴅꜱ :</b> {cards}
 
-More Info:
+✧ <b>ᴍᴏʀᴇ ɪɴꜰᴏ</b> ✧
 {usersipresp}
 {cardbinresp}
 {cardcountryresp}
 {ipcountryresp}
 
-Checked By <a href="tg://user?id={message.from_user.id}"> {message.from_user.first_name}</a> 
-Bot by - @Zer0_ke
+⟢ <b>ᴄʜᴇᴄᴋᴇᴅ ʙʏ :</b> <a href="tg://user?id={message.from_user.id}"> {message.from_user.first_name}</a> 
+⟢ @pipin_o
 </b>"""
             await addsk(sk)
             await sendsk(resp, session)
@@ -242,38 +242,38 @@ Bot by - @Zer0_ke
 
             if "inactive" in card_payments or "Invalid API Key" in result:
                 resp = f"""
-Stripe Key Checked Successfully ✅
-━━━━━━━━━━━━━━ 
-Key : <code>{sk}</code>
-Response: EXPIRED KEY ❌
+Stripe Key Checked ✓
+━━━━━━━━━━━━━━━━━━━━ 
+◈ <b>ᴋᴇʏ :</b> <code>{sk}</code>
+⟢ <b>ʀᴇꜱᴘᴏɴꜱᴇ :</b> ᴇxᴘɪʀᴇᴅ ᴋᴇʏ ✗
 
-Checked By <a href="tg://user?id={message.from_user.id}"> {message.from_user.first_name}</a> 
-Bot by - @Zer0_ke
+⟢ <b>ᴄʜᴇᴄᴋᴇᴅ ʙʏ :</b> <a href="tg://user?id={message.from_user.id}"> {message.from_user.first_name}</a> 
+⟢ @pipin_o
 </b>"""
             elif "active" in card_payments:
                 resp = f"""<b>
-Stripe Integration Off ✅
-━━━━━━━━━━━━━━ 
-Key : <code>{sk}</code>
-Response : Integration Off ⚠️
+✧ ɪɴᴛᴇɢʀᴀᴛɪᴏɴ ᴏꜰꜰ ✧
+━━━━━━━━━━━━━━━━━━━━ 
+◈ <b>ᴋᴇʏ :</b> <code>{sk}</code>
+⟢ <b>ʀᴇꜱᴘᴏɴꜱᴇ :</b> ɪɴᴛᴇɢʀᴀᴛɪᴏɴ ᴏꜰꜰ ⚠
 
-Card Payments : <i>{card_payments}</i>
+◈ <b>ᴄᴀʀᴅ ᴘᴀʏᴍᴇɴᴛꜱ :</b> <i>{card_payments}</i>
 
-Balance Info:
-Currency: {currency}
-Balance: {balance}$
-Pending Balance :➺{pending_balance}
+✧ <b>ʙᴀʟᴀɴᴄᴇ ɪɴꜰᴏ</b> ✧
+◈ <b>ᴄᴜʀʀᴇɴᴄʏ :</b> {currency}
+⟢ <b>ʙᴀʟᴀɴᴄᴇ :</b> {balance}$
+◈ <b>ᴘᴇɴᴅɪɴɢ :</b> {pending_balance}
 
-Cards Processed: {cards}
+⟢ <b>ᴄᴀʀᴅꜱ :</b> {cards}
 
-More Info:
+✧ <b>ᴍᴏʀᴇ ɪɴꜰᴏ</b> ✧
 {usersipresp}
 {cardbinresp}
 {cardcountryresp}
 {ipcountryresp}
 
-Checked By <a href="tg://user?id={message.from_user.id}"> {message.from_user.first_name}</a> 
-Bot by - @Zer0_ke
+⟢ <b>ᴄʜᴇᴄᴋᴇᴅ ʙʏ :</b> <a href="tg://user?id={message.from_user.id}"> {message.from_user.first_name}</a> 
+⟢ @pipin_o
 </b>"""
                 await sendsk(resp, session)
 
@@ -286,43 +286,43 @@ Bot by - @Zer0_ke
         
         elif "Invalid API Key" in result:
             resp = f"""<b>
-Stripe Key Checked Successfully ✅
-━━━━━━━━━━━━━━ 
-Key : <code>{sk}</code>
-Response: INVALID KEY GIVEN ❌
+Stripe Key Checked ✓
+━━━━━━━━━━━━━━━━━━━━ 
+◈ <b>ᴋᴇʏ :</b> <code>{sk}</code>
+⟢ <b>ʀᴇꜱᴘᴏɴꜱᴇ :</b> ɪɴᴠᴀʟɪᴅ ᴋᴇʏ ✗
 
-Checked By <a href="tg://user?id={message.from_user.id}"> {message.from_user.first_name}</a> 
-Bot by - @Zer0_ke
+⟢ <b>ᴄʜᴇᴄᴋᴇᴅ ʙʏ :</b> <a href="tg://user?id={message.from_user.id}"> {message.from_user.first_name}</a> 
+⟢ @pipin_o
 </b>"""
         elif "Expired API Key provided" in result:
             resp = f"""<b>
-Stripe Key Checked Successfully ✅
-━━━━━━━━━━━━━━ 
-Key : <code>{sk}</code>
-Response: EXPIRED KEY ❌
+Stripe Key Checked ✓
+━━━━━━━━━━━━━━━━━━━━ 
+◈ <b>ᴋᴇʏ :</b> <code>{sk}</code>
+⟢ <b>ʀᴇꜱᴘᴏɴꜱᴇ :</b> ᴇxᴘɪʀᴇᴅ ᴋᴇʏ ✗
 
-Checked By <a href="tg://user?id={message.from_user.id}"> {message.from_user.first_name}</a> 
-Bot by - @Zer0_ke
+⟢ <b>ᴄʜᴇᴄᴋᴇᴅ ʙʏ :</b> <a href="tg://user?id={message.from_user.id}"> {message.from_user.first_name}</a> 
+⟢ @pipin_o
 </b>"""
         elif "Your account cannot currently make live charges." in result:
             resp = f"""<b>
-Stripe Key Checked Successfully ✅
-━━━━━━━━━━━━━━ 
-Key : <code>{sk}</code>
-Response: TESTMODE CHARGES ONLY ❌
+Stripe Key Checked ✓
+━━━━━━━━━━━━━━━━━━━━ 
+◈ <b>ᴋᴇʏ :</b> <code>{sk}</code>
+⟢ <b>ʀᴇꜱᴘᴏɴꜱᴇ :</b> ᴛᴇꜱᴛᴍᴏᴅᴇ ᴏɴʟʏ ✗
 
-Checked By <a href="tg://user?id={message.from_user.id}"> {message.from_user.first_name}</a> 
-Bot by - @Zer0_ke
+⟢ <b>ᴄʜᴇᴄᴋᴇᴅ ʙʏ :</b> <a href="tg://user?id={message.from_user.id}"> {message.from_user.first_name}</a> 
+⟢ @pipin_o
 </b> """
         else:
             resp = f"""<b>
-Stripe Key Checked Successfully ✅
-━━━━━━━━━━━━━━ 
-Key : <code>{sk}</code>
-Response: {result} ❌
+Stripe Key Checked ✓
+━━━━━━━━━━━━━━━━━━━━ 
+◈ <b>ᴋᴇʏ :</b> <code>{sk}</code>
+⟢ <b>ʀᴇꜱᴘᴏɴꜱᴇ :</b> {result} ❌
 
-Checked By <a href="tg://user?id={message.from_user.id}"> {message.from_user.first_name}</a> 
-Bot by - @Zer0_ke
+⟢ <b>ᴄʜᴇᴄᴋᴇᴅ ʙʏ :</b> <a href="tg://user?id={message.from_user.id}"> {message.from_user.first_name}</a> 
+⟢ @pipin_o
 </b>"""
             with open("sk_resp.txt", "a", encoding="utf-8") as f:
                 f.write(sk + " " + result + "\n")
