@@ -96,7 +96,7 @@ With Custom Amount
         if amount > 10000:
             resp = """<b>Limit Reached ⚠️
 
-Message: Maximum Generated Amount is 10K.</b>"""
+⟢ Maximum Generated Amount is 10K.</b>"""
             await message.reply_text(resp, message.id)
             return
 
