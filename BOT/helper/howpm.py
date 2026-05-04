@@ -6,69 +6,70 @@ from FUNC.usersdb_func import *
 async def cmd_howgp(client, message):
     try:
         user_id = str(message.from_user.id)
-        texta = f"""<b>
-📊 FREE VS PREMIUM VS PAID
-━━━━━━━━━━━━━━
-➔ <u>STRIPE AUTH GATE (/au)</u>
-  ● ANTISPAM:
-    FREE - 30s
-    PREMIUM - 5s
-    PAID - 5s
+        texta = f"""<a href='https://t.me/elitechkbot?start=start'>✧</a> <b>ꜱᴘʏᴅᴇ ━ ꜰʀᴇᴇ ᴠꜱ ᴘʀᴇᴍɪᴜᴍ ᴠꜱ ᴘᴀɪᴅ</b> ✧
+━━━━━━━━━━━━━━━━━━━━
 
-➔ <u>STRIPE MASS AUTH GATE (/mass)</u>
-  ● ANTISPAM:
-    FREE - 120s
-    PREMIUM - 80s
-    PAID - 30s
-  ● CHECKING LIMIT:
-    FREE - 8
-    PREMIUM - 15
-    PAID - 25
+◈ <u>ꜱᴛʀɪᴘᴇ ᴀᴜᴛʜ ɢᴀᴛᴇ (/au)</u>
+  <b>ᴀɴᴛɪꜱᴘᴀᴍ :</b>
+    ꜰʀᴇᴇ — 30s
+    ᴘʀᴇᴍɪᴜᴍ — 5s
+    ᴘᴀɪᴅ — 5s
 
-➔ <u>STRIPE CHARGE GATE (/chk)</u>
-  ● ANTISPAM:
-    FREE - 30s
-    PREMIUM - 5s
-    PAID - 5s
+◈ <u>ꜱᴛʀɪᴘᴇ ᴍᴀꜱꜱ ᴀᴜᴛʜ ɢᴀᴛᴇ (/mass)</u>
+  <b>ᴀɴᴛɪꜱᴘᴀᴍ :</b>
+    ꜰʀᴇᴇ — 120s
+    ᴘʀᴇᴍɪᴜᴍ — 80s
+    ᴘᴀɪᴅ — 30s
+  <b>ᴄʜᴇᴄᴋɪɴɢ ʟɪᴍɪᴛ :</b>
+    ꜰʀᴇᴇ — 8
+    ᴘʀᴇᴍɪᴜᴍ — 15
+    ᴘᴀɪᴅ — 25
 
-➔ <u>STRIPE MASS CHARGE GATE (/mchk)</u>
-  ● ANTISPAM:
-    FREE - 120s
-    PREMIUM - 80s
-    PAID - 30s
-  ● CHECKING LIMIT:
-    FREE - 8
-    PREMIUM - 15
-    PAID - 25
+◈ <u>ꜱᴛʀɪᴘᴇ ᴄʜᴀʀɢᴇ ɢᴀᴛᴇ (/chk)</u>
+  <b>ᴀɴᴛɪꜱᴘᴀᴍ :</b>
+    ꜰʀᴇᴇ — 30s
+    ᴘʀᴇᴍɪᴜᴍ — 5s
+    ᴘᴀɪᴅ — 5s
 
-➔ <u>STRIPE SK BASED CHARGE GATE WITH TXT FILE CHECKING (/cvv sk)</u>
-  ● ANTISPAM:
-    FREE - 120s
-    PREMIUM - 80s
-    PAID - 50s
-  ● CHECKING LIMIT:
-    FREE - 200
-    PREMIUM - 1000
-    PAID - 1500
+◈ <u>ꜱᴛʀɪᴘᴇ ᴍᴀꜱꜱ ᴄʜᴀʀɢᴇ ɢᴀᴛᴇ (/mchk)</u>
+  <b>ᴀɴᴛɪꜱᴘᴀᴍ :</b>
+    ꜰʀᴇᴇ — 120s
+    ᴘʀᴇᴍɪᴜᴍ — 80s
+    ᴘᴀɪᴅ — 30s
+  <b>ᴄʜᴇᴄᴋɪɴɢ ʟɪᴍɪᴛ :</b>
+    ꜰʀᴇᴇ — 8
+    ᴘʀᴇᴍɪᴜᴍ — 15
+    ᴘᴀɪᴅ — 25
 
-➔ <u>CC SCRAPER GATE (/scr)</u>
-  ● SCRAPING LIMIT:
-    FREE - 3000
-    PREMIUM - 6000
-    PAID - 12000
+◈ <u>ꜱᴛʀɪᴘᴇ ꜱᴋ ʙᴀꜱᴇᴅ ᴄʜᴀʀɢᴇ ɢᴀᴛᴇ ᴡɪᴛʜ ᴛxᴛ ꜰɪʟᴇ ᴄʜᴇᴄᴋɪɴɢ (/cvv sk)</u>
+  <b>ᴀɴᴛɪꜱᴘᴀᴍ :</b>
+    ꜰʀᴇᴇ — 120s
+    ᴘʀᴇᴍɪᴜᴍ — 80s
+    ᴘᴀɪᴅ — 50s
+  <b>ᴄʜᴇᴄᴋɪɴɢ ʟɪᴍɪᴛ :</b>
+    ꜰʀᴇᴇ — 200
+    ᴘʀᴇᴍɪᴜᴍ — 1000
+    ᴘᴀɪᴅ — 1500
 
-➔ <u>CC GENERATOR WITH LUHN ALGO AND CUSTOM AMOUNT GATE (/gen)</u>
-  ● GENERATING LIMIT:
-    FREE - 2000
-    PREMIUM - 4000
-    PAID - 10000
+◈ <u>ᴄᴄ ꜱᴄʀᴀᴘᴇʀ ɢᴀᴛᴇ (/scr)</u>
+  <b>ꜱᴄʀᴀᴘɪɴɢ ʟɪᴍɪᴛ :</b>
+    ꜰʀᴇᴇ — 3000
+    ᴘʀᴇᴍɪᴜᴍ — 6000
+    ᴘᴀɪᴅ — 12000
 
-➔ <u>STRIPE AUTH GATE (/au)</u>
-  ● ANTISPAM:
-    FREE - 3
-    PREMIUM - 3
-    PAID - 3
-</b>"""
+◈ <u>ᴄᴄ ɢᴇɴᴇʀᴀᴛᴏʀ ᴡɪᴛʜ ʟᴜʜɴ ᴀʟɢᴏ ᴀɴᴅ ᴄᴜꜱᴛᴏᴍ ᴀᴍᴏᴜɴᴛ ɢᴀᴛᴇ (/gen)</u>
+  <b>ɢᴇɴᴇʀᴀᴛɪɴɢ ʟɪᴍɪᴛ :</b>
+    ꜰʀᴇᴇ — 2000
+    ᴘʀᴇᴍɪᴜᴍ — 4000
+    ᴘᴀɪᴅ — 10000
+
+◈ <u>ꜱᴛʀɪᴘᴇ ᴀᴜᴛʜ ɢᴀᴛᴇ (/au)</u>
+  <b>ᴀɴᴛɪꜱᴘᴀᴍ :</b>
+    ꜰʀᴇᴇ — 3
+    ᴘʀᴇᴍɪᴜᴍ — 3
+    ᴘᴀɪᴅ — 3
+
+━━━━━━━━━━━━━━━━━━━━"""
         await message.reply_text(texta, quote=True)
         await plan_expirychk(user_id)
 
