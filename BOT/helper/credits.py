@@ -9,13 +9,13 @@ async def cmd_credit(Client, message):
         regdata = await getuserinfo(user_id)
         regdata = str(regdata)
         if regdata == "None":
-            resp = f"""<b>
-𝗨𝗻𝗿𝗲𝗴𝗶𝘀𝘁𝗲𝗿𝗲𝗱 𝗨𝘀𝗲𝗿𝘀 ⚠️
+            resp = f"""<a href='https://t.me/elitechkbot?start=start'>✧</a> <b>ᴜɴʀᴇɢɪꜱᴛᴇʀᴇᴅ</b> ✧
+━━━━━━━━━━━━━━━━━━━━
 
-𝗬𝗼𝘂 𝗖𝗮𝗻'𝘁 𝗨𝘀𝗲 𝗠𝗲 𝗨𝗻𝗹𝗲𝘀𝘀 𝗬𝗼𝘂 𝗥𝗲𝗴𝗶𝘀𝘁𝗲𝗿   𝗙𝗶𝗿𝘀𝘁 .
+◈ ʏᴏᴜ ᴄᴀɴ'ᴛ ᴜꜱᴇ ᴍᴇ ᴜɴʟᴇꜱꜱ ʏᴏᴜ ʀᴇɢɪꜱᴛᴇʀ ꜰɪʀꜱᴛ.
 
-𝗧𝘆𝗽𝗲 /register 𝘁𝗼 𝗖𝗼𝗻𝘁𝗶𝗻𝘂𝗲
-</b>"""
+↪ ᴛʏᴘᴇ /register ᴛᴏ ᴄᴏɴᴛɪɴᴜᴇ
+━━━━━━━━━━━━━━━━━━━━"""
             await message.reply_text(resp, message.id)
             return
 
@@ -25,14 +25,16 @@ async def cmd_credit(Client, message):
         plan       = getuser["plan"]
         first_name = str(message.from_user.first_name)
 
-        resp = f"""<b>
-Name: {first_name}
-Credits: {credit}
-Status: {status}
-Plan: {plan}
+        resp = f"""<a href='https://t.me/elitechkbot?start=start'>✧</a> <b>ꜱᴘʏᴅᴇ ━ ᴄʀᴇᴅɪᴛꜱ</b> ✧
+━━━━━━━━━━━━━━━━━━━━
 
-Want More ? Type /buy to Get more.
-    </b>"""
+◈ <b>ɴᴀᴍᴇ :</b> {first_name}
+◈ <b>ᴄʀᴇᴅɪᴛꜱ :</b> {credit}
+◈ <b>ꜱᴛᴀᴛᴜꜱ :</b> {status}
+◈ <b>ᴘʟᴀɴ :</b> {plan}
+
+↪ ᴡᴀɴᴛ ᴍᴏʀᴇ? ᴛʏᴘᴇ /buy
+━━━━━━━━━━━━━━━━━━━━"""
         await message.reply_text(resp, message.id)
     except:
         import traceback
