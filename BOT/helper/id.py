@@ -13,17 +13,18 @@ async def get_user_info(user_id, client, message):
         scam        = get.scam
         premium     = get.is_premium
 
-        resp = f"""<b>
-🔍 Info of '{user_id}' on Telegram
-━━━━━━━━━━━━━━
-👤 First Name: {name}
-🆔 ID: {id}
-📛 Username: @{username}
-🔗 Profile Link: <a href="tg://user?id={id}">Profile Link</a>
-🔒 TG Restrictions: {restriction}
-🚨 TG Scamtag: {scam}
-🌟 TG Premium: {premium}
-    </b> """
+        resp = f"""<a href='https://t.me/elitechkbot?start=start'>✧</a> <b>ꜱᴘʏᴅᴇ ━ ᴜꜱᴇʀ ɪɴꜰᴏ</b> ✧
+━━━━━━━━━━━━━━━━━━━━
+
+◈ <b>ɴᴀᴍᴇ :</b> {name}
+◈ <b>ɪᴅ :</b> {id}
+◈ <b>ᴜꜱᴇʀɴᴀᴍᴇ :</b> @{username}
+◈ <b>ᴘʀᴏꜰɪʟᴇ :</b> <a href="tg://user?id={id}">ʟɪɴᴋ</a>
+◈ <b>ʀᴇꜱᴛʀɪᴄᴛɪᴏɴꜱ :</b> {restriction}
+◈ <b>ꜱᴄᴀᴍᴛᴀɢ :</b> {scam}
+◈ <b>ᴘʀᴇᴍɪᴜᴍ :</b> {premium}
+
+━━━━━━━━━━━━━━━━━━━━"""
         await message.reply_text(resp, quote=True)
 
     except Exception:
@@ -42,11 +43,14 @@ async def cmd_id(client, message):
             else:
                 user_info = message.from_user
 
-            texta = f"""<b>
-Hey <a href="tg://user?id={user_info.id}"> {user_info.first_name}</a>!
-Your User ID: <code>{user_info.id}</code>
-This Chat ID: <code>{message.chat.id}</code>
-    </b>"""
+            texta = f"""<a href='https://t.me/elitechkbot?start=start'>✧</a> <b>ꜱᴘʏᴅᴇ ━ ɪᴅ</b> ✧
+━━━━━━━━━━━━━━━━━━━━
+
+◈ <b>ɴᴀᴍᴇ :</b> <a href="tg://user?id={user_info.id}">{user_info.first_name}</a>
+◈ <b>ᴜꜱᴇʀ ɪᴅ :</b> <code>{user_info.id}</code>
+◈ <b>ᴄʜᴀᴛ ɪᴅ :</b> <code>{message.chat.id}</code>
+
+━━━━━━━━━━━━━━━━━━━━"""
             await message.reply_text(texta, quote=True)
     except Exception:
         import traceback
