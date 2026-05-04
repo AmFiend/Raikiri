@@ -17,18 +17,19 @@ async def skTopk(Client, message):
         user_id     = str(message.from_user.id)
 #         OWNER_ID    = json.loads(open("FILES/config.json", "r" , encoding="utf-8").read())["OWNER_ID"]
 #         if user_id not in OWNER_ID:
-#             resp = """<b>You Don't Have Permission To Use This Command.    
-# Contact Bot Owner @Zer0_ke !</b>"""
+#             resp = """✦ ᴀᴄᴄᴇꜱꜱ ᴅᴇɴɪᴇᴅ ✦
+# ⟢ ʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪꜱꜱɪᴏɴ.
+# ◈ ᴄᴏɴᴛᴀᴄᴛ @pipin_o"""
 #             await message.reply_text(resp, message.id)
 #             return
         checkall = await check_all_thing(Client, message)
 
         if len(message.text.split()) == 1:
-            resp = """<b>
-Invalid SK ⚠️
+            resp = """✦ <b>ɪɴᴠᴀʟɪᴅ ꜱᴋ</b> ✦
+▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰
 
-Message: Not Found Any Valid SK From Your Input.
-            </b>"""
+⟢ ɴᴏ ᴠᴀʟɪᴅ ꜱᴋ ꜰᴏᴜɴᴅ ɪɴ ʏᴏᴜʀ ɪɴᴘᴜᴛ.
+━━━━━━━━━━━━━━━━━━━━"""
             await message.reply_text(resp, message.id)
             return
 
@@ -37,11 +38,11 @@ Message: Not Found Any Valid SK From Your Input.
         except:
             sk = message.reply_to_message.from_user.id
 
-            resp = """<b>
-Invalid SK Key ⚠️
+            resp = """✦ <b>ɪɴᴠᴀʟɪᴅ ꜱᴋ ᴋᴇʏ</b> ✦
+▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰
 
-Message: Not Found Valid Sk Key From Your Input.
-            </b>"""
+⟢ ɴᴏ ᴠᴀʟɪᴅ ꜱᴋ ᴋᴇʏ ꜰᴏᴜɴᴅ ɪɴ ʏᴏᴜʀ ɪɴᴘᴜᴛ.
+━━━━━━━━━━━━━━━━━━━━"""
             await message.reply_text(resp, message.id)
             return
 
@@ -80,11 +81,11 @@ Message: Not Found Valid Sk Key From Your Input.
             card_payment = skinfo['capabilities']['card_payments']
 
             if "inactive" in card_payment:
-                    resp = """<b>
-SK Key Expired ⚠️
+                    resp = """✦ <b>ꜱᴋ ᴋᴇʏ ᴇxᴘɪʀᴇᴅ</b> ✦
+▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰
 
-Message: Your SK key has expired. Please obtain a new SK key.
-                    </b>"""
+⟢ ʏᴏᴜʀ ꜱᴋ ᴋᴇʏ ʜᴀꜱ ᴇxᴘɪʀᴇᴅ. ᴏʙᴛᴀɪɴ ᴀ ɴᴇᴡ ᴏɴᴇ.
+━━━━━━━━━━━━━━━━━━━━"""
       
                     await message.reply_text(resp, message.id)
                     return
@@ -100,20 +101,20 @@ Message: Your SK key has expired. Please obtain a new SK key.
 
         except stripe.error.StripeError as e:
             await error_log(f"Stripe Error: {e}")
-            resp = """<b>
-Error fetching Sk info ⚠️
+            resp = """✦ <b>ꜱᴋ ꜰᴇᴛᴄʜ ᴇʀʀᴏʀ</b> ✦
+▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰
 
-Message: Unable to fetch Sk info. Check if the SK is Live.
-            </b>"""
+⟢ ᴜɴᴀʙʟᴇ ᴛᴏ ꜰᴇᴛᴄʜ ꜱᴋ ɪɴꜰᴏ. ᴄʜᴇᴄᴋ ɪꜰ ᴛʜᴇ ꜱᴋ ɪꜱ ʟɪᴠᴇ.
+━━━━━━━━━━━━━━━━━━━━"""
             await message.reply_text(resp, message.id)
             return
         except Exception as e:
             await error_log(f"Error: {e}")
-            resp = """<b>
-Error fetching Sk info ⚠️
+            resp = """✦ <b>ꜱᴋ ꜰᴇᴛᴄʜ ᴇʀʀᴏʀ</b> ✦
+▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰
 
-Message: Unable to fetch Sk info. Check if the SK is Live.
-            </b>"""
+⟢ ᴜɴᴀʙʟᴇ ᴛᴏ ꜰᴇᴛᴄʜ ꜱᴋ ɪɴꜰᴏ. ᴄʜᴇᴄᴋ ɪꜰ ᴛʜᴇ ꜱᴋ ɪꜱ ʟɪᴠᴇ.
+━━━━━━━━━━━━━━━━━━━━"""
             await message.reply_text(resp, message.id)
             return
 
@@ -128,16 +129,16 @@ Message: Unable to fetch Sk info. Check if the SK is Live.
 
 
 
-        resp = f"""<b>
-SK OR PK SET ✅
-━━━━━━━━━━━━━━ 
-SK:➺ <code>{sk}</code>
+        resp = f"""✧ <b>ꜱᴋ / ᴘᴋ ꜱᴇᴛ ✓</b> ✧
+▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰
 
-PK:➺ <code>{full_pk}</code>
+◈ <b>ꜱᴋ :</b> <code>{sk}</code>
 
-Currency:➺ <code>{currency}</code>
-━━━━━━━━━━━━━━ 
-</b>"""
+⟢ <b>ᴘᴋ :</b> <code>{full_pk}</code>
+
+◈ <b>ᴄᴜʀʀᴇɴᴄʏ :</b> <code>{currency}</code>
+
+━━━━━━━━━━━━━━━━━━━━"""
         await message.reply_text(resp, message.id)
 
         await addsk(sk)
