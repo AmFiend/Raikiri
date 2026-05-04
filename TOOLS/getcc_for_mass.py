@@ -22,29 +22,32 @@ async def getcc_for_mass(message, role):
                 ccs.append(fullcc)
 
         if role == "FREE" and len(ccs) > 16:
-            resp = f"""<b>
-Limit Reached ⚠️
+            resp = f"""✦ <b>ʟɪᴍɪᴛ ʀᴇᴀᴄʜᴇᴅ</b> ✦
+▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰
 
-Message: You Can Check 15 CC at a Time. Buy Plan to Increase Your Limit.
+⟢ ʏᴏᴜ ᴄᴀɴ ᴄʜᴇᴄᴋ 15 ᴄᴄ ᴀᴛ ᴀ ᴛɪᴍᴇ.
+◈ ʙᴜʏ ᴀ ᴘʟᴀɴ ᴛᴏ ɪɴᴄʀᴇᴀꜱᴇ ʏᴏᴜʀ ʟɪᴍɪᴛ.
 
-Type /buy For Paid Plan
-</b>"""
+↪ ᴛʏᴘᴇ /buy ꜰᴏʀ ᴘᴀɪᴅ ᴘʟᴀɴ
+━━━━━━━━━━━━━━━━━━━━"""
             return False, resp
         if (role == "PREMIUM" or role == "LIFETIME") and len(ccs) > 50000:            
-            resp = f"""<b>
-Limit Reached ⚠️
+            resp = f"""✦ <b>ʟɪᴍɪᴛ ʀᴇᴀᴄʜᴇᴅ</b> ✦
+▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰
 
-Message: You Can Check 25 CC at a Time. If You Increase limit Then Buy Customize Plan  to Knock @PharaohHelperBot.
+⟢ ʏᴏᴜ ᴄᴀɴ ᴄʜᴇᴄᴋ 25 ᴄᴄ ᴀᴛ ᴀ ᴛɪᴍᴇ.
+◈ ꜰᴏʀ ʜɪɢʜᴇʀ ʟɪᴍɪᴛ, ᴋɴᴏᴄᴋ @pipin_o
 
-Type /buy For Paid Plan
-</b>"""
+↪ ᴛʏᴘᴇ /buy ꜰᴏʀ ᴘᴀɪᴅ ᴘʟᴀɴ
+━━━━━━━━━━━━━━━━━━━━"""
             return False, resp
         if len(ccs) == 0:
-            resp = f"""<b>
-CC Not Found ⚠️
+            resp = f"""✦ <b>ᴄᴄ ɴᴏᴛ ꜰᴏᴜɴᴅ</b> ✦
+▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰
 
-Message: We Are Unable to Find Any CC Details From Your Input. Provide CC's Details To Check.
-</b>"""
+⟢ ᴜɴᴀʙʟᴇ ᴛᴏ ꜰɪɴᴅ ᴀɴʏ ᴄᴄ ꜰʀᴏᴍ ʏᴏᴜʀ ɪɴᴘᴜᴛ.
+◈ ᴘʀᴏᴠɪᴅᴇ ᴄᴄ ᴅᴇᴛᴀɪʟꜱ ᴛᴏ ᴄʜᴇᴄᴋ.
+━━━━━━━━━━━━━━━━━━━━"""
             return False, resp
         else:
             return True, ccs
@@ -52,6 +55,4 @@ Message: We Are Unable to Find Any CC Details From Your Input. Provide CC's Deta
     except Exception as e:
         import traceback
         await error_log(traceback.format_exc())
-        return False, "Try Again Later"
-
-
+        return False, "✦ ᴛʀʏ ᴀɢᴀɪɴ ʟᴀᴛᴇʀ ✦"
