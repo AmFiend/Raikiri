@@ -14,8 +14,12 @@ async def stats(Client, message):
         user_id = str(message.from_user.id)
         OWNER_ID = json.loads(open("FILES/config.json", "r" , encoding="utf-8").read())["OWNER_ID"]
         if user_id not in OWNER_ID:
-            resp = """<b>You Don't Have Permission To Use This Command.    
-Contact Bot Owner @Zer0_ke !</b>"""
+            resp = """✦ <b>ᴀᴄᴄᴇꜱꜱ ᴅᴇɴɪᴇᴅ</b> ✦
+▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰
+
+⟢ ʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪꜱꜱɪᴏɴ.
+◈ ᴄᴏɴᴛᴀᴄᴛ @pipin_o
+━━━━━━━━━━━━━━━━━━━━━━━━━━"""
             msg1 = await message.reply_text(resp, message.id)
         else:
             start = time.time()
@@ -44,9 +48,9 @@ Contact Bot Owner @Zer0_ke !</b>"""
 SUCCESSFULLY RETRIEVED USERS DATABASE ✅
 
 Total Users: {user_amt}
-Data Type: JSON
-Last Updated: a while ago
-Requested Time: {message.date}
+⟢ <b>ᴛʏᴘᴇ :</b> JSON
+◈ <b>ᴜᴘᴅᴀᴛᴇᴅ :</b> a while ago
+⟢ <b>ʀᴇǫᴜᴇꜱᴛᴇᴅ :</b> {message.date}
   </b>"""
             send = await message.reply_document(
                 document="XCC_USERS_DB.json",
@@ -73,9 +77,9 @@ Requested Time: {message.date}
 SUCCESSFULLY RETRIEVED CHATS AUTH DATABASE ✅
 
 Total Chats: {chats_amt}
-Data Type: JSON
-Last Updated: a while ago
-Requested Time: {message.date}
+⟢ <b>ᴛʏᴘᴇ :</b> JSON
+◈ <b>ᴜᴘᴅᴀᴛᴇᴅ :</b> a while ago
+⟢ <b>ʀᴇǫᴜᴇꜱᴛᴇᴅ :</b> {message.date}
   </b>"""
             send = await message.reply_document(
                 document="XCC_CHATS_DB.json",
@@ -102,9 +106,9 @@ Requested Time: {message.date}
 SUCCESSFULLY RETRIEVED GIFTCARDS DATABASE ✅
 
 Total GC: {gc_amt}
-Data Type: JSON
-Last Updated: a while ago
-Requested Time: {message.date}
+⟢ <b>ᴛʏᴘᴇ :</b> JSON
+◈ <b>ᴜᴘᴅᴀᴛᴇᴅ :</b> a while ago
+⟢ <b>ʀᴇǫᴜᴇꜱᴛᴇᴅ :</b> {message.date}
   </b>"""
             send = await message.reply_document(
                 document="XCC_GC_DB.json",
@@ -118,16 +122,16 @@ Requested Time: {message.date}
             await Client.delete_messages(message.chat.id, delete.id)
             end = time.time()
             finalresp = f"""<b>
-EXPORT DONE ✅
+EXPORT ᴅᴏɴᴇ ✓
 
 1. USERS DATABASE ( {user_amt} )
 2. CHATS AUTH DATABASE ( {chats_amt} )
 3. GIFTCARDS DATABASE ( {gc_amt} )
 
-Data Type: JSON
-Last Updated: a while ago
+⟢ <b>ᴛʏᴘᴇ :</b> JSON
+◈ <b>ᴜᴘᴅᴀᴛᴇᴅ :</b> a while ago
 Time Taken: {end - start:0.1f}s
-Requested Time: {message.date} </b>
+⟢ <b>ʀᴇǫᴜᴇꜱᴛᴇᴅ :</b> {message.date} </b>
             """
             await message.reply_text(finalresp, message.id)
 

@@ -19,8 +19,12 @@ async def stats(Client, message):
         user_id = str(message.from_user.id)
         OWNER_ID = json.loads(open("FILES/config.json", "r" , encoding="utf-8").read())["OWNER_ID"]
         if user_id not in OWNER_ID:
-            resp = """<b>You Don't Have Permission To Use This Command.    
-Contact Bot Owner @Zer0_ke !</b>"""
+            resp = """✦ <b>ᴀᴄᴄᴇꜱꜱ ᴅᴇɴɪᴇᴅ</b> ✦
+▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰
+
+⟢ ʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪꜱꜱɪᴏɴ.
+◈ ᴄᴏɴᴛᴀᴄᴛ @pipin_o
+━━━━━━━━━━━━━━━━━━━━━━━━━━"""
             msg1 = await message.reply_text(resp, message.id)
         else:
             try:
@@ -57,20 +61,20 @@ For GC Data Import : /import gc
                     await message.reply_text(resp, message.id)
                 if "users" in msg and status == True:
                     try:
-                        resp = "<b>IMPORTING TO XCC DATABASE...</b>"
+                        resp = "<b>✦ ɪᴍᴘᴏʀᴛɪɴɢ ᴛᴏ ᴅᴀᴛᴀʙᴀꜱᴇ... ✦</b>"
                         delete = await message.reply_text(resp, message.id)
                         start = time.time()
                         insert = users_db.insert_many(data_list)
                         end = time.time()
                         await Client.delete_messages(message.chat.id, delete.id)
                         resp = f"""<b>
-IMPORT DONE ✅
+IMPORT ᴅᴏɴᴇ ✓
 
-Total Number: {amt}
-Data Type: JSON
-Last Updated: a while ago
+◈ <b>ᴛᴏᴛᴀʟ :</b> {amt}
+⟢ <b>ᴛʏᴘᴇ :</b> JSON
+◈ <b>ᴜᴘᴅᴀᴛᴇᴅ :</b> a while ago
 Time Taken: {end - start:0.4f}s
-Requested Time: {message.date}
+⟢ <b>ʀᴇǫᴜᴇꜱᴛᴇᴅ :</b> {message.date}
                         </b>"""
                         await message.reply_text(resp, message.id)
                         if insert:
@@ -81,20 +85,20 @@ Requested Time: {message.date}
                         await message.reply_text("ERROR HAPPEND IMPORTING", message.id)
                 elif "chats" in msg and status == True:
                     try:
-                        resp = "<b>IMPORTING TO XCC DATABASE...</b>"
+                        resp = "<b>✦ ɪᴍᴘᴏʀᴛɪɴɢ ᴛᴏ ᴅᴀᴛᴀʙᴀꜱᴇ... ✦</b>"
                         delete = await message.reply_text(resp, message.id)
                         start = time.time()
                         insert = chats_auth_db.insert_many(data_list)
                         end = time.time()
                         await Client.delete_messages(message.chat.id, delete.id)
                         resp = f"""<b>
-IMPORT DONE ✅
+IMPORT ᴅᴏɴᴇ ✓
 
-Total Number: {amt}
-Data Type: JSON
-Last Updated: a while ago
+◈ <b>ᴛᴏᴛᴀʟ :</b> {amt}
+⟢ <b>ᴛʏᴘᴇ :</b> JSON
+◈ <b>ᴜᴘᴅᴀᴛᴇᴅ :</b> a while ago
 Time Taken: {end - start:0.4f}s
-Requested Time: {message.date}
+⟢ <b>ʀᴇǫᴜᴇꜱᴛᴇᴅ :</b> {message.date}
                         </b>"""
                         await message.reply_text(resp, message.id)
                         if insert:
@@ -105,20 +109,20 @@ Requested Time: {message.date}
                         await message.reply_text("ERROR HAPPEND IMPORTING", message.id)
                 elif "gc" in msg and status == True:
                     try:
-                        resp = "<b>IMPORTING TO XCC DATABASE...</b>"
+                        resp = "<b>✦ ɪᴍᴘᴏʀᴛɪɴɢ ᴛᴏ ᴅᴀᴛᴀʙᴀꜱᴇ... ✦</b>"
                         delete = await message.reply_text(resp, message.id)
                         start = time.time()
                         insert = gc_db.insert_many(data_list)
                         end = time.time()
                         await Client.delete_messages(message.chat.id, delete.id)
                         resp = f"""<b>
-IMPORT DONE ✅
+IMPORT ᴅᴏɴᴇ ✓
 
-Total Number: {amt}
-Data Type: JSON
-Last Updated: a while ago
+◈ <b>ᴛᴏᴛᴀʟ :</b> {amt}
+⟢ <b>ᴛʏᴘᴇ :</b> JSON
+◈ <b>ᴜᴘᴅᴀᴛᴇᴅ :</b> a while ago
 Time Taken: {end - start:0.4f}s
-Requested Time: {message.date}
+⟢ <b>ʀᴇǫᴜᴇꜱᴛᴇᴅ :</b> {message.date}
                         </b>"""
                         await message.reply_text(resp, message.id)
                         if insert:
@@ -127,15 +131,15 @@ Requested Time: {message.date}
                             my_file.unlink()
                     except:
                         await message.reply_text(
-                            "<b>ERROR HAPPEND IMPORTING ❌</b>", message.id
+                            "<b>✦ ɪᴍᴘᴏʀᴛ ᴇʀʀᴏʀ ✗ ✦</b>", message.id
                         )
                 else:
                     await message.reply_text(
-                        "<b>PLEASE SPECIFY A DATABASE NAME ❌</b>", message.id
+                        "<b>✦ ꜱᴘᴇᴄɪꜰʏ ᴅᴀᴛᴀʙᴀꜱᴇ ɴᴀᴍᴇ ✗ ✦</b>", message.id
                     )
             else:
                 await message.reply_text(
-                    "<b>PROVIDE A JSON FILE FOR IMPORTING ❌</b>", message.id
+                    "<b>✦ ᴘʀᴏᴠɪᴅᴇ ᴊꜱᴏɴ ꜰɪʟᴇ ✗ ✦</b>", message.id
                 )
     except Exception as e:
         await message.reply_text(e, message.id)
