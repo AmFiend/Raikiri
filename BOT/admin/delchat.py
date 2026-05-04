@@ -10,8 +10,12 @@ async def cmd_del(Client, message):
         OWNER_ID = json.loads(
             open("FILES/config.json", "r", encoding="utf-8").read())["OWNER_ID"]
         if user_id not in OWNER_ID:
-            resp = """<b>You Don't Have Permission To Use This Command.    
-Contact Bot Owner @Zer0_ke !</b>"""
+            resp = """✦ <b>ᴀᴄᴄᴇꜱꜱ ᴅᴇɴɪᴇᴅ</b> ✦
+▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰
+
+⟢ ʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪꜱꜱɪᴏɴ.
+◈ ᴄᴏɴᴛᴀᴄᴛ @pipin_o
+━━━━━━━━━━━━━━━━━━━━━━━━━━"""
             await message.reply_text(resp)
             return
         else:
@@ -26,19 +30,19 @@ Contact Bot Owner @Zer0_ke !</b>"""
             if getchat != "None":
                 await delchat(chat_id)
                 resp = f"""<b>
-Group Deauthorized ❌
+Group ✦ ᴅᴇᴀᴜᴛʜᴏʀɪᴢᴇᴅ ✦
 
-Group Chat ID: {chat_id}
+◈ <b>ɢʀᴏᴜᴘ ɪᴅ :</b> {chat_id}
 
-Message: This Group (<code>{chat_id}</code>) is Successfully Deauthorized.
+⟢ This Group (<code>{chat_id}</code>) is Successfully Deauthorized.
        </b> """
                 await message.reply_text(resp)
                 user_resp = f"""<b>
-Deauthorized ❌
+✦ ᴅᴇᴀᴜᴛʜᴏʀɪᴢᴇᴅ ✦
 
-Group Chat ID: {chat_id}
+◈ <b>ɢʀᴏᴜᴘ ɪᴅ :</b> {chat_id}
 
-Message: This Group is no longer Authorized to use Our Bot. Deauthorized By @Zer0_ke
+⟢ This Group is no longer Authorized to use Our Bot. Deauthorized By @pipin_o
        </b> """
                 try:
                     await Client.send_message(chat_id, user_resp)
@@ -46,11 +50,11 @@ Message: This Group is no longer Authorized to use Our Bot. Deauthorized By @Zer
                     pass
             else:
                 resp = f"""<b>
-Chat Not Found ⚠️
+✦ ᴄʜᴀᴛ ɴᴏᴛ ꜰᴏᴜɴᴅ ✦
 
-Group Chat ID: {chat_id}
+◈ <b>ɢʀᴏᴜᴘ ɪᴅ :</b> {chat_id}
 
-Message: This Group (<code>{chat_id}</code>) is not in the list of authorized chats.
+⟢ This Group (<code>{chat_id}</code>) is not in the list of authorized chats.
        </b> """
                 await message.reply_text(resp)
 

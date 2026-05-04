@@ -61,9 +61,9 @@ async def filter(Client, message):
                 await message.reply_text(f"""<code>{cards}</code>""", quote=True)
         else:
             resp = """<b>
-Filter Failed ⚠️
+✦ ꜰɪʟᴛᴇʀ ꜰᴀɪʟᴇᴅ ✦
 
-Message: No Valid CC Found in the Input.
+⟢ ɴᴏ ᴠᴀʟɪᴅ ᴄᴄ ꜰᴏᴜɴᴅ ɪɴ ᴛʜᴇ ɪɴᴘᴜᴛ.
             </b>"""
             await message.reply_text(resp, quote=True)
 

@@ -34,8 +34,12 @@ async def brod_cmd(Client, message):
         user_id     = str(message.from_user.id)
         OWNER_ID    = json.loads(open("FILES/config.json", "r" , encoding="utf-8").read())["OWNER_ID"]
         if user_id not in OWNER_ID:
-            resp = """<b>You Don't Have Permission To Use This Command.    
-Contact Bot Owner @spid_3r !</b>"""
+            resp = """✦ <b>ᴀᴄᴄᴇꜱꜱ ᴅᴇɴɪᴇᴅ</b> ✦
+▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰
+
+⟢ ʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪꜱꜱɪᴏɴ.
+◈ ᴄᴏɴᴛᴀᴄᴛ @pipin_o
+━━━━━━━━━━━━━━━━━━━━━━━━━━"""
             await message.reply_text(resp, message.id)
             return
         
@@ -51,11 +55,11 @@ Contact Bot Owner @spid_3r !</b>"""
             all_user.append(chat["id"])
 
         text = f"""<b>
-Brodcast Started ✅
-━━━━━━━━━━━━━━
-Total Audience : {len(all_user)}
+✧ ʙʀᴏᴀᴅᴄᴀꜱᴛ ꜱᴛᴀʀᴛᴇᴅ ✧
+━━━━━━━━━━━━━━━━━━━━
+◈ <b>ᴛᴏᴛᴀʟ ᴀᴜᴅɪᴇɴᴄᴇ :</b> {len(all_user)}
 
-Status: Successfull</b>"""
+◈ <b>ꜱᴛᴀᴛᴜꜱ :</b> Successfull</b>"""
         await message.reply_text(text, message.id)
 
         sent_brod  = 0
@@ -81,14 +85,14 @@ Status: Successfull</b>"""
         min                       = int(minutes)
 
         done = f"""<b>
-Brodcast Completed Successfully ✅
-━━━━━━━━━━━━━━
-Total Audience : {len(all_user)}
-Message Sent : {sent_brod}
-Failed to Sent : {not_sent}
-Success Ratio : {int(sent_brod * 100 / len(all_user))}%
+Brodcast Completed ✓
+━━━━━━━━━━━━━━━━━━━━
+◈ <b>ᴛᴏᴛᴀʟ ᴀᴜᴅɪᴇɴᴄᴇ :</b> {len(all_user)}
+⟢ <b>ꜱᴇɴᴛ :</b> {sent_brod}
+◈ <b>ꜰᴀɪʟᴇᴅ :</b> {not_sent}
+⟢ <b>ʀᴀᴛɪᴏ :</b> {int(sent_brod * 100 / len(all_user))}%
 
-Time Taken : {hour} Hour {min} Min
+◈ <b>ᴛɪᴍᴇ :</b> {hour} Hour {min} Min
         </b>"""
 
         await message.reply_text(done, message.id)

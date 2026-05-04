@@ -83,28 +83,28 @@ async def get_server_stats():
     global_network_usage  = await get_global_network_usage()
 
     done = f"""<b>
-𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊⚡ Hosting Info Retrieved Successfully ✅
-━━━━━━━━━━━━━━ 
-Server Details:
-Server OS : {server_os}
-Server IP : {server_ip}
-Server ISP : {org}
-Server Location : {city} , {country}
-Server Ram : {server_ram}
-Server Storage : {server_storage}
-Server Core : {server_core} 
-Server CPU Usage : {cpu_usage}
-Server Internet Speed : {server_internet_speed}
+ꜱᴘʏᴅᴇ ᴄʜᴋ Hosting Info Retrieved ✓
+━━━━━━━━━━━━━━━━━━━━ 
+✧ <b>ꜱᴇʀᴠᴇʀ ᴅᴇᴛᴀɪʟꜱ</b> ✧
+◈ <b>ᴏꜱ :</b> {server_os}
+⟢ <b>ɪᴘ :</b> {server_ip}
+◈ <b>ɪꜱᴘ :</b> {org}
+⟢ <b>ʟᴏᴄᴀᴛɪᴏɴ :</b> {city} , {country}
+◈ <b>ʀᴀᴍ :</b> {server_ram}
+⟢ <b>ꜱᴛᴏʀᴀɢᴇ :</b> {server_storage}
+◈ <b>ᴄᴏʀᴇ :</b> {server_core} 
+⟢ <b>ᴄᴘᴜ :</b> {cpu_usage}
+◈ <b>ꜱᴘᴇᴇᴅ :</b> {server_internet_speed}
 
-Application Details:
-Application Name : 𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊⚡️
-Application CPU Usage : {script_cpu_usage}
-Application Ram Usage : {script_ram_usage}
-Application Network Usage : {global_network_usage}
-Application Uptime : 06 Hours 10 Min
+✧ <b>ᴀᴘᴘ ᴅᴇᴛᴀɪʟꜱ</b> ✧
+◈ <b>ɴᴀᴍᴇ :</b> ꜱᴘʏᴅᴇ ᴄʜᴋ
+⟢ <b>ᴄᴘᴜ :</b> {script_cpu_usage}
+◈ <b>ʀᴀᴍ :</b> {script_ram_usage}
+⟢ <b>ɴᴇᴛᴡᴏʀᴋ :</b> {global_network_usage}
+◈ <b>ᴜᴘᴛɪᴍᴇ :</b> 06 Hours 10 Min
 
 
-Status : Running
+⟢ <b>ꜱᴛᴀᴛᴜꜱ :</b> ʀᴜɴɴɪɴɢ ✓
     </b> """
     return done
 
@@ -115,12 +115,16 @@ async def stats(Client, message):
         user_id     = str(message.from_user.id)
         OWNER_ID    = json.loads(open("FILES/config.json", "r" , encoding="utf-8").read())["OWNER_ID"]
         if user_id not in OWNER_ID:
-            resp = """<b>You Don't Have Permission To Use This Command.    
-Contact Bot Owner @Zer0_ke !</b>"""
+            resp = """✦ <b>ᴀᴄᴄᴇꜱꜱ ᴅᴇɴɪᴇᴅ</b> ✦
+▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰
+
+⟢ ʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪꜱꜱɪᴏɴ.
+◈ ᴄᴏɴᴛᴀᴄᴛ @pipin_o
+━━━━━━━━━━━━━━━━━━━━━━━━━━"""
             await message.reply_text(resp, message.id)
             return
 
-        delete = await message.reply_text("<b>Getting Server Stats...</b>", message.id) 
+        delete = await message.reply_text("<b>✦ ɢᴇᴛᴛɪɴɢ ꜱᴇʀᴠᴇʀ ꜱᴛᴀᴛꜱ... ✦</b>", message.id) 
         done   = await get_server_stats()
         await Client.delete_messages(message.chat.id, delete.id)
 

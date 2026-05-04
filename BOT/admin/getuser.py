@@ -9,8 +9,12 @@ async def cmd_add(Client, message):
         user_id     = str(message.from_user.id)
         OWNER_ID    = json.loads(open("FILES/config.json", "r" , encoding="utf-8").read())["OWNER_ID"]
         if user_id not in OWNER_ID:
-            resp = """<b>You Don't Have Permission To Use This Command.    
-Contact Bot Owner @Zer0_ke !</b>"""
+            resp = """✦ <b>ᴀᴄᴄᴇꜱꜱ ᴅᴇɴɪᴇᴅ</b> ✦
+▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰
+
+⟢ ʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪꜱꜱɪᴏɴ.
+◈ ᴄᴏɴᴛᴀᴄᴛ @pipin_o
+━━━━━━━━━━━━━━━━━━━━━━━━━━"""
             await message.reply_text(resp, message.id)
             return
 
@@ -23,16 +27,16 @@ Contact Bot Owner @Zer0_ke !</b>"""
         reg_at   = info["reg_at"]
 
         send_info = f"""<b>
-<b>{message.text.split(" ")[1]}</b> Info on    𝐏𝐡𝐚𝐫𝐚𝐨𝐡✘ 𝐑𝐨𝐛𝐨𝐭 ⚡
-━━━━━━━━━━━━━━
-● ID: <code>{message.text.split(" ")[1]}</code>
-● Profile Link: <a href="tg://user?id={message.text.split(" ")[1]}">Profile Link</a>
-● Status: {status}
-● Credit: {credit}
-● Plan: {plan}
-● Plan Expiry: {expiry}
-● Key Redeemed : {totalkey}
-● Registered at: {reg_at}</b>
+<b>{message.text.split(" ")[1]}</b> Info on    ꜱᴘʏᴅᴇ ᴄʜᴋ
+━━━━━━━━━━━━━━━━━━━━
+◈ ID: <code>{message.text.split(" ")[1]}</code>
+◈ Profile Link: <a href="tg://user?id={message.text.split(" ")[1]}">Profile Link</a>
+◈ ◈ <b>ꜱᴛᴀᴛᴜꜱ :</b> {status}
+◈ Credit: {credit}
+◈ Plan: {plan}
+◈ ◈ <b>ᴇxᴘɪʀʏ :</b> {expiry}
+◈ Key Redeemed : {totalkey}
+◈ Registered at: {reg_at}</b>
 """
         await message.reply_text(send_info, message.id)
 

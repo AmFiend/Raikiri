@@ -19,11 +19,11 @@ async def cmd_deluser(Client, message):
             open("FILES/config.json", "r", encoding="utf-8").read())["OWNER_ID"]
 
         if user_id not in OWNER_ID:
-            resp = """<b>Privilege Not Found ⚠️
+            resp = """<b>✦ ᴀᴄᴄᴇꜱꜱ ᴅᴇɴɪᴇᴅ ✦
 
-Message: To perform this action, you need admin level power. 
+⟢ To perform this action, you need admin level power. 
 
-Contact @Zer0_ke For More Info ✅</b>"""
+◈ ᴄᴏɴᴛᴀᴄᴛ @pipin_o</b>"""
             await message.reply_text(resp, message.id)
             return
 
@@ -34,9 +34,9 @@ Contact @Zer0_ke For More Info ✅</b>"""
                 user_id = str(message.text.split(" ")[1])
         except Exception as e:
             resp = """<b>
-Invalid ID ⚠️
+✦ ɪɴᴠᴀʟɪᴅ ɪᴅ ✦
 
-Message: Not Found Valid ID From Your Input.
+⟢ Not Found Valid ID From Your Input.
             </b>"""
             await message.reply_text(resp, message.id)
             return
@@ -44,11 +44,11 @@ Message: Not Found Valid ID From Your Input.
         await remove_user_from_db(user_id)
 
         resp = f"""
-User Removed from Database ✅
+✧ ᴜꜱᴇʀ ʀᴇᴍᴏᴠᴇᴅ ✧
 
-User ID: {user_id}
+◈ <b>ᴜꜱᴇʀ ɪᴅ :</b> {user_id}
 
-Message: User has been removed from the database.
+⟢ User has been removed from the database.
         """
         await message.reply_text(resp, message.id)
 

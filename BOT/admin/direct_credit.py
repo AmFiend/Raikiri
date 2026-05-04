@@ -9,8 +9,12 @@ async def cmd_ac(Client, message):
         user_id     = str(message.from_user.id)
         OWNER_ID    = json.loads(open("FILES/config.json", "r" , encoding="utf-8").read())["OWNER_ID"]
         if user_id not in OWNER_ID:
-            resp = """<b>You Don't Have Permission To Use This Command.    
-Contact Bot Owner @Zer0_ke !</b>"""
+            resp = """✦ <b>ᴀᴄᴄᴇꜱꜱ ᴅᴇɴɪᴇᴅ</b> ✦
+▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰
+
+⟢ ʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪꜱꜱɪᴏɴ.
+◈ ᴄᴏɴᴛᴀᴄᴛ @pipin_o
+━━━━━━━━━━━━━━━━━━━━━━━━━━"""
             await message.reply_text(resp, message.id)
             return
 
@@ -26,14 +30,14 @@ Contact Bot Owner @Zer0_ke !</b>"""
         await directcredit(user_id, value)
 
         resp = f"""<b>
-Credit Added Successfully ✅ 
-━━━━━━━━━━━━━━
-Amount : {amt}
-User ID: <a href="tg://user?id={user_id}">{user_id}</a> 
-Previous Credit: {previous_credit} 
-After Credit: {value} 
+Credit Added ✓ 
+━━━━━━━━━━━━━━━━━━━━
+◈ <b>ᴀᴍᴏᴜɴᴛ :</b> {amt}
+◈ <b>ᴜꜱᴇʀ ɪᴅ :</b> <a href="tg://user?id={user_id}">{user_id}</a> 
+⟢ <b>ᴘʀᴇᴠɪᴏᴜꜱ :</b> {previous_credit} 
+◈ <b>ᴀꜰᴛᴇʀ :</b> {value} 
 
-Message: Credit Added to this User Successfully.
+⟢ Credit Added to this User Successfully.
 </b>"""
         await message.reply_text(resp, message.id)
 

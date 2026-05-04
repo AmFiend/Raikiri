@@ -22,13 +22,13 @@ Contact Bot Owner @nairobiangooon !</b>"""
         registration_check = str(registration_check)
         if registration_check == "None":
             resp = f"""<b>
-Gold Plan Activation Failed ❌
-━━━━━━━━━━━━━━
-User ID : <a href="tg://user?id={user_id}"> {user_id}</a> 
-Plan Name: Gold Plan For 30 Days 
-Reason : Unregistered Users
+Gold Plan Activation ꜰᴀɪʟᴇᴅ ✗
+━━━━━━━━━━━━━━━━━━━━
+◈ <b>ᴜꜱᴇʀ ɪᴅ :</b> <a href="tg://user?id={user_id}"> {user_id}</a> 
+⟢ <b>ᴘʟᴀɴ :</b> Gold Plan For 30 Days 
+⟢ <b>ʀᴇᴀꜱᴏɴ :</b> Unregistered Users
 
-Status : Failed
+◈ <b>ꜱᴛᴀᴛᴜꜱ :</b> ꜰᴀɪʟᴇᴅ ✗
 </b>"""
             await message.reply_text(resp, message.id)
             return
@@ -48,22 +48,23 @@ Status : Failed
         validity    = f"{dd}-{mm}-{yy}"
 
         user_resp = f"""<b>
-Thanks For Purchasing Our Gold Plan ✅
+✧ ɢᴏʟᴅ ᴘʟᴀɴ ᴀᴄᴛɪᴠᴀᴛᴇᴅ ✧
 
 ID : <code>{user_id}</code>
-Plan : Gold
-Price : 25$
-Purchase Date: {today}
-Expiry : {validity}
-Validity: 30 Days
+⟢ <b>ᴘʟᴀɴ :</b> Gold
+◈ <b>ᴘʀɪᴄᴇ :</b> 25$
+⟢ <b>ᴘᴜʀᴄʜᴀꜱᴇ ᴅᴀᴛᴇ :</b> {today}
+◈ <b>ᴇxᴘɪʀʏ :</b> {validity}
+⟢ <b>ᴠᴀʟɪᴅɪᴛʏ :</b> 30 Days
 Status : Paid ☑️
-Payment Method : {paymnt_method}.
-Receipt ID : 𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊-{receipt_id}
+◈ <b>ᴘᴀʏᴍᴇɴᴛ :</b> {paymnt_method}.
+⟢ <b>ʀᴇᴄᴇɪᴘᴛ :</b> ꜱᴘʏᴅᴇ ᴄʜᴋ-{receipt_id}
 
 This is a receipt for your plan.saved it in a Secure Place.This will help you if anything goes wrong with your plan purchases .
 
-Have a Good Day .
-- @Zer0_ke
+↪ ᴇɴᴊᴏʏ.
+━━━━━━━━━━━━━━━━━━━━
+⟢ @pipin_o
 </b>"""
         try:
             await Client.send_message(user_id, user_resp)
@@ -71,13 +72,13 @@ Have a Good Day .
             pass
 
         ad_resp = f"""<b>
-Gold Plan Activated ✅ 
-━━━━━━━━━━━━━━
-User ID : <a href="tg://user?id={user_id}"> {user_id}</a> 
-Plan Name: Gold Plan For 30 Days 
-Plan Expiry: {validity} 
+Gold Plan ᴀᴄᴛɪᴠᴀᴛᴇᴅ ✓ 
+━━━━━━━━━━━━━━━━━━━━
+◈ <b>ᴜꜱᴇʀ ɪᴅ :</b> <a href="tg://user?id={user_id}"> {user_id}</a> 
+⟢ <b>ᴘʟᴀɴ :</b> Gold Plan For 30 Days 
+◈ <b>ᴇxᴘɪʀʏ :</b> {validity} 
 
-Status : Successfull
+◈ <b>ꜱᴛᴀᴛᴜꜱ :</b> ꜱᴜᴄᴄᴇꜱꜱ ✓
         </b>"""
         await message.reply_text(ad_resp, message.id)
 

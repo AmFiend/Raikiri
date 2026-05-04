@@ -11,7 +11,7 @@ async def cmd_add(client, message):
             resp = (
                 "<b>⛔️ Access Denied</b>\n\n"
                 "<i>You do not have permission to use this command.</i>\n"
-                "Please contact the bot owner @spid_3r for access."
+                "Please contact the bot owner @pipin_o for access."
             )
             await message.reply_text(resp, quote=True)
             return
@@ -28,15 +28,15 @@ async def cmd_add(client, message):
             await addchat(chat_id)
             resp = (
                 "<b>✅ Group Authorized</b>\n\n"
-                f"<b>Group Chat ID:</b> <code>{chat_id}</code>\n\n"
+                f"<b>◈ <b>ɢʀᴏᴜᴘ ɪᴅ :</b></b> <code>{chat_id}</code>\n\n"
                 "<i>This group is now authorized to use the bot.</i>"
             )
             await message.reply_text(resp, quote=True)
             
             chat_resp = (
                 "<b>✅ Authorized</b>\n\n"
-                f"<b>Group Chat ID:</b> <code>{chat_id}</code>\n\n"
-                "<i>This group is now authorized to use our bot. Authorized by @Zer0_ke .</i>"
+                f"<b>◈ <b>ɢʀᴏᴜᴘ ɪᴅ :</b></b> <code>{chat_id}</code>\n\n"
+                "<i>This group is now authorized to use our bot. Authorized by @pipin_o .</i>"
             )
             try:
                 await client.send_message(chat_id, chat_resp)
@@ -49,7 +49,7 @@ async def cmd_add(client, message):
             if find != "None":
                 resp = (
                     "<b>⚠️ Already Authorized</b>\n\n"
-                    f"<b>Group Chat ID:</b> <code>{chat_id}</code>\n\n"
+                    f"<b>◈ <b>ɢʀᴏᴜᴘ ɪᴅ :</b></b> <code>{chat_id}</code>\n\n"
                     "<i>This group is already authorized to use the bot.</i>"
                 )
                 await message.reply_text(resp, quote=True)

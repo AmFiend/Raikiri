@@ -166,7 +166,7 @@ async def cmd_viewapis(client, message):
             await message.reply_text("<b>No APIs configured yet.</b>")
             return
             
-        response = "<b>📊 API Configuration Status:</b>\n\n"
+        response = "<b>📊 API Configuration ◈ <b>ꜱᴛᴀᴛᴜꜱ :</b></b>\n\n"
         
         for api in api_records:
             status = "✅ Enabled" if api.get("enabled", False) else "❌ Disabled"
@@ -176,7 +176,7 @@ async def cmd_viewapis(client, message):
             success_rate = round(api.get("success_rate", 0) * 100, 2)
             
             response += f"<b>🔹 {api['api_name'].upper()}:</b>\n"
-            response += f"   <b>Status:</b> {status}\n"
+            response += f"   <b>◈ <b>ꜱᴛᴀᴛᴜꜱ :</b></b> {status}\n"
             response += f"   <b>API Key:</b> {key_status}\n"
             response += f"   <b>Usage Count:</b> {usage}\n"
             response += f"   <b>Remaining Quota:</b> {quota}\n"

@@ -10,11 +10,11 @@ async def cmd_reboot(client, message):
         OWNER_ID = json.loads(open("FILES/config.json", "r", encoding="utf-8").read())["OWNER_ID"]
         
         if user_id not in OWNER_ID:
-            resp = """<b>Privilege Not Found ⚠️
+            resp = """<b>✦ ᴀᴄᴄᴇꜱꜱ ᴅᴇɴɪᴇᴅ ✦
 
-Message: To perform this action, you need admin level power. 
+⟢ To perform this action, you need admin level power. 
 
-Contact @Zer0_ke For More Info ✅</b>"""
+◈ ᴄᴏɴᴛᴀᴄᴛ @pipin_o</b>"""
             await message.reply_text(resp, message.id)
             return
 

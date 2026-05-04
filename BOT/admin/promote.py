@@ -9,8 +9,12 @@ async def cmd_pm(Client, message):
         user_id     = str(message.from_user.id)
         OWNER_ID    = json.loads(open("FILES/config.json", "r" , encoding="utf-8").read())["OWNER_ID"]
         if user_id not in OWNER_ID:
-            resp = """<b>You Don't Have Permission To Use This Command.    
-Contact Bot Owner @Zer0_ke !</b>"""
+            resp = """✦ <b>ᴀᴄᴄᴇꜱꜱ ᴅᴇɴɪᴇᴅ</b> ✦
+▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰
+
+⟢ ʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪꜱꜱɪᴏɴ.
+◈ ᴄᴏɴᴛᴀᴄᴛ @pipin_o
+━━━━━━━━━━━━━━━━━━━━━━━━━━"""
             await message.reply_text(resp, message.id)
             return
 
@@ -27,12 +31,12 @@ Contact Bot Owner @Zer0_ke !</b>"""
 
         if status != "FREE":
             resp = f"""<b>
-Already Promoted ⚠️
+✦ ᴀʟʀᴇᴀᴅʏ ᴘʀᴏᴍᴏᴛᴇᴅ ✦
 
-User ID: <a href="tg://user?id={user_id}">{user_id}</a> 
-Status: Premium
+◈ <b>ᴜꜱᴇʀ ɪᴅ :</b> <a href="tg://user?id={user_id}">{user_id}</a> 
+◈ <b>ꜱᴛᴀᴛᴜꜱ :</b> Premium
 
-Message: This user is already Premium User . No Need To Promot
+⟢ This user is already Premium User . No Need To Promot
 e Again .
     </b> """
             await message.reply_text(resp, message.id)
@@ -40,22 +44,22 @@ e Again .
         else:
             await premiumuser(user_id)
             resp = f"""<b>
-Premium Activated Successfully ✅ 
-━━━━━━━━━━━━━━
-User ID : <a href="tg://user?id={user_id}"> {user_id}</a> 
-Role :  Premium
+Premium Activated ✓ 
+━━━━━━━━━━━━━━━━━━━━
+◈ <b>ᴜꜱᴇʀ ɪᴅ :</b> <a href="tg://user?id={user_id}"> {user_id}</a> 
+⟢ <b>ʀᴏʟᴇ :</b>  Premium
 
-Status : Successfull
+◈ <b>ꜱᴛᴀᴛᴜꜱ :</b> ꜱᴜᴄᴄᴇꜱꜱ ✓
     </b> """
             await message.reply_text(resp, message.id)
 
             user_resp = f"""<b>
-Account Promoted Successfully ✅ 
-━━━━━━━━━━━━━━ 
-User ID: {user_id} 
-Role: Premium 
+Account Promoted ✓ 
+━━━━━━━━━━━━━━━━━━━━ 
+◈ <b>ᴜꜱᴇʀ ɪᴅ :</b> {user_id} 
+⟢ <b>ʀᴏʟᴇ :</b> Premium 
 
-Message: Congratz ! Your Account Successfully Promoted To "Premium" User . Enjoy Yourself on the Bot .
+⟢ Congratz ! Your Account Successfully Promoted To "Premium" User . Enjoy Yourself on the Bot .
     </b> """
             await Client.send_message(user_id, user_resp)
 

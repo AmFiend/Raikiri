@@ -9,8 +9,12 @@ async def cmd_fr(Client, message):
         user_id     = str(message.from_user.id)
         OWNER_ID    = json.loads(open("FILES/config.json", "r" , encoding="utf-8").read())["OWNER_ID"]
         if user_id not in OWNER_ID:
-            resp = """<b>You Don't Have Permission To Use This Command.    
-Contact Bot Owner @Zer0_ke !</b>"""
+            resp = """✦ <b>ᴀᴄᴄᴇꜱꜱ ᴅᴇɴɪᴇᴅ</b> ✦
+▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰
+
+⟢ ʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪꜱꜱɪᴏɴ.
+◈ ᴄᴏɴᴛᴀᴄᴛ @pipin_o
+━━━━━━━━━━━━━━━━━━━━━━━━━━"""
             await message.reply_text(resp, message.id)
             return
 
@@ -25,10 +29,10 @@ Contact Bot Owner @Zer0_ke !</b>"""
             resp = f"""<b>
 Already Demoted ⚠️
 
-User ID: {user_id}
-Status: Free
+◈ <b>ᴜꜱᴇʀ ɪᴅ :</b> {user_id}
+◈ <b>ꜱᴛᴀᴛᴜꜱ :</b> Free
 
-Message: This user is already Free User . No Need To Demote Again .
+⟢ This user is already Free User . No Need To Demote Again .
         </b>"""
             await message.reply_text(resp, message.id)
 
@@ -37,19 +41,19 @@ Message: This user is already Free User . No Need To Demote Again .
             resp = f"""
 Account Demoted ✅
 
-User ID: {user_id}
+◈ <b>ᴜꜱᴇʀ ɪᴅ :</b> {user_id}
 
-Message: Account Demoted to "Free" User Successfully .
+⟢ Account Demoted to "Free" User Successfully .
         """
             await message.reply_text(resp, message.id)
 
             user_resp = f"""<b>
 Account Demoted ❌
-━━━━━━━━━━━━━━
-● User ID: {user_id}
-● Role: Free
+━━━━━━━━━━━━━━━━━━━━
+◈ ◈ <b>ᴜꜱᴇʀ ɪᴅ :</b> {user_id}
+◈ ⟢ <b>ʀᴏʟᴇ :</b> Free
 
-Message: Sorry ! Due to Some Suspicious or Wrong Behavior Your Account got Demoted to "Free" User .
+⟢ Sorry ! Due to Some Suspicious or Wrong Behavior Your Account got Demoted to "Free" User .
             </b>"""
             await Client.send_message(user_id, user_resp)
 
