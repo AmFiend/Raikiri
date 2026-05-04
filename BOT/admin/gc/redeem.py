@@ -12,11 +12,11 @@ async def cmd_gc(Client, message):
 
         if regdata == "None":
             resp = f"""<b>
-Unregistered Users ⚠️
+✦ ᴜɴʀᴇɢɪꜱᴛᴇʀᴇᴅ ✦
 
-Message: You Can't Use Me Unless You Register First .
+⟢ You Can't Use Me Unless You Register First .
 
-Type /register to Continue
+↪ ᴛʏᴘᴇ /register ᴛᴏ ᴄᴏɴᴛɪɴᴜᴇ
 </b>"""
             await message.reply_text(resp, message.id)
             return
@@ -24,20 +24,20 @@ Type /register to Continue
         try:
             gc  = message.text.split(" ")[1]
         except:
-            resp = "<b>Please Provide A Valid Giftcode ❌</b>"
+            resp = "<b>✦ ᴘʀᴏᴠɪᴅᴇ ᴀ ᴠᴀʟɪᴅ ɢɪꜰᴛᴄᴏᴅᴇ ✗ ✦</b>"
             await message.reply_text(resp, message.id)
             return
 
         detail = await getgc(gc)
         if str(detail) == "None":
-            resp = "<b>Please Provide A Valid Giftcode ❌</b>"
+            resp = "<b>✦ ᴘʀᴏᴠɪᴅᴇ ᴀ ᴠᴀʟɪᴅ ɢɪꜰᴛᴄᴏᴅᴇ ✗ ✦</b>"
             await message.reply_text(resp, message.id)
             return
         
 
         get_user_info = usersdb.find_one({"id": user_id})
         if "∞" in get_user_info["plan"]:
-            resp = "<b>You have already active plan, you cannot redeem!</b>"
+            resp = "<b>✦ ʏᴏᴜ ᴀʟʀᴇᴀᴅʏ ʜᴀᴠᴇ ᴀɴ ᴀᴄᴛɪᴠᴇ ᴘʟᴀɴ ✦</b>"
             await message.reply_text(resp, message.id)
             return
 
@@ -48,12 +48,12 @@ Type /register to Continue
             await onlycredits(user_id)
             await updategc(gc)
             resp = f"""<b>
-Redeemed Successfully ✅
-━━━━━━━━━━━━━━
-● Giftcode: {gc}
-● User ID: {user_id}
+Redeemed ✓
+━━━━━━━━━━━━━━━━━━━━
+◈ ◈ <b>ɢɪꜰᴛᴄᴏᴅᴇ :</b> {gc}
+◈ ◈ <b>ᴜꜱᴇʀ ɪᴅ :</b> {user_id}
 
-Message: Congratz ! Your Provided Giftcode Successfully Redeemed to Your Acoount And You Got "100 Credits + Premium Subscription " .
+⟢ Congratz ! Your Provided Giftcode Successfully Redeemed to Your Acoount And You Got "100 Credits + Premium Subscription " .
 </b>"""
             await message.reply_text(resp, message.id)
 
@@ -61,12 +61,12 @@ Message: Congratz ! Your Provided Giftcode Successfully Redeemed to Your Acoount
             await plan1gc(user_id)
             await updategc(gc)
             resp = f"""<b>
-Redeemed Successfully ✅
-━━━━━━━━━━━━━━
-● Giftcode: {gc}
-● User ID: {user_id}
+Redeemed ✓
+━━━━━━━━━━━━━━━━━━━━
+◈ ◈ <b>ɢɪꜰᴛᴄᴏᴅᴇ :</b> {gc}
+◈ ◈ <b>ᴜꜱᴇʀ ɪᴅ :</b> {user_id}
 
-Message: Congratz ! Your Provided Giftcode Successfully Redeemed to Your Acoount And You Got "Starter Plan For 7 Days " .
+⟢ Congratz ! Your Provided Giftcode Successfully Redeemed to Your Acoount And You Got "Starter Plan For 7 Days " .
 </b>"""
             await message.reply_text(resp, message.id)
 
@@ -74,12 +74,12 @@ Message: Congratz ! Your Provided Giftcode Successfully Redeemed to Your Acoount
             await plan2gc(user_id)
             await updategc(gc)
             resp = f"""<b>
-Redeemed Successfully ✅
-━━━━━━━━━━━━━━
-● Giftcode: {gc}
-● User ID: {user_id}
+Redeemed ✓
+━━━━━━━━━━━━━━━━━━━━
+◈ ◈ <b>ɢɪꜰᴛᴄᴏᴅᴇ :</b> {gc}
+◈ ◈ <b>ᴜꜱᴇʀ ɪᴅ :</b> {user_id}
 
-Message: Congratz ! Your Provided Giftcode Successfully Redeemed to Your Acoount And You Got "Silver Plan For 15 Days " .
+⟢ Congratz ! Your Provided Giftcode Successfully Redeemed to Your Acoount And You Got "Silver Plan For 15 Days " .
 </b>"""
             await message.reply_text(resp, message.id)
 
@@ -87,32 +87,32 @@ Message: Congratz ! Your Provided Giftcode Successfully Redeemed to Your Acoount
             await plan3gc(user_id)
             await updategc(gc)
             resp = f"""<b>
-Redeemed Successfully ✅
-━━━━━━━━━━━━━━
-● Giftcode: {gc}
-● User ID: {user_id}
+Redeemed ✓
+━━━━━━━━━━━━━━━━━━━━
+◈ ◈ <b>ɢɪꜰᴛᴄᴏᴅᴇ :</b> {gc}
+◈ ◈ <b>ᴜꜱᴇʀ ɪᴅ :</b> {user_id}
 
-Message: Congratz ! Your Provided Giftcode Successfully Redeemed to Your Acoount And You Got "Gold Plan For 30 Days " .
+⟢ Congratz ! Your Provided Giftcode Successfully Redeemed to Your Acoount And You Got "Gold Plan For 30 Days " .
 </b>"""
             await message.reply_text(resp, message.id)
 
         elif status == "USED":
             resp = f"""<b>
-Already Redeemed ⚠️
+✦ ᴀʟʀᴇᴀᴅʏ ʀᴇᴅᴇᴇᴍᴇᴅ ✦
 
-Giftcode: {gc}
+◈ <b>ɢɪꜰᴛᴄᴏᴅᴇ :</b> {gc}
 
-Message: This Giftcode is Already Redeemed by another users .
+⟢ This Giftcode is Already Redeemed by another users .
 </b> """
             await message.reply_text(resp, message.id)
 
         else:
             resp = f"""<b>
-Invalid Giftcode ❌
+✦ ɪɴᴠᴀʟɪᴅ ɢɪꜰᴛᴄᴏᴅᴇ ✦
 
-Giftcode: {gc}
+◈ <b>ɢɪꜰᴛᴄᴏᴅᴇ :</b> {gc}
 
-Message: We can't find any giftcode like that . your provided giftcode is invalid .   
+⟢ We can't find any giftcode like that . your provided giftcode is invalid .   
         </b>"""
             await message.reply_text(resp, message.id)
 

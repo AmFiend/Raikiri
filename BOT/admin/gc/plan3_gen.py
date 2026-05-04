@@ -12,7 +12,7 @@ async def cmd_getplan3(Client, message):
         if user_id not in OWNER_ID:
             resp = """<b>
 You Don't Have Permission To Use This Command.    
-Contact Bot Owner @Zer0_ke
+Contact Bot Owner @pipin_o
 
 </b>"""
             await message.reply_text(resp, message.id)
@@ -23,14 +23,14 @@ Contact Bot Owner @Zer0_ke
         except:
             amt = 10
 
-        text = f"""<b>Giftcode Genarated ✅
-Amount: {amt}\n</b>"""
+        text = f"""<b>✧ ɢɪꜰᴛᴄᴏᴅᴇ ɢᴇɴᴇʀᴀᴛᴇᴅ ✓ ✧
+◈ <b>ᴀᴍᴏᴜɴᴛ :</b> {amt}\n</b>"""
 
         for _ in range(amt):
             GC = f"MASTR-{gcgenfunc()}-{gcgenfunc()}-{gcgenfunc()}"
             await insert_plan3(GC)
             text += f"""
-➔ <code>{GC}</code>
+⟢ <code>{GC}</code>
 <b>Value : Gold Plan 30 Days</b>\n"""
 
         text += f"""

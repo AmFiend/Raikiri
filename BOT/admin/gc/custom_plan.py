@@ -9,8 +9,12 @@ async def cmd_plan1(Client, message):
         user_id = str(message.from_user.id)
         OWNER_ID = json.loads(open("FILES/config.json", "r" , encoding="utf-8").read())["OWNER_ID"]
         if user_id not in OWNER_ID:
-            resp = """<b>You Don't Have Permission To Use This Command.    
-Contact Bot Owner @Zer0_ke !</b>"""
+            resp = """✦ <b>ᴀᴄᴄᴇꜱꜱ ᴅᴇɴɪᴇᴅ</b> ✦
+▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰
+
+⟢ ʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪꜱꜱɪᴏɴ.
+◈ ᴄᴏɴᴛᴀᴄᴛ @pipin_o
+━━━━━━━━━━━━━━━━━━━━━━━━━━"""
             await message.reply_text(resp, message.id)
             return
 
@@ -33,13 +37,13 @@ Contact Bot Owner @Zer0_ke !</b>"""
         registration_check = str(registration_check)
         if registration_check == "None":
             resp = f"""<b>
-Starter Plan Activation Failed ❌
-━━━━━━━━━━━━━━
-User ID : <a href="tg://user?id={user_id}"> {user_id}</a> 
-Plan Name: Starter Plan For {days} Days 
-Reason : Unregistered Users
+Starter Plan Activation ꜰᴀɪʟᴇᴅ ✗
+━━━━━━━━━━━━━━━━━━━━
+◈ <b>ᴜꜱᴇʀ ɪᴅ :</b> <a href="tg://user?id={user_id}"> {user_id}</a> 
+⟢ <b>ᴘʟᴀɴ :</b> Starter Plan For {days} Days 
+⟢ <b>ʀᴇᴀꜱᴏɴ :</b> Unregistered Users
 
-Status : Failed
+◈ <b>ꜱᴛᴀᴛᴜꜱ :</b> ꜰᴀɪʟᴇᴅ ✗
 </b>"""
             await message.reply_text(resp, message.id)
             return
@@ -59,22 +63,23 @@ Status : Failed
         validity = f"{dd}-{mm}-{yy}"
 
         user_resp = f"""<b>
-Thanks For Purchasing Our Starter Plan ✅
+✧ ꜱᴛᴀʀᴛᴇʀ ᴘʟᴀɴ ᴀᴄᴛɪᴠᴀᴛᴇᴅ ✧
 
 ID : <code>{user_id}</code>
-Plan : Custom Plan
-Price : $
-Purchase Date: {today}
-Expiry : {validity}
-Validity: {days} Days
+⟢ <b>ᴘʟᴀɴ :</b> Custom Plan
+◈ <b>ᴘʀɪᴄᴇ :</b> $
+⟢ <b>ᴘᴜʀᴄʜᴀꜱᴇ ᴅᴀᴛᴇ :</b> {today}
+◈ <b>ᴇxᴘɪʀʏ :</b> {validity}
+⟢ <b>ᴠᴀʟɪᴅɪᴛʏ :</b> {days} Days
 Status : Paid ☑️
-Payment Method : {paymnt_method}.
-Receipt ID : MASTR-{receipt_id}
+◈ <b>ᴘᴀʏᴍᴇɴᴛ :</b> {paymnt_method}.
+⟢ <b>ʀᴇᴄᴇɪᴘᴛ :</b> MASTR-{receipt_id}
 
 This is a receipt for your plan. Save it in a Secure Place. This will help you if anything goes wrong with your plan purchases.
 
 Have a Good Day.
-- @Zer0_ke
+━━━━━━━━━━━━━━━━━━━━
+⟢ @pipin_o
 </b>"""
         try:
             await Client.send_message(user_id, user_resp)
@@ -82,11 +87,11 @@ Have a Good Day.
             pass
 
         ad_resp = f"""<b>
-Starter Plan Activated ✅ 
-━━━━━━━━━━━━━━
-User ID : <a href="tg://user?id={user_id}"> {user_id}</a> 
-Plan Name: Starter Plan For {days} Days 
-Plan Expiry: {validity} 
+Starter Plan ᴀᴄᴛɪᴠᴀᴛᴇᴅ ✓ 
+━━━━━━━━━━━━━━━━━━━━
+◈ <b>ᴜꜱᴇʀ ɪᴅ :</b> <a href="tg://user?id={user_id}"> {user_id}</a> 
+⟢ <b>ᴘʟᴀɴ :</b> Starter Plan For {days} Days 
+◈ <b>ᴇxᴘɪʀʏ :</b> {validity} 
 
 Status : Successful
 </b>"""
