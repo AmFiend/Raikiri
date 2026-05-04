@@ -9,13 +9,13 @@ async def cmd_info(client, message):
         results = str(regdata)
 
         if results == "None":
-            resp = """<b>
-⚠️ Unregistered User ⚠️
+            resp = """✦ <b>ᴜɴʀᴇɢɪꜱᴛᴇʀᴇᴅ</b> ✦
+▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰
 
-Message: You can't use me unless you register first.
+⟢ ʏᴏᴜ ᴄᴀɴ'ᴛ ᴜꜱᴇ ᴍᴇ ᴜɴʟᴇꜱꜱ ʏᴏᴜ ʀᴇɢɪꜱᴛᴇʀ ꜰɪʀꜱᴛ.
 
-Type /register to continue.
-</b>"""
+↪ ᴛʏᴘᴇ /register ᴛᴏ ᴄᴏɴᴛɪɴᴜᴇ
+━━━━━━━━━━━━━━━━━━━━"""
             await message.reply_text(resp)
             return
 
@@ -36,23 +36,24 @@ Type /register to continue.
         totalkey = results["totalkey"]
         reg_at = results["reg_at"]
 
-        send_info = f"""<b>
-🔍 Your Info on 𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊⚡
-━━━━━━━━━━━━━━
-👤 First Name: {first_name}
-🆔 ID: <code>{user_id}</code>
-📛 Username: @{username}
-🔗 Profile Link: <a href="tg://user?id={user_info.id}">Profile Link</a>
-🔒 TG Restrictions: {user_info.is_restricted}
-🚨 TG Scamtag: {user_info.is_scam}
-🌟 TG Premium: {user_info.is_premium}
-📋 Status: {status}
-💳 Credit: {credit}
-💼 Plan: {plan}
-📅 Plan Expiry: {expiry}
-🔑 Keys Redeemed: {totalkey}
-🗓 Registered At: {reg_at}
-</b>"""
+        send_info = f"""✧ <b>ꜱᴘʏᴅᴇ ━ ʏᴏᴜʀ ɪɴꜰᴏ</b> ✧
+▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰
+
+◈ <b>ɴᴀᴍᴇ :</b> {first_name}
+⟢ <b>ɪᴅ :</b> <code>{user_id}</code>
+◈ <b>ᴜꜱᴇʀɴᴀᴍᴇ :</b> @{username}
+⟢ <b>ᴘʀᴏꜰɪʟᴇ :</b> <a href="tg://user?id={user_info.id}">ʟɪɴᴋ</a>
+◈ <b>ʀᴇꜱᴛʀɪᴄᴛɪᴏɴꜱ :</b> {user_info.is_restricted}
+⟢ <b>ꜱᴄᴀᴍᴛᴀɢ :</b> {user_info.is_scam}
+◈ <b>ᴘʀᴇᴍɪᴜᴍ :</b> {user_info.is_premium}
+⟢ <b>ꜱᴛᴀᴛᴜꜱ :</b> {status}
+◈ <b>ᴄʀᴇᴅɪᴛ :</b> {credit}
+⟢ <b>ᴘʟᴀɴ :</b> {plan}
+◈ <b>ᴇxᴘɪʀʏ :</b> {expiry}
+⟢ <b>ᴋᴇʏꜱ ʀᴇᴅᴇᴇᴍᴇᴅ :</b> {totalkey}
+◈ <b>ʀᴇɢɪꜱᴛᴇʀᴇᴅ :</b> {reg_at}
+
+━━━━━━━━━━━━━━━━━━━━"""
         await message.reply_text(send_info)
 
     except Exception as e:
