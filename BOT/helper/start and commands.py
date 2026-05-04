@@ -70,29 +70,27 @@ async def start_command(client, message):
     # New style layout and buttons
     keyboard = [
         [
-            InlineKeyboardButton("Gates ♻️", callback_data="gates"),
-            InlineKeyboardButton("Tools 🛠", callback_data="tools"),
-            InlineKeyboardButton("Helper 🫥", callback_data="helper"),
-        ],
-        [
-            InlineKeyboardButton("Register 📝", callback_data="register"),
-            InlineKeyboardButton("Channel 🥷", url="https://t.me/+LLL9zq5x1lQ3ZDI1"),
-        ],
-        [
-            InlineKeyboardButton("Exit ⚠️", callback_data="exit"),
-        ]
+            InlineKeyboardButton("✧ ɢᴀᴛᴇꜱ ✧", callback_data="gates"),
+            InlineKeyboardButton("◈ ʀᴇɢɪꜱᴛᴇʀ ◈", callback_data="register"),
+            
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
     
+    # Get user info for caption
+    first_name = message.from_user.first_name
+    user_id = str(message.from_user.id)
+    find = usersdb.find_one({"id": user_id}, {"_id": 0})
+    user_status = find["status"] if find and find.get("status") else "FREE"
+    
     # New style caption
     caption = (
-    f"[朱](https://t.me/elitechkbot?start=start) 𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆\n\n"
-    f"[㊄](https://t.me/elitechkbot?start=start) 𝙍𝙀𝙑𝘼𝙈𝙋𝙀𝘿 — 𝙈𝙊𝙍𝙀 𝙋𝙊𝙒𝙀𝙍\n"
-    f"Speed unmatched. Security reinforced.\n\n"
-    f"Others are catching up…\n"
-    f"We’re already ahead.\n\n"
-    f"No lag. No mercy. Just results.\n\n"
-    f"[╰┈➤](https://t.me/elitechkbot?start=start) 𝙑2.5"
+    f"[✧](https://t.me/elitechkbot?start=start) ꜱᴘʏᴅᴇ ᴄʜᴋ ✧\n\n"
+    f"◈ ɴᴀᴍᴇ : {first_name}\n"
+    f"◈ ꜱᴛᴀᴛᴜꜱ : {user_status}\n\n"
+    f"Speed unmatched. Security reinforced.\n"
+    f"━━━━━━━━━━━━━━━━━━━━\n"
+    f"[↪](https://t.me/elitechkbot?start=start) ꜱᴛᴀʀᴛ : /start\n"
+    f"━━━━━━━━━━━━━━━━━━━━"
     )
     
     try:
@@ -130,22 +128,24 @@ async def cmd_register(client, message):
     
     if is_new:
         resp = (
-            f"<a href='https://t.me/elitechkbot?start=start'>[ Unregistered user]</a>\n"
-            f"<b>• status:</b> offline 🔴\n"
-            f"<b>• user:</b> {uname}\n"
-            f"<b>• id:</b> {uid}\n"
-            f"<b>• credits:</b> 100 + bonus\n\n"
-            f"<b>• ready.</b>"
+            f"<a href='https://t.me/elitechkbot?start=start'>✧ ꜱᴘʏᴅᴇ ᴄʜᴋ ✧</a>\n\n"
+            f"<b>◈ ꜱᴛᴀᴛᴜꜱ :</b> ᴏꜰꜰʟɪɴᴇ\n"
+            f"<b>◈ ᴜꜱᴇʀ :</b> {uname}\n"
+            f"<b>◈ ɪᴅ :</b> {uid}\n"
+            f"<b>◈ ᴄʀᴇᴅɪᴛꜱ :</b> 100 + ʙᴏɴᴜꜱ\n\n"
+            f"━━━━━━━━━━━━━━━━━━━━\n"
+            f"<b>↪ ꜱᴛᴀʀᴛ :</b> /start"
         )
     else:
         resp = (
-            f"<a href='https://t.me/elitechkbot?start=start'>[ Already registered ]</a>\n"
-            f"<b>• status:</b> active ⚠️\n"
-            f"<b>• id:</b> {uid}\n\n"
-            f"<b>• proceed.</b>"
+            f"<a href='https://t.me/elitechkbot?start=start'>✧ ᴀʟʀᴇᴀᴅʏ ʀᴇɢɪꜱᴛᴇʀᴇᴅ ✧</a>\n\n"
+            f"<b>◈ ꜱᴛᴀᴛᴜꜱ :</b> ᴀᴄᴛɪᴠᴇ\n"
+            f"<b>◈ ɪᴅ :</b> {uid}\n\n"
+            f"━━━━━━━━━━━━━━━━━━━━\n"
+            f"<b>↪ ᴘʀᴏᴄᴇᴇᴅ.</b>"
         )
 
-    keyboard = [[InlineKeyboardButton("Gates ♻️", callback_data="gates")]]
+    keyboard = [[InlineKeyboardButton("✧ ɢᴀᴛᴇꜱ ✧", callback_data="gates")]]
     await message.reply_text(
         resp,
         parse_mode=ParseMode.HTML,
@@ -159,14 +159,19 @@ async def button_callback(client, callback_query):
     query = callback_query
     await query.answer()
     
+    first_name = query.from_user.first_name
+    user_id_q = str(query.from_user.id)
+    find_q = usersdb.find_one({"id": user_id_q}, {"_id": 0})
+    user_status_q = find_q["status"] if find_q and find_q.get("status") else "FREE"
+    
     original_message = (
-        f"[朱](https://t.me/elitechkbot?start=start) 𝙎𝙋𝙔𝘿𝙀 𝘾𝙃𝙆\n\n"
-    f"[㊄](https://t.me/elitechkbot?start=start) 𝙍𝙀𝙑𝘼𝙈𝙋𝙀𝘿 — 𝙈𝙊𝙍𝙀 𝙋𝙊𝙒𝙀𝙍\n"
-    f"Speed unmatched. Security reinforced.\n\n"
-    f"Others are catching up…\n"
-    f"We’re already ahead.\n\n"
-    f"No lag. No mercy. Just results.\n\n"
-    f"[╰┈➤](https://t.me/elitechkbot?start=start) 𝙑2.5"
+        f"[✧](https://t.me/elitechkbot?start=start) ꜱᴘʏᴅᴇ ᴄʜᴋ ✧\n\n"
+    f"◈ ɴᴀᴍᴇ : {first_name}\n"
+    f"◈ ꜱᴛᴀᴛᴜꜱ : {user_status_q}\n\n"
+    f"Speed unmatched. Security reinforced.\n"
+    f"━━━━━━━━━━━━━━━━━━━━\n"
+    f"[↪](https://t.me/elitechkbot?start=start) ꜱᴛᴀʀᴛ : /start\n"
+    f"━━━━━━━━━━━━━━━━━━━━"
     )
 
     if query.data == "register":
@@ -176,22 +181,24 @@ async def button_callback(client, callback_query):
 
         if is_new:
             resp = (
-                f"<a href='https://t.me/elitechkbot?start=start'>[ Unregistered user]</a>\n"
-                f"<b>• status:</b> offline 🔴\n"
-                f"<b>• user:</b> {uname}\n"
-                f"<b>• id:</b> {uid}\n"
-                f"<b>• credits:</b> 100 + bonus\n\n"
-                f"<b>• ready.</b>"
+                f"<a href='https://t.me/elitechkbot?start=start'>✧ ꜱᴘʏᴅᴇ ᴄʜᴋ ✧</a>\n\n"
+                f"<b>◈ ꜱᴛᴀᴛᴜꜱ :</b> ᴏꜰꜰʟɪɴᴇ\n"
+                f"<b>◈ ᴜꜱᴇʀ :</b> {uname}\n"
+                f"<b>◈ ɪᴅ :</b> {uid}\n"
+                f"<b>◈ ᴄʀᴇᴅɪᴛꜱ :</b> 100 + ʙᴏɴᴜꜱ\n\n"
+                f"━━━━━━━━━━━━━━━━━━━━\n"
+                f"<b>↪ ꜱᴛᴀʀᴛ :</b> /start"
             )
         else:
             resp = (
-                f"<a href='https://t.me/elitechkbot?start=start'>[ Already registered ]</a>\n"
-                f"<b>• status:</b> active ⚠️\n"
-                f"<b>• id:</b> {uid}\n\n"
-                f"<b>• proceed.</b>"
+                f"<a href='https://t.me/elitechkbot?start=start'>✧ ᴀʟʀᴇᴀᴅʏ ʀᴇɢɪꜱᴛᴇʀᴇᴅ ✧</a>\n\n"
+                f"<b>◈ ꜱᴛᴀᴛᴜꜱ :</b> ᴀᴄᴛɪᴠᴇ\n"
+                f"<b>◈ ɪᴅ :</b> {uid}\n\n"
+                f"━━━━━━━━━━━━━━━━━━━━\n"
+                f"<b>↪ ᴘʀᴏᴄᴇᴇᴅ.</b>"
             )
 
-        keyboard = [[InlineKeyboardButton("Back", callback_data="back")]]
+        keyboard = [[InlineKeyboardButton("✧ ʙᴀᴄᴋ ✧", callback_data="back")]]
 
         await query.edit_message_caption(
             caption=resp,
@@ -200,19 +207,21 @@ async def button_callback(client, callback_query):
         )
     elif query.data == "gates":
         message = (
-            "#Simplicity                                                                                𝙒𝙚𝙡𝙘𝙤𝙢𝙚 𝙩𝙤 𝙎𝙥𝙮𝙙𝙚 𝙘𝙝𝙠 -» >_\n\n"
-            "║<a href='https://t.me/elitechkbot?start=start'>㊕</a>║ 𝙏𝙤𝙩𝙖𝙡 -» 15\n"
-            "║<a href='https://t.me/elitechkbot?start=start'>㊡</a>║ 𝙊𝙣 -» 15 ✅\n"
-            "║<a href='https://t.me/elitechkbot?start=start'>㊤</a>║ 𝙊𝙛𝙛 -» 0 ❌\n"
-            "║<a href='https://t.me/elitechkbot?start=start'>㊬</a> 》𝙈𝙖𝙣𝙩𝙚𝙣𝙞𝙚𝙣𝙘𝙚 -» 0 ⚠️\n\n"
-            "〈<a href='https://t.me/elitechkbot?start=start'>ゼ</a>〉𝙎𝙚𝙡𝙚𝙘𝙩 𝙩𝙝𝙚 𝙩𝙮𝙥𝙚 𝙤𝙛 𝙜𝙖𝙩𝙚 𝙮𝙤𝙪 𝙬𝙖𝙣𝙩 𝙛𝙤𝙧 𝙮𝙤𝙪𝙧 𝙪𝙨𝙚!"
+            "<a href='https://t.me/elitechkbot?start=start'>✧</a> <b>ꜱᴘʏᴅᴇ ━ ɢᴀᴛᴇᴡᴀʏꜱ</b> ✧\n\n"
+            "◈ <a href='https://t.me/elitechkbot?start=start'>ᴛᴏᴛᴀʟ</a> : 15\n"
+            "◈ <a href='https://t.me/elitechkbot?start=start'>ᴏɴ</a> : 15 ✓\n"
+            "◈ <a href='https://t.me/elitechkbot?start=start'>ᴏꜰꜰ</a> : 0 ✗\n"
+            "◈ <a href='https://t.me/elitechkbot?start=start'>ᴍᴀɪɴᴛᴇɴᴀɴᴄᴇ</a> : 0\n\n"
+            "━━━━━━━━━━━━━━━━━━━━\n"
+            "<a href='https://t.me/elitechkbot?start=start'>↪</a> ꜱᴇʟᴇᴄᴛ ᴛʜᴇ ᴛʏᴘᴇ ᴏꜰ ɢᴀᴛᴇ ꜰᴏʀ ʏᴏᴜʀ ᴜꜱᴇ\n"
+            "━━━━━━━━━━━━━━━━━━━━"
         )
         keyboard = [
             [
-                InlineKeyboardButton("Auth", callback_data="AUTH"),
-                InlineKeyboardButton("Charge", callback_data="CHARGE"),
+                InlineKeyboardButton("◈ ᴀᴜᴛʜ ◈", callback_data="AUTH"),
+                InlineKeyboardButton("◈ ᴄʜᴀʀɢᴇ ◈", callback_data="CHARGE"),
             ],
-            [InlineKeyboardButton("Back", callback_data="back")]
+            [InlineKeyboardButton("✧ ʙᴀᴄᴋ ✧", callback_data="back")]
         ]
         reply_markup = InlineKeyboardMarkup(keyboard)
         await query.edit_message_caption(
@@ -223,26 +232,28 @@ async def button_callback(client, callback_query):
     
     elif query.data == "AUTH":
         message = (
-            "〈<a href=\'https://t.me/elitechkbot?start=start\'>朱</a>〉𝙂𝙖𝙩𝙚𝙬𝙖𝙮𝙨 𝘼𝙪𝙩𝙝\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>✧</a> <b>ɢᴀᴛᴇᴡᴀʏꜱ ━ ᴀᴜᴛʜ</b> ✧\n\n"
 
-            "<a href=\'https://t.me/elitechkbot?start=start\'>〈朱〉</a> Name   : Adyen Auth\n"
-            "<a href=\'https://t.me/elitechkbot?start=start\'>〈零〉</a> Cmd    : /ad\n"
-            "<a href=\'https://t.me/elitechkbot?start=start\'>〈↻〉</a> Status : On ✅\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Adyen Auth\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /ad\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
 
-            "<a href=\'https://t.me/elitechkbot?start=start\'>〈朱〉</a> Name   : App Based Auth\n"
-            "<a href=\'https://t.me/elitechkbot?start=start\'>〈零〉</a> Cmd    : /ap\n"
-            "<a href=\'https://t.me/elitechkbot?start=start\'>〈↻〉</a> Status : On ✅\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : App Based Auth\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /ap\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
 
-            "<a href=\'https://t.me/elitechkbot?start=start\'>〈朱〉</a> Name   : Chaos Auth\n"
-            "<a href=\'https://t.me/elitechkbot?start=start\'>〈零〉</a> Cmd    : /ch\n"
-            "<a href=\'https://t.me/elitechkbot?start=start\'>〈↻〉</a> Status : On ✅\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Chaos Auth\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /ch\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
 
-            "<a href=\'https://t.me/elitechkbot?start=start\'>〈朱〉</a> Name   : Random Auth\n"
-            "<a href=\'https://t.me/elitechkbot?start=start\'>〈零〉</a> Cmd    : /ra\n"
-            "<a href=\'https://t.me/elitechkbot?start=start\'>〈↻〉</a> Status : On ✅\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Random Auth\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /ra\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
+
+            "━━━━━━━━━━━━━━━━━━━━"
         )
 
-        keyboard = [[InlineKeyboardButton("Back", callback_data="gates")]]
+        keyboard = [[InlineKeyboardButton("✧ ʙᴀᴄᴋ ✧", callback_data="gates")]]
         reply_markup = InlineKeyboardMarkup(keyboard)
         await query.edit_message_caption(
             caption=message,
@@ -252,31 +263,17 @@ async def button_callback(client, callback_query):
     
     elif query.data == "CHARGE":
         message = (
-            "〈<a href='https://t.me/elitechkbot?start=start'>朱</a>〉𝙂𝙖𝙩𝙚𝙬𝙖𝙮𝙨 𝘾𝙝𝙖𝙧𝙜𝙚 💸 (Page 1/2)\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>✧</a> <b>ɢᴀᴛᴇᴡᴀʏꜱ ━ ᴄʜᴀʀɢᴇ</b> ✧ (1/2)\n\n"
 
-            "<a href='https://t.me/elitechkbot?start=start'>〈朱〉</a> Name   : Stripe 1$\n"
-            "<a href='https://t.me/elitechkbot?start=start'>〈零〉</a> Cmd    : /st\n"
-            "<a href='https://t.me/elitechkbot?start=start'>〈↻〉</a> Status : On ✅\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : PayPal charge 2$\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /pp\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
 
-            "<a href='https://t.me/elitechkbot?start=start'>〈朱〉</a> Name   : Braintree 10$\n"
-            "<a href='https://t.me/elitechkbot?start=start'>〈零〉</a> Cmd    : /bt\n"
-            "<a href='https://t.me/elitechkbot?start=start'>〈↻〉</a> Status : On ✅\n\n"
-
-            "<a href='https://t.me/elitechkbot?start=start'>〈朱〉</a> Name   : Arcenus 1.0$\n"
-            "<a href='https://t.me/elitechkbot?start=start'>〈零〉</a> Cmd    : /ar\n"
-            "<a href='https://t.me/elitechkbot?start=start'>〈↻〉</a> Status : On ✅\n\n"
-
-            "<a href='https://t.me/elitechkbot?start=start'>〈朱〉</a> Name   : Payflow 20$\n"
-            "<a href='https://t.me/elitechkbot?start=start'>〈零〉</a> Cmd    : /pf\n"
-            "<a href='https://t.me/elitechkbot?start=start'>〈↻〉</a> Status : On ✅\n\n"
-
-            "<a href='https://t.me/elitechkbot?start=start'>〈朱〉</a> Name   : PayPal charge 2$\n"
-            "<a href='https://t.me/elitechkbot?start=start'>〈零〉</a> Cmd    : /pp\n"
-            "<a href='https://t.me/elitechkbot?start=start'>〈↻〉</a> Status : On ✅\n\n"
+            "━━━━━━━━━━━━━━━━━━━━"
         )
         keyboard = [
-            [InlineKeyboardButton("𝙋𝙖𝙜𝙚 2 ➡️", callback_data="CHARGE_PAGE2")],
-            [InlineKeyboardButton("𝘽𝙖𝙘𝙠", callback_data="gates")]
+            [InlineKeyboardButton("◈ ᴘᴀɢᴇ 2 ➡ ◈", callback_data="CHARGE_PAGE2")],
+            [InlineKeyboardButton("✧ ʙᴀᴄᴋ ✧", callback_data="gates")]
         ]
         reply_markup = InlineKeyboardMarkup(keyboard)
         await query.edit_message_caption(
@@ -287,35 +284,37 @@ async def button_callback(client, callback_query):
 
     elif query.data == "CHARGE_PAGE2":  # ✅ FIXED INDENT
         message = (
-            "〈<a href='https://t.me/elitechkbot?start=start'>朱</a>〉𝙂𝙖𝙩𝙚𝙬𝙖𝙮𝙨 𝘾𝙝𝙖𝙧𝙜𝙚 💸 (Page 2/2)\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>✧</a> <b>ɢᴀᴛᴇᴡᴀʏꜱ ━ ᴄʜᴀʀɢᴇ</b> ✧ (2/2)\n\n"
 
-            "<a href='https://t.me/elitechkbot?start=start'>〈朱〉</a> Name   : PayU Charge 1$\n"
-            "<a href='https://t.me/elitechkbot?start=start'>〈零〉</a> Cmd    : /pu\n"
-            "<a href='https://t.me/elitechkbot?start=start'>〈↻〉</a> Status : On ✅\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : PayU Charge 1$\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /pu\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
 
-            "<a href='https://t.me/elitechkbot?start=start'>〈朱〉</a> Name   : RazorPay 10$\n"
-            "<a href='https://t.me/elitechkbot?start=start'>〈零〉</a> Cmd    : /rp\n"
-            "<a href='https://t.me/elitechkbot?start=start'>〈↻〉</a> Status : On ✅\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : RazorPay 10$\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /rp\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
 
-            "<a href='https://t.me/elitechkbot?start=start'>〈朱〉</a> Name   : Random Stripe 15$\n"
-            "<a href='https://t.me/elitechkbot?start=start'>〈零〉</a> Cmd    : /rst\n"
-            "<a href='https://t.me/elitechkbot?start=start'>〈↻〉</a> Status : On ✅\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Random Stripe 15$\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /rst\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
 
-            "<a href='https://t.me/elitechkbot?start=start'>〈朱〉</a> Name   : Shopify 20$\n"
-            "<a href='https://t.me/elitechkbot?start=start'>〈零〉</a> Cmd    : /shp\n"
-            "<a href='https://t.me/elitechkbot?start=start'>〈↻〉</a> Status : On ✅\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Shopify 20$\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /shp\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
 
-            "<a href='https://t.me/elitechkbot?start=start'>〈朱〉</a> Name   : SK Based 10$\n"
-            "<a href='https://t.me/elitechkbot?start=start'>〈零〉</a> Cmd    : /skb\n"
-            "<a href='https://t.me/elitechkbot?start=start'>〈↻〉</a> Status : On ✅\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : SK Based 10$\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /skb\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
 
-            "<a href='https://t.me/elitechkbot?start=start'>〈朱〉</a> Name   : Skrill 30$\n"
-            "<a href='https://t.me/elitechkbot?start=start'>〈零〉</a> Cmd    : /skr\n"
-            "<a href='https://t.me/elitechkbot?start=start'>〈↻〉</a> Status : On ✅\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Skrill 30$\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /skr\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
+
+            "━━━━━━━━━━━━━━━━━━━━"
         )
         keyboard = [
-            [InlineKeyboardButton("⬅️ 𝙋𝙖𝙜𝙚 1", callback_data="CHARGE")],
-            [InlineKeyboardButton("𝘽𝙖𝙘𝙠", callback_data="gates")]
+            [InlineKeyboardButton("◈ ⬅ ᴘᴀɢᴇ 1 ◈", callback_data="CHARGE")],
+            [InlineKeyboardButton("✧ ʙᴀᴄᴋ ✧", callback_data="gates")]
         ]
         reply_markup = InlineKeyboardMarkup(keyboard)
         await query.edit_message_caption(
@@ -327,40 +326,42 @@ async def button_callback(client, callback_query):
     
     elif query.data == "tools":
         message = (
-            "〈<a href='https://t.me/elitechkbot?start=start'>朱</a>〉𝙂𝙖𝙩𝙚𝙬𝙖𝙮𝙨 𝙏𝙤𝙤𝙡𝙨 🛠\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>✧</a> <b>ꜱᴘʏᴅᴇ ━ ᴛᴏᴏʟꜱ</b> ✧\n\n"
 
-            "<a href='https://t.me/elitechkbot?start=start'>〈朱〉</a> Name   :  Generate cc\n"
-            "<a href='https://t.me/elitechkbot?start=start'>〈零〉</a> Cmd    : /gen -xxxx\n"
-            "<a href='https://t.me/elitechkbot?start=start'>〈↻〉</a> Status : On ✅\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Generate CC\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /gen -xxxx\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
 
-            "<a href='https://t.me/elitechkbot?start=start'>〈朱〉</a> Name   : Info bin\n"
-            "<a href='https://t.me/elitechkbot?start=start'>〈零〉</a> Cmd    : /bin\n"
-            "<a href='https://t.me/elitechkbot?start=start'>〈↻〉</a> Status : On ✅\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Info Bin\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /bin\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
 
-            "<a href='https://t.me/elitechkbot?start=start'>〈朱〉</a> Name   : Filter cc\n"
-            "<a href='https://t.me/elitechkbot?start=start'>〈零〉</a> Cmd    : /fl\n"
-            "<a href='https://t.me/elitechkbot?start=start'>〈↻〉</a> Status : On ✅\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Filter CC\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /fl\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
 
-            "<a href='https://t.me/elitechkbot?start=start'>〈朱〉</a> Name   : Fake location\n"
-            "<a href='https://t.me/elitechkbot?start=start'>〈零〉</a> Cmd    : /fake\n"
-            "<a href='https://t.me/elitechkbot?start=start'>〈↻〉</a> Status : On ✅\n\n"
-            
-            "<a href='https://t.me/elitechkbot?start=start'>〈朱〉</a> Name   : claim credits\n"
-            "<a href='https://t.me/elitechkbot?start=start'>〈零〉</a> Cmd    : /claim\n"
-            "<a href='https://t.me/elitechkbot?start=start'>〈↻〉</a> Status : On ✅\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Fake Location\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /fake\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
 
-            "<a href='https://t.me/elitechkbot?start=start'>〈朱〉</a> Name   : Fetch ip\n"
-            "<a href='https://t.me/elitechkbot?start=start'>〈零〉</a> Cmd    : /ip\n"
-            "<a href='https://t.me/elitechkbot?start=start'>〈↻〉</a> Status : On ✅\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Claim Credits\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /claim\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
 
-            "<a href='https://t.me/elitechkbot?start=start'>〈朱〉</a> Name   : Sort cc\n"
-            "<a href='https://t.me/elitechkbot?start=start'>〈零〉</a> Cmd    : /sort\n"
-            "<a href='https://t.me/elitechkbot?start=start'>〈↻〉</a> Status : On ✅\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Fetch IP\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /ip\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
+
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Sort CC\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /sort\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
+
+            "━━━━━━━━━━━━━━━━━━━━"
         )
 
         keyboard = [
-            [InlineKeyboardButton("Back", callback_data="back")],
-            [InlineKeyboardButton("NEXT", callback_data="tools2")]
+            [InlineKeyboardButton("✧ ʙᴀᴄᴋ ✧", callback_data="back")],
+            [InlineKeyboardButton("◈ ɴᴇxᴛ ◈", callback_data="tools2")]
         ]
 
         reply_markup = InlineKeyboardMarkup(keyboard)
@@ -373,28 +374,30 @@ async def button_callback(client, callback_query):
 
     elif query.data == "tools2":
         message = (
-            "<b>⟨ More Tools ⚙️ ⟩</b>\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>✧</a> <b>ꜱᴘʏᴅᴇ ━ ᴛᴏᴏʟꜱ</b> ✧ ᴘ.2\n\n"
 
-            "<a href='https://t.me/elitechkbot?start=start'>〈朱〉</a> Name   : Redeem Keys\n"
-            "<a href='https://t.me/elitechkbot?start=start'>〈零〉</a> Cmd    : /claim key-xxxx\n"
-            "<a href='https://t.me/elitechkbot?start=start'>〈↻〉</a> Status : On ✅\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Redeem Keys\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /claim key-xxxx\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
 
-            "<a href='https://t.me/elitechkbot?start=start'>〈朱〉</a> Name   : Get ID\n"
-            "<a href='https://t.me/elitechkbot?start=start'>〈零〉</a> Cmd    : /id\n"
-            "<a href='https://t.me/elitechkbot?start=start'>〈↻〉</a> Status : On ✅\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Get ID\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /id\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
 
-            "<a href='https://t.me/elitechkbot?start=start'>〈朱〉</a> Name   : Membership Info\n"
-            "<a href='https://t.me/elitechkbot?start=start'>〈零〉</a> Cmd    : /plan\n"
-            "<a href='https://t.me/elitechkbot?start=start'>〈↻〉</a> Status : On ✅\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Membership Info\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /plan\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
 
-            "<a href='https://t.me/elitechkbot?start=start'>〈朱〉</a> Name   : Group Membership\n"
-            "<a href='https://t.me/elitechkbot?start=start'>〈零〉</a> Cmd    : $plang\n"
-            "<a href='https://t.me/elitechkbot?start=start'>〈↻〉</a> Status : On ✅\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Group Membership\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /plang\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
+
+            "━━━━━━━━━━━━━━━━━━━━"
         )
 
         keyboard = [
-            [InlineKeyboardButton("◀️ Back", callback_data="tools")],
-            [InlineKeyboardButton("Main Menu", callback_data="back")]
+            [InlineKeyboardButton("◈ ⬅ ʙᴀᴄᴋ ◈", callback_data="tools")],
+            [InlineKeyboardButton("✧ ᴍᴇɴᴜ ✧", callback_data="back")]
         ]
 
         reply_markup = InlineKeyboardMarkup(keyboard)
@@ -407,27 +410,29 @@ async def button_callback(client, callback_query):
 
     elif query.data == "helper":
         message = (
-            "<b>⟨ Helpers ⚙️ ⟩</b>\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>✧</a> <b>ꜱᴘʏᴅᴇ ━ ʜᴇʟᴘᴇʀ</b> ✧\n\n"
 
-            "<a href='https://t.me/elitechkbot?start=start'>〈朱〉</a> Name   : Buy premium\n"
-            "<a href='https://t.me/elitechkbot?start=start'>〈零〉</a> Cmd    : /buy\n"
-            "<a href='https://t.me/elitechkbot?start=start'>〈↻〉</a> Status : On ✅\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Buy Premium\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /buy\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
 
-            "<a href='https://t.me/elitechkbot?start=start'>〈朱〉</a> Name   : credits\n"
-            "<a href='https://t.me/elitechkbot?start=start'>〈零〉</a> Cmd    : /howcrd\n"
-            "<a href='https://t.me/elitechkbot?start=start'>〈↻〉</a> Status : On ✅\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Credits\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /howcrd\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
 
-            "<a href='https://t.me/elitechkbot?start=start'>〈朱〉</a> Name   : Check credits\n"
-            "<a href='https://t.me/elitechkbot?start=start'>〈零〉</a> Cmd    : /credits\n"
-            "<a href='https://t.me/elitechkbot?start=start'>〈↻〉</a> Status : On ✅\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Check Credits\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /credits\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
 
-            "<a href='https://t.me/elitechkbot?start=start'>〈朱〉</a> Name   : How to add bot\n"
-            "<a href='https://t.me/elitechkbot?start=start'>〈零〉</a> Cmd    : /howgp\n"
-            "<a href='https://t.me/elitechkbot?start=start'>〈↻〉</a> Status : On ✅\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : How To Add Bot\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /howgp\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
+
+            "━━━━━━━━━━━━━━━━━━━━"
         )
 
         keyboard = [
-            [InlineKeyboardButton("◀️ Home", callback_data="back")]
+            [InlineKeyboardButton("✧ ʜᴏᴍᴇ ✧", callback_data="back")]
         ]
 
         reply_markup = InlineKeyboardMarkup(keyboard)
@@ -444,16 +449,10 @@ async def button_callback(client, callback_query):
     elif query.data == "back":
         keyboard = [
             [
-                InlineKeyboardButton("Gates ♻️", callback_data="gates"),
-                InlineKeyboardButton("Tools 🛠", callback_data="tools"),
-                InlineKeyboardButton("Helper 🫥", callback_data="helper"),
-            ],
+                InlineKeyboardButton("✧ ɢᴀᴛᴇꜱ ✧", callback_data="gates"),
+                InlineKeyboardButton("◈ ʀᴇɢɪꜱᴛᴇʀ ◈", callback_data="register"),
             [
-                InlineKeyboardButton("Register 📝", callback_data="register"),
-                InlineKeyboardButton("Channel 🥷", url="https://t.me/+LLL9zq5x1lQ3ZDI1"),
-            ],
-            [
-                InlineKeyboardButton("Exit ⚠️", callback_data="exit"),
+                InlineKeyboardButton("✧ ᴇxɪᴛ ✧", callback_data="exit"),
             ]
         ]
         reply_markup = InlineKeyboardMarkup(keyboard)
