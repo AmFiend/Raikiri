@@ -6,34 +6,34 @@ from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 @Client.on_message(filters.command("buy", [".", "/"]))
 async def cmd_buy(client, message):
     try:
-        price_list = """
-📝 <b>𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊Plans :</b>
-━━━━━━━━━━━━━━
-● <b>Starter</b> - Unlimited Credits + Premium Access For 1 Week at <b>$2.50</b>
+        price_list = """<a href='https://t.me/elitechkbot?start=start'>✧</a> <b>ꜱᴘʏᴅᴇ ━ ᴘʟᴀɴꜱ</b> ✧
+━━━━━━━━━━━━━━━━━━━━
 
-● <b>Silver</b> - Unlimited Credits + Premium Access For 15 Days at <b>$3.50</b>
+◈ <b>Starter</b> — Unlimited Credits + Premium Access For 1 Week at <b>$2.50</b>
 
-● <b>Gold</b> - Unlimited Credits + Premium Access For 1 Month at <b>$8</b>
+◈ <b>Silver</b> — Unlimited Credits + Premium Access For 15 Days at <b>$3.50</b>
 
-● <b>Custom Plan</b> - You can buy any custom plan above 1 month...
+◈ <b>Gold</b> — Unlimited Credits + Premium Access For 1 Month at <b>$8</b>
 
-<i>Note: All plans are available for 7, 15, or 30 days. Once your plan expires, you will need to purchase a new one to continue using our services. Please note that all purchases are non-refundable, and you cannot transfer plans to another account.</i>
-        """
+◈ <b>Custom Plan</b> — You can buy any custom plan above 1 month...
+
+<i>All plans are available for 7, 15, or 30 days. Once your plan expires, you will need to purchase a new one to continue using our services. All purchases are non-refundable, and you cannot transfer plans to another account.</i>
+━━━━━━━━━━━━━━━━━━━━"""
         keyboard = InlineKeyboardMarkup(
             inline_keyboard=[
                 [
                     InlineKeyboardButton(
-                        text="🛎 Knock Admin",
-                        url="https://t.me/Zer0_ke",
+                        text="✧ ᴋɴᴏᴄᴋ ᴀᴅᴍɪɴ ✧",
+                        url="https://t.me/pipin_o",
                     ),
                     InlineKeyboardButton(
-                        text="💳 Payment Area",
+                        text="◈ ᴘᴀʏᴍᴇɴᴛ ◈",
                         callback_data="show_payment_methods",
                     ),
                 ],
                 [
                     InlineKeyboardButton(
-                        text="❌ Exit",
+                        text="✧ ᴇxɪᴛ ✧",
                         callback_data="close_message",
                     )
                 ]
@@ -49,31 +49,30 @@ async def cmd_buy(client, message):
 @Client.on_callback_query(filters.regex("show_payment_methods"))
 async def show_payment_methods(client, callback_query):
     try:
-        payment_info = """
-📝 <b>𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊⚡️ Methods:</b>
-━━━━━━━━━━━━━━
+        payment_info = """<a href='https://t.me/elitechkbot?start=start'>✧</a> <b>ꜱᴘʏᴅᴇ ━ ᴘᴀʏᴍᴇɴᴛ</b> ✧
+━━━━━━━━━━━━━━━━━━━━
 
-💰 <b>BINANCE ID/PAY</b> - <code>550157299</code>
+◈ <b>BINANCE ID/PAY</b> — <code>550157299</code>
 
-💰 <b>USDT [TRC20]</b> - <code>TJdQfLWo6mCSa2XnvjAV72eTK4qeWNDdRw</code>
+◈ <b>USDT [TRC20]</b> — <code>TJdQfLWo6mCSa2XnvjAV72eTK4qeWNDdRw</code>
 
-<i>Note: After completing the payment, click Knock Admin, then send the transaction screenshot with your Telegram ID.</i>
-        """
+<i>After completing the payment, click Knock Admin, then send the transaction screenshot with your Telegram ID.</i>
+━━━━━━━━━━━━━━━━━━━━"""
         keyboard = InlineKeyboardMarkup(
             inline_keyboard=[
                 [
                     InlineKeyboardButton(
-                        text="📋 Plan List",
+                        text="◈ ᴘʟᴀɴ ʟɪꜱᴛ ◈",
                         callback_data="show_price_list",
                     ),
                     InlineKeyboardButton(
-                        text="🛎 Knock Admin",
-                        url="https://t.me/Zer0_ke",
+                        text="✧ ᴋɴᴏᴄᴋ ᴀᴅᴍɪɴ ✧",
+                        url="https://t.me/pipin_o",
                     ),
                 ],
                 [
                     InlineKeyboardButton(
-                        text="❌ Exit",
+                        text="✧ ᴇxɪᴛ ✧",
                         callback_data="close_message",
                     )
                 ]
@@ -89,32 +88,32 @@ async def show_payment_methods(client, callback_query):
 @Client.on_callback_query(filters.regex("show_price_list"))
 async def show_price_list(client, callback_query):
     try:
-        price_list = """
-📝 <b>𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊 ⚡️ Plans :</b>
-━━━━━━━━━━━━━━
-● <b>Starter</b> - Unlimited Credits + Premium Access For 1 Week at <b>$2.50</b>
+        price_list = """<a href='https://t.me/elitechkbot?start=start'>✧</a> <b>ꜱᴘʏᴅᴇ ━ ᴘʟᴀɴꜱ</b> ✧
+━━━━━━━━━━━━━━━━━━━━
 
-● <b>Silver</b> - Unlimited Credits + Premium Access For 15 Days at <b>$4.50</b>
+◈ <b>Starter</b> — Unlimited Credits + Premium Access For 1 Week at <b>$2.50</b>
 
-● <b>Gold</b> - Unlimited Credits + Premium Access For 1 Month at <b>$8</b>
+◈ <b>Silver</b> — Unlimited Credits + Premium Access For 15 Days at <b>$4.50</b>
 
-<i>Note: All plans are available for 7, 15, or 30 days. Once your plan expires, you will need to purchase a new one to continue using our services. Please note that all purchases are non-refundable, and you cannot transfer plans to another account.</i>
-        """
+◈ <b>Gold</b> — Unlimited Credits + Premium Access For 1 Month at <b>$8</b>
+
+<i>All plans are available for 7, 15, or 30 days. Once your plan expires, you will need to purchase a new one to continue using our services. All purchases are non-refundable, and you cannot transfer plans to another account.</i>
+━━━━━━━━━━━━━━━━━━━━"""
         keyboard = InlineKeyboardMarkup(
             inline_keyboard=[
                 [
                     InlineKeyboardButton(
-                        text="🛎 Knock Admin",
-                        url="https://t.me/Zer0_ke",
+                        text="✧ ᴋɴᴏᴄᴋ ᴀᴅᴍɪɴ ✧",
+                        url="https://t.me/pipin_o",
                     ),
                     InlineKeyboardButton(
-                        text="💳 Payment Area",
+                        text="◈ ᴘᴀʏᴍᴇɴᴛ ◈",
                         callback_data="show_payment_methods",
                     ),
                 ],
                 [
                     InlineKeyboardButton(
-                        text="❌ Exit",
+                        text="✧ ᴇxɪᴛ ✧",
                         callback_data="close_message",
                     )
                 ]
