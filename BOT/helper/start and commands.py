@@ -80,6 +80,10 @@ async def start_command(client, message):
             InlineKeyboardButton("◈ ʀᴇɢɪꜱᴛᴇʀ ◈", callback_data="register"),
         ],
         [
+            InlineKeyboardButton("✧ ᴛᴏᴏʟꜱ ✧", callback_data="tools"),
+            InlineKeyboardButton("◈ ʜᴇʟᴘᴇʀ ◈", callback_data="helper"),
+        ],
+        [
             InlineKeyboardButton("✧ ᴇxɪᴛ ✧", callback_data="exit"),
         ]
     ]
@@ -181,8 +185,7 @@ async def button_callback(client, callback_query):
         f"[✧](https://t.me/elitechkbot?start=start) ꜱᴘʏᴅᴇ ᴄʜᴋ ✧\n\n"
         f"◈ ɴᴀᴍᴇ : {first_name}\n"
         f"◈ ꜱᴛᴀᴛᴜꜱ : {user_status_q}\n"
-        f"◈ ᴄʀᴇᴅɪᴛꜱ : {credit}\n"
-        f"◈ ᴘʟᴀɴ : {plan}\n\n"
+        f"◈ ᴄʀᴇᴅɪᴛꜱ : {credit}\n\n"
         f"Speed unmatched. Security reinforced.\n"
         f"━━━━━━━━━━━━━━━━━━━━\n"
         f"[↪](https://t.me/elitechkbot?start=start) ꜱᴛᴀʀᴛ : /start\n"
