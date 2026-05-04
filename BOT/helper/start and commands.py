@@ -133,7 +133,7 @@ async def cmd_register(client, message):
             f"<b>◈ ꜱᴛᴀᴛᴜꜱ :</b> ᴏꜰꜰʟɪɴᴇ\n"
             f"<b>◈ ᴜꜱᴇʀ :</b> {uname}\n"
             f"<b>◈ ɪᴅ :</b> {uid}\n"
-            f"<b>◈ ᴄʀᴇᴅɪᴛꜱ :</b> 100 + ʙᴏɴᴜꜱ\n\n"
+            f"<b>◈ ᴄʀᴇᴅɪᴛꜱ :</b> {credit}\n\n"
             f"━━━━━━━━━━━━━━━━━━━━\n"
             f"<b>↪ ꜱᴛᴀʀᴛ :</b> /start"
         )
@@ -141,7 +141,8 @@ async def cmd_register(client, message):
         resp = (
             f"<a href='https://t.me/elitechkbot?start=start'>✧ ᴀʟʀᴇᴀᴅʏ ʀᴇɢɪꜱᴛᴇʀᴇᴅ ✧</a>\n\n"
             f"<b>◈ ꜱᴛᴀᴛᴜꜱ :</b> ᴀᴄᴛɪᴠᴇ\n"
-            f"<b>◈ ɪᴅ :</b> {uid}\n\n"
+            f"<b>◈ ɪᴅ :</b> {uid}\n"
+            f"<b>◈ ᴄʀᴇᴅɪᴛꜱ :</b> {credit}\n\n"
             f"━━━━━━━━━━━━━━━━━━━━\n"
             f"<b>↪ ᴘʀᴏᴄᴇᴇᴅ.</b>"
         )
@@ -169,7 +170,10 @@ async def button_callback(client, callback_query):
     original_message = (
         f"[✧](https://t.me/elitechkbot?start=start) ꜱᴘʏᴅᴇ ᴄʜᴋ ✧\n\n"
         f"◈ ɴᴀᴍᴇ : {first_name}\n"
-        f"◈ ꜱᴛᴀᴛᴜꜱ : {user_status_q}\n\n"
+        f"◈ ꜱᴛᴀᴛᴜꜱ : {user_status_q}\n"
+        f"◈ ᴄʀᴇᴅɪᴛꜱ : {credit}\n"
+        f"◈ ᴘʟᴀɴ : {plan}\n\n"
+        
         f"Speed unmatched. Security reinforced.\n"
         f"━━━━━━━━━━━━━━━━━━━━\n"
         f"[↪](https://t.me/elitechkbot?start=start) ꜱᴛᴀʀᴛ : /start\n"
@@ -187,7 +191,7 @@ async def button_callback(client, callback_query):
                 f"<b>◈ ꜱᴛᴀᴛᴜꜱ :</b> ᴏꜰꜰʟɪɴᴇ\n"
                 f"<b>◈ ᴜꜱᴇʀ :</b> {uname}\n"
                 f"<b>◈ ɪᴅ :</b> {uid}\n"
-                f"<b>◈ ᴄʀᴇᴅɪᴛꜱ :</b> 100 + ʙᴏɴᴜꜱ\n\n"
+                f"<b>◈ ᴄʀᴇᴅɪᴛꜱ :</b> {credit}\n\n"
                 f"━━━━━━━━━━━━━━━━━━━━\n"
                 f"<b>↪ ꜱᴛᴀʀᴛ :</b> /start"
             )
