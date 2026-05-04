@@ -34,6 +34,7 @@ async def animated_edit(client, chat_id, message_id, text, reply_markup=None, de
 
 current_menu_video_index = 0
 MENU_VIDEOS = [f"VID/menu{i}.mp4" for i in range(1, 11)]
+VIDEO_FILE_IDS = {}
 
 
 def get_next_menu_video():
@@ -71,6 +72,7 @@ async def start_command(client, message):
     user_id = str(message.from_user.id)
     find = usersdb.find_one({"id": user_id}, {"_id": 0})
     user_status = find["status"] if find and find.get("status") else "FREE"
+    credit = find["credit"] if find and find.get("credit") else "0"
 
     keyboard = [
         [
@@ -96,13 +98,16 @@ async def start_command(client, message):
 
     try:
         video_file = get_next_menu_video()
-        if os.path.exists(video_file):
-            await message.reply_video(
-                video=video_file,
+        if os.path.exists(video_file) and os.path.getsize(video_file) > 0:
+            video_source = VIDEO_FILE_IDS.get(video_file, video_file)
+            sent = await message.reply_video(
+                video=video_source,
                 caption=caption,
                 parse_mode=ParseMode.MARKDOWN,
                 reply_markup=reply_markup
             )
+            if sent.video and video_file not in VIDEO_FILE_IDS:
+                VIDEO_FILE_IDS[video_file] = sent.video.file_id
         else:
             await message.reply_text(
                 caption,
@@ -127,11 +132,13 @@ async def cmd_register(client, message):
     username = str(message.from_user.username)
 
     is_new, uid, uname = await register_user_logic(user_id, username)
+    find = usersdb.find_one({"id": user_id}, {"_id": 0})
+    credit = find["credit"] if find and find.get("credit") else "100"
 
     if is_new:
         resp = (
             f"<a href='https://t.me/elitechkbot?start=start'>✧ ꜱᴘʏᴅᴇ ᴄʜᴋ ✧</a>\n\n"
-            f"<b>◈ ꜱᴛᴀᴛᴜꜱ :</b> ᴏꜰꜰʟɪɴᴇ\n"
+            f"<b>◈ ꜱᴛᴀᴛᴜꜱ :</b> ʀᴇɢɪꜱᴛᴇʀᴇᴅ ✓\n"
             f"<b>◈ ᴜꜱᴇʀ :</b> {uname}\n"
             f"<b>◈ ɪᴅ :</b> {uid}\n"
             f"<b>◈ ᴄʀᴇᴅɪᴛꜱ :</b> {credit}\n\n"
@@ -167,6 +174,8 @@ async def button_callback(client, callback_query):
     uid_q = str(query.from_user.id)
     find_q = usersdb.find_one({"id": uid_q}, {"_id": 0})
     user_status_q = find_q["status"] if find_q and find_q.get("status") else "FREE"
+    credit = find_q["credit"] if find_q and find_q.get("credit") else "0"
+    plan = find_q["plan"] if find_q and find_q.get("plan") else "N/A"
 
     original_message = (
         f"[✧](https://t.me/elitechkbot?start=start) ꜱᴘʏᴅᴇ ᴄʜᴋ ✧\n\n"
@@ -174,7 +183,6 @@ async def button_callback(client, callback_query):
         f"◈ ꜱᴛᴀᴛᴜꜱ : {user_status_q}\n"
         f"◈ ᴄʀᴇᴅɪᴛꜱ : {credit}\n"
         f"◈ ᴘʟᴀɴ : {plan}\n\n"
-        
         f"Speed unmatched. Security reinforced.\n"
         f"━━━━━━━━━━━━━━━━━━━━\n"
         f"[↪](https://t.me/elitechkbot?start=start) ꜱᴛᴀʀᴛ : /start\n"
@@ -189,7 +197,7 @@ async def button_callback(client, callback_query):
         if is_new:
             resp = (
                 f"<a href='https://t.me/elitechkbot?start=start'>✧ ꜱᴘʏᴅᴇ ᴄʜᴋ ✧</a>\n\n"
-                f"<b>◈ ꜱᴛᴀᴛᴜꜱ :</b> ᴏꜰꜰʟɪɴᴇ\n"
+                f"<b>◈ ꜱᴛᴀᴛᴜꜱ :</b> ʀᴇɢɪꜱᴛᴇʀᴇᴅ ✓\n"
                 f"<b>◈ ᴜꜱᴇʀ :</b> {uname}\n"
                 f"<b>◈ ɪᴅ :</b> {uid}\n"
                 f"<b>◈ ᴄʀᴇᴅɪᴛꜱ :</b> {credit}\n\n"
@@ -228,6 +236,7 @@ async def button_callback(client, callback_query):
             [
                 InlineKeyboardButton("◈ ᴀᴜᴛʜ ◈", callback_data="AUTH"),
                 InlineKeyboardButton("◈ ᴄʜᴀʀɢᴇ ◈", callback_data="CHARGE"),
+                InlineKeyboardButton("◈ ᴍᴀꜱꜱ ◈", callback_data="MASS"),
             ],
             [InlineKeyboardButton("✧ ʙᴀᴄᴋ ✧", callback_data="back")]
         ]
@@ -309,6 +318,20 @@ async def button_callback(client, callback_query):
             [InlineKeyboardButton("◈ ⬅ ᴘᴀɢᴇ 1 ◈", callback_data="CHARGE")],
             [InlineKeyboardButton("✧ ʙᴀᴄᴋ ✧", callback_data="gates")]
         ]
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        await query.edit_message_caption(
+            caption=message,
+            parse_mode=ParseMode.HTML,
+            reply_markup=reply_markup
+        )
+
+    elif query.data == "MASS":
+        message = (
+            "<a href='https://t.me/elitechkbot?start=start'>✧</a> <b>ɢᴀᴛᴇᴡᴀʏꜱ ━ ᴍᴀꜱꜱ</b> ✧\n\n"
+            "⟢ ᴜɴᴅᴇʀ ᴍᴀɪɴᴛᴇɴᴀɴᴄᴇ\n\n"
+            "━━━━━━━━━━━━━━━━━━━━"
+        )
+        keyboard = [[InlineKeyboardButton("✧ ʙᴀᴄᴋ ✧", callback_data="gates")]]
         reply_markup = InlineKeyboardMarkup(keyboard)
         await query.edit_message_caption(
             caption=message,
@@ -425,7 +448,10 @@ async def button_callback(client, callback_query):
 
         try:
             video_file = "VID/menu1.mp4"
-            if os.path.exists(video_file):
+            if video_file in VIDEO_FILE_IDS:
+                media = InputMediaVideo(media=VIDEO_FILE_IDS[video_file], caption=original_message, parse_mode=ParseMode.MARKDOWN)
+                await query.edit_message_media(media=media, reply_markup=reply_markup)
+            elif os.path.exists(video_file) and os.path.getsize(video_file) > 0:
                 media = InputMediaVideo(media=video_file, caption=original_message, parse_mode=ParseMode.MARKDOWN)
                 await query.edit_message_media(media=media, reply_markup=reply_markup)
             else:
@@ -449,7 +475,7 @@ def main():
     for folder in folders:
         if not os.path.exists(folder):
             os.makedirs(folder)
-            print(f"📁 Created folder: {folder}")
+            print(f"Created folder: {folder}")
 
 
 if __name__ == "__main__":
