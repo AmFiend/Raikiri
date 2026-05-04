@@ -18,32 +18,35 @@ async def getcc_for_txt(file_name, role):
                 ccs.append(fullcc)
 
         if role == "FREE" and len(ccs) > 1501:
-            resp = f"""<b>
-Limit Reached ⚠️
+            resp = f"""✦ <b>ʟɪᴍɪᴛ ʀᴇᴀᴄʜᴇᴅ</b> ✦
+▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰
 
-Message: Your Can Check 1500 CC at a Time . Buy Plan to Increase Your Limit .
+⟢ ʏᴏᴜ ᴄᴀɴ ᴄʜᴇᴄᴋ 1500 ᴄᴄ ᴀᴛ ᴀ ᴛɪᴍᴇ.
+◈ ʙᴜʏ ᴀ ᴘʟᴀɴ ᴛᴏ ɪɴᴄʀᴇᴀꜱᴇ ʏᴏᴜʀ ʟɪᴍɪᴛ.
 
-Type /buy For Paid Plan
-</b>"""
+↪ ᴛʏᴘᴇ /buy ꜰᴏʀ ᴘᴀɪᴅ ᴘʟᴀɴ
+━━━━━━━━━━━━━━━━━━━━"""
             return False, resp
         if (role == "PREMIUM" or role == "LIFETIME") and len(ccs) > 3001:            
-            resp = f"""<b>
-Limit Reached ⚠️
+            resp = f"""✦ <b>ʟɪᴍɪᴛ ʀᴇᴀᴄʜᴇᴅ</b> ✦
+▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰
 
-Message: Your Can Check 3001 CC at a Time . Buy Plan to Increase Your Limit .
+⟢ ʏᴏᴜ ᴄᴀɴ ᴄʜᴇᴄᴋ 3001 ᴄᴄ ᴀᴛ ᴀ ᴛɪᴍᴇ.
+◈ ʙᴜʏ ᴀ ᴘʟᴀɴ ᴛᴏ ɪɴᴄʀᴇᴀꜱᴇ ʏᴏᴜʀ ʟɪᴍɪᴛ.
 
-Type /buy For Paid Plan
-</b>"""
+↪ ᴛʏᴘᴇ /buy ꜰᴏʀ ᴘᴀɪᴅ ᴘʟᴀɴ
+━━━━━━━━━━━━━━━━━━━━"""
             return False, resp
         if len(ccs) == 0:
-            resp = f"""<b>
-CC Not Found ⚠️
+            resp = f"""✦ <b>ᴄᴄ ɴᴏᴛ ꜰᴏᴜɴᴅ</b> ✦
+▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰
 
-Message: We Are Unable to Find Any CC Details From Your Input . Provide CC's Details To Check .
-</b>"""
+⟢ ᴜɴᴀʙʟᴇ ᴛᴏ ꜰɪɴᴅ ᴀɴʏ ᴄᴄ ꜰʀᴏᴍ ʏᴏᴜʀ ɪɴᴘᴜᴛ.
+◈ ᴘʀᴏᴠɪᴅᴇ ᴄᴄ ᴅᴇᴛᴀɪʟꜱ ᴛᴏ ᴄʜᴇᴄᴋ.
+━━━━━━━━━━━━━━━━━━━━"""
             return False, resp
         else:
             return True, ccs
 
     except:
-        return False , "Try Again Later"
+        return False , "✦ ᴛʀʏ ᴀɢᴀɪɴ ʟᴀᴛᴇʀ ✦"
