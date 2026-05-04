@@ -27,16 +27,12 @@ def check_proxy(proxy_url):
         response.raise_for_status()
         return response.status_code == 200
     except requests.exceptions.ProxyError as e:
-        # print(f"ProxyError: {e}")
         return False
     except requests.exceptions.ConnectTimeout as e:
-        # print(f"ConnectTimeout: {e}")
         return False
     except requests.exceptions.HTTPError as e:
-        # print(f"HTTPError: {e}")
         return False
     except Exception as e:
-        # print(f"Exception: {e}")
         return False
     
 
@@ -48,29 +44,28 @@ async def addproxy(client, message):
     try:
         user_id = str(message.from_user.id)
         get_user_info = await getuserinfo(user_id)
-        proxy_url = message.text.split()[1]  # Assuming the proxy is the second word in the message
+        proxy_url = message.text.split()[1]
 
         if check_proxy(proxy_url):
             await updateuserinfo(user_id, "user_proxy", proxy_url)
             
-            resp = f"""<b>
-Proxy Successfully Added ✅
-━━━━━━━━━━━━━━
-{proxy_url}
-Your proxy is live 🌐
+            resp = f"""✧ <b>ᴘʀᴏxʏ ᴀᴅᴅᴇᴅ ✓</b> ✧
+▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰
 
-Status: Successful
-    </b>"""
+◈ <b>ᴘʀᴏxʏ :</b> {proxy_url}
+⟢ <b>ꜱᴛᴀᴛᴜꜱ :</b> ʟɪᴠᴇ ✓
+
+━━━━━━━━━━━━━━━━━━━━"""
         else:
-            resp = "<b>Your proxy is dead ❌</b>"
+            resp = "✦ ᴘʀᴏxʏ ɪꜱ ᴅᴇᴀᴅ ✗ ✦"
         
         await message.reply_text(resp, message.id)
     except IndexError:
-        await message.reply_text("<b>Invalid proxy format. Please provide a valid proxy.</b>", message.id)
+        await message.reply_text("✦ ɪɴᴠᴀʟɪᴅ ᴘʀᴏxʏ ꜰᴏʀᴍᴀᴛ ✗ ✦", message.id)
     except Exception as e:
         import traceback
         await error_log(traceback.format_exc())
-        await message.reply_text(f"<b>Something went wrong ❌: {e}</b>", message.id)
+        await message.reply_text(f"✦ ꜱᴏᴍᴇᴛʜɪɴɢ ᴡᴇɴᴛ ᴡʀᴏɴɢ ✗ : {e} ✦", message.id)
 
 
 
@@ -80,12 +75,12 @@ async def removeproxy(client, message):
     try:
         user_id = str(message.from_user.id)
         await updateuserinfo(user_id, "user_proxy", "N/A")
-        resp = "<b>Proxy successfully removed ✅</b>"
+        resp = "✧ ᴘʀᴏxʏ ʀᴇᴍᴏᴠᴇᴅ ✓ ✧"
         await message.reply_text(resp, message.id)
     except Exception as e:
         import traceback
         await error_log(traceback.format_exc())
-        await message.reply_text(f"<b>Something went wrong ❌: {e}</b>", message.id)
+        await message.reply_text(f"✦ ꜱᴏᴍᴇᴛʜɪɴɢ ᴡᴇɴᴛ ᴡʀᴏɴɢ ✗ : {e} ✦", message.id)
 
 
 
@@ -96,14 +91,17 @@ async def viewproxy(client, message):
         user_id = str(message.from_user.id)
         user_info = await getuserinfo(user_id)
         proxy_url = user_info.get("user_proxy", "N/A")
-        resp = f"<b>Your current proxy: {proxy_url}</b>"
+        resp = f"""✧ <b>ʏᴏᴜʀ ᴘʀᴏxʏ</b> ✧
+▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰
+
+◈ {proxy_url}
+
+━━━━━━━━━━━━━━━━━━━━"""
         await message.reply_text(resp, message.id)
     except Exception as e:
         import traceback
         await error_log(traceback.format_exc())
-        await message.reply_text(f"<b>Something went wrong ❌: {e}</b>", message.id)
-
-
+        await message.reply_text(f"✦ ꜱᴏᴍᴇᴛʜɪɴɢ ᴡᴇɴᴛ ᴡʀᴏɴɢ ✗ : {e} ✦", message.id)
 
 
 
@@ -126,13 +124,18 @@ async def add_brod(client, message):
         elif message.reply_to_message and message.reply_to_message.text:
             amount = message.reply_to_message.text.strip()
         else:
-            resp = "<b>Error: Please provide the amount either as a command argument or by replying to a message containing the amount.</b>"
+            resp = "✦ ᴘʀᴏᴠɪᴅᴇ ᴀᴍᴏᴜɴᴛ ᴀꜱ ᴀʀɢᴜᴍᴇɴᴛ ᴏʀ ʀᴇᴘʟʏ ᴛᴏ ᴀ ᴍᴇꜱꜱᴀɢᴇ ✗ ✦"
             await message.reply_text(resp, reply_to_message_id=message.id)
             return
 
         await updateuserinfo(user_id, "damt", amount)
 
-        resp = f"<b>{amount}$ charge amount added</b>"
+        resp = f"""✧ <b>ᴄʜᴀʀɢᴇ ᴀᴍᴏᴜɴᴛ ꜱᴇᴛ ✓</b> ✧
+▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰
+
+◈ <b>ᴀᴍᴏᴜɴᴛ :</b> {amount}$
+
+━━━━━━━━━━━━━━━━━━━━"""
         await message.reply_text(resp, reply_to_message_id=message.id)
 
     except Exception as e:
@@ -146,13 +149,13 @@ async def add_brod(client, message):
 
 @Client.on_message(filters.command("rmsk", [".", "/"]))
 async def removesk(client, message):
-    user_id = str(message.from_user.id)  # Ensure user_id is defined before use
+    user_id = str(message.from_user.id)
     user_info = await getuserinfo(user_id)
     sk_key = user_info.get("dsk", "N/A")
 
     if sk_key == "N/A":
-        await message.reply_text("Please set a new sk using /setsk command..")
-        return  # Exit early if no secret key is set
+        await message.reply_text("✦ ɴᴏ ꜱᴋ ꜱᴇᴛ. ᴜꜱᴇ /setsk ᴛᴏ ᴀᴅᴅ ᴏɴᴇ. ✦")
+        return
 
     try:
         await updateuserinfo(user_id, "dsk", "N/A")
@@ -164,23 +167,21 @@ async def removesk(client, message):
         pk_key = user_info.get("dpk", "N/A")
         currency = user_info.get("dcr", "N/A")
 
-        resp = f"""<b>
-Sk Successfully Removed ✅
-━━━━━━━━━━━━━━
-Secret Key: {sk_key}
+        resp = f"""✧ <b>ꜱᴋ ʀᴇᴍᴏᴠᴇᴅ ✓</b> ✧
+▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰
 
-Publishable Key: {pk_key}
+◈ <b>ꜱᴋ :</b> {sk_key}
+⟢ <b>ᴘᴋ :</b> {pk_key}
+◈ <b>ᴄᴜʀʀᴇɴᴄʏ :</b> {currency}
+⟢ <b>ꜱᴛᴀᴛᴜꜱ :</b> ʀᴇᴍᴏᴠᴇᴅ ✓
 
-Currency: {currency}
-
-Status: Successful
-    </b>"""
+━━━━━━━━━━━━━━━━━━━━"""
 
         await message.reply_text(resp)
     except Exception as e:
         import traceback
         await error_log(traceback.format_exc())
-        await message.reply_text(f"<b>Something went wrong ❌: {e}</b>")
+        await message.reply_text(f"✦ ꜱᴏᴍᴇᴛʜɪɴɢ ᴡᴇɴᴛ ᴡʀᴏɴɢ ✗ : {e} ✦")
 
 
 
@@ -192,13 +193,13 @@ Status: Successful
 @Client.on_message(filters.command("mysk", [".", "/"]))
 async def mysk(client, message):
 
-    user_id = str(message.from_user.id)  # Ensure user_id is defined before use
+    user_id = str(message.from_user.id)
     user_info = await getuserinfo(user_id)
     sk_key = user_info.get("dsk", "N/A")
 
     if sk_key == "N/A":
-        await message.reply_text("Please set a new sk using /setsk command..")
-        return  # Exit early if no secret key is set
+        await message.reply_text("✦ ɴᴏ ꜱᴋ ꜱᴇᴛ. ᴜꜱᴇ /setsk ᴛᴏ ᴀᴅᴅ ᴏɴᴇ. ✦")
+        return
 
     try:
         user_id = str(message.from_user.id)
@@ -207,25 +208,21 @@ async def mysk(client, message):
         pk_key = user_info.get("dpk", "N/A")
         currency = user_info.get("dcr", "N/A")
         amount = user_info.get("damt", "N/A")
-        resp = f"""<b>
-Sk Successfully Added ✅
-━━━━━━━━━━━━━━
-Secret Key: {sk_key}
+        resp = f"""✧ <b>ʏᴏᴜʀ ꜱᴋ ɪɴꜰᴏ</b> ✧
+▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰
 
-Publishable Key: {pk_key}
+◈ <b>ꜱᴋ :</b> {sk_key}
+⟢ <b>ᴘᴋ :</b> {pk_key}
+◈ <b>ᴄᴜʀʀᴇɴᴄʏ :</b> {currency}
+⟢ <b>ᴄʜᴀʀɢᴇ :</b> {amount}$
+◈ <b>ꜱᴛᴀᴛᴜꜱ :</b> ᴀᴄᴛɪᴠᴇ ✓
 
-Currency: {currency}
-
-{amount}$ CHARGE
-
-Status: Successful
-    </b>"""
+━━━━━━━━━━━━━━━━━━━━"""
         await message.reply_text(resp, message.id)
     except Exception as e:
         import traceback
         await error_log(traceback.format_exc())
-        await message.reply_text(f"<b>Something went wrong ❌: {e}</b>", message.id)
-
+        await message.reply_text(f"✦ ꜱᴏᴍᴇᴛʜɪɴɢ ᴡᴇɴᴛ ᴡʀᴏɴɢ ✗ : {e} ✦", message.id)
 
 
 
@@ -242,31 +239,30 @@ Status: Successful
 async def selfcmd(client, message):
     try:
         user_id = str(message.from_user.id)
-        resp = f"""<b>
+        resp = f"""✧ <b>ꜱᴘʏᴅᴇ ━ ꜱᴇʟꜰ ᴄᴏᴍᴍᴀɴᴅ ᴢᴏɴᴇ</b> ✧
+▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰
 
-<span style="color: #3498db; font-size: 16px;">MASTER Self Command Zone:</span>
+✦ <b>ᴘʀᴏxʏ ꜱᴇᴛᴜᴘ</b> ✦ <i>(ᴜɴᴀᴄᴛɪᴠᴇ)</i>
 
-<span style="color: #e74c3c;">SETUP PROXY..UNACTIVE THIS CMD-❌</span>
+⟢ ᴜꜱᴇ ʏᴏᴜʀ ᴏᴡɴ ᴘʀᴏxʏ ᴏʀ ʀᴇᴍᴏᴠᴇ ɪᴛ.
+◈ /setproxy ɪᴘ:ᴘᴏʀᴛ:ᴜꜱᴇʀ:ᴘᴀꜱꜱ
+⟢ /rmproxy
+◈ /viewproxy
 
-<span style="color: #2ecc71;">You can use your own proxy using this... also if you can remove your proxy.</span>
-1. <span style="color: #f1c40f;">/setproxy ip:port:user:pass</span>
-2. <span style="color: #f1c40f;">/rmproxy</span>
-3. <span style="color: #f1c40f;">/viewproxy see your proxy</span>
+✦ <b>ꜱᴋ_ʟɪᴠᴇ ꜱᴇᴛᴜᴘ</b> ✦ <i>(ꜱᴠᴠ ɢᴀᴛᴇ ᴏɴʟʏ)</i>
 
-<span style="color: #e74c3c;">SETUP SK_LIVE..👍 ONLY FOR SVV GATE 👍[OTHER CVV OR CCN COMING SOON]</span>
+⟢ ᴜꜱᴇ ʏᴏᴜʀ ᴏᴡɴ ʟɪᴠᴇ ꜱᴋ ᴛᴏ ᴄʜᴇᴄᴋ ᴄᴄ.
+◈ /setsk ꜱᴋ_ᴋᴇʏ — ᴀᴜᴛᴏ ɢᴇɴᴇʀᴀᴛᴇꜱ ᴘᴋ
+⟢ /mysk — ᴄʜᴇᴄᴋ ʏᴏᴜʀ ꜱᴋ
+◈ /rmsk — ʀᴇᴍᴏᴠᴇ ʏᴏᴜʀ ꜱᴋ
+⟢ /setamt — ꜱᴇᴛ ᴄʜᴀʀɢᴇ ᴀᴍᴏᴜɴᴛ
 
-<span style="color: #2ecc71;">If you have live sk_key then you can use your own private sk and check cc</span>
-1. <span style="color: #f1c40f;">/setsk sk_key [ automatic generate pk or other necessary info. ]</span>
-2. <span style="color: #f1c40f;">/mysk checking your sk_key</span>
-3. <span style="color: #f1c40f;">/rmsk if you want to use my sk then remove your sk first else not worked..</span>
-4. <span style="color: #f1c40f;">/setamt some sk need high amount like 3-10 dollar so you want to update your amount just use /setamt 5 [ any amount ]</span>
- 
-    </b>"""
+━━━━━━━━━━━━━━━━━━━━"""
         await message.reply_text(resp, reply_to_message_id=message.id)
     except Exception as e:
         import traceback
         await error_log(traceback.format_exc())
-        await message.reply_text(f"<b><span style='color: #e74c3c;'>Something went wrong ❌: {e}</span></b>", reply_to_message_id=message.id)
+        await message.reply_text(f"✦ ꜱᴏᴍᴇᴛʜɪɴɢ ᴡᴇɴᴛ ᴡʀᴏɴɢ ✗ : {e} ✦", reply_to_message_id=message.id)
 
 async def error_log(error_message):
     pass
