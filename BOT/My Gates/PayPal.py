@@ -99,9 +99,9 @@ async def paypal_cmd(Client, message):
 𝗚𝗮𝘁𝗲𝘄𝗮𝘆 ⇾ {gateway}
 𝗥𝗲𝘀𝗽𝗼𝗻𝘀𝗲 ⇾ {response}
 
-𝗕𝗜𝗡 𝗜𝗻𝗳𝗼 ⇾ {brand} - {type_} - {level}
+```𝗕𝗜𝗡 𝗜𝗻𝗳𝗼 ⇾ {brand} - {type_} - {level}
 𝗕𝗮𝗻𝗸 ⇾ {bank}
-𝗖𝗼𝘂𝗻𝘁𝗿𝘆 ⇾ {country} {flag}
+𝗖𝗼𝘂𝗻𝘁𝗿𝘆 ⇾ {country} {flag}```
 
 𝗧𝗶𝗺𝗲 ⇾ {elapsed_time:.2f}s
 𝗨𝘀𝗲𝗿 ⇾ {first_name} [{role}]"""
