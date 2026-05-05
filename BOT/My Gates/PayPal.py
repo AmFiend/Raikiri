@@ -92,19 +92,22 @@ async def paypal_cmd(Client, message):
         
         end = time.perf_counter()
         elapsed_time = round(end - start, 2)
-
+        owner_link = '<a href="tg://user?id=8340881349">𝗦𝗣𝗜𝗗𝗘𝗥</a>'
+        
         finalresp = f"""{status}
 
 𝗖𝗖 ⇾ {fullcc}
 𝗚𝗮𝘁𝗲𝘄𝗮𝘆 ⇾ {gateway}
 𝗥𝗲𝘀𝗽𝗼𝗻𝘀𝗲 ⇾ {response}
-
-```𝗕𝗜𝗡 𝗜𝗻𝗳𝗼 ⇾ {brand} - {type_} - {level}
+━━━〔 INFO 〕━━━
+𝗕𝗜𝗡 𝗜𝗻𝗳𝗼 ⇾ {brand} - {type_} - {level}
 𝗕𝗮𝗻𝗸 ⇾ {bank}
-𝗖𝗼𝘂𝗻𝘁𝗿𝘆 ⇾ {country} {flag}```
-
+𝗖𝗼𝘂𝗻𝘁𝗿𝘆 ⇾ {country} {flag}
+━━━〔 INFO 〕━━━
 𝗧𝗶𝗺𝗲 ⇾ {elapsed_time:.2f}s
-𝗨𝘀𝗲𝗿 ⇾ {first_name} [{role}]"""
+𝗖𝗛𝗘𝗖𝗞𝗘𝗗 𝗕𝗬 ⇾ <a href='tg://user?id={message.from_user.id}'>{message.from_user.first_name}</a> [ {role} ]
+𝗢𝘄𝗻𝗲𝗿 ⇾{owner_link}
+"""
 
         # 2. Delete Cooking GIF and Show Final Result immediately
         try:
