@@ -93,8 +93,17 @@ async def paypal_cmd(Client, message):
         end = time.perf_counter()
         elapsed_time = round(end - start, 2)
 
-        finalresp = f"[〄] 𝘾𝘾        ⟶ <code>{fullcc}</code>\n[〄] 𝙎𝙏𝘼𝙏𝙐𝙎    ⟶ {status}\n[〄] 𝙍𝙀𝙎𝙐𝙇𝙏    ⟶ {response}\n━━━〔 INFO 〕━━━\n[〄] 𝘽𝙄𝙉 ⟶ {brand} | {type_} - {level}\n[〄] 𝘽𝘼𝙉𝙆 ⟶ {bank}\n[〄] 𝘾𝙊𝙐𝙉𝙏𝗥𝗬⟶ {country} {flag}\n━━━〔 META 〕━━━\n[〄] 𝙂𝘼𝙏𝙀𝙒𝘼𝙔 ⟶ {gateway}\n[〄] 𝙏𝙄𝙈𝙀 ⟶  {elapsed_time:0.2f}s\n[〄] 𝘾𝙃𝙀𝘾𝙆𝙀𝘿 𝘽𝙔 𝙏𝙄𝙈𝙀 ⟶<a href='tg://user?id={user_id}'>{first_name}</a> [{role}] \n━━━〔 OWNER 〕━━━\n<a href=\"tg://user?id=8340881349\">╏╠══[𝍖𝍖𝍖 𝚂𝙿𝙸𝙳𝙴𝚁 𝍖𝍖𝍖]      🕷️</a>"
-
+        finalresp = f"<b>{status}</b>\n\n"
+            f"<b>CC</b> ↠ {fullcc}\n"
+            f"<b>Gateway</b> ↠ {gateway}\n"
+            f"<b>Response</b> ↠ {response}\n"
+            f"🐈\n"
+            f"<b>Price</b> ↠ 2.00 USD 💸\n"
+            f"<b>Site</b> ↠ 1\n\n"
+            f"<code>BIN Info: {brand} - {type_} -\n"
+            f"{level}\n"
+            f"Bank: {bank}\n"
+            f"Country: {country} {flag}</code>"
         # 2. Delete Cooking GIF and Show Final Result immediately
         try:
             await loading_msg.delete()
