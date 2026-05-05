@@ -227,8 +227,8 @@ async def button_callback(client, callback_query):
     elif query.data == "gates":
         message = (
             "<a href='https://t.me/elitechkbot?start=start'>✧</a> <b>ꜱᴘʏᴅᴇ ━ ɢᴀᴛᴇᴡᴀʏꜱ</b> ✧\n\n"
-            "◈ <a href='https://t.me/elitechkbot?start=start'>ᴛᴏᴛᴀʟ</a> : 15\n"
-            "◈ <a href='https://t.me/elitechkbot?start=start'>ᴏɴ</a> : 15 ✓\n"
+            "◈ <a href='https://t.me/elitechkbot?start=start'>ᴛᴏᴛᴀʟ</a> : 3\n"
+            "◈ <a href='https://t.me/elitechkbot?start=start'>ᴏɴ</a> : 3 ✓\n"
             "◈ <a href='https://t.me/elitechkbot?start=start'>ᴏꜰꜰ</a> : 0 ✗\n"
             "◈ <a href='https://t.me/elitechkbot?start=start'>ᴍᴀɪɴᴛᴇɴᴀɴᴄᴇ</a> : 0\n\n"
             "━━━━━━━━━━━━━━━━━━━━\n"
@@ -253,17 +253,8 @@ async def button_callback(client, callback_query):
     elif query.data == "AUTH":
         message = (
             "<a href='https://t.me/elitechkbot?start=start'>✧</a> <b>ɢᴀᴛᴇᴡᴀʏꜱ ━ ᴀᴜᴛʜ</b> ✧\n\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Adyen Auth\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /ad\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : App Based Auth\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /ap\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Chaos Auth\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /ch\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Random Auth\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /ra\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Square Auth\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /sq\n"
             "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
             "━━━━━━━━━━━━━━━━━━━━"
         )
@@ -280,6 +271,9 @@ async def button_callback(client, callback_query):
             "<a href='https://t.me/elitechkbot?start=start'>✧</a> <b>ɢᴀᴛᴇᴡᴀʏꜱ ━ ᴄʜᴀʀɢᴇ</b> ✧ (1/2)\n\n"
             "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : PayPal charge 2$\n"
             "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /pp\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Auto Shopify\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /sh\n"
             "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
             "━━━━━━━━━━━━━━━━━━━━"
         )
@@ -314,7 +308,12 @@ async def button_callback(client, callback_query):
     elif query.data == "MASS":
         message = (
             "<a href='https://t.me/elitechkbot?start=start'>✧</a> <b>ɢᴀᴛᴇᴡᴀʏꜱ ━ ᴍᴀꜱꜱ</b> ✧\n\n"
-            "⟢ ᴜɴᴅᴇʀ ᴍᴀɪɴᴛᴇɴᴀɴᴄᴇ\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : PayPal Mass\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /mpp\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Shopify Mass\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /msh\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
             "━━━━━━━━━━━━━━━━━━━━"
         )
         keyboard = [[InlineKeyboardButton("✧ ʙᴀᴄᴋ ✧", callback_data="gates")]]
