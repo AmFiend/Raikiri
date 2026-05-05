@@ -421,12 +421,16 @@ async def button_callback(client, callback_query):
 
     elif query.data == "back":
         keyboard = [
-            [
-                InlineKeyboardButton("✧ ɢᴀᴛᴇꜱ ✧", callback_data="gates"),
-                InlineKeyboardButton("◈ ʀᴇɢɪꜱᴛᴇʀ ◈", callback_data="register"),
-            ],
-            [
-                InlineKeyboardButton("✧ ᴇxɪᴛ ✧", callback_data="exit"),
+        [
+            InlineKeyboardButton("✧ ɢᴀᴛᴇꜱ ✧", callback_data="gates"),
+            InlineKeyboardButton("◈ ʀᴇɢɪꜱᴛᴇʀ ◈", callback_data="register"),
+        ],
+        [
+            InlineKeyboardButton("✧ ᴛᴏᴏʟꜱ ✧", callback_data="tools"),
+            InlineKeyboardButton("◈ ʜᴇʟᴘᴇʀ ◈", callback_data="helper"),
+        ],
+        [
+            InlineKeyboardButton("✧ ᴇxɪᴛ ✧", callback_data="exit"),
             ]
         ]
         reply_markup = InlineKeyboardMarkup(keyboard)
