@@ -34,8 +34,31 @@ async def animated_edit(client, chat_id, message_id, text, reply_markup=None, de
 
 current_menu_video_index = 0
 MENU_VIDEOS = [f"VID/menu{i}.mp4" for i in range(1, 11)]
-VIDEO_FILE_IDS = {}
+VIDEO_FILE_IDS = {} # This will be loaded from a file
 
+
+import json
+
+VIDEO_CACHE_FILE = 'video_cache.json'
+
+def load_video_cache():
+    global VIDEO_FILE_IDS
+    if os.path.exists(VIDEO_CACHE_FILE):
+        try:
+            with open(VIDEO_CACHE_FILE, 'r') as f:
+                VIDEO_FILE_IDS = json.load(f)
+        except Exception as e:
+            print(f"Error loading video cache: {e}")
+
+def save_video_cache():
+    try:
+        with open(VIDEO_CACHE_FILE, 'w') as f:
+            json.dump(VIDEO_FILE_IDS, f)
+    except Exception as e:
+        print(f"Error saving video cache: {e}")
+
+# Load cache on startup
+load_video_cache()
 
 def get_next_menu_video():
     global current_menu_video_index
@@ -112,6 +135,7 @@ async def start_command(client, message):
             )
             if sent.video and video_file not in VIDEO_FILE_IDS:
                 VIDEO_FILE_IDS[video_file] = sent.video.file_id
+                save_video_cache()
         else:
             await message.reply_text(
                 caption,
