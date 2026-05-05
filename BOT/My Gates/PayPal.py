@@ -105,7 +105,7 @@ async def paypal_cmd(Client, message):
 𝗖𝗼𝘂𝗻𝘁𝗿𝘆 ⇾ {country} {flag}
 ━━━〔 INFO 〕━━━
 𝗧𝗶𝗺𝗲 ⇾ {elapsed_time:.2f}s
-𝗖𝗛𝗘𝗖𝗞𝗘𝗗 𝗕𝗬 ⇾ <a href='tg://user?id={message.from_user.id}'>{message.from_user.first_name}</a> [ {role} ]
+𝗖𝗵𝗲𝗰𝗸𝗲𝗱 𝗯𝘆 ⇾ <a href='tg://user?id={message.from_user.id}'>{message.from_user.first_name}</a> [ {role} ]
 𝗢𝘄𝗻𝗲𝗿 ⇾{owner_link}
 """
 
