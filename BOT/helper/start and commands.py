@@ -8,6 +8,19 @@ from pyrogram.enums import ParseMode
 from pyrogram.errors import MessageNotModified
 import importlib.util
 import sys
+import json
+
+# --- PYROGRAM PATCH FOR COLORED BUTTONS ---
+original_init = InlineKeyboardButton.__init__
+def patched_init(self, text, callback_data=None, url=None, web_app=None, login_url=None, 
+                 user_id=None, switch_inline_query=None, switch_inline_query_current_chat=None, 
+                 callback_game=None, style=None):
+    original_init(self, text, callback_data, url, web_app, login_url, 
+                  user_id, switch_inline_query, switch_inline_query_current_chat, 
+                  callback_game)
+    self.style = style
+InlineKeyboardButton.__init__ = patched_init
+# ------------------------------------------
 
 # Original functionality imports
 from FUNC.defs import *
@@ -36,8 +49,6 @@ current_menu_video_index = 0
 MENU_VIDEOS = [f"VID/menu{i}.mp4" for i in range(1, 11)]
 VIDEO_FILE_IDS = {} # This will be loaded from a file
 
-
-import json
 
 VIDEO_CACHE_FILE = 'video_cache.json'
 
@@ -99,15 +110,15 @@ async def start_command(client, message):
 
     keyboard = [
         [
-            InlineKeyboardButton("✧ ɢᴀᴛᴇꜱ ✧", callback_data="gates"),
-            InlineKeyboardButton("◈ ʀᴇɢɪꜱᴛᴇʀ ◈", callback_data="register"),
+            InlineKeyboardButton("✧ ɢᴀᴛᴇꜱ ✧", callback_data="gates", style="primary"),
+            InlineKeyboardButton("◈ ʀᴇɢɪꜱᴛᴇʀ ◈", callback_data="register", style="success"),
         ],
         [
-            InlineKeyboardButton("✧ ᴛᴏᴏʟꜱ ✧", callback_data="tools"),
-            InlineKeyboardButton("◈ ʜᴇʟᴘᴇʀ ◈", callback_data="helper"),
+            InlineKeyboardButton("✧ ᴛᴏᴏʟꜱ ✧", callback_data="tools", style="primary"),
+            InlineKeyboardButton("◈ ʜᴇʟᴘᴇʀ ◈", callback_data="helper", style="primary"),
         ],
         [
-            InlineKeyboardButton("✧ ᴇxɪᴛ ✧", callback_data="exit"),
+            InlineKeyboardButton("✧ ᴇxɪᴛ ✧", callback_data="exit", style="danger"),
         ]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
@@ -183,7 +194,7 @@ async def cmd_register(client, message):
             f"<b>↪ ᴘʀᴏᴄᴇᴇᴅ.</b>"
         )
 
-    keyboard = [[InlineKeyboardButton("✧ ɢᴀᴛᴇꜱ ✧", callback_data="gates")]]
+    keyboard = [[InlineKeyboardButton("✧ ɢᴀᴛᴇꜱ ✧", callback_data="gates", style="success")]]
     await message.reply_text(
         resp,
         parse_mode=ParseMode.HTML,
@@ -240,7 +251,7 @@ async def button_callback(client, callback_query):
                 f"<b>↪ ᴘʀᴏᴄᴇᴇᴅ.</b>"
             )
 
-        keyboard = [[InlineKeyboardButton("✧ ʙᴀᴄᴋ ✧", callback_data="back")]]
+        keyboard = [[InlineKeyboardButton("✧ ʙᴀᴄᴋ ✧", callback_data="back", style="danger")]]
 
         await query.edit_message_caption(
             caption=resp,
@@ -261,11 +272,11 @@ async def button_callback(client, callback_query):
         )
         keyboard = [
             [
-                InlineKeyboardButton("◈ ᴀᴜᴛʜ ◈", callback_data="AUTH"),
-                InlineKeyboardButton("◈ ᴄʜᴀʀɢᴇ ◈", callback_data="CHARGE"),
-                InlineKeyboardButton("◈ ᴍᴀꜱꜱ ◈", callback_data="MASS"),
+                InlineKeyboardButton("◈ ᴀᴜᴛʜ ◈", callback_data="AUTH", style="primary"),
+                InlineKeyboardButton("◈ ᴄʜᴀʀɢᴇ ◈", callback_data="CHARGE", style="success"),
+                InlineKeyboardButton("◈ ᴍᴀꜱꜱ ◈", callback_data="MASS", style="primary"),
             ],
-            [InlineKeyboardButton("✧ ʙᴀᴄᴋ ✧", callback_data="back")]
+            [InlineKeyboardButton("✧ ʙᴀᴄᴋ ✧", callback_data="back", style="danger")]
         ]
         reply_markup = InlineKeyboardMarkup(keyboard)
         await query.edit_message_caption(
@@ -273,223 +284,3 @@ async def button_callback(client, callback_query):
             parse_mode=ParseMode.HTML,
             reply_markup=reply_markup
         )
-
-    elif query.data == "AUTH":
-        message = (
-            "<a href='https://t.me/elitechkbot?start=start'>✧</a> <b>ɢᴀᴛᴇᴡᴀʏꜱ ━ ᴀᴜᴛʜ</b> ✧\n\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Square Auth\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /sq\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
-            "━━━━━━━━━━━━━━━━━━━━"
-        )
-        keyboard = [[InlineKeyboardButton("✧ ʙᴀᴄᴋ ✧", callback_data="gates")]]
-        reply_markup = InlineKeyboardMarkup(keyboard)
-        await query.edit_message_caption(
-            caption=message,
-            parse_mode=ParseMode.HTML,
-            reply_markup=reply_markup
-        )
-
-    elif query.data == "CHARGE":
-        message = (
-            "<a href='https://t.me/elitechkbot?start=start'>✧</a> <b>ɢᴀᴛᴇᴡᴀʏꜱ ━ ᴄʜᴀʀɢᴇ</b> ✧ (1/2)\n\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : PayPal charge 2$\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /pp\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Auto Shopify\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /sh\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
-            "━━━━━━━━━━━━━━━━━━━━"
-        )
-        keyboard = [
-            [InlineKeyboardButton("◈ ᴘᴀɢᴇ 2 ➡ ◈", callback_data="CHARGE_PAGE2")],
-            [InlineKeyboardButton("✧ ʙᴀᴄᴋ ✧", callback_data="gates")]
-        ]
-        reply_markup = InlineKeyboardMarkup(keyboard)
-        await query.edit_message_caption(
-            caption=message,
-            parse_mode=ParseMode.HTML,
-            reply_markup=reply_markup
-        )
-
-    elif query.data == "CHARGE_PAGE2":
-        message = (
-            "<a href='https://t.me/elitechkbot?start=start'>✧</a> <b>ɢᴀᴛᴇᴡᴀʏꜱ ━ ᴄʜᴀʀɢᴇ</b> ✧ (2/2)\n\n"
-            "soon 🔜"
-            "━━━━━━━━━━━━━━━━━━━━"
-        )
-        keyboard = [
-            [InlineKeyboardButton("◈ ⬅ ᴘᴀɢᴇ 1 ◈", callback_data="CHARGE")],
-            [InlineKeyboardButton("✧ ʙᴀᴄᴋ ✧", callback_data="gates")]
-        ]
-        reply_markup = InlineKeyboardMarkup(keyboard)
-        await query.edit_message_caption(
-            caption=message,
-            parse_mode=ParseMode.HTML,
-            reply_markup=reply_markup
-        )
-
-    elif query.data == "MASS":
-        message = (
-            "<a href='https://t.me/elitechkbot?start=start'>✧</a> <b>ɢᴀᴛᴇᴡᴀʏꜱ ━ ᴍᴀꜱꜱ</b> ✧\n\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : PayPal Mass\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /mpp\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Shopify Mass\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /msh\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
-            "━━━━━━━━━━━━━━━━━━━━"
-        )
-        keyboard = [[InlineKeyboardButton("✧ ʙᴀᴄᴋ ✧", callback_data="gates")]]
-        reply_markup = InlineKeyboardMarkup(keyboard)
-        await query.edit_message_caption(
-            caption=message,
-            parse_mode=ParseMode.HTML,
-            reply_markup=reply_markup
-        )
-
-    elif query.data == "tools":
-        message = (
-            "<a href='https://t.me/elitechkbot?start=start'>✧</a> <b>ꜱᴘʏᴅᴇ ━ ᴛᴏᴏʟꜱ</b> ✧\n\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Generate CC\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /gen -xxxx\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Info Bin\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /bin\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Filter CC\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /fl\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Fake Location\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /fake\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Claim Credits\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /claim\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Fetch IP\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /ip\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Sort CC\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /sort\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
-            "━━━━━━━━━━━━━━━━━━━━"
-        )
-        keyboard = [
-            [InlineKeyboardButton("✧ ʙᴀᴄᴋ ✧", callback_data="back")],
-            [InlineKeyboardButton("◈ ɴᴇxᴛ ◈", callback_data="tools2")]
-        ]
-        reply_markup = InlineKeyboardMarkup(keyboard)
-        await query.edit_message_caption(
-            caption=message,
-            parse_mode=ParseMode.HTML,
-            reply_markup=reply_markup
-        )
-
-    elif query.data == "tools2":
-        message = (
-            "<a href='https://t.me/elitechkbot?start=start'>✧</a> <b>ꜱᴘʏᴅᴇ ━ ᴛᴏᴏʟꜱ</b> ✧ ᴘ.2\n\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Redeem Keys\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /claim key-xxxx\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Get ID\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /id\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Membership Info\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /plan\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Group Membership\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /plang\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
-            "━━━━━━━━━━━━━━━━━━━━"
-        )
-        keyboard = [
-            [InlineKeyboardButton("◈ ⬅ ʙᴀᴄᴋ ◈", callback_data="tools")],
-            [InlineKeyboardButton("✧ ᴍᴇɴᴜ ✧", callback_data="back")]
-        ]
-        reply_markup = InlineKeyboardMarkup(keyboard)
-        await query.edit_message_caption(
-            caption=message,
-            parse_mode=ParseMode.HTML,
-            reply_markup=reply_markup
-        )
-
-    elif query.data == "helper":
-        message = (
-            "<a href='https://t.me/elitechkbot?start=start'>✧</a> <b>ꜱᴘʏᴅᴇ ━ ʜᴇʟᴘᴇʀ</b> ✧\n\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Buy Premium\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /buy\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Credits\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /howcrd\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Check Credits\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /credits\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : How To Add Bot\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /howgp\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
-            "━━━━━━━━━━━━━━━━━━━━"
-        )
-        keyboard = [
-            [InlineKeyboardButton("✧ ʜᴏᴍᴇ ✧", callback_data="back")]
-        ]
-        reply_markup = InlineKeyboardMarkup(keyboard)
-        await query.edit_message_caption(
-            caption=message,
-            parse_mode=ParseMode.HTML,
-            reply_markup=reply_markup
-        )
-
-    elif query.data == "exit" or query.data == "close":
-        await query.message.delete()
-
-    elif query.data == "back":
-        keyboard = [
-        [
-            InlineKeyboardButton("✧ ɢᴀᴛᴇꜱ ✧", callback_data="gates"),
-            InlineKeyboardButton("◈ ʀᴇɢɪꜱᴛᴇʀ ◈", callback_data="register"),
-        ],
-        [
-            InlineKeyboardButton("✧ ᴛᴏᴏʟꜱ ✧", callback_data="tools"),
-            InlineKeyboardButton("◈ ʜᴇʟᴘᴇʀ ◈", callback_data="helper"),
-        ],
-        [
-            InlineKeyboardButton("✧ ᴇxɪᴛ ✧", callback_data="exit"),
-            ]
-        ]
-        reply_markup = InlineKeyboardMarkup(keyboard)
-
-        try:
-            video_file = "VID/menu1.mp4"
-            if video_file in VIDEO_FILE_IDS:
-                media = InputMediaVideo(media=VIDEO_FILE_IDS[video_file], caption=original_message, parse_mode=ParseMode.MARKDOWN)
-                await query.edit_message_media(media=media, reply_markup=reply_markup)
-            elif os.path.exists(video_file) and os.path.getsize(video_file) > 0:
-                media = InputMediaVideo(media=video_file, caption=original_message, parse_mode=ParseMode.MARKDOWN)
-                await query.edit_message_media(media=media, reply_markup=reply_markup)
-            else:
-                await query.edit_message_caption(
-                    caption=original_message,
-                    parse_mode=ParseMode.MARKDOWN,
-                    reply_markup=reply_markup
-                )
-        except Exception as e:
-            print(f"Error in back button: {e}")
-            await query.edit_message_caption(
-                caption=original_message,
-                parse_mode=ParseMode.MARKDOWN,
-                reply_markup=reply_markup
-            )
-
-
-def main():
-    """Start the bot folders setup"""
-    folders = ["VID", "Banned", "Maintenance", "HIT", "B3"]
-    for folder in folders:
-        if not os.path.exists(folder):
-            os.makedirs(folder)
-            print(f"Created folder: {folder}")
-
-
-if __name__ == "__main__":
-    main()
