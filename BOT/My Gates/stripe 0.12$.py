@@ -63,7 +63,7 @@ async def stripe_charge_cmd(Client, message):
         getcc = await getmessage(message)
         
         if getcc == False:
-            resp = f"〈<a href='tg://user?id={user_id}'>{first_name}</a>〉-» Stripe Charge 0.12$ - CHECK\n\n〈♻️〉𝙂𝙖𝙩𝙚𝙬𝙖𝙮 -» Stripe Charge 0.12$ \n\n<a href='tg://user?id={user_id}'>╰┈➤</a> 𝙁𝙤𝙧𝙢𝙖𝙩 -» /sc cc|month|year|cvc"
+            resp = f"〈<a href='tg://user?id={user_id}'>{first_name}</a>〉-» Stripe Charge 0.12$ - CHECK\n\n〈♻️〉𝙂𝙖𝙩𝙚𝙬𝙖𝙮 -» Stripe Charge 0.12$ \n\n<a href='tg://user?id={user_id}'>╰┈➤</a> 𝙁𝙤𝙧𝙢𝙖𝙩 -» /st cc|month|year|cvc"
             await message.reply_text(resp, quote=True)
             return
             
@@ -126,7 +126,7 @@ async def stripe_mass_check_cmd(Client, message):
             ccs = extract_cards(message.text)
 
         if not ccs:
-            resp = f"〈<a href='tg://user?id={user_id}'>{first_name}</a>〉-» Stripe Charge 0.12$ - MASS\n\n〈♻️〉𝙂𝙖𝙩𝙚𝙬𝙖𝙮 -» Stripe Charge 0.12$ \n\n<a href='tg://user?id={user_id}'>╰┈➤</a> 𝙁𝙤𝙧𝙢𝙖𝙩 -» Reply to cards or /msc cc|mm|yy|cvc (up to {MAX_MSC_LIMIT})"
+            resp = f"〈<a href='tg://user?id={user_id}'>{first_name}</a>〉-» Stripe Charge 0.12$ - MASS\n\n〈♻️〉𝙂𝙖𝙩𝙚𝙬𝙖𝙮 -» Stripe Charge 0.12$ \n\n<a href='tg://user?id={user_id}'>╰┈➤</a> 𝙁𝙤𝙧𝙢𝙖𝙩 -» Reply to cards or /mst cc|mm|yy|cvc (up to {MAX_MSC_LIMIT})"
             await message.reply_text(resp, quote=True)
             return
 
@@ -158,7 +158,7 @@ async def stripe_txt_check_cmd(Client, message):
             target_message = message
 
         if not target_message or not target_message.document.file_name.endswith('.txt'):
-            resp = f"〈<a href='tg://user?id={user_id}'>{first_name}</a>〉-» Stripe Charge 0.12$ - TXT\n\n〈♻️〉𝙂𝙖𝙩𝙚𝙬𝙖𝙮 -» Stripe Charge 0.12$ \n\n<a href='tg://user?id={user_id}'>╰┈➤</a> 𝙁𝙤𝙧𝙢𝙖𝙩 -» Upload a .txt file with /tsc caption or reply to a .txt file with /tsc (up to {MAX_TSC_LIMIT})"
+            resp = f"〈<a href='tg://user?id={user_id}'>{first_name}</a>〉-» Stripe Charge 0.12$ - TXT\n\n〈♻️〉𝙂𝙖𝙩𝙚𝙬𝙖𝙮 -» Stripe Charge 0.12$ \n\n<a href='tg://user?id={user_id}'>╰┈➤</a> 𝙁𝙤𝙧𝙢𝙖𝙩 -» Upload a .txt file with /tst caption or reply to a .txt file with /tsc (up to {MAX_TSC_LIMIT})"
             await message.reply_text(resp, quote=True)
             return
 
