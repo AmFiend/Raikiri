@@ -280,8 +280,8 @@ async def button_callback(client, callback_query):
     elif query.data == "gates":
         message = (
             "<a href='https://t.me/elitechkbot?start=start'>✧</a> <b>ꜱᴘʏᴅᴇ ━ ɢᴀᴛᴇᴡᴀʏꜱ</b> ✧\n\n"
-            "◈ <a href='https://t.me/elitechkbot?start=start'>ᴛᴏᴛᴀʟ</a> : 3\n"
-            "◈ <a href='https://t.me/elitechkbot?start=start'>ᴏɴ</a> : 3 ✓\n"
+            "◈ <a href='https://t.me/elitechkbot?start=start'>ᴛᴏᴛᴀʟ</a> : 6\n"
+            "◈ <a href='https://t.me/elitechkbot?start=start'>ᴏɴ</a> : 6 ✓\n"
             "◈ <a href='https://t.me/elitechkbot?start=start'>ᴏꜰꜰ</a> : 0 ✗\n"
             "◈ <a href='https://t.me/elitechkbot?start=start'>ᴍᴀɪɴᴛᴇɴᴀɴᴄᴇ</a> : 0\n\n"
             "━━━━━━━━━━━━━━━━━━━━\n"
@@ -318,6 +318,15 @@ async def button_callback(client, callback_query):
             "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Auto Shopify\n"
             "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /sh\n"
             "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
+           "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : PayPal charge 1$\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /pp1\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n" 
+           "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Stripe Charge 0.12$\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /st\n"
+           "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Strip Charge 3.50$\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /sc\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"   
+  
             "━━━━━━━━━━━━━━━━━━━━"
         )
         keyboard = [
@@ -347,6 +356,15 @@ async def button_callback(client, callback_query):
             "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Shopify Mass\n"
             "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /msh\n"
             "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
+           "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : PayPal Mass + Txt 1$\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /mpp1 + /tpp1\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"  
+           "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Stripe Mass + Txt\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /msc + /tsc\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
+           "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Stripe Mass + Txt\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /mst + /tst\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"          
             "━━━━━━━━━━━━━━━━━━━━"
         )
         keyboard = [[InlineKeyboardButton("✧ ʙᴀᴄᴋ ✧", callback_data="gates", style="danger")]]
