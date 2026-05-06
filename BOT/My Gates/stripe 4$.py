@@ -63,7 +63,7 @@ async def stripe_charge_cmd(Client, message):
         getcc = await getmessage(message)
         
         if getcc == False:
-            resp = f"〈<a href='tg://user?id={user_id}'>{first_name}</a>〉-» Stripe Charge $4 - CHECK\n\n〈♻️〉𝙂𝙖𝙩𝙚𝙬𝙖𝙮 -» Stripe Charge $4 \n\n<a href='tg://user?id={user_id}'>╰┈➤</a> 𝙁𝙤𝙧𝙢𝙖𝙩 -» /sc cc|month|year|cvc"
+            resp = f"〈<a href='tg://user?id={user_id}'>{first_name}</a>〉-» Stripe Charge $3.50 - CHECK\n\n〈♻️〉𝙂𝙖𝙩𝙚𝙬𝙖𝙮 -» Stripe Charge $4 \n\n<a href='tg://user?id={user_id}'>╰┈➤</a> 𝙁𝙤𝙧𝙢𝙖𝙩 -» /sc cc|month|year|cvc"
             await message.reply_text(resp, quote=True)
             return
             
@@ -149,12 +149,20 @@ async def stripe_txt_check_cmd(Client, message):
         if not checkall[0]: return
         role = checkall[1]
 
-        if not message.document or not message.document.file_name.endswith('.txt'):
-            resp = f"〈<a href='tg://user?id={user_id}'>{first_name}</a>〉-» Stripe Charge $4 - TXT\n\n〈♻️〉𝙂𝙖𝙩𝙚𝙬𝙖𝙮 -» Stripe Charge $4 \n\n<a href='tg://user?id={user_id}'>╰┈➤</a> 𝙁𝙤𝙧𝙢𝙖𝙩 -» Upload a .txt file with /tsc caption (up to {MAX_TSC_LIMIT})"
+        target_message = None
+        # Case 1: Reply to a document
+        if message.reply_to_message and message.reply_to_message.document:
+            target_message = message.reply_to_message
+        # Case 2: Uploaded directly as caption
+        elif message.document:
+            target_message = message
+
+        if not target_message or not target_message.document.file_name.endswith('.txt'):
+            resp = f"〈<a href='tg://user?id={user_id}'>{first_name}</a>〉-» Stripe Charge $4 - TXT\n\n〈♻️〉𝙂𝙖𝙩𝙚𝙬𝙖𝙮 -» Stripe Charge $4 \n\n<a href='tg://user?id={user_id}'>╰┈➤</a> 𝙁𝙤𝙧𝙢𝙖𝙩 -» Upload a .txt file with /tsc caption or reply to a .txt file with /tsc (up to {MAX_TSC_LIMIT})"
             await message.reply_text(resp, quote=True)
             return
 
-        file_path = await Client.download_media(message)
+        file_path = await Client.download_media(target_message)
         with open(file_path, 'r', encoding='utf-8') as f:
             content = f.read()
             ccs = extract_cards(content)
@@ -186,7 +194,6 @@ async def process_sequential_check(Client, message, ccs, user_id, first_name, ro
     final_text = header_text
     start_time = time.perf_counter()
     
-    # Strictly one-by-one sequential processing
     for fullcc in ccs:
         status, response, gateway = await call_stripe_api(fullcc)
         
@@ -207,13 +214,11 @@ async def process_sequential_check(Client, message, ccs, user_id, first_name, ro
 \n"""
         final_text += card_resp
         
-        # Edit message immediately after each card is finished
         try:
             await progress_msg.edit_text(final_text, disable_web_page_preview=True)
         except:
             pass
         
-        # Small delay between cards for stability
         await asyncio.sleep(0.5)
 
     elapsed_time = round(time.perf_counter() - start_time, 2)
