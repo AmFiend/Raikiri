@@ -63,47 +63,71 @@ async def stripe_charge_cmd(Client, message):
         getcc = await getmessage(message)
         
         if getcc == False:
-            resp = f"〈<a href='tg://user?id={user_id}'>{first_name}</a>〉-» Stripe Charge 0.12$ - CHECK\n\n〈♻️〉𝙂𝙖𝙩𝙚𝙬𝙖𝙮 -» Stripe Charge 0.12$ \n\n<a href='tg://user?id={user_id}'>╰┈➤</a> 𝙁𝙤𝙧𝙢𝙖𝙩 -» /st cc|month|year|cvc"
+            resp = f"""✦ <b>ɴᴏ ᴄᴄ ꜰᴏᴜɴᴅ</b> ✦
+▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰
+
+⟢ <b>ɢᴀᴛᴇ :</b> Stripe Charge 0.12$
+◈ <b>ᴄᴍᴅ :</b> /st
+
+⟢ ɴᴏ ᴄᴄ ꜰᴏᴜɴᴅ ɪɴ ʏᴏᴜʀ ɪɴᴘᴜᴛ ✗
+
+↪ <b>ᴜꜱᴀɢᴇ :</b> /st cc|mes|ano|cvv
+━━━━━━━━━━━━━━━━━━━━"""
             await message.reply_text(resp, quote=True)
             return
             
         cc, mes, ano, cvv = getcc[0], getcc[1], getcc[2], getcc[3]
         fullcc = f"{cc}|{mes}|{ano}|{cvv}"
+        gateway = "Stripe Charge 0.12$"
         
-        loading_msg = await message.reply("🍳", quote=True)
+        firstresp = f"""✧ ᴄʜᴇᴄᴋɪɴɢ. ✧
+
+[玄] 𝘾𝘾 -» <code>{fullcc}</code>
+[玄] 𝙂𝙖𝙩𝙚 -» <i>{gateway}</i>
+[玄] 𝙍𝙚𝙨𝙥𝙤𝙣𝙨𝙚 -» ■□□□"""
+        await asyncio.sleep(0.5)
+        firstchk = await message.reply_text(firstresp, quote=True)
+
+        secondresp = f"""✧ ᴄʜᴇᴄᴋɪɴɢ.. ✧
+
+[玄] 𝘾𝘾 -» <code>{fullcc}</code>
+[玄] 𝙂𝙖𝙩𝙚 -» <i>{gateway}</i>
+[玄] 𝙍𝙚𝙨𝙥𝙤𝙣𝙨𝙚 -» ■■■□"""
+        await asyncio.sleep(0.5)
+        secondchk = await Client.edit_message_text(message.chat.id, firstchk.id, secondresp)
+
         start = time.perf_counter()
-        await asyncio.sleep(2)
-        
         status, response, gateway = await call_stripe_api(fullcc)
         
         getbin = await get_bin_details(cc)
         brand, type_, level, bank, country, flag, currency = getbin[0], getbin[1], getbin[2], getbin[3], getbin[4], getbin[5], getbin[6]
-        
-        elapsed_time = round(time.perf_counter() - start, 2)
-        owner_link = '<a href="tg://user?id=8340881349">𝗦𝗣𝗜𝗗𝗘𝗥</a>'
-        
-        finalresp = f"""{status}
-𝗖𝗖 ⇾ {fullcc}
-𝗚𝗮𝘁𝗲𝘄𝗮𝘆 ⇾ {gateway}
-𝗥𝗲𝘀𝗽𝗼𝗻𝘀𝗲 ⇾ {response}
-━━━〔 INFO 〕━━━
-𝗕𝗜𝗡 𝗜𝗻𝗳𝗼 ⇾ {brand} - {type_} - {level}
-𝗕𝗮𝗻𝗸 ⇾ {bank}
-𝗖𝗼𝘂𝗻𝘁𝗿𝘆 ⇾ {country} {flag}
-━━━〔 INFO 〕━━━
-𝗧𝗶𝗺𝗲 ⇾ {elapsed_time:.2f}s
-𝗖𝗵𝗲𝗰𝗸𝗲𝗱 𝗯𝘆 ⇾ <a href='tg://user?id={message.from_user.id}'>{message.from_user.first_name}</a> [ {role} ]
-𝗢𝘄𝗻𝗲𝗿 ⇾{owner_link}
-╚━━━━━━「𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊」━━━━━━╝
-"""
-        try: await loading_msg.delete()
-        except: pass
-            
-        await message.reply_text(finalresp, quote=True)
+
+        thirdresp = f"""✧ ᴄʜᴇᴄᴋɪɴɢ... ✧
+
+[玄] 𝘾𝘾 -» <code>{fullcc}</code>
+[玄] 𝙂𝙖𝙩𝙚 -» <i>{gateway}</i>
+[玄] 𝙍𝙚𝙨𝙥𝙤𝙣𝙨𝙚 -» ■■■■"""
+        await asyncio.sleep(0.5)
+        thirdcheck = await Client.edit_message_text(message.chat.id, secondchk.id, thirdresp)
+
+        finalresp = f"""
+[玄] 𝘾𝘾 -» <code>{fullcc}</code>
+[玄] 𝙎𝙩𝙖𝙩𝙪𝙨 -» {status}
+[玄] 𝙍𝙚𝙨𝙥𝙤𝙣𝙨𝙚 -» {response}
+
+[玄] 𝘽𝙞𝙣 -» {brand} — {type_} — {level}
+[玄] 𝘽𝙖𝙣𝙠 -» {bank}
+[玄] 𝘾𝙤𝙪𝙣𝙩𝙧𝙮 -» {country} {flag}
+
+[玄] 𝙂𝙖𝙩𝙚𝙬𝙖𝙮 -» {gateway}
+[玄] 𝘾𝙝𝙚𝙘𝙠𝙚𝙙 𝙗𝙮 -» <a href='tg://user?id={message.from_user.id}'>{message.from_user.first_name}</a> ↯ {role}
+[玄] 𝙏𝙞𝙢𝙚 -» {time.perf_counter() - start:0.2f}s"""
+        await asyncio.sleep(0.5)
+        await Client.edit_message_text(message.chat.id, thirdcheck.id, finalresp)
         await setantispamtime(user_id)
         await deductcredit(user_id)
-        if "𝘼𝙋𝙋𝙍𝙊𝙑𝙀𝘿" in status or "𝘾𝙃𝘼𝙍𝙂𝙀𝘿" in status:
-            await sendcc(finalresp, session)
+        if "𝘾𝙃𝘼𝙍𝙂𝙀𝘿" in status:
+            await send_hit_if_approved(Client, finalresp)
     except Exception:
         import traceback
         await error_log(traceback.format_exc())
@@ -126,12 +150,21 @@ async def stripe_mass_check_cmd(Client, message):
             ccs = extract_cards(message.text)
 
         if not ccs:
-            resp = f"〈<a href='tg://user?id={user_id}'>{first_name}</a>〉-» Stripe Charge 0.12$ - MASS\n\n〈♻️〉𝙂𝙖𝙩𝙚𝙬𝙖𝙮 -» Stripe Charge 0.12$ \n\n<a href='tg://user?id={user_id}'>╰┈➤</a> 𝙁𝙤𝙧𝙢𝙖𝙩 -» Reply to cards or /mst cc|mm|yy|cvc (up to {MAX_MSC_LIMIT})"
+            resp = f"""✦ <b>ɴᴏ ᴄᴄ ꜰᴏᴜɴᴅ</b> ✦
+▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰
+
+⟢ <b>ɢᴀᴛᴇ :</b> Stripe Charge 0.12$
+◈ <b>ᴄᴍᴅ :</b> /mst
+
+⟢ ɴᴏ ᴄᴄ ꜰᴏᴜɴᴅ ɪɴ ʏᴏᴜʀ ɪɴᴘᴜᴛ ✗
+
+↪ <b>ᴜꜱᴀɢᴇ :</b> Reply to cards or /mst cc|mm|yy|cvc (up to {MAX_MSC_LIMIT})
+━━━━━━━━━━━━━━━━━━━━"""
             await message.reply_text(resp, quote=True)
             return
 
         if len(ccs) > MAX_MSC_LIMIT:
-            await message.reply(f"⚠️ Only the first {MAX_MSC_LIMIT} cards will be processed.", quote=True)
+            await message.reply(f"✦ ᴏɴʟʏ ꜰɪʀꜱᴛ {MAX_MSC_LIMIT} ᴄᴀʀᴅꜱ ᴡɪʟʟ ʙᴇ ᴘʀᴏᴄᴇꜱꜱᴇᴅ ✦", quote=True)
             ccs = ccs[:MAX_MSC_LIMIT]
 
         await process_sequential_check(Client, message, ccs, user_id, first_name, role)
@@ -150,15 +183,20 @@ async def stripe_txt_check_cmd(Client, message):
         role = checkall[1]
 
         target_message = None
-        # Case 1: Reply to a document
         if message.reply_to_message and message.reply_to_message.document:
             target_message = message.reply_to_message
-        # Case 2: Uploaded directly as caption
         elif message.document:
             target_message = message
 
         if not target_message or not target_message.document.file_name.endswith('.txt'):
-            resp = f"〈<a href='tg://user?id={user_id}'>{first_name}</a>〉-» Stripe Charge 0.12$ - TXT\n\n〈♻️〉𝙂𝙖𝙩𝙚𝙬𝙖𝙮 -» Stripe Charge 0.12$ \n\n<a href='tg://user?id={user_id}'>╰┈➤</a> 𝙁𝙤𝙧𝙢𝙖𝙩 -» Upload a .txt file with /tst caption or reply to a .txt file with /tsc (up to {MAX_TSC_LIMIT})"
+            resp = f"""✦ <b>ɴᴏ ꜰɪʟᴇ ꜰᴏᴜɴᴅ</b> ✦
+▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰
+
+⟢ <b>ɢᴀᴛᴇ :</b> Stripe Charge 0.12$
+◈ <b>ᴄᴍᴅ :</b> /tst
+
+⟢ ᴜᴘʟᴏᴀᴅ ᴀ .ᴛxᴛ ꜰɪʟᴇ ᴏʀ ʀᴇᴘʟʏ ᴛᴏ ᴏɴᴇ (up to {MAX_TSC_LIMIT})
+━━━━━━━━━━━━━━━━━━━━"""
             await message.reply_text(resp, quote=True)
             return
 
@@ -169,11 +207,11 @@ async def stripe_txt_check_cmd(Client, message):
         os.remove(file_path)
 
         if not ccs:
-            await message.reply("❌ No valid cards found in the file.", quote=True)
+            await message.reply("✦ ɴᴏ ᴠᴀʟɪᴅ ᴄᴀʀᴅꜱ ꜰᴏᴜɴᴅ ɪɴ ꜰɪʟᴇ ✗ ✦", quote=True)
             return
 
         if len(ccs) > MAX_TSC_LIMIT:
-            await message.reply(f"⚠️ Only the first {MAX_TSC_LIMIT} cards will be processed.", quote=True)
+            await message.reply(f"✦ ᴏɴʟʏ ꜰɪʀꜱᴛ {MAX_TSC_LIMIT} ᴄᴀʀᴅꜱ ᴡɪʟʟ ʙᴇ ᴘʀᴏᴄᴇꜱꜱᴇᴅ ✦", quote=True)
             ccs = ccs[:MAX_TSC_LIMIT]
 
         await process_sequential_check(Client, message, ccs, user_id, first_name, role)
@@ -183,14 +221,18 @@ async def stripe_txt_check_cmd(Client, message):
 
 # --- SEQUENTIAL ONE-BY-ONE PROCESSING LOGIC ---
 async def process_sequential_check(Client, message, ccs, user_id, first_name, role):
-    initial_resp = f"""
-- Gateway - Stripe Charge 0.12$
-- CC Amount - {len(ccs)}
-- Checked - Checking CC For {first_name}
-- Status - Processing...⌛️
-"""
+    initial_resp = f"""✧ <b>ꜱᴘʏᴅᴇ ━ ᴍᴀꜱꜱ ᴄʜᴀʀɢᴇ</b> ✧
+▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰
+
+[玄] 𝙂𝙖𝙩𝙚 -» Stripe Charge 0.12$
+[玄] 𝘾𝘾 𝘼𝙢𝙤𝙪𝙣𝙩 -» {len(ccs)}
+[玄] 𝘾𝙝𝙚𝙘𝙠𝙞𝙣𝙜 -» {first_name}
+[玄] 𝙎𝙩𝙖𝙩𝙪𝙨 -» Processing...
+━━━━━━━━━━━━━━━━━━━━"""
     progress_msg = await message.reply(initial_resp, quote=True)
-    header_text = f"<b>↯ Stripe Charge 0.12$ 💎\nNumber Of CC Check : [{len(ccs)}]\n</b>\n"
+    header_text = f"""✧ <b>ꜱᴘʏᴅᴇ ━ ᴍᴀꜱꜱ ᴄʜᴀʀɢᴇ</b> ✧
+━━━━━━━━━━━━━━━━━━━━
+"""
     final_text = header_text
     start_time = time.perf_counter()
     
@@ -201,17 +243,15 @@ async def process_sequential_check(Client, message, ccs, user_id, first_name, ro
         getbin = await get_bin_details(cc_num)
         brand, type_, level, bank, country, flag = getbin[0], getbin[1], getbin[2], getbin[3], getbin[4], getbin[5]
         
-        card_resp = f"""{status}
-━━━━━━━━━━━━━
-[ϟ] 𝗖𝗖 - <code>{fullcc}</code>
-[ϟ] 𝗦𝘁𝗮𝘁𝘂𝘀 : {response}
-[ϟ] 𝗚𝗮𝘁𝗲  - {gateway}
-━━━━━━━━━━━━━
-[ϟ] B𝗶𝗻 : {cc_num[:6]}
-[ϟ] 𝗖𝗼𝘂𝗻𝘁𝗿𝘆 : {country} {flag}
-[ϟ] 𝗜𝘀𝘀𝘂𝗲𝗿 : {bank}
-[ϟ] 𝗧𝘆𝗽𝗲 : {brand} | {type_} - {level}
-\n"""
+        card_resp = f"""[玄] 𝘾𝘾 -» <code>{fullcc}</code>
+[玄] 𝙎𝙩𝙖𝙩𝙪𝙨 -» {status}
+[玄] 𝙍𝙚𝙨𝙪𝙡𝙩 -» {response}
+
+[玄] 𝘽𝙞𝙣 -» {brand} — {type_} — {level}
+[玄] 𝘽𝙖𝙣𝙠 -» {bank}
+[玄] 𝘾𝙤𝙪𝙣𝙩𝙧𝙮 -» {country} {flag}
+━━━━━━━━━━━━━━━━━━━━
+"""
         final_text += card_resp
         
         try:
@@ -222,12 +262,10 @@ async def process_sequential_check(Client, message, ccs, user_id, first_name, ro
         await asyncio.sleep(0.5)
 
     elapsed_time = round(time.perf_counter() - start_time, 2)
-    owner_link = '<a href="tg://user?id=8340881349">𝗦𝗣𝗜𝗗𝗘𝗥</a>'
-    footer = f"""━━━━━━━━━━━━━
-[ϟ] T/t : {elapsed_time}s | Proxy : Live ✨
-[ϟ] 𝗖𝗵𝗲𝗰𝗸𝗲𝗱 𝗯𝘆: <a href='tg://user?id={user_id}'> {first_name}</a> [ {role} ]
-[ϟ] 𝗢𝘄𝗻𝗲𝗿: {owner_link}
-╚━━━━━━「𝐒𝐏𝐘𝐃𝐄 𝐂𝐇𝐊」━━━━━━╝"""
+    footer = f"""[玄] 𝙏𝙞𝙢𝙚 -» {elapsed_time}s
+[玄] 𝘾𝙝𝙚𝙘𝙠𝙚𝙙 𝙗𝙮 -» <a href='tg://user?id={user_id}'>{first_name}</a> ↯ {role}
+[玄] 𝙊𝙬𝙣𝙚𝙧 -» @pipin_o
+━━━━━━━━━━━━━━━━━━━━"""
     
     final_text += footer
     await progress_msg.edit_text(final_text, disable_web_page_preview=True)
