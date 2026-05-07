@@ -262,7 +262,7 @@ async def process_sequential_check(Client, message, ccs, user_id, first_name, ro
     elapsed_time = round(time.perf_counter() - start_time, 2)
     footer = f"""[玄] 𝙏𝙞𝙢𝙚 -» {elapsed_time}s
 [玄] 𝘾𝙝𝙚𝙘𝙠𝙚𝙙 𝙗𝙮 -» <a href='tg://user?id={user_id}'>{first_name}</a> ↯ {role}
-[玄] 𝙊𝙬𝙣𝙚𝙧 -» @pipin_o
+[玄] 𝙊𝙬𝙣𝙚𝙧 -» @spid_3r
 ━━━━━━━━━━━━━━━━━━━━"""
     
     final_text += footer
