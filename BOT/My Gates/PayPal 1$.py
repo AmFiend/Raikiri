@@ -114,11 +114,9 @@ async def stripe_charge_cmd(Client, message):
 [玄] 𝘾𝘾 -» <code>{fullcc}</code>
 [玄] 𝙎𝙩𝙖𝙩𝙪𝙨 -» {status}
 [玄] 𝙍𝙚𝙨𝙥𝙤𝙣𝙨𝙚 -» {response}
-
 [玄] 𝘽𝙞𝙣 -» {brand} — {type_} — {level}
 [玄] 𝘽𝙖𝙣𝙠 -» {bank}
 [玄] 𝘾𝙤𝙪𝙣𝙩𝙧𝙮 -» {country} {flag}
-
 [玄] 𝙂𝙖𝙩𝙚𝙬𝙖𝙮 -» {gateway}
 [玄] 𝘾𝙝𝙚𝙘𝙠𝙚𝙙 𝙗𝙮 -» <a href='tg://user?id={message.from_user.id}'>{message.from_user.first_name}</a> ↯ {role}
 [玄] 𝙏𝙞𝙢𝙚 -» {time.perf_counter() - start:0.2f}s"""
