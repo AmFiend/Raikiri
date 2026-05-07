@@ -23,11 +23,11 @@ async def masscvvfunc(fullcc, user_id, session, bin_status):
             status = "Unknown"
             response = "No Response"
 
-        return f"[そ] 𝐂𝐚𝐫𝐝↯ <code>{fullcc}</code>\n<b>[ヸ] Status - {status}</b>\n<b>[仝] Result - ⤿ {response} ⤾</b>\n\n"
+        return f"[玄] 𝘾𝘾 -» <code>{fullcc}</code>\n[玄] 𝙎𝙩𝙖𝙩𝙪𝙨 -» {status}\n[玄] 𝙍𝙚𝙨𝙪𝙡𝙩 -» {response}\n\n"
     except Exception:
         import traceback
         await error_log(traceback.format_exc())
-        return f"<code>{fullcc}</code>\n<b>[仝] Result - Lookup Error ❌</b>\n"
+        return f"<code>{fullcc}</code>\n[玄] 𝙍𝙚𝙨𝙪𝙡𝙩 -» Lookup Error ✗\n"
 
 @Client.on_message(filters.command("mvbv", [".", "/"]))
 def multi(client, message):
@@ -59,12 +59,16 @@ async def stripe_mass_auth_cmd(client, message):
         ccs = getcc[1]
 
         if len(ccs) > 25:
-            await message.reply_text(f"Error: The maximum number of CC entries allowed is 25. You provided {len(ccs)}.", message.id)
+            await message.reply_text(f"✦ ᴍᴀx 25 ᴄᴄ ᴀʟʟᴏᴡᴇᴅ. ʏᴏᴜ ᴘʀᴏᴠɪᴅᴇᴅ {len(ccs)} ✦", message.id)
             return
 
         bin_numbers = [cc.split('|')[0][:6] for cc in ccs]
 
-        processing_msg = "Processing your request..."
+        processing_msg = """✧ <b>ꜱᴘʏᴅᴇ ━ ᴍᴀꜱꜱ ᴠʙᴠ</b> ✧
+▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰
+
+[玄] 𝙎𝙩𝙖𝙩𝙪𝙨 -» Processing...
+━━━━━━━━━━━━━━━━━━━━"""
         nov = await message.reply_text(processing_msg, message.id)
         with open("FILES/vbvbin.txt", "r", encoding="utf-8") as file:
             vbv_data = file.readlines()
@@ -87,11 +91,11 @@ async def stripe_mass_auth_cmd(client, message):
                     "response": "Lookup Card Error"
                 }
 
-        text = f"""
-MASS VBV CHECK [/mvbv]
+        text = f"""✧ <b>ꜱᴘʏᴅᴇ ━ ᴍᴀꜱꜱ ᴠʙᴠ</b> ✧
+━━━━━━━━━━━━━━━━━━━━
+[玄] 𝘾𝘾 𝘼𝙢𝙤𝙪𝙣𝙩 -» [{len(ccs)} / 25]
 
-Number Of CC Check : [{len(ccs)} / 25]
-\n"""
+"""
         amt = 0
         start = time.perf_counter()
         async with httpx.AsyncClient(timeout=30, follow_redirects=True) as session:
@@ -118,13 +122,11 @@ Number Of CC Check : [{len(ccs)} / 25]
         min = int(minutes)
         sec = int(seconds)
 
-        text += f"""
-╚━━━━━━「 𝑰𝑵𝑭𝑶 」━━━━━━╝
-⚜️ 𝑻𝒊𝒎𝒆 𝑺𝒑𝒆𝒏𝒕 -» {time.perf_counter() - start:0.2f} seconds
-⚜️ 𝑪𝒉𝒆c𝒌𝒆𝒅 𝒃𝒚: <a href='tg://user?id={message.from_user.id}'> {message.from_user.first_name}</a> [ {role} ]
-⚜️ 𝑶𝒘𝒏𝒆𝒓: <a href="tg://user?id=6622603977">𝑵𝒂𝒊𝒓𝒐𝒃𝒊𝒂𝒏𝒈𝒐𝒐𝒏</a>
-╚━━━━━━「𝐀𝐏𝐏𝐑𝐎𝐕𝐄𝐃 𝐂𝐇𝐄𝐂𝐊𝐄𝐑」━━━━━━╝
-"""
+        text += f"""━━━━━━━━━━━━━━━━━━━━
+[玄] 𝙏𝙞𝙢𝙚 -» {time.perf_counter() - start:0.2f}s
+[玄] 𝘾𝙝𝙚𝙘𝙠𝙚𝙙 𝙗𝙮 -» <a href='tg://user?id={message.from_user.id}'>{message.from_user.first_name}</a> ↯ {role}
+[玄] 𝙊𝙬𝙣𝙚𝙧 -» @pipin_o
+━━━━━━━━━━━━━━━━━━━━"""
         await client.edit_message_text(message.chat.id, nov.id, text)
         await massdeductcredit(user_id, len(ccs))
         await setantispamtime(user_id)
