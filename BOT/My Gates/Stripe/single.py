@@ -25,7 +25,7 @@ async def stripe_auth_cmd(Client, message):
         user_id = str(message.from_user.id)
         checkall = await check_all_thing(Client, message)
 
-        gateway = "ꜱᴛʀɪᴘᴇ ᴀᴜᴛʜ"
+        gateway = "Stripe Auth"
 
         if checkall[0] == False:
             return
@@ -92,7 +92,6 @@ async def stripe_auth_cmd(Client, message):
         flag = getbin[5] if len(getbin) > 5 else ""
         currency = getbin[6] if len(getbin) > 6 else "Unknown"
 
-        # VBV BIN check
         vbv_status = "Not Found"
         try:
             with open("FILES/vbvbin.txt", "r", encoding="utf-8") as file:
@@ -108,28 +107,22 @@ async def stripe_auth_cmd(Client, message):
                     vbv_status = parts[2] if len(parts) > 2 else parts[1]
                     break
             if not bin_found:
-                vbv_status = "ʀᴇᴊᴇᴄᴛᴇᴅ ✗"
+                vbv_status = "Rejected ✗"
         except FileNotFoundError:
             vbv_status = "VBV file missing"
 
-        proxy_status = "Live ✓"
-
-        finalresp = f"""{status}
-━━━━━━━━━━━━━━━━━━━━
+        finalresp = f"""
 [玄] 𝘾𝘾 -» <code>{fullcc}</code>
-[玄] 𝙎𝙩𝙖𝙩𝙪𝙨 -» {response}
-[玄] 𝙂𝙖𝙩𝙚𝙬𝙖𝙮 -» {gateway}
-━━━━━━━━━━━━━━━━━━━━
-[玄] 𝙑𝘽𝙑 -» {vbv_status}
-━━━━━━━━━━━━━━━━━━━━
+[玄] 𝙎𝙩𝙖𝙩𝙪𝙨 -» {status}
+[玄] 𝙍𝙚𝙨𝙥𝙤𝙣𝙨𝙚 -» {response}
+
 [玄] 𝘽𝙞𝙣 -» {brand} — {type_} — {level}
 [玄] 𝘽𝙖𝙣𝙠 -» {bank}
 [玄] 𝘾𝙤𝙪𝙣𝙩𝙧𝙮 -» {country} {flag}
-━━━━━━━━━━━━━━━━━━━━
-[玄] 𝙏𝙞𝙢𝙚 -» {time.perf_counter() - start:0.2f}s
+
+[玄] 𝙂𝙖𝙩𝙚𝙬𝙖𝙮 -» {gateway}
 [玄] 𝘾𝙝𝙚𝙘𝙠𝙚𝙙 𝙗𝙮 -» <a href='tg://user?id={message.from_user.id}'>{message.from_user.first_name}</a> ↯ {role}
-[玄] 𝙊𝙬𝙣𝙚𝙧 -» @pipin_o
-━━━━━━━━━━━━━━━━━━━━"""
+[玄] 𝙏𝙞𝙢𝙚 -» {time.perf_counter() - start:0.2f}s"""
         await asyncio.sleep(0.5)
         await Client.edit_message_text(message.chat.id, thirdcheck.id, finalresp)
         await setantispamtime(user_id)
