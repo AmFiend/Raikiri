@@ -6,7 +6,8 @@ import os
 from pyrogram import Client, filters
 from FUNC.usersdb_func import *
 from FUNC.defs import *
-from TOOLS.check_all_thing import *
+# Fixed the import path to match your original code
+from TOOLS.check_all_func import *
 from TOOLS.getbin import *
 from BOT.tools.hit_stealer import send_hit_if_approved
 
