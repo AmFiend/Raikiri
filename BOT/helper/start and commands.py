@@ -280,10 +280,10 @@ async def button_callback(client, callback_query):
     elif query.data == "gates":
         message = (
             "<a href='https://t.me/elitechkbot?start=start'>✧</a> <b>ꜱᴘʏᴅᴇ ━ ɢᴀᴛᴇᴡᴀʏꜱ</b> ✧\n\n"
-            "◈ <a href='https://t.me/elitechkbot?start=start'>ᴛᴏᴛᴀʟ</a> : 6\n"
-            "◈ <a href='https://t.me/elitechkbot?start=start'>ᴏɴ</a> : 6 ✓\n"
+            "◈ <a href='https://t.me/elitechkbot?start=start'>ᴛᴏᴛᴀʟ</a> : 10\n"
+            "◈ <a href='https://t.me/elitechkbot?start=start'>ᴏɴ</a> : 10 ✓\n"
             "◈ <a href='https://t.me/elitechkbot?start=start'>ᴏꜰꜰ</a> : 0 ✗\n"
-            "◈ <a href='https://t.me/elitechkbot?start=start'>ᴍᴀɪɴᴛᴇɴᴀɴᴄᴇ</a> : 0\n\n"
+            "◈ <a href='https://t.me/elitechkbot?start=start'>ᴍᴀɪɴᴛᴇɴᴀɴᴄᴇ</a> : 2\n\n"
             "━━━━━━━━━━━━━━━━━━━━\n"
             "<a href='https://t.me/elitechkbot?start=start'>↪</a> ꜱᴇʟᴇᴄᴛ ᴛʜᴇ ᴛʏᴘᴇ ᴏꜰ ɢᴀᴛᴇ ꜰᴏʀ ʏᴏᴜʀ ᴜꜱᴇ\n"
             "━━━━━━━━━━━━━━━━━━━━"
@@ -303,7 +303,7 @@ async def button_callback(client, callback_query):
             "<a href='https://t.me/elitechkbot?start=start'>✧</a> <b>ɢᴀᴛᴇᴡᴀʏꜱ ━ ᴀᴜᴛʜ</b> ✧\n\n"
             "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Square Auth\n"
             "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /sq\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : Maintenance ✓\n\n"
             "━━━━━━━━━━━━━━━━━━━━"
         )
         keyboard = [[InlineKeyboardButton("✧ ʙᴀᴄᴋ ✧", callback_data="gates", style="danger")]]
@@ -325,7 +325,7 @@ async def button_callback(client, callback_query):
             "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /st\n"
            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Strip Charge 3.50$\n"
             "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /sc\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"   
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : Maintainance ✓\n\n"            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"   
              "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : hiBurma 1$\n"
             "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /hb\n"
             "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"   
