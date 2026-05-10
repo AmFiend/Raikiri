@@ -326,6 +326,9 @@ async def button_callback(client, callback_query):
            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Strip Charge 3.50$\n"
             "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /sc\n"
             "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"   
+             "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : hiBurma 1$\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /hb\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"   
   
             "━━━━━━━━━━━━━━━━━━━━"
         )
@@ -353,6 +356,9 @@ async def button_callback(client, callback_query):
             "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : PayPal Mass\n"
             "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /mpp\n"
             "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
+           "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Hiburma mass\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /mhb\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"             
             "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Shopify Mass\n"
             "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /msh\n"
             "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
