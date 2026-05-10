@@ -280,8 +280,8 @@ async def button_callback(client, callback_query):
     elif query.data == "gates":
         message = (
             "<a href='https://t.me/elitechkbot?start=start'>✧</a> <b>ꜱᴘʏᴅᴇ ━ ɢᴀᴛᴇᴡᴀʏꜱ</b> ✧\n\n"
-            "◈ <a href='https://t.me/elitechkbot?start=start'>ᴛᴏᴛᴀʟ</a> : 10\n"
-            "◈ <a href='https://t.me/elitechkbot?start=start'>ᴏɴ</a> : 10 ✓\n"
+            "◈ <a href='https://t.me/elitechkbot?start=start'>ᴛᴏᴛᴀʟ</a> : 12\n"
+            "◈ <a href='https://t.me/elitechkbot?start=start'>ᴏɴ</a> : 12 ✓\n"
             "◈ <a href='https://t.me/elitechkbot?start=start'>ᴏꜰꜰ</a> : 0 ✗\n"
             "◈ <a href='https://t.me/elitechkbot?start=start'>ᴍᴀɪɴᴛᴇɴᴀɴᴄᴇ</a> : 2\n\n"
             "━━━━━━━━━━━━━━━━━━━━\n"
