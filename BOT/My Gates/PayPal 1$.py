@@ -138,16 +138,14 @@ async def stripe_charge_cmd(Client, message):
         thirdcheck = await Client.edit_message_text(message.chat.id, secondchk.id, thirdresp)
 
         # Invisible lines to force collapse by default
-        invisible_lines = "&#160;\n" * 10
         finalresp = f"""💠 𝘾𝙘-» <code>{fullcc}</code>
 💠 𝙎𝙩𝙖𝙩𝙪𝙨-» {status}
-💠 𝙍𝙚𝙨𝙪𝙡𝙩-» {response} 💎
+💠 𝙍𝙚𝙨𝙪𝙡𝙩-» {response}
 ════『 INFO 』════
 <blockquote expandable>💠 𝘾𝙤𝙪𝙣𝙩𝙧𝙮-» {country} {flag}
 💠 𝘽𝙞𝙣-» {brand}
 _{type_}-{level}
-💠 𝘽𝙖𝙣𝙠-» {bank}
-{invisible_lines}</blockquote>
+💠 𝘽𝙖𝙣𝙠-» {bank}</blockquote>
 ════『 META 』════
 💠 𝙂𝙖𝙩𝙚𝙬𝙖𝙮 -» {gateway}
 💠 𝙏𝙞𝙢𝙚-» {time.perf_counter() - start:0.2f}s
