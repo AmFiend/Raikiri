@@ -67,7 +67,7 @@ async def stripe_charge_cmd(Client, message):
 
 ↪ <b>ᴜꜱᴀɢᴇ :</b> /pp1 cc|mes|ano|cvv
 ━━━━━━━━━━━━━━━━━━━━"""
-            await message.reply_text(resp, quote=True)
+            await message.reply_text(resp, quote=True, parse_mode="html")
             return
             
         cc, mes, ano, cvv = getcc[0], getcc[1], getcc[2], getcc[3]
@@ -80,7 +80,7 @@ async def stripe_charge_cmd(Client, message):
 💠 𝙂𝙖𝙩𝙚-» <i>{gateway}</i>
 💠 𝙍𝙚𝙨𝙥𝙤𝙣𝙨𝙚-» ■□□□"""
         await asyncio.sleep(0.5)
-        firstchk = await message.reply_text(firstresp, quote=True)
+        firstchk = await message.reply_text(firstresp, quote=True, parse_mode="html")
 
         secondresp = f"""✧ ᴄʜᴇᴄᴋɪɴɢ.. ✧
 
@@ -88,7 +88,7 @@ async def stripe_charge_cmd(Client, message):
 💠 𝙂𝙖𝙩𝙚-» <i>{gateway}</i>
 💠 𝙍𝙚𝙨𝙥𝙤𝙣𝙨𝙚-» ■■■□"""
         await asyncio.sleep(0.5)
-        secondchk = await Client.edit_message_text(message.chat.id, firstchk.id, secondresp)
+        secondchk = await Client.edit_message_text(message.chat.id, firstchk.id, secondresp, parse_mode="html")
 
         start = time.perf_counter()
         status, response, gateway = await call_stripe_api(fullcc)
@@ -102,15 +102,16 @@ async def stripe_charge_cmd(Client, message):
 💠 𝙂𝙖𝙩𝙚-» <i>{gateway}</i>
 💠 𝙍𝙚𝙨𝙥𝙤𝙣𝙨𝙚-» ■■■■"""
         await asyncio.sleep(0.5)
-        thirdcheck = await Client.edit_message_text(message.chat.id, secondchk.id, thirdresp)
+        thirdcheck = await Client.edit_message_text(message.chat.id, secondchk.id, thirdresp, parse_mode="html")
 
         finalresp = f"""💠 𝘾𝙘-» <code>{fullcc}</code>
 💠 𝙎𝙩𝙖𝙩𝙪𝙨-» {status}
-💠 𝙍𝙚𝙨𝙪𝙡𝙩-» {response} 💎
-<details><summary>════『 INFO 』════</summary>💠 𝘾𝙤𝙪𝙣𝙩𝙧𝙮-» {country} {flag}
+💠 𝙍𝙚𝙨𝙪𝙡𝙩-» {response}
+════『 INFO 』════
+<blockquote expandable>💠 𝘾𝙤𝙪𝙣𝙩𝙧𝙮-» {country} {flag}
 💠 𝘽𝙞𝙣-» {brand}
 _{type_}-{level}
-💠 𝘽𝙖𝙣𝙠-» {bank}</details>
+💠 𝘽𝙖𝙣𝙠-» {bank}</blockquote>
 ════『 META 』════
 💠 𝙂𝙖𝙩𝙚𝙬𝙖𝙮 -» {gateway}
 💠 𝙏𝙞𝙢𝙚-» {time.perf_counter() - start:0.2f}s
@@ -119,7 +120,7 @@ _{type_}-{level}
 ════『 OWNER 』════
       <a href=\'tg://user?id=8340881349\'>S⊶P⊶I⊶D⊶E⊶R</a>"""
         
-        await Client.edit_message_text(message.chat.id, thirdcheck.id, finalresp, disable_web_page_preview=True)
+        await Client.edit_message_text(message.chat.id, thirdcheck.id, finalresp, disable_web_page_preview=True, parse_mode="html")
         
         await setantispamtime(user_id)
         await deductcredit(user_id)
@@ -157,7 +158,7 @@ async def stripe_mass_check_cmd(Client, message):
 
 ↪ <b>ᴜꜱᴀɢᴇ :</b> Reply to cards or /mpp1 cc|mm|yy|cvc (up to {MAX_MSC_LIMIT})
 ━━━━━━━━━━━━━━━━━━━━"""
-            await message.reply_text(resp, quote=True)
+            await message.reply_text(resp, quote=True, parse_mode="html")
             return
 
         if len(ccs) > MAX_MSC_LIMIT:
@@ -194,7 +195,7 @@ async def stripe_txt_check_cmd(Client, message):
 
 ⟢ ᴜᴘʟᴏᴀᴅ ᴀ .ᴛxᴛ ꜰɪʟᴇ ᴏʀ ʀᴇᴘʟʏ ᴛᴏ ᴏɴᴇ (up to {MAX_TSC_LIMIT})
 ━━━━━━━━━━━━━━━━━━━━"""
-            await message.reply_text(resp, quote=True)
+            await message.reply_text(resp, quote=True, parse_mode="html")
             return
 
         file_path = await Client.download_media(target_message)
@@ -226,7 +227,7 @@ async def process_sequential_check(Client, message, ccs, user_id, first_name, ro
 💠 𝘾𝙝𝙚𝙘𝙠𝙞𝙣𝙜 -» {first_name}
 💠 𝙎𝙩𝙖𝙩𝙪𝙨 -» Processing...
 ━━━━━━━━━━━━━━━━━━━━"""
-    progress_msg = await message.reply(initial_resp, quote=True)
+    progress_msg = await message.reply(initial_resp, quote=True, parse_mode="html")
     header_text = f"""✧ <b>ꜱᴘʏᴅᴇ ━ ᴍᴀꜱꜱ ᴄʜᴇᴄᴋ</b> ✧
 ━━━━━━━━━━━━━━━━━━━━
 """
@@ -242,17 +243,18 @@ async def process_sequential_check(Client, message, ccs, user_id, first_name, ro
         
         card_resp = f"""💠 𝘾𝙘-» <code>{fullcc}</code>
 💠 𝙎𝙩𝙖𝙩𝙪𝙨-» {status}
-💠 𝙍𝙚𝙨𝙪𝙡𝙩-» {response} 💎
-<details><summary>════『 INFO 』════</summary>💠 𝘾𝙤𝙪𝙣𝙩𝙧𝙮-» {country} {flag}
+💠 𝙍𝙚𝙨𝙪𝙡𝙩-» {response}
+════『 INFO 』════
+<blockquote expandable>💠 𝘾𝙤𝙪𝙣𝙩𝙧𝙮-» {country} {flag}
 💠 𝘽𝙞𝙣-» {brand}
 _{type_}-{level}
-💠 𝘽𝙖𝙣𝙠-» {bank}</details>
+💠 𝘽𝙖𝙣𝙠-» {bank}</blockquote>
 ━━━━━━━━━━━━━━━━━━━━
 """
         final_text += card_resp
         
         try:
-            await progress_msg.edit_text(final_text, disable_web_page_preview=True)
+            await progress_msg.edit_text(final_text, disable_web_page_preview=True, parse_mode="html")
         except:
             pass
         
@@ -262,11 +264,11 @@ _{type_}-{level}
     footer = f"""════『 META 』════
 💠 𝙂𝙖𝙩𝙚𝙬𝙖𝙮 -» {gateway}
 💠 𝙏𝙞𝙢𝙚-» {elapsed_time}s
-💠 𝘾𝙝𝙚𝙘𝙠𝙚𝙙 𝙗𝙮-» <a href=\'tg://user?id={user_id}\'>{first_name}</a> ↯
+💠 𝘾𝙝𝙚𝙘𝙠𝙚checked 𝙗𝙮-» <a href=\'tg://user?id={user_id}\'>{first_name}</a> ↯
 {role}
 ════『 OWNER 』════
       <a href=\'tg://user?id=8340881349\'>S⊶P⊶I⊶D⊶E⊶R</a>"""
     
     final_text += footer
-    await progress_msg.edit_text(final_text, disable_web_page_preview=True)
+    await progress_msg.edit_text(final_text, disable_web_page_preview=True, parse_mode="html")
     await setantispamtime(user_id)
