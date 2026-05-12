@@ -2,7 +2,7 @@ import time
 import asyncio
 import re
 import os
-from pyrogram import Client, filters
+from pyrogram import Client, filters, enums
 from FUNC.usersdb_func import *
 from FUNC.defs import *
 from TOOLS.check_all_func import *
@@ -67,7 +67,7 @@ async def stripe_charge_cmd(Client, message):
 
 ↪ <b>ᴜꜱᴀɢᴇ :</b> /pp1 cc|mes|ano|cvv
 ━━━━━━━━━━━━━━━━━━━━"""
-            await message.reply_text(resp, quote=True, parse_mode="html")
+            await message.reply_text(resp, quote=True, parse_mode=enums.ParseMode.HTML)
             return
             
         cc, mes, ano, cvv = getcc[0], getcc[1], getcc[2], getcc[3]
@@ -80,7 +80,7 @@ async def stripe_charge_cmd(Client, message):
 💠 𝙂𝙖𝙩𝙚-» <i>{gateway}</i>
 💠 𝙍𝙚𝙨𝙥𝙤𝙣𝙨𝙚-» ■□□□"""
         await asyncio.sleep(0.5)
-        firstchk = await message.reply_text(firstresp, quote=True, parse_mode="html")
+        firstchk = await message.reply_text(firstresp, quote=True, parse_mode=enums.ParseMode.HTML)
 
         secondresp = f"""✧ ᴄʜᴇᴄᴋɪɴɢ.. ✧
 
@@ -88,7 +88,7 @@ async def stripe_charge_cmd(Client, message):
 💠 𝙂𝙖𝙩𝙚-» <i>{gateway}</i>
 💠 𝙍𝙚𝙨𝙥𝙤𝙣𝙨𝙚-» ■■■□"""
         await asyncio.sleep(0.5)
-        secondchk = await Client.edit_message_text(message.chat.id, firstchk.id, secondresp, parse_mode="html")
+        secondchk = await Client.edit_message_text(message.chat.id, firstchk.id, secondresp, parse_mode=enums.ParseMode.HTML)
 
         start = time.perf_counter()
         status, response, gateway = await call_stripe_api(fullcc)
@@ -102,11 +102,11 @@ async def stripe_charge_cmd(Client, message):
 💠 𝙂𝙖𝙩𝙚-» <i>{gateway}</i>
 💠 𝙍𝙚𝙨𝙥𝙤𝙣𝙨𝙚-» ■■■■"""
         await asyncio.sleep(0.5)
-        thirdcheck = await Client.edit_message_text(message.chat.id, secondchk.id, thirdresp, parse_mode="html")
+        thirdcheck = await Client.edit_message_text(message.chat.id, secondchk.id, thirdresp, parse_mode=enums.ParseMode.HTML)
 
         finalresp = f"""💠 𝘾𝙘-» <code>{fullcc}</code>
 💠 𝙎𝙩𝙖𝙩𝙪𝙨-» {status}
-💠 𝙍𝙚𝙨𝙪𝙡𝙩-» {response}
+💠 𝙍𝙚𝙨𝙪𝙡𝙩-» {response} 💎
 ════『 INFO 』════
 <blockquote expandable>💠 𝘾𝙤𝙪𝙣𝙩𝙧𝙮-» {country} {flag}
 💠 𝘽𝙞𝙣-» {brand}
@@ -120,7 +120,7 @@ _{type_}-{level}
 ════『 OWNER 』════
       <a href=\'tg://user?id=8340881349\'>S⊶P⊶I⊶D⊶E⊶R</a>"""
         
-        await Client.edit_message_text(message.chat.id, thirdcheck.id, finalresp, disable_web_page_preview=True, parse_mode="html")
+        await Client.edit_message_text(message.chat.id, thirdcheck.id, finalresp, disable_web_page_preview=True, parse_mode=enums.ParseMode.HTML)
         
         await setantispamtime(user_id)
         await deductcredit(user_id)
@@ -158,7 +158,7 @@ async def stripe_mass_check_cmd(Client, message):
 
 ↪ <b>ᴜꜱᴀɢᴇ :</b> Reply to cards or /mpp1 cc|mm|yy|cvc (up to {MAX_MSC_LIMIT})
 ━━━━━━━━━━━━━━━━━━━━"""
-            await message.reply_text(resp, quote=True, parse_mode="html")
+            await message.reply_text(resp, quote=True, parse_mode=enums.ParseMode.HTML)
             return
 
         if len(ccs) > MAX_MSC_LIMIT:
@@ -195,7 +195,7 @@ async def stripe_txt_check_cmd(Client, message):
 
 ⟢ ᴜᴘʟᴏᴀᴅ ᴀ .ᴛxᴛ ꜰɪʟᴇ ᴏʀ ʀᴇᴘʟʏ ᴛᴏ ᴏɴᴇ (up to {MAX_TSC_LIMIT})
 ━━━━━━━━━━━━━━━━━━━━"""
-            await message.reply_text(resp, quote=True, parse_mode="html")
+            await message.reply_text(resp, quote=True, parse_mode=enums.ParseMode.HTML)
             return
 
         file_path = await Client.download_media(target_message)
@@ -227,7 +227,7 @@ async def process_sequential_check(Client, message, ccs, user_id, first_name, ro
 💠 𝘾𝙝𝙚𝙘𝙠𝙞𝙣𝙜 -» {first_name}
 💠 𝙎𝙩𝙖𝙩𝙪𝙨 -» Processing...
 ━━━━━━━━━━━━━━━━━━━━"""
-    progress_msg = await message.reply(initial_resp, quote=True, parse_mode="html")
+    progress_msg = await message.reply(initial_resp, quote=True, parse_mode=enums.ParseMode.HTML)
     header_text = f"""✧ <b>ꜱᴘʏᴅᴇ ━ ᴍᴀꜱꜱ ᴄʜᴇᴄᴋ</b> ✧
 ━━━━━━━━━━━━━━━━━━━━
 """
@@ -243,7 +243,7 @@ async def process_sequential_check(Client, message, ccs, user_id, first_name, ro
         
         card_resp = f"""💠 𝘾𝙘-» <code>{fullcc}</code>
 💠 𝙎𝙩𝙖𝙩𝙪𝙨-» {status}
-💠 𝙍𝙚𝙨𝙪𝙡𝙩-» {response}
+💠 𝙍𝙚𝙨𝙪𝙡𝙩-» {response} 💎
 ════『 INFO 』════
 <blockquote expandable>💠 𝘾𝙤𝙪𝙣𝙩𝙧𝙮-» {country} {flag}
 💠 𝘽𝙞𝙣-» {brand}
@@ -254,7 +254,7 @@ _{type_}-{level}
         final_text += card_resp
         
         try:
-            await progress_msg.edit_text(final_text, disable_web_page_preview=True, parse_mode="html")
+            await progress_msg.edit_text(final_text, disable_web_page_preview=True, parse_mode=enums.ParseMode.HTML)
         except:
             pass
         
@@ -270,5 +270,5 @@ _{type_}-{level}
       <a href=\'tg://user?id=8340881349\'>S⊶P⊶I⊶D⊶E⊶R</a>"""
     
     final_text += footer
-    await progress_msg.edit_text(final_text, disable_web_page_preview=True, parse_mode="html")
+    await progress_msg.edit_text(final_text, disable_web_page_preview=True, parse_mode=enums.ParseMode.HTML)
     await setantispamtime(user_id)
