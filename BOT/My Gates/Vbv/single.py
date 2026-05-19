@@ -7,92 +7,117 @@ from FUNC.defs import *
 from TOOLS.check_all_func import *
 from TOOLS.getbin import *
 
+# Owner DM Link (clickable ㊕)
+OWNER_DM = "https://t.me/spid_3r"
+SYMBOL = f"<a href='{OWNER_DM}'>㊕</a>"
+
 @Client.on_message(filters.command("vbv", [".", "/"]))
-async def stripe_auth_cmd(Client, message):
+async def vbv_cmd(Client, message):
     try:
         user_id = message.from_user.id
+        first_name = message.from_user.first_name
         gateway = "3DS Lookup"
-        approve = "𝗣𝗮𝘀𝘀𝗲𝗱 ✅"
 
         checkall = await check_all_thing(Client, message)
-        if checkall[0] == False:
+        if not checkall[0]:
             return
-
         role = checkall[1]
+
         getcc = await getmessage(message)
-        if getcc == False:
-            resp = f"""<b>
-Gate Name: {gateway} ♻️
-CMD: /vbv
+        if not getcc:
+            resp = f"""✦ <b>ɴᴏ ᴄᴄ ꜰᴏᴜɴᴅ</b> ✦
+▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰
 
-Message: No CC Found in your input ❌
+⟢ <b>ɢᴀᴛᴇ :</b> {gateway}
+◈ <b>ᴄᴍᴅ :</b> /vbv
 
-Usage: /vbv cc|month|year|cvv</b>"""
-            await message.reply_text(resp, message.id)
+⟢ ɴᴏ ᴄᴄ ꜰᴏᴜɴᴅ ɪɴ ʏᴏᴜʀ ɪɴᴘᴜᴛ ✗
+
+↪ <b>ᴜꜱᴀɢᴇ :</b> /vbv cc|mm|yyyy|cvv
+━━━━━━━━━━━━━━━━━━━━"""
+            await message.reply_text(resp, quote=True, parse_mode="HTML")
             return
 
         cc, mes, ano, cvv = getcc[0], getcc[1], getcc[2], getcc[3]
         fullcc = f"{cc}|{mes}|{ano}|{cvv}"
-        bin = cc[:6]
+        bin_num = cc[:6]
 
-        if bin.startswith('3'):
-            unsupport_resp = f"""<b>
-Unsupported card type.</b>"""
-            await message.reply_text(unsupport_resp, message.id)
+        # Amex not supported
+        if bin_num.startswith('3'):
+            unsupport_resp = f"""❌ 𝗨𝗻𝘀𝘂𝗽𝗽𝗼𝗿𝘁𝗲𝗱 𝗖𝗮𝗿𝗱
+
+{SYMBOL} 𝗖𝗮𝗿𝗱 ⇾ <code>{fullcc}</code>
+{SYMBOL} 𝗚𝗮𝘁𝗲𝘄𝗮𝘆 ⇾ {gateway}
+{SYMBOL} 𝗥𝗲𝘀𝗽𝗼𝗻𝘀𝗲 ⇾ American Express not supported
+
+{SYMBOL} 𝗖𝗵𝗲𝗰ᴋᴇᴅ 𝗕ʏ: {first_name} ({role})
+{SYMBOL} 𝗢ᴡɴᴇʀ: <a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
+            await message.reply_text(unsupport_resp, quote=True, parse_mode="HTML")
             return
 
-        processing_msg = "Processing your request..."
-        processing_reply = await message.reply_text(processing_msg, message.id)
+        processing_msg = f"""✧ ᴄʜᴇᴄᴋɪɴɢ. ✧
 
-        # Check vbvbin.txt file
+{SYMBOL} 𝘾𝘾 -» <code>{fullcc}</code>
+{SYMBOL} 𝙂𝙖𝙩𝙚 -» <i>{gateway}</i>
+{SYMBOL} 𝙍𝙚𝙨𝙥𝙤𝙣𝙨𝙚 -» ■□□□"""
+        processing_reply = await message.reply_text(processing_msg, quote=True, parse_mode="HTML")
+
+        # Read VBV BIN file
         with open("FILES/vbvbin.txt", "r", encoding="utf-8") as file:
             vbv_data = file.readlines()
 
         bin_found = False
+        status = "𝗣𝗮𝘀𝘀𝗲𝗱 ✅"
+        response_message = "3DS Passed"
         for line in vbv_data:
-            if line.startswith(bin):
+            if line.startswith(bin_num):
                 bin_found = True
                 bin_response = line.strip().split('|')[1]
                 response_message = line.strip().split('|')[2]
                 if "3D TRUE ❌" in bin_response:
-                    approve = "𝗥𝗲𝗷𝗲𝗰𝘁𝗲𝗱 ❌"
+                    status = "𝗥𝗲𝗷𝗲𝗰𝘁𝗲𝗱 ❌"
                 break
 
         if not bin_found:
-            approve = "𝗥𝗲𝗷𝗲𝗰𝘁𝗲𝗱 ❌"
-            bin_response = "Not Found"
+            status = "𝗥𝗲𝗷𝗲𝗰𝘁𝗲𝗱 ❌"
             response_message = "Lookup Card Error"
 
         start = time.perf_counter()
-        session = httpx.AsyncClient(timeout=100)
         getbin = await get_bin_details(cc)
-        await session.aclose()
+        brand, type_, level, bank, country, flag, currency = getbin[0], getbin[1], getbin[2], getbin[3], getbin[4], getbin[5], getbin[6]
 
-        brand = getbin[0]
-        type = getbin[1]
-        level = getbin[2]
-        bank = getbin[3]
-        country = getbin[4]
-        flag = getbin[5]
+        # Update progress dots
+        secondresp = f"""✧ ᴄʜᴇᴄᴋɪɴɢ.. ✧
 
-        finalresp = f"""
-{approve}
+{SYMBOL} 𝘾𝘾 -» <code>{fullcc}</code>
+{SYMBOL} 𝙂𝙖𝙩𝙚 -» <i>{gateway}</i>
+{SYMBOL} 𝙍𝙚𝙨𝙥𝙤𝙣𝙨𝙚 -» ■■■□"""
+        await asyncio.sleep(0.5)
+        await Client.edit_message_text(message.chat.id, processing_reply.id, secondresp, parse_mode="HTML")
 
-[そ] 𝗖𝗮𝗿𝗱 ⇾ <code>{fullcc}</code>
-[ヸ] 𝐆𝐚𝐭𝐞𝐰𝐚𝐲 ⇾ {gateway}
-[仝] 𝐑𝐞𝐬𝐩𝐨𝐧𝐬𝐞 ⇾ {response_message}
+        thirdresp = f"""✧ ᴄʜᴇᴄᴋɪɴɢ... ✧
 
-[そ] 𝗜𝗻𝗳𝗼 ⇾ {brand} - {type} - {level}
-[ヸ] 𝐈𝐬𝐬𝐮𝐞𝐫 ⇾ {bank}
-[仝] 𝐂𝐨𝐮𝐧𝐭𝐫𝐲 ⇾ {country} {flag}
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-╚━━━━━━「 𝑰𝑵𝑭𝑶 」━━━━━━╝
-⚜️ 𝑻𝒊𝒎𝒆 𝑺𝒑𝒆𝒏𝒕 -» {time.perf_counter() - start:0.2f} seconds
-⚜️ 𝑪𝒉𝒆c𝒌𝒆𝒅 𝒃𝒚: <a href='tg://user?id={message.from_user.id}'> {message.from_user.first_name}</a> [ {role} ]
-⚜️ 𝑶𝒘𝒏𝒆𝒓: <a href="tg://user?id=6622603977">𝑵𝒂𝒊𝒓𝒐𝒃𝒊𝒂𝒏𝒈𝒐𝒐𝒏</a>
-╚━━━━━━「𝐀𝐏𝐏𝐑𝐎𝐕𝐄𝐃 𝐂𝐇𝐄𝐂𝐊𝐄𝐑」━━━━━━╝
-"""
-        await Client.edit_message_text(message.chat.id, processing_reply.id, finalresp)
+{SYMBOL} 𝘾𝘾 -» <code>{fullcc}</code>
+{SYMBOL} 𝙂𝙖𝙩𝙚 -» <i>{gateway}</i>
+{SYMBOL} 𝙍𝙚𝙨𝙥𝙤𝙣𝙨𝙚 -» ■■■■"""
+        await asyncio.sleep(0.5)
+        await Client.edit_message_text(message.chat.id, processing_reply.id, thirdresp, parse_mode="HTML")
+
+        finalresp = f"""{status}
+
+{SYMBOL} 𝗖𝗮𝗿𝗱 ⇾ <code>{fullcc}</code>
+{SYMBOL} 𝗚𝗮𝘁𝗲𝘄𝗮𝘆 ⇾ {gateway}
+{SYMBOL} 𝗥𝗲𝘀𝗽𝗼𝗻𝘀𝗲 ⇾ {response_message}
+
+{SYMBOL} 𝗕𝗜𝗡 𝗜𝗻𝗳𝗼: {brand} — {type_} — {level}
+{SYMBOL} 𝗕𝗮𝗻𝗸: {bank}
+{SYMBOL} 𝗖𝗼𝘂𝗻𝘁𝗿𝘆: {country} {flag}
+
+{SYMBOL} 𝗧𝗼𝗼ᴋ {time.perf_counter() - start:.2f} 𝘀ᴇᴄᴏɴᴅs
+{SYMBOL} 𝗖ʜᴇᴄᴋᴇᴅ 𝗕ʏ: {first_name} ({role})
+{SYMBOL} 𝗢ᴡɴᴇʀ: <a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
+
+        await Client.edit_message_text(message.chat.id, processing_reply.id, finalresp, disable_web_page_preview=True, parse_mode="HTML")
         await setantispamtime(user_id)
         await deductcredit(user_id)
 
