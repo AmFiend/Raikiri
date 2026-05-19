@@ -1,4 +1,35 @@
 from FUNC.usersdb_func import *
+# Add these imports at the top of your func.py if not already present
+from datetime import date, timedelta
+
+async def insert_variable_gc(gc, days):
+    from mongodb import gcdb
+    info = {
+        "gc": gc,
+        "status": "ACTIVE",
+        "type": "VARIABLE",
+        "days": days
+    }
+    gcdb.insert_one(info)
+
+async def variable_plan_gc(user_id, days):
+    """Activate a premium plan for the given number of days (VARIABLE key)"""
+    await check_negetive_credits(user_id)
+    
+    get_user_info = await getuserinfo(user_id)
+    setkey = int(get_user_info["totalkey"]) + 1
+    usersdb.update_one({"id": user_id}, {"$set": {"totalkey": setkey}})
+    
+    if get_user_info["status"] == "FREE":
+        usersdb.update_one({"id": user_id}, {"$set": {"status": "PREMIUM"}})
+    
+    # Set plan name with days
+    usersdb.update_one({"id": user_id}, {"$set": {"plan": f"Premium {days} Days"}})
+    
+    # Calculate expiry date
+    new_expiry = date.today() + timedelta(days=days)
+    expiry_str = new_expiry.strftime("%d-%m-%Y")
+    usersdb.update_one({"id": user_id}, {"$set": {"expiry": expiry_str}})
 
 def gcgenfunc(len=5):
     import random
