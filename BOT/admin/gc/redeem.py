@@ -2,7 +2,6 @@ from .func import *
 from pyrogram import Client, filters
 from FUNC.usersdb_func import *
 
-
 @Client.on_message(filters.command("redeem", [".", "/"]))
 async def cmd_gc(Client, message):
     try:
@@ -22,7 +21,7 @@ async def cmd_gc(Client, message):
             return
 
         try:
-            gc  = message.text.split(" ")[1]
+            gc = message.text.split(" ")[1]
         except:
             resp = "<b>✦ ᴘʀᴏᴠɪᴅᴇ ᴀ ᴠᴀʟɪᴅ ɢɪꜰᴛᴄᴏᴅᴇ ✗ ✦</b>"
             await message.reply_text(resp, message.id)
@@ -33,7 +32,6 @@ async def cmd_gc(Client, message):
             resp = "<b>✦ ᴘʀᴏᴠɪᴅᴇ ᴀ ᴠᴀʟɪᴅ ɢɪꜰᴛᴄᴏᴅᴇ ✗ ✦</b>"
             await message.reply_text(resp, message.id)
             return
-        
 
         get_user_info = usersdb.find_one({"id": user_id})
         if "∞" in get_user_info["plan"]:
@@ -41,10 +39,10 @@ async def cmd_gc(Client, message):
             await message.reply_text(resp, message.id)
             return
 
-
         status = str(detail["status"])
-        type   = str(detail["type"])
-        if status == "ACTIVE" and type == "PREMIUM":
+        type_ = str(detail["type"])   # rename to avoid shadowing built-in type
+
+        if status == "ACTIVE" and type_ == "PREMIUM":
             await onlycredits(user_id)
             await updategc(gc)
             resp = f"""<b>
@@ -57,7 +55,7 @@ Redeemed ✓
 </b>"""
             await message.reply_text(resp, message.id)
 
-        elif status == "ACTIVE" and type == "PLAN1":
+        elif status == "ACTIVE" and type_ == "PLAN1":
             await plan1gc(user_id)
             await updategc(gc)
             resp = f"""<b>
@@ -70,7 +68,7 @@ Redeemed ✓
 </b>"""
             await message.reply_text(resp, message.id)
 
-        elif status == "ACTIVE" and type == "PLAN2":
+        elif status == "ACTIVE" and type_ == "PLAN2":
             await plan2gc(user_id)
             await updategc(gc)
             resp = f"""<b>
@@ -83,7 +81,7 @@ Redeemed ✓
 </b>"""
             await message.reply_text(resp, message.id)
 
-        elif status == "ACTIVE" and type == "PLAN3":
+        elif status == "ACTIVE" and type_ == "PLAN3":
             await plan3gc(user_id)
             await updategc(gc)
             resp = f"""<b>
@@ -93,6 +91,21 @@ Redeemed ✓
 ◈ ◈ <b>ᴜꜱᴇʀ ɪᴅ :</b> {user_id}
 
 ⟢ Congratz ! Your Provided Giftcode Successfully Redeemed to Your Acoount And You Got "Gold Plan For 30 Days " .
+</b>"""
+            await message.reply_text(resp, message.id)
+
+        # NEW: Handle variable‑day keys
+        elif status == "ACTIVE" and type_ == "VARIABLE":
+            days = detail.get("days", 7)   # fallback to 7 days if missing
+            await variable_plan_gc(user_id, days)
+            await updategc(gc)
+            resp = f"""<b>
+Redeemed ✓
+━━━━━━━━━━━━━━━━━━━━
+◈ ◈ <b>ɢɪꜰᴛᴄᴏᴅᴇ :</b> {gc}
+◈ ◈ <b>ᴜꜱᴇʀ ɪᴅ :</b> {user_id}
+
+⟢ Congratz ! Your Provided Giftcode Successfully Redeemed to Your Account And You Got "Premium Plan For {days} Days" .
 </b>"""
             await message.reply_text(resp, message.id)
 
