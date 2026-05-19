@@ -278,10 +278,11 @@ async def button_callback(client, callback_query):
         await send_colored_msg(client, query.message.chat.id, resp, reply_markup=InlineKeyboardMarkup(keyboard), is_edit=True, message_id=query.message.id, is_video=True)
 
     elif query.data == "gates":
+        # Updated gate counts (add all new gates)
         message = (
             "<a href='https://t.me/elitechkbot?start=start'>✧</a> <b>ꜱᴘʏᴅᴇ ━ ɢᴀᴛᴇᴡᴀʏꜱ</b> ✧\n\n"
-            "◈ <a href='https://t.me/elitechkbot?start=start'>ᴛᴏᴛᴀʟ</a> : 12\n"
-            "◈ <a href='https://t.me/elitechkbot?start=start'>ᴏɴ</a> : 12 ✓\n"
+            "◈ <a href='https://t.me/elitechkbot?start=start'>ᴛᴏᴛᴀʟ</a> : 24\n"
+            "◈ <a href='https://t.me/elitechkbot?start=start'>ᴏɴ</a> : 22 ✓\n"
             "◈ <a href='https://t.me/elitechkbot?start=start'>ᴏꜰꜰ</a> : 0 ✗\n"
             "◈ <a href='https://t.me/elitechkbot?start=start'>ᴍᴀɪɴᴛᴇɴᴀɴᴄᴇ</a> : 2\n\n"
             "━━━━━━━━━━━━━━━━━━━━\n"
@@ -294,42 +295,59 @@ async def button_callback(client, callback_query):
                 InlineKeyboardButton("◈ ᴄʜᴀʀɢᴇ ◈", callback_data="CHARGE", style="success"),
                 InlineKeyboardButton("◈ ᴍᴀꜱꜱ ◈", callback_data="MASS", style="primary"),
             ],
+            [
+                InlineKeyboardButton("◈ ᴛxᴛ ◈", callback_data="TXT", style="primary"),
+            ],
             [InlineKeyboardButton("✧ ʙᴀᴄᴋ ✧", callback_data="back", style="danger")]
         ]
         await send_colored_msg(client, query.message.chat.id, message, reply_markup=InlineKeyboardMarkup(keyboard), is_edit=True, message_id=query.message.id, is_video=True)
 
+    # ----------------------------- AUTH GATES PAGE -----------------------------
     elif query.data == "AUTH":
         message = (
             "<a href='https://t.me/elitechkbot?start=start'>✧</a> <b>ɢᴀᴛᴇᴡᴀʏꜱ ━ ᴀᴜᴛʜ</b> ✧\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Stripe Auth $0\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /sauth\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Authorize.Net Auth\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /auth\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
             "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Square Auth\n"
             "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /sq\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : Maintenance ✓\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : Maintenance 🔧\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Stripe Auth (alt)\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /au\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : 3DS Lookup\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /vbv\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
             "━━━━━━━━━━━━━━━━━━━━"
         )
         keyboard = [[InlineKeyboardButton("✧ ʙᴀᴄᴋ ✧", callback_data="gates", style="danger")]]
         await send_colored_msg(client, query.message.chat.id, message, reply_markup=InlineKeyboardMarkup(keyboard), is_edit=True, message_id=query.message.id, is_video=True)
 
+    # ----------------------------- CHARGE GATES PAGE (1/2) -----------------------------
     elif query.data == "CHARGE":
         message = (
             "<a href='https://t.me/elitechkbot?start=start'>✧</a> <b>ɢᴀᴛᴇᴡᴀʏꜱ ━ ᴄʜᴀʀɢᴇ</b> ✧ (1/2)\n\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : PayPal charge 2$\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /pp\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : PayPal Donate $0.01\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /ppd\n"
             "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Auto Shopify\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /sh\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
-           "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : PayPal charge 1$\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /pp1\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n" 
-           "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Stripe Charge 0.12$\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Stripe Charge 0.12$\n"
             "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /st\n"
-           "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Strip Charge 3.50$\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Stripe Charge 3.50$\n"
             "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /sc\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : Maintainance ✓\n\n"            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"   
-             "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : hiBurma 1$\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : Maintenance 🔧\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : CC Charge $1\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /cn\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : HiBurma 1£\n"
             "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /hb\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"   
-  
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Braintree Charge $5\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /b3\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
             "━━━━━━━━━━━━━━━━━━━━"
         )
         keyboard = [
@@ -338,10 +356,19 @@ async def button_callback(client, callback_query):
         ]
         await send_colored_msg(client, query.message.chat.id, message, reply_markup=InlineKeyboardMarkup(keyboard), is_edit=True, message_id=query.message.id, is_video=True)
 
+    # ----------------------------- CHARGE GATES PAGE (2/2) -----------------------------
     elif query.data == "CHARGE_PAGE2":
         message = (
             "<a href='https://t.me/elitechkbot?start=start'>✧</a> <b>ɢᴀᴛᴇᴡᴀʏꜱ ━ ᴄʜᴀʀɢᴇ</b> ✧ (2/2)\n\n"
-            "soon 🔜\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : PayPal charge 2$\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /pp\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Auto Shopify\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /sh\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : PayPal charge 1$\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /pp1\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
             "━━━━━━━━━━━━━━━━━━━━"
         )
         keyboard = [
@@ -350,32 +377,73 @@ async def button_callback(client, callback_query):
         ]
         await send_colored_msg(client, query.message.chat.id, message, reply_markup=InlineKeyboardMarkup(keyboard), is_edit=True, message_id=query.message.id, is_video=True)
 
+    # ----------------------------- MASS GATES PAGE -----------------------------
     elif query.data == "MASS":
         message = (
             "<a href='https://t.me/elitechkbot?start=start'>✧</a> <b>ɢᴀᴛᴇᴡᴀʏꜱ ━ ᴍᴀꜱꜱ</b> ✧\n\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : PayPal Mass\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /mpp\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Stripe Auth Mass\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /msauth\n"
             "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
-           "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Hiburma mass\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Authorize.Net Mass\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /mauth\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : PayPal Donate Mass\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /mppd\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Stripe Charge Mass\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /msc\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Stripe Auth (alt) Mass\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /mass\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : CC Charge Mass\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /mcn\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : HiBurma Mass\n"
             "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /mhb\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"             
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Shopify Mass\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /msh\n"
             "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
-           "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : PayPal Mass + Txt 1$\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /mpp1 + /tpp1\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"  
-           "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Stripe Mass + Txt\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /msc + /tsc\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Braintree Mass\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /mb3\n"
             "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
-           "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Stripe Mass + Txt\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /mst + /tst\n"
-            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"          
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : 3DS Mass Lookup\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /mvbv\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
             "━━━━━━━━━━━━━━━━━━━━"
         )
         keyboard = [[InlineKeyboardButton("✧ ʙᴀᴄᴋ ✧", callback_data="gates", style="danger")]]
         await send_colored_msg(client, query.message.chat.id, message, reply_markup=InlineKeyboardMarkup(keyboard), is_edit=True, message_id=query.message.id, is_video=True)
 
+    # ----------------------------- TXT GATES PAGE (new) -----------------------------
+    elif query.data == "TXT":
+        message = (
+            "<a href='https://t.me/elitechkbot?start=start'>✧</a> <b>ɢᴀᴛᴇᴡᴀʏꜱ ━ ᴛxᴛ</b> ✧\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Stripe Auth .txt\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /tsauth\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Authorize.Net .txt\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /tauth\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : PayPal Donate .txt\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /tppd\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Stripe Charge .txt\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /tsc\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : CC Charge .txt\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /tcn\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Stripe Auth (alt) .txt\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /tmass (or /tst? adjust)\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴄᴏᴍɪɴɢ 🔜\n\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ɴᴀᴍᴇ : Braintree .txt\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ᴄᴍᴅ  : /tb3\n"
+            "<a href='https://t.me/elitechkbot?start=start'>◈</a> ꜱᴛᴀᴛᴜꜱ : ᴏɴ ✓\n\n"
+            "━━━━━━━━━━━━━━━━━━━━"
+        )
+        keyboard = [[InlineKeyboardButton("✧ ʙᴀᴄᴋ ✧", callback_data="gates", style="danger")]]
+        await send_colored_msg(client, query.message.chat.id, message, reply_markup=InlineKeyboardMarkup(keyboard), is_edit=True, message_id=query.message.id, is_video=True)
+
+    # ----------------------------- TOOLS PAGE (unchanged) -----------------------------
     elif query.data == "tools":
         message = (
             "<a href='https://t.me/elitechkbot?start=start'>✧</a> <b>ꜱᴘʏᴅᴇ ━ ᴛᴏᴏʟꜱ</b> ✧\n\n"
