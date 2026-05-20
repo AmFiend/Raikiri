@@ -38,14 +38,14 @@ async def cmd_generate_variable_keys(Client, message):
 ◈ <b>ᴠᴀʟɪᴅɪᴛʏ :</b> {days} days</b>\n"""
 
         for _ in range(qty):
-            code = f"SPYDE-XXXX-XXXX-XXXX-CHK-{gcgenfunc()}-{gcgenfunc()}-{gcgenfunc()}-CHK"
+            code = f"SPYDE-{gcgenfunc()}-{gcgenfunc()}-{gcgenfunc()}-CHK"
             await insert_variable_gc(code, days)
             text += f"""
 ⟢ <code>{code}</code>
 <b>Value : Premium Plan – {days} days</b>\n"""
 
         text += f"""
-<b>For Redeem SPYDE-XXXX-XXXX-XXXXX-CHK</b>"""
+<b>For Redeem SPYDE-XXXX-XXXX-XXXX-CHK</b>"""
         await message.reply_text(text, message.id)
 
     except Exception:
