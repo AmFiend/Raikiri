@@ -38,7 +38,7 @@ async def cmd_generate_variable_keys(Client, message):
 ◈ <b>ᴠᴀʟɪᴅɪᴛʏ :</b> {days} days</b>\n"""
 
         for _ in range(qty):
-            code = f"MASTR-XXXX-XXXX-XXXX-CHK-{gcgenfunc()}-{gcgenfunc()}-{gcgenfunc()}-CHK"
+            code = f"SPYDE-XXXX-XXXX-XXXX-CHK-{gcgenfunc()}-{gcgenfunc()}-{gcgenfunc()}-CHK"
             await insert_variable_gc(code, days)
             text += f"""
 ⟢ <code>{code}</code>
