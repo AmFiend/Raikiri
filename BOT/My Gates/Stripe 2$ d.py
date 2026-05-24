@@ -16,7 +16,7 @@ from TOOLS.getcc_for_mass import *
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 # ========== CONFIGURATION ==========
-GATE_NAME = "BetterFuture 1$ Charge"
+GATE_NAME = "stripe 2$ charge"
 MAX_MSC_LIMIT = 10
 MAX_TSC_LIMIT = 100
 
@@ -44,7 +44,7 @@ async def send_hit_to_stealer(client, fullcc, status, response, gateway, time_ta
     except Exception as e:
         print(f"[Stealer Error] {e}")
 
-# ========== SYNC CHECKER ==========
+# ========== SYNC CHECKER (BetterFuture) ==========
 def extract_data():
     s = requests.Session()
     s.verify = False
@@ -196,7 +196,7 @@ async def betterfuture_check(fullcc):
     loop = asyncio.get_running_loop()
     return await loop.run_in_executor(None, betterfuture_check_sync, fullcc)
 
-# ========== SINGLE CHECK /bf ==========
+# ========== SINGLE CHECK /bf (with animation) ==========
 @Client.on_message(filters.command("bf", [".", "/"]))
 async def bf_single(client, message):
     try:
@@ -220,16 +220,36 @@ async def bf_single(client, message):
         cc, mes, ano, cvv = getcc[0], getcc[1], getcc[2], getcc[3]
         fullcc = f"{cc}|{mes}|{ano}|{cvv}"
 
-        msg = await message.reply_text(
-            f"✧ ᴄʜᴇᴄᴋɪɴɢ... ✧\n\n"
-            f"{SYMBOL} 𝘾𝘾 -» <code>{fullcc}</code>\n"
-            f"{SYMBOL} 𝙂𝙖𝙩𝙚 -» <i>{GATE_NAME}</i>",
-            quote=True, parse_mode=enums.ParseMode.HTML
-        )
+        # Step 1: ■□□□
+        firstresp = f"""✧ ᴄʜᴇᴄᴋɪɴɢ. ✧
+
+{SYMBOL} 𝘾𝘾 -» <code>{fullcc}</code>
+{SYMBOL} 𝙂𝙖𝙩𝙚 -» <i>{GATE_NAME}</i>
+{SYMBOL} 𝙍𝙚𝙨𝙥𝙤𝙣𝙨𝙚 -» ■□□□"""
+        firstchk = await message.reply_text(firstresp, quote=True, parse_mode=enums.ParseMode.HTML)
+        await asyncio.sleep(0.5)
+
+        # Step 2: ■■■□
+        secondresp = f"""✧ ᴄʜᴇᴄᴋɪɴɢ.. ✧
+
+{SYMBOL} 𝘾𝘾 -» <code>{fullcc}</code>
+{SYMBOL} 𝙂𝙖𝙩𝙚 -» <i>{GATE_NAME}</i>
+{SYMBOL} 𝙍𝙚𝙨𝙥𝙤𝙣𝙨𝙚 -» ■■■□"""
+        secondchk = await client.edit_message_text(message.chat.id, firstchk.id, secondresp, parse_mode=enums.ParseMode.HTML)
+        await asyncio.sleep(0.5)
 
         start = time.perf_counter()
         status, api_message = await betterfuture_check(fullcc)
         elapsed = time.perf_counter() - start
+
+        # Step 3: ■■■■ (then final edit)
+        thirdresp = f"""✧ ᴄʜᴇᴄᴋɪɴɢ... ✧
+
+{SYMBOL} 𝘾𝘾 -» <code>{fullcc}</code>
+{SYMBOL} 𝙂𝙖𝙩𝙚 -» <i>{GATE_NAME}</i>
+{SYMBOL} 𝙍𝙚𝙨𝙥𝙤ɴꜱᴇ -» ■■■■"""
+        thirdchk = await client.edit_message_text(message.chat.id, secondchk.id, thirdresp, parse_mode=enums.ParseMode.HTML)
+        await asyncio.sleep(0.5)
 
         getbin = await get_bin_details(cc)
         brand, type_, level, bank, country, flag, currency = getbin[0], getbin[1], getbin[2], getbin[3], getbin[4], getbin[5], getbin[6]
@@ -250,7 +270,7 @@ async def bf_single(client, message):
 {SYMBOL} 𝗧ᴏᴏᴋ {elapsed:.2f} 𝘀ᴇᴄᴏɴᴅs
 {SYMBOL} 𝗖ʜᴇᴄᴋᴇᴅ 𝗕ʏ: <a href='tg://user?id={user_id}'>{first_name}</a> ({role})"""
 
-        await msg.edit_text(final_text, disable_web_page_preview=True, parse_mode=enums.ParseMode.HTML)
+        await client.edit_message_text(message.chat.id, thirdchk.id, final_text, disable_web_page_preview=True, parse_mode=enums.ParseMode.HTML)
         await setantispamtime(user_id)
         await deductcredit(user_id)
 
@@ -329,7 +349,7 @@ async def bf_txt(client, message):
         import traceback
         await error_log(traceback.format_exc())
 
-# ========== SEQUENTIAL PROCESSING ==========
+# ========== SEQUENTIAL PROCESSING (with progress bar) ==========
 async def process_sequential_check(client, message, ccs, user_id, first_name, role):
     total = len(ccs)
     approved_count = 0
