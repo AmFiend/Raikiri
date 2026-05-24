@@ -21,7 +21,7 @@ from BOT.tools.hit_stealer import send_hit_if_approved
 fake = Faker()
 
 # Configuration
-GATE_NAME = "Braintree - Plexaderm"
+GATE_NAME = "Braintree charge"
 SITE_URL = "https://www.plexaderm.com"
 CHECKOUT_URL = "https://plexaderm.com"
 BRAINTREE_API = "https://payments.braintree-api.com/graphql"
