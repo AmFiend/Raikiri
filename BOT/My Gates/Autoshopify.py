@@ -23,7 +23,7 @@ GATE_NAME = "Shopify - Auto 💸"
 MAX_MSC_LIMIT = 10
 MAX_TSC_LIMIT = 100
 # Change this to your target Shopify store (without https://)
-DEFAULT_SHOPIFY_SITE = "lifeessentialsrefillery.com"
+DEFAULT_SHOPIFY_SITE = "vicegripgarage.com"
 
 OWNER_DM = "https://t.me/spid_3r"
 SYMBOL = f"<a href='{OWNER_DM}'>㊕</a>"
